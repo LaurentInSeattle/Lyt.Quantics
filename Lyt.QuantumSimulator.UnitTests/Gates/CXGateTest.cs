@@ -6,6 +6,7 @@ public class CXGateTest
     [TestMethod()]
     public void ControlFalse_InputFalse_Test()
     {
+        Qubit.ClearCache();
         var c = new Qubit(false);
         var q = new Qubit(false);
         new CXGate().Apply(c, q);
@@ -16,6 +17,7 @@ public class CXGateTest
     [TestMethod()]
     public void ControlFalse_InputTrue_Test()
     {
+        Qubit.ClearCache();
         var c = new Qubit(false);
         var q = new Qubit(true);
         new CXGate().Apply(c, q);
@@ -26,6 +28,7 @@ public class CXGateTest
     [TestMethod()]
     public void ControlTrue_InputFalse_Test()
     {
+        Qubit.ClearCache(); 
         var c = new Qubit(true);
         var q = new Qubit(false);
         new CXGate().Apply(c, q);
@@ -36,6 +39,7 @@ public class CXGateTest
     [TestMethod()]
     public void ControlTrue_InputTrue_Test()
     {
+        Qubit.ClearCache();
         var c = new Qubit(true);
         var q = new Qubit(true);
         new CXGate().Apply(c, q);
@@ -46,6 +50,7 @@ public class CXGateTest
     [TestMethod()]
     public void ThreeQubitSystem_ControlFalse_InputFalse_Test()
     {
+        Qubit.ClearCache();
         var c = new Qubit(false);
         var q = new Qubit(false);
         var x = new Qubit(true);
@@ -62,6 +67,7 @@ public class CXGateTest
     [TestMethod()]
     public void ThreeQubitSystem_ControlFalse_InputTrue_Test()
     {
+        Qubit.ClearCache();
         var c = new Qubit(false);
         var q = new Qubit(true);
         var x = new Qubit(true);
@@ -78,6 +84,8 @@ public class CXGateTest
     [TestMethod()]
     public void ThreeQubitSystem_ControlTrue_InputFalse_Test()
     {
+        Qubit.ClearCache();
+
         var c = new Qubit(true);
         var q = new Qubit(false);
         var x = new Qubit(true);
@@ -94,6 +102,7 @@ public class CXGateTest
     [TestMethod()]
     public void ThreeQubitSystem_ControlTrue_InputTrue_Test()
     {
+        Qubit.ClearCache();
         var c = new Qubit(true);
         var q = new Qubit(true);
         var x = new Qubit(false);
