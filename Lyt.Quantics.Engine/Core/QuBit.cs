@@ -1,4 +1,6 @@
-﻿namespace Lyt.QuantumEngine.Core;
+﻿using Lyt.Quantics.Engine.Utilities;
+
+namespace Lyt.QuantumEngine.Core;
 
 public sealed class QuBit
 {
@@ -12,9 +14,9 @@ public sealed class QuBit
 
     public static void Combine(QuBit quBit1, QuBit quBit2)
     {
-        //var newTensor = Tensor.Product<Complex>([quBit1.tensor, quBit2.tensor]);
-        //quBit1.tensor = newTensor;
-        //quBit2.tensor = newTensor;
+        var newTensor = MathUtilities.TensorProduct(quBit1.tensor, quBit2.tensor);
+        quBit1.tensor = newTensor;
+        quBit2.tensor = newTensor;
     }
 
     public int Measure()
