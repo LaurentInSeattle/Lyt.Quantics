@@ -1,0 +1,8 @@
+﻿
+
+Forked from: https://github.com/tcgv
+
+https://github.com/desireevl/awesome-quantum-computing 
+
+https://medium.com/qvillage 
+https://medium.com/qvillage/multiple-qubits-and-quantum-logic-gates-edc3b0190fd9
