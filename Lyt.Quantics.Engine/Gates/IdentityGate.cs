@@ -8,5 +8,5 @@ public sealed class IdentityGate : UnaryGate
         { 0, 1 }
     };
 
-    protected override Complex[,] GetMatrix() => IdentityGate.IdentityGateMatrix;
+    public override Complex[,] Matrix => IdentityGate.IdentityGateMatrix;
 }

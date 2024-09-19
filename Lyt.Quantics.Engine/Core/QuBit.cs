@@ -1,63 +1,47 @@
-﻿namespace Lyt.Quantics.Engine.Core;
+﻿using Lyt.Quantics.Engine.Gates;
+
+namespace Lyt.Quantics.Engine.Core;
 
 public sealed class QuBit
 {
+    // Cannot use Vector<Complex> !!! See TestVectors below 
     private Complex[] tensor;
 
-    public QuBit(int pureState = 0)
-    {
-        Complex[] quBase = pureState == 0 ? [Complex.One, Complex.Zero] : [Complex.Zero, Complex.One];
-        this.tensor = quBase;
-    }
+    public QuBit(BasisState basisState) => this.tensor = basisState.ToTensor();
 
-    public Complex[] Tensor => this.tensor; 
+    public Complex[] Tensor => this.tensor;
 
     public bool IsCollapsed { get; private set; }
 
-    public List<int> Measure()
+    public int CollapsedValue { get; private set; }
+
+    public int Measure()
     {
-        this.IsCollapsed = true;
-        int length = this.tensor.Length;
-        int resultLength = MathUtilities.Log2(length);
-        double[] probabilities = new double[length];
-        for (int i = 0; i < length; ++i)
-        {
-            Complex complex = this.tensor[i];
-            Complex conjugate = Complex.Conjugate(complex);
-            probabilities[i] = (conjugate * complex).Real;
-        }
-
-        List<int> result = new(resultLength);
+        Complex complex = this.tensor[0];
+        Complex conjugate = Complex.Conjugate(complex);
+        double probability = (conjugate * complex).Real;
         double sample = RandomUtility.NextDouble();
-        int slot = -1;
-        double sumProbabilities=0.0;
-        for (int i = 0; i < length; ++i)
+        int result = 0;
+        if (sample > probability)
         {
-            double probability = sumProbabilities + probabilities[i]; 
-            if (sample < probability)
-            {
-                slot = i ; 
-                break;
-            }
+            result = 1;
         }
 
-        if (slot == -1)
-        {
-            throw new Exception("Failed to find slot ???");
-        }
+        Debug.WriteLine(result);
 
-        for (int i = 0; i < resultLength; ++i)
-        {
-            int mask = 1 << i;
-            int bitValue = ((slot & mask) != 0) ? 1 : 0; 
-            result.Insert(0, bitValue);
-        }
-
-        for (int i = 0; i < resultLength; ++i)
-        {
-            Debug.WriteLine(result[i]);
-        }
-
+        this.IsCollapsed = true;
+        this.CollapsedValue = result;
         return result;
+    }
+
+    public void Apply(UnaryGate gate) => this.tensor = MathUtilities.Transform(this.tensor, gate.Matrix);
+
+    public static void TestVectors()
+    {
+        // This compiles but crashes at run time 
+        //var zero = new Vector<Complex>(new QuBit(BasisState.Zero).Tensor);
+        //var one = new Vector<Complex>(new QuBit(BasisState.One).Tensor);
+        //var x = zero + one;
+        //Debug.WriteLine(x);
     }
 }

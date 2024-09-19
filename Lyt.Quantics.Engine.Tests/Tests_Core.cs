@@ -44,14 +44,57 @@ public sealed class Tests_Core
     #endregion Fixtures 
 
     [TestMethod]
-    public void Test_Entangle()
+    public void Test_Basics()
     {
-        var q1 = new QuBit();
+        QuBit.TestVectors();
+        var q1 = new QuBit(BasisState.Zero);
         var q1M = q1.Measure();
-        var q2 = new QuBit(1);
+        var q2 = new QuBit(BasisState.One);
         var q2M = q2.Measure();
         var qr = new QuRegister(q1, q2);
         q1M = q1.Measure();
         q1M = q2.Measure();
+    }
+
+    [TestMethod]
+    public void Test_UnaryGates()
+    {
+        UnaryGate identity = new IdentityGate();
+        UnaryGate pauliX = new PauliXGate();
+        UnaryGate pauliZ = new PauliZGate();
+
+        // Identity Zero 
+        var sameZero = new QuBit(BasisState.Zero);
+        sameZero.Apply(identity);
+        Assert.IsTrue(sameZero.Measure() == 0);
+
+        // Identity One 
+        var sameOne = new QuBit(BasisState.One);
+        sameOne.Apply(identity);
+        Assert.IsTrue(sameOne.Measure() == 1);
+
+        // Negate Zero
+        var zero = new QuBit(BasisState.Zero);
+        zero.Apply(pauliX);
+        Assert.IsTrue(zero.Measure() == 1);
+
+        // Negate One 
+        var one = new QuBit(BasisState.One);
+        one.Apply(pauliX);
+        Assert.IsTrue(one.Measure()== 0);
+
+        // Pauli Z on zero 
+        zero = new QuBit(BasisState.Zero);
+        zero.Apply(pauliZ);
+        Assert.AreEqual(new Complex(1, 0), zero.Tensor[0]);
+        Assert.AreEqual(new Complex(0, 0), zero.Tensor[1]);
+        Assert.IsTrue(zero.Measure() == 0);
+
+        // Pauli Z on one 
+        one = new QuBit(BasisState.One);
+        one.Apply(pauliZ);
+        Assert.AreEqual(new Complex(0, 0), one.Tensor[0]);
+        Assert.AreEqual(new Complex(-1, 0), one.Tensor[1]);
+        Assert.IsTrue(one.Measure() == 1);
     }
 }

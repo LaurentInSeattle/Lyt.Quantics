@@ -2,9 +2,9 @@
 
 public static class MathUtilities
 {
-    public static double SqrtOf2 = Math.Sqrt(2);
+    public const double SqrtOfTwo = 1.414_213_562_373_095_048_801_688_724_209_698_078_569_672;
     
-    public static int Log2(int length) => (int)Math.Round(Math.Log(length, 2));
+    public static int IntegerLog2(int length) => (int)Math.Round(Math.Log(length, 2));
 
     /// <summary> Tensor product for the (very) special case of two single row matrices. </summary>
     public static Complex[] TensorProduct(Complex[] v1, Complex[] v2)

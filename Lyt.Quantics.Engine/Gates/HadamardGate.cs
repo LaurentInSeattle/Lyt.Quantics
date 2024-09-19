@@ -1,5 +1,4 @@
-﻿
-namespace Lyt.Quantics.Engine.Gates;
+﻿namespace Lyt.Quantics.Engine.Gates;
 
 using static MathUtilities; 
 
@@ -7,9 +6,9 @@ public sealed class HadamardGate : UnaryGate
 {
     private static readonly Complex[,] HadamardMatrix = new Complex[,]
     {
-        { 1 / SqrtOf2,  1 / SqrtOf2 },
-        { 1 / SqrtOf2, -1 / SqrtOf2 }
+        { 1 / SqrtOfTwo,  1 / SqrtOfTwo },
+        { 1 / SqrtOfTwo, -1 / SqrtOfTwo }
     };
 
-    protected override Complex[,] GetMatrix() => HadamardGate.HadamardMatrix;
+    public override Complex[,] Matrix => HadamardGate.HadamardMatrix;
 }

@@ -8,5 +8,5 @@ public sealed class PhaseGate : UnaryGate
         { 0,  Complex.ImaginaryOne}
     };
 
-    protected override Complex[,] GetMatrix() => PhaseGate.PhaseGateMatrix;
+    public override Complex[,] Matrix => PhaseGate.PhaseGateMatrix;
 }

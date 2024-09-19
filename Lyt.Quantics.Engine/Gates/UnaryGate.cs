@@ -2,8 +2,6 @@
 
 public abstract class UnaryGate
 {
-    public void Apply(QuBit quBit) { } 
-
     //public Complex[,] GetMatrix(int bitLen, int bitPos)
     //{
     //    var matrix = this.GetMatrix();
@@ -30,5 +28,5 @@ public abstract class UnaryGate
     //    return matrix;
     //}
 
-    protected abstract Complex[,] GetMatrix();
+    public abstract Complex[,] Matrix { get; }
 }

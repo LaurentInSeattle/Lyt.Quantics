@@ -8,5 +8,5 @@ public sealed class PauliYGate : UnaryGate
         { Complex.ImaginaryOne,  0 }
     };
 
-    protected override Complex[,] GetMatrix() => PauliYGate.PauliYGateMatrix;
+    public override Complex[,] Matrix => PauliYGate.PauliYGateMatrix;
 }
