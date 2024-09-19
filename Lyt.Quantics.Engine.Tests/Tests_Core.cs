@@ -1,6 +1,4 @@
-﻿using Lyt.QuantumEngine.Core;
-
-namespace Lyt.Quantics.Engine.Tests;
+﻿namespace Lyt.Quantics.Engine.Tests;
 
 [TestClass]
 public sealed class Tests_Core
@@ -49,7 +47,11 @@ public sealed class Tests_Core
     public void Test_Entangle()
     {
         var q1 = new QuBit();
+        var q1M = q1.Measure();
         var q2 = new QuBit(1);
-        QuBit.Combine(q1, q2);
+        var q2M = q2.Measure();
+        var qr = new QuRegister(q1, q2);
+        q1M = q1.Measure();
+        q1M = q2.Measure();
     }
 }

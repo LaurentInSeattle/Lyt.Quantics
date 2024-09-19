@@ -26,5 +26,7 @@ global using System.Windows.Input;
 
 global using System.Numerics.Tensors;
 
+//global using Lyt.QuantumEngine.Algorithms;
 global using Lyt.Quantics.Engine.Core;
+//global using Lyt.QuantumEngine.Gates;
 global using Lyt.Quantics.Engine.Utilities;
