@@ -2,15 +2,25 @@
 
 public static class Driver
 {
-    public static void Run(Func<bool> action, int loops = 10_000, double probability = 0.025)
+    public static void RunUnary(
+        Func<int> action, int loops = 5_000, double expectedProbability = 0.5, double tolerance = 0.025)
     {
-        double diff = 0.0;
+        int ones = 0;
+        int zeroes = 0;
         for (int i = 0; i < loops; i++)
         {
-            bool result = action();
-            diff += result ? 1 : -1;
+            int measure = action();
+            if (measure == 0)
+            {
+                ones++;
+            }
+            else
+            {
+                zeroes++;
+            } 
         }
 
-        Assert.IsTrue(Math.Abs(diff) / loops < probability);
+        double result = ones / (double)loops; 
+        Assert.IsTrue( Math.Abs(result - expectedProbability) < tolerance);
     }
 }

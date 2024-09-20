@@ -9,4 +9,10 @@ public sealed class IdentityGate : UnaryGate
     };
 
     public override Complex[,] Matrix => IdentityGate.IdentityGateMatrix;
+
+    public override string Name => "Identity";
+
+    public override string AlternateName => "Identity Gate";
+
+    public override string Caption => "I";
 }

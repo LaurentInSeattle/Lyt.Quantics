@@ -1,4 +1,6 @@
-﻿namespace Lyt.Quantics.Engine.Tests;
+﻿using Lyt.QuantumSimulator.UnitTests;
+
+namespace Lyt.Quantics.Engine.Tests;
 
 [TestClass]
 public sealed class Tests_Core
@@ -57,7 +59,7 @@ public sealed class Tests_Core
     }
 
     [TestMethod]
-    public void Test_UnaryGates()
+    public void Test_BasicUnaryGates()
     {
         UnaryGate identity = new IdentityGate();
         UnaryGate pauliX = new PauliXGate();
@@ -96,5 +98,28 @@ public sealed class Tests_Core
         Assert.AreEqual(new Complex(0, 0), one.Tensor[0]);
         Assert.AreEqual(new Complex(-1, 0), one.Tensor[1]);
         Assert.IsTrue(one.Measure() == 1);
+    }
+
+    [TestMethod]
+    public void Test_HadamardGate()
+    {
+        UnaryGate hadamard = new HadamardGate();
+
+        int HadamardZero()
+        {
+            var zero = new QuBit(BasisState.Zero);
+            zero.Apply(hadamard);
+            return zero.Measure();
+        }
+
+        int HadamardOne()
+        {
+            var one = new QuBit(BasisState.One);
+            one.Apply(hadamard);
+            return one.Measure();
+        }
+
+        Driver.RunUnary(HadamardZero);
+        Driver.RunUnary(HadamardOne);
     }
 }
