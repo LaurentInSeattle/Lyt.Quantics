@@ -46,4 +46,21 @@ public static class MathUtilities
 
         return resultVector;
     }
+
+    /// <summary> Calculates and returns the conjugate transpose of the provided matrix. </summary>
+    public static Complex[,] Dagger (Complex[,] matrix)
+    {
+        int matrixDim0 = matrix.GetLength(0);
+        int matrixDim1 = matrix.GetLength(1);
+        var resultMatrix = new Complex[matrixDim1, matrixDim0 ];
+        for (int i = 0; i < matrixDim0; i++)
+        {
+            for (int j = 0; j < matrixDim1; j++)
+            {
+                resultMatrix [j,i] = Complex.Conjugate(matrix[i, j]);
+            }
+        }
+
+        return resultMatrix;
+    }
 }

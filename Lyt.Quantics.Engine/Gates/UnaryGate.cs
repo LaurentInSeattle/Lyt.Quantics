@@ -31,6 +31,12 @@ public abstract class UnaryGate
     public abstract Complex[,] Matrix { get; }
 
     public abstract string Name { get; }
+
     public abstract string AlternateName { get; }
+    
     public abstract string Caption { get; }
+
+    //public UnaryGate Dagger ( UnaryGate unaryGate )
+    //{
+    //}
 }
