@@ -1,6 +1,6 @@
 ﻿namespace Lyt.Quantics.Engine.Gates;
 
-public abstract class UnaryGate
+public abstract class Gate
 {
     //public Complex[,] GetMatrix(int bitLen, int bitPos)
     //{

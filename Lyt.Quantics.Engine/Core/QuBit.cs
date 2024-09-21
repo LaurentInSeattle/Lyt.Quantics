@@ -9,7 +9,11 @@ public sealed class QuBit : IEquatable<QuBit>
 
     public QuBit(BasisState basisState) => this.tensor = basisState.ToTensor();
 
-    public Complex[] Tensor => this.tensor;
+    public Complex[] Tensor 
+    {
+        get => this.tensor;
+        set => this.tensor = value;
+    } 
 
     public bool IsCollapsed { get; private set; }
 
@@ -34,7 +38,7 @@ public sealed class QuBit : IEquatable<QuBit>
         return result;
     }
 
-    public void Apply(UnaryGate gate) => this.tensor = MathUtilities.Transform(this.tensor, gate.Matrix);
+    public void Apply(Gate gate) => this.tensor = MathUtilities.Transform(this.tensor, gate.Matrix);
 
     public bool Equals(QuBit? other)
     {

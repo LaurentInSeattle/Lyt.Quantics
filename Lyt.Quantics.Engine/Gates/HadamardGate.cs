@@ -2,7 +2,7 @@
 
 using static MathUtilities; 
 
-public sealed class HadamardGate : UnaryGate
+public sealed class HadamardGate : Gate
 {
     // Single-qubit Hadamard gate.
     // This gate is a pi rotation about the X+Z axis, and has the effect of changing computation basis

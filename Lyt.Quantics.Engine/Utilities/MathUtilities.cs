@@ -1,10 +1,44 @@
-﻿namespace Lyt.Quantics.Engine.Utilities; 
+﻿using System.Numerics.Tensors;
+
+namespace Lyt.Quantics.Engine.Utilities;
 
 public static class MathUtilities
 {
     public const double SqrtOfTwo = 1.414_213_562_373_095_048_801_688_724_209_698_078_569_672;
-    
+
     public static int IntegerLog2(int length) => (int)Math.Round(Math.Log(length, 2));
+
+    public static double Magnitude(this Complex[] tensor)
+    {
+        double magnitude = 0.0;
+        for (int i = 0; i < tensor.Length; ++i)
+        {
+            Complex complex = tensor[i];
+            magnitude += (Complex.Conjugate(complex) * complex).Real;
+        }
+        return magnitude;
+    }
+
+    public static void DivideBy(this Complex[] tensor, double divisor)
+    {
+        if (Math.Abs(divisor) <= double.Epsilon)
+        {
+            throw new ArgumentException("Zero divide");
+        }
+
+        for (int i = 0; i < tensor.Length; ++i)
+        {
+            tensor[i] /= divisor;
+        }
+    }
+
+    public static void MultiplyBy(this Complex[] tensor, double factor)
+    {
+        for (int i = 0; i < tensor.Length; ++i)
+        {
+            tensor[i] /= factor;
+        }
+    }
 
     /// <summary> Tensor product for the (very) special case of two single row matrices. </summary>
     public static Complex[] TensorProduct(Complex[] v1, Complex[] v2)
@@ -52,16 +86,16 @@ public static class MathUtilities
     /// Aka: Hermitian conjugate, adjoint matrix or transjugate. 
     /// See: https://en.wikipedia.org/wiki/Conjugate_transpose 
     /// </remarks>
-    public static Complex[,] Dagger (Complex[,] matrix)
+    public static Complex[,] Dagger(Complex[,] matrix)
     {
         int matrixDim0 = matrix.GetLength(0);
         int matrixDim1 = matrix.GetLength(1);
-        var resultMatrix = new Complex[matrixDim1, matrixDim0 ];
+        var resultMatrix = new Complex[matrixDim1, matrixDim0];
         for (int i = 0; i < matrixDim0; i++)
         {
             for (int j = 0; j < matrixDim1; j++)
             {
-                resultMatrix [j,i] = Complex.Conjugate(matrix[i, j]);
+                resultMatrix[j, i] = Complex.Conjugate(matrix[i, j]);
             }
         }
 

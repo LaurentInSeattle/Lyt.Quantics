@@ -2,7 +2,7 @@
 
 using static MathUtilities; 
 
-public sealed class PiOver8Gate : UnaryGate
+public sealed class PiOver8Gate : Gate
 {
     // Single qubit T gate (Z**0.25).
     // Equivalent to a π/4 radian rotation about the Z axis.

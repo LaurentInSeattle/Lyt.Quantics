@@ -60,9 +60,9 @@ public sealed class Tests_Core
     [TestMethod]
     public void Test_BasicUnaryGates()
     {
-        UnaryGate identity = new IdentityGate();
-        UnaryGate pauliX = new PauliXGate();
-        UnaryGate pauliZ = new PauliZGate();
+        Gate identity = new IdentityGate();
+        Gate pauliX = new PauliXGate();
+        Gate pauliZ = new PauliZGate();
 
         // Identity Zero 
         var sameZero = new QuBit(BasisState.Zero);
@@ -99,7 +99,7 @@ public sealed class Tests_Core
         Assert.IsTrue(one.Measure() == 1);
 
         // Hadamard on |0> should be |+>
-        UnaryGate hadamard = new HadamardGate();
+        Gate hadamard = new HadamardGate();
         zero = new QuBit(BasisState.Zero);
         var plus = new QuBit(BasisState.Plus);
         zero.Apply(hadamard);
@@ -115,7 +115,7 @@ public sealed class Tests_Core
     [TestMethod]
     public void Test_HadamardGate()
     {
-        UnaryGate hadamard = new HadamardGate();
+        Gate hadamard = new HadamardGate();
 
         int HadamardZero()
         {

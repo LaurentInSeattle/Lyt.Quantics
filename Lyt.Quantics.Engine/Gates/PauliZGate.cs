@@ -1,6 +1,6 @@
 ﻿namespace Lyt.Quantics.Engine.Gates;
 
-public sealed class PauliZGate : UnaryGate
+public sealed class PauliZGate : Gate
 {
     // The single-qubit Pauli-Z gate (σz).
     // Equivalent to a π radian rotation about the Z axis.

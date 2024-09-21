@@ -1,6 +1,6 @@
 ﻿namespace Lyt.Quantics.Engine.Gates;
 
-public sealed class PhaseGate : UnaryGate
+public sealed class PhaseGate : Gate
 {
     // Single-qubit rotation about the Z axis.
     // This is a diagonal gate.

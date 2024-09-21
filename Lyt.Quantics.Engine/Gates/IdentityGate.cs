@@ -1,6 +1,6 @@
 ﻿namespace Lyt.Quantics.Engine.Gates;
 
-public sealed class IdentityGate : UnaryGate
+public sealed class IdentityGate : Gate
 {
     private static readonly Complex[,] IdentityGateMatrix = new Complex[,]
     {

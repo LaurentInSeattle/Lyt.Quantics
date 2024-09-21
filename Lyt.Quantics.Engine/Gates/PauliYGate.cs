@@ -1,6 +1,6 @@
 ﻿namespace Lyt.Quantics.Engine.Gates;
 
-public sealed class PauliYGate : UnaryGate
+public sealed class PauliYGate : Gate
 {
     // The single-qubit Pauli-Y gate (σy​).
     // Equivalent to a π radian rotation about the Y axis.

@@ -1,4 +1,6 @@
-﻿namespace Lyt.Quantics.Engine.Core;
+﻿using Lyt.Quantics.Engine.Gates;
+
+namespace Lyt.Quantics.Engine.Core;
 
 /// <summary> Result of Combining QuBit's </summary>
 public sealed class QuRegister
@@ -10,6 +12,21 @@ public sealed class QuRegister
     {
         this.sourceQuBits = [quBit1, quBit2]; 
         this.tensor = MathUtilities.TensorProduct(quBit1.Tensor, quBit2.Tensor);
+    }
+
+    public void Apply(Gate gate)
+    {
+        this.tensor = MathUtilities.Transform(this.tensor, gate.Matrix);
+
+        Complex[] q1Tensor = [this.tensor[0], this.tensor[1]];
+        double q1Norm = Math.Sqrt(q1Tensor.Magnitude()); 
+        q1Tensor.DivideBy( q1Norm);
+        this.sourceQuBits[0].Tensor = q1Tensor;
+
+        Complex[] q2Tensor = [this.tensor[2], this.tensor[3]];
+        double q2Norm = Math.Sqrt(q2Tensor.Magnitude());
+        q2Tensor.DivideBy(q2Norm);
+        this.sourceQuBits[1].Tensor = q2Tensor;
     }
 
     public List<int> Measure()

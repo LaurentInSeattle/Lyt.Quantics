@@ -2,7 +2,7 @@
 
 using static MathUtilities;
 
-public sealed class PhaseRotationGate : UnaryGate
+public sealed class PhaseRotationGate : Gate
 {
     // The phase gate R rotates the phase of the |1> state by a given angle phi
     //      R|0> = |0> 
