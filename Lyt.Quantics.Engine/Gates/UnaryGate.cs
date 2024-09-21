@@ -35,8 +35,4 @@ public abstract class UnaryGate
     public abstract string AlternateName { get; }
     
     public abstract string Caption { get; }
-
-    //public UnaryGate Dagger ( UnaryGate unaryGate )
-    //{
-    //}
 }

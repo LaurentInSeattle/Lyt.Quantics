@@ -48,6 +48,10 @@ public static class MathUtilities
     }
 
     /// <summary> Calculates and returns the conjugate transpose of the provided matrix. </summary>
+    /// <remarks> 
+    /// Aka: Hermitian conjugate, adjoint matrix or transjugate. 
+    /// See: https://en.wikipedia.org/wiki/Conjugate_transpose 
+    /// </remarks>
     public static Complex[,] Dagger (Complex[,] matrix)
     {
         int matrixDim0 = matrix.GetLength(0);

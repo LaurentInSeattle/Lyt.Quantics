@@ -48,7 +48,6 @@ public sealed class Tests_Core
     [TestMethod]
     public void Test_Basics()
     {
-        QuBit.TestVectors();
         var q1 = new QuBit(BasisState.Zero);
         var q1M = q1.Measure();
         var q2 = new QuBit(BasisState.One);
@@ -98,6 +97,19 @@ public sealed class Tests_Core
         Assert.AreEqual(new Complex(0, 0), one.Tensor[0]);
         Assert.AreEqual(new Complex(-1, 0), one.Tensor[1]);
         Assert.IsTrue(one.Measure() == 1);
+
+        // Hadamard on |0> should be |+>
+        UnaryGate hadamard = new HadamardGate();
+        zero = new QuBit(BasisState.Zero);
+        var plus = new QuBit(BasisState.Plus);
+        zero.Apply(hadamard);
+        Assert.AreEqual(zero, plus);
+
+        // Hadamard on |1> should be |->
+        one = new QuBit(BasisState.One);
+        var minus = new QuBit(BasisState.Minus);
+        one.Apply(hadamard);
+        Assert.AreEqual(one, minus);
     }
 
     [TestMethod]
