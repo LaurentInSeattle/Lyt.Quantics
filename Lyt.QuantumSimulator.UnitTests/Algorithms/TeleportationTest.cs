@@ -6,8 +6,6 @@ public class TeleportationTest
     [TestMethod()]
     public void Teleportation_FalseQubit_Test()
     {
-        Qubit.ClearCache();
-
         var sender = new Qubit(false);
         var recv = new Qubit(false);
 
@@ -19,8 +17,6 @@ public class TeleportationTest
     [TestMethod()]
     public void Teleportation_TrueQubit_Test()
     {
-        Qubit.ClearCache();
-
         var sender = new Qubit(false);
         var recv = new Qubit(false);
 

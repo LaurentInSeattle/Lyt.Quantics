@@ -11,8 +11,6 @@ public class EntanglementTest
 
         for (int i = 0; i < iterations; i++)
         {
-            Qubit.ClearCache();
-
             var q1 = new Qubit(false);
             var q2 = new Qubit(false);
 
@@ -63,8 +61,6 @@ public class EntanglementTest
 
         for (int i = 0; i < iterations; i++)
         {
-            Qubit.ClearCache();
-
             var q1 = new Qubit(false);
             var q2 = new Qubit(false);
 

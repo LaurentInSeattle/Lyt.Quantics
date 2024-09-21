@@ -11,8 +11,6 @@ public class HGateTest
 
         for (int i = 0; i < iterations; i++)
         {
-            Qubit.ClearCache();
-
             var q = new Qubit(false);
             new HGate().Apply(q);
             diff += q.Measure() ? 1 : -1;
@@ -29,8 +27,6 @@ public class HGateTest
 
         for (int i = 0; i < iterations; i++)
         {
-            Qubit.ClearCache();
-
             var q1 = new Qubit(false);
             var q2 = new Qubit(true);
 
@@ -51,8 +47,6 @@ public class HGateTest
 
         for (int i = 0; i < iterations; i++)
         {
-            Qubit.ClearCache();
-
             var q1 = new Qubit(false);
             var q2 = new Qubit(true);
             var q3 = new Qubit(true);

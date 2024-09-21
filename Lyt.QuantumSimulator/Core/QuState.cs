@@ -59,7 +59,8 @@ public class QuState
         int bitLen = AlgebraUtility.Log2(this.tensor.Length);
         int bit1Pos = this.posMap[qubitId1];
         int bit2Pos = this.posMap[qubitId2];
-        this.tensor = AlgebraUtility.MultiplyMatrixByVector( gate.GetMatrix(bitLen, bit1Pos, bit2Pos), this.tensor);
+        this.tensor = AlgebraUtility.MultiplyMatrixByVector( 
+            gate.GetMatrix(bitLen, bit1Pos, bit2Pos), this.tensor);
     }
 
     public ComplexPoint? Peek(int qubitId)

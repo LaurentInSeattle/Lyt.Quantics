@@ -7,7 +7,6 @@ public static class Driver
         double diff = 0.0;
         for (int i = 0; i < loops; i++)
         {
-            Qubit.ClearCache();
             bool result = action();
             diff += result ? 1 : -1;
         }
