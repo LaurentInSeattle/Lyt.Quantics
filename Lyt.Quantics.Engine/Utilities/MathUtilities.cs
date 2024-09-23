@@ -1,6 +1,9 @@
-﻿using System.Numerics.Tensors;
+﻿namespace Lyt.Quantics.Engine.Utilities;
 
-namespace Lyt.Quantics.Engine.Utilities;
+// Cannot use Vector<Complex> using System.Numerics 
+// but we still need System.Numerics for Complex 
+// Be careful when using global usings 
+using MathNet.Numerics.LinearAlgebra;
 
 public static class MathUtilities
 {
@@ -38,6 +41,25 @@ public static class MathUtilities
         {
             tensor[i] /= factor;
         }
+    }
+
+    /// <summary> Tensor product for the (very) special case of two single row matrices. </summary>
+    /// <remarks> Similar to Outer Product but returns a flat vector. </remarks>
+    /// <remarks> Also known as Kronecker product, operator 'kron' in some libraries. </remarks>
+    public static Vector<Complex> TensorProduct(Vector<Complex> v1, Vector<Complex> v2)
+    {
+        int v1Length = v1.Count;
+        int v2Length = v2.Count;
+        var resultVector = Vector<Complex>.Build.Dense(v1Length * v2Length);
+        for (int i = 0; i < v1Length; ++i)
+        {
+            for (int j = 0; j < v2Length; ++j)
+            {
+                resultVector[i * v2Length + j] = v1[i] * v2[j];
+            }
+        }
+
+        return resultVector;
     }
 
     /// <summary> Tensor product for the (very) special case of two single row matrices. </summary>

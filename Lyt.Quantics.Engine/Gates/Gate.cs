@@ -1,5 +1,7 @@
 ﻿namespace Lyt.Quantics.Engine.Gates;
 
+using MathNet.Numerics.LinearAlgebra;
+
 public abstract class Gate
 {
     //public Complex[,] GetMatrix(int bitLen, int bitPos)
@@ -28,11 +30,13 @@ public abstract class Gate
     //    return matrix;
     //}
 
-    public abstract Complex[,] Matrix { get; }
+    public abstract Matrix<Complex> Matrix { get; }
+
+    // public abstract Complex[,] Matrix { get; }
 
     public abstract string Name { get; }
 
     public abstract string AlternateName { get; }
     
-    public abstract string Caption { get; }
+    public abstract string CaptionKey { get; }
 }

@@ -1,43 +1,33 @@
-﻿using Lyt.Quantics.Engine.Gates;
+﻿namespace Lyt.Quantics.Engine.Core;
 
-namespace Lyt.Quantics.Engine.Core;
+// Cannot use Vector<Complex> using System.Numerics 
+// but we still need System.Numerics for Complex 
+// Be careful when using global usings 
+using MathNet.Numerics.LinearAlgebra;
 
 /// <summary> Result of Combining QuBit's </summary>
 public sealed class QuRegister
 {
-    private readonly List<QuBit> sourceQuBits; 
-    private Complex[] tensor;
+    private Vector<Complex> state;
+
+    public QuRegister(IEnumerable<QuBit> quBits) =>
+        // TODO 
+        this.state = Vector<Complex>.Build.Dense(quBits.Count());
 
     public QuRegister(QuBit quBit1, QuBit quBit2)
-    {
-        this.sourceQuBits = [quBit1, quBit2]; 
-        this.tensor = MathUtilities.TensorProduct(quBit1.Tensor, quBit2.Tensor);
-    }
+        => this.state = MathUtilities.TensorProduct(quBit1.State, quBit2.State);
 
-    public void Apply(Gate gate)
-    {
-        this.tensor = MathUtilities.Transform(this.tensor, gate.Matrix);
-
-        Complex[] q1Tensor = [this.tensor[0], this.tensor[1]];
-        double q1Norm = Math.Sqrt(q1Tensor.Magnitude()); 
-        q1Tensor.DivideBy( q1Norm);
-        this.sourceQuBits[0].Tensor = q1Tensor;
-
-        Complex[] q2Tensor = [this.tensor[2], this.tensor[3]];
-        double q2Norm = Math.Sqrt(q2Tensor.Magnitude());
-        q2Tensor.DivideBy(q2Norm);
-        this.sourceQuBits[1].Tensor = q2Tensor;
-    }
+    public void Apply(Gate gate) => this.state = gate.Matrix.Multiply(this.state);
 
     public List<int> Measure()
     {
-        int length = this.tensor.Length;
+        int length = this.state.Count;
         int resultLength = MathUtilities.IntegerLog2(length);
         double[] probabilities = new double[length];
         for (int i = 0; i < length; ++i)
         {
-            Complex complex = this.tensor[i];
-            Complex conjugate = Complex.Conjugate(complex);
+            Complex complex = this.state[i];
+            var conjugate = Complex.Conjugate(complex);
             probabilities[i] = (conjugate * complex).Real;
         }
 

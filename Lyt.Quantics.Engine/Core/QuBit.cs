@@ -1,19 +1,25 @@
-﻿using Lyt.Quantics.Engine.Gates;
+﻿namespace Lyt.Quantics.Engine.Core;
 
-namespace Lyt.Quantics.Engine.Core;
+// Cannot use Vector<Complex> using System.Numerics 
+// but we still need System.Numerics for Complex 
+// Be careful when using global usings 
+using MathNet.Numerics.LinearAlgebra;
 
 public sealed class QuBit : IEquatable<QuBit>
 {
-    // Cannot use Vector<Complex> !!! See TestVectors below 
-    private Complex[] tensor;
+    private Vector<Complex> state;
 
-    public QuBit(BasisState basisState) => this.tensor = basisState.ToTensor();
-
-    public Complex[] Tensor 
+    public QuBit(BasisState basisState)
     {
-        get => this.tensor;
-        set => this.tensor = value;
-    } 
+        var tensor = basisState.ToTensor();
+        this.state = tensor.ToVector();
+    }
+
+    public Vector<Complex> State
+    {
+        get => this.state;
+        set => this.state = value;
+    }
 
     public bool IsCollapsed { get; private set; }
 
@@ -21,8 +27,8 @@ public sealed class QuBit : IEquatable<QuBit>
 
     public int Measure()
     {
-        Complex complex = this.tensor[0];
-        Complex conjugate = Complex.Conjugate(complex);
+        Complex complex = this.state[0];
+        var conjugate = Complex.Conjugate(complex);
         double probability = (conjugate * complex).Real;
         double sample = RandomUtility.NextDouble();
         int result = 0;
@@ -38,32 +44,27 @@ public sealed class QuBit : IEquatable<QuBit>
         return result;
     }
 
-    public void Apply(Gate gate) => this.tensor = MathUtilities.Transform(this.tensor, gate.Matrix);
+    public void Apply(Gate gate) => this.state = gate.Matrix.Multiply(this.state);
 
     public bool Equals(QuBit? other)
     {
-        if ((other is null) || ( this.tensor.Length != other.Tensor.Length))
+        if ((other is null) || (this.state.Count != other.State.Count))
         {
             return false;
         }
 
-        for (int i = 0; i < this.tensor.Length; ++i)
+        for (int i = 0; i < this.state.Count; ++i)
         {
-            if( this.tensor[i] != other.tensor[i]) 
-            { 
-                return false; 
+            if (this.state[i] != other.State[i])
+            {
+                return false;
             }
         }
 
         return true;
-    } 
+    }
 
-    //public static void TestVectors()
-    //{
-    //    // This compiles but crashes at run time 
-    //    //var zero = new Vector<Complex>(new QuBit(BasisState.Zero).Tensor);
-    //    //var one = new Vector<Complex>(new QuBit(BasisState.One).Tensor);
-    //    //var x = zero + one;
-    //    //Debug.WriteLine(x);
-    //}
+    public override bool Equals(object? obj) => this.Equals(obj as QuBit);
+
+    public override int GetHashCode() => this.state.GetHashCode();
 }

@@ -11,7 +11,6 @@ global using System.Diagnostics;
 global using System.Globalization;
 global using System.IO;
 global using System.Linq;
-global using System.Numerics;
 global using System.Reflection;
 global using System.Runtime.CompilerServices;
 global using System.Runtime.InteropServices;
@@ -24,7 +23,13 @@ global using System.Windows.Input;
 
 #endregion System 
 
-global using System.Numerics.Tensors;
+// This one conflicts with MathNet but is still needed for basic Complex operations 
+global using System.Numerics;
+ 
+global using MathNet.Numerics.Statistics;
+global using MathNet.Numerics.LinearAlgebra;
+global using MathNet.Numerics.LinearAlgebra.Complex;
 
 global using Lyt.Quantics.Engine.Core;
+global using Lyt.Quantics.Engine.Gates;
 global using Lyt.Quantics.Engine.Utilities;

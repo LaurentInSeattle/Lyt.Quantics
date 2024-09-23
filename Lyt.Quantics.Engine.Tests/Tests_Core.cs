@@ -5,43 +5,43 @@ namespace Lyt.Quantics.Engine.Tests;
 [TestClass]
 public sealed class Tests_Core
 {
-    #region Fixtures 
+    #region Fixtures ( Not used for now) 
 
-    [AssemblyInitialize]
-    public static void AssemblyInit(TestContext context)
-    {
-        // This method is called once for the test assembly, before any tests are run.
-    }
+    //[AssemblyInitialize]
+    //public static void AssemblyInit(TestContext context)
+    //{
+    //    // This method is called once for the test assembly, before any tests are run.
+    //}
 
-    [AssemblyCleanup]
-    public static void AssemblyCleanup()
-    {
-        // This method is called once for the test assembly, after all tests are run.
-    }
+    //[AssemblyCleanup]
+    //public static void AssemblyCleanup()
+    //{
+    //    // This method is called once for the test assembly, after all tests are run.
+    //}
 
-    [ClassInitialize]
-    public static void ClassInit(TestContext context)
-    {
-        // This method is called once for the test class, before any tests of the class are run.
-    }
+    //[ClassInitialize]
+    //public static void ClassInit(TestContext context)
+    //{
+    //    // This method is called once for the test class, before any tests of the class are run.
+    //}
 
-    [ClassCleanup]
-    public static void ClassCleanup()
-    {
-        // This method is called once for the test class, after all tests of the class are run.
-    }
+    //[ClassCleanup]
+    //public static void ClassCleanup()
+    //{
+    //    // This method is called once for the test class, after all tests of the class are run.
+    //}
 
-    [TestInitialize]
-    public void TestInit()
-    {
-        // This method is called before each test method.
-    }
+    //[TestInitialize]
+    //public void TestInit()
+    //{
+    //    // This method is called before each test method.
+    //}
 
-    [TestCleanup]
-    public void TestCleanup()
-    {
-        // This method is called after each test method.
-    }
+    //[TestCleanup]
+    //public void TestCleanup()
+    //{
+    //    // This method is called after each test method.
+    //}
 
     #endregion Fixtures 
 
@@ -49,12 +49,15 @@ public sealed class Tests_Core
     public void Test_Basics()
     {
         var q1 = new QuBit(BasisState.Zero);
-        var q1M = q1.Measure();
+        int q1M = q1.Measure();
+        Assert.IsTrue(q1M == 0);
         var q2 = new QuBit(BasisState.One);
-        var q2M = q2.Measure();
+        int q2M = q2.Measure();
+        Assert.IsTrue(q2M == 1);
         var qr = new QuRegister(q1, q2);
-        q1M = q1.Measure();
-        q1M = q2.Measure();
+        var qrM = qr.Measure();
+        Assert.IsTrue(qrM[0] == 0);
+        Assert.IsTrue(qrM[1] == 1);
     }
 
     [TestMethod]
@@ -87,15 +90,15 @@ public sealed class Tests_Core
         // Pauli Z on zero 
         zero = new QuBit(BasisState.Zero);
         zero.Apply(pauliZ);
-        Assert.AreEqual(new Complex(1, 0), zero.Tensor[0]);
-        Assert.AreEqual(new Complex(0, 0), zero.Tensor[1]);
+        Assert.AreEqual(new Complex(1, 0), zero.State[0]);
+        Assert.AreEqual(new Complex(0, 0), zero.State[1]);
         Assert.IsTrue(zero.Measure() == 0);
 
         // Pauli Z on one 
         one = new QuBit(BasisState.One);
         one.Apply(pauliZ);
-        Assert.AreEqual(new Complex(0, 0), one.Tensor[0]);
-        Assert.AreEqual(new Complex(-1, 0), one.Tensor[1]);
+        Assert.AreEqual(new Complex(0, 0), one.State[0]);
+        Assert.AreEqual(new Complex(-1, 0), one.State[1]);
         Assert.IsTrue(one.Measure() == 1);
 
         // Hadamard on |0> should be |+>

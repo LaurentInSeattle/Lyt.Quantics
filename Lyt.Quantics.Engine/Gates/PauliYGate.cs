@@ -1,4 +1,6 @@
 ﻿namespace Lyt.Quantics.Engine.Gates;
+using MathNet.Numerics.LinearAlgebra;
+
 
 public sealed class PauliYGate : Gate
 {
@@ -6,17 +8,22 @@ public sealed class PauliYGate : Gate
     // Equivalent to a π radian rotation about the Y axis.
     // The gate is equivalent to a bit and phase flip.
 
-    private static readonly Complex[,] PauliYGateMatrix = new Complex[,]
-    {
-        { 0,                    -Complex.ImaginaryOne },
-        { Complex.ImaginaryOne,  0 }
-    };
+    private static readonly Matrix<Complex> PauliYGateMatrix ;
 
-    public override Complex[,] Matrix => PauliYGate.PauliYGateMatrix;
+    static PauliYGate()
+    {
+        //        { 0,                    -Complex.ImaginaryOne },
+       //         { Complex.ImaginaryOne,  0 }
+        PauliYGateMatrix = Matrix<Complex>.Build.Sparse(2, 2, Complex.Zero);
+        PauliYGateMatrix.At(0, 1, -Complex.ImaginaryOne);
+        PauliYGateMatrix.At(1, 0, Complex.ImaginaryOne);
+    }
+
+    public override Matrix<Complex> Matrix => PauliYGate.PauliYGateMatrix;
 
     public override string Name => "Pauli Y";
 
     public override string AlternateName => "Y Gate";
 
-    public override string Caption => "Y";
+    public override string CaptionKey => "Y";
 }

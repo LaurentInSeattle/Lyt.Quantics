@@ -2,6 +2,8 @@
 
 using static MathUtilities;
 
+using MathNet.Numerics.LinearAlgebra;
+
 public enum BasisState
 {
     Zero,
@@ -24,4 +26,7 @@ public static class BasisStateExtensions
             BasisState.MinusIota => [Complex.One / SqrtOfTwo, -Complex.ImaginaryOne / SqrtOfTwo],
             _ => [Complex.One, Complex.Zero], // Basis state Zero 
         };
+
+    public static Vector<Complex> ToVector(this Complex[] complexes)
+        => Vector<Complex>.Build.Dense(complexes);
 }
