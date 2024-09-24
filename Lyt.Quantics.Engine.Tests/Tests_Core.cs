@@ -48,10 +48,10 @@ public sealed class Tests_Core
     [TestMethod]
     public void Test_Basics()
     {
-        var q1 = new QuBit(BasisState.Zero);
+        var q1 = new QuBit(QuState.Zero);
         int q1M = q1.Measure();
         Assert.IsTrue(q1M == 0);
-        var q2 = new QuBit(BasisState.One);
+        var q2 = new QuBit(QuState.One);
         int q2M = q2.Measure();
         Assert.IsTrue(q2M == 1);
         var qr = new QuRegister(q1, q2);
@@ -68,34 +68,34 @@ public sealed class Tests_Core
         Gate pauliZ = new PauliZGate();
 
         // Identity Zero 
-        var sameZero = new QuBit(BasisState.Zero);
+        var sameZero = new QuBit(QuState.Zero);
         sameZero.Apply(identity);
         Assert.IsTrue(sameZero.Measure() == 0);
 
         // Identity One 
-        var sameOne = new QuBit(BasisState.One);
+        var sameOne = new QuBit(QuState.One);
         sameOne.Apply(identity);
         Assert.IsTrue(sameOne.Measure() == 1);
 
         // Negate Zero
-        var zero = new QuBit(BasisState.Zero);
+        var zero = new QuBit(QuState.Zero);
         zero.Apply(pauliX);
         Assert.IsTrue(zero.Measure() == 1);
 
         // Negate One 
-        var one = new QuBit(BasisState.One);
+        var one = new QuBit(QuState.One);
         one.Apply(pauliX);
         Assert.IsTrue(one.Measure()== 0);
 
         // Pauli Z on zero 
-        zero = new QuBit(BasisState.Zero);
+        zero = new QuBit(QuState.Zero);
         zero.Apply(pauliZ);
         Assert.AreEqual(new Complex(1, 0), zero.State[0]);
         Assert.AreEqual(new Complex(0, 0), zero.State[1]);
         Assert.IsTrue(zero.Measure() == 0);
 
         // Pauli Z on one 
-        one = new QuBit(BasisState.One);
+        one = new QuBit(QuState.One);
         one.Apply(pauliZ);
         Assert.AreEqual(new Complex(0, 0), one.State[0]);
         Assert.AreEqual(new Complex(-1, 0), one.State[1]);
@@ -103,14 +103,14 @@ public sealed class Tests_Core
 
         // Hadamard on |0> should be |+>
         Gate hadamard = new HadamardGate();
-        zero = new QuBit(BasisState.Zero);
-        var plus = new QuBit(BasisState.Plus);
+        zero = new QuBit(QuState.Zero);
+        var plus = new QuBit(QuState.Plus);
         zero.Apply(hadamard);
         Assert.AreEqual(zero, plus);
 
         // Hadamard on |1> should be |->
-        one = new QuBit(BasisState.One);
-        var minus = new QuBit(BasisState.Minus);
+        one = new QuBit(QuState.One);
+        var minus = new QuBit(QuState.Minus);
         one.Apply(hadamard);
         Assert.AreEqual(one, minus);
     }
@@ -122,14 +122,14 @@ public sealed class Tests_Core
 
         int HadamardZero()
         {
-            var zero = new QuBit(BasisState.Zero);
+            var zero = new QuBit(QuState.Zero);
             zero.Apply(hadamard);
             return zero.Measure();
         }
 
         int HadamardOne()
         {
-            var one = new QuBit(BasisState.One);
+            var one = new QuBit(QuState.One);
             one.Apply(hadamard);
             return one.Measure();
         }

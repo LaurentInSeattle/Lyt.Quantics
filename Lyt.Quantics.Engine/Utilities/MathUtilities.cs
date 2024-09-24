@@ -9,9 +9,28 @@ public static class MathUtilities
 {
     public const double SqrtOfTwo = 1.414_213_562_373_095_048_801_688_724_209_698_078_569_672;
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int IntegerLog2(int length) => (int)Math.Round(Math.Log(length, 2));
 
-    public static double Magnitude(this Complex[] tensor)
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int TwoPower(int power) => (1 << power);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool IsPowerOfTwo(int n) => n != 0 && (n & (n - 1)) == 0;
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool IsBitSet(int x, int pos) => (x & (1 << pos)) != 0;
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int SetBit(int x, int pos) => x | (1 << pos);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int ClearBit(int x, int pos) => x & (~(1 << pos));
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int SetBitValue(int x, int pos, bool v) => v ? (x | (1 << pos)) : (x & (~(1 << pos)));
+
+    public static double SquaredMagnitude(this Complex[] tensor)
     {
         double magnitude = 0.0;
         for (int i = 0; i < tensor.Length; ++i)
@@ -19,6 +38,7 @@ public static class MathUtilities
             Complex complex = tensor[i];
             magnitude += (Complex.Conjugate(complex) * complex).Real;
         }
+
         return magnitude;
     }
 

@@ -32,4 +32,5 @@ global using MathNet.Numerics.LinearAlgebra.Complex;
 
 global using Lyt.Quantics.Engine.Core;
 global using Lyt.Quantics.Engine.Gates;
+global using Lyt.Quantics.Engine.Machine; 
 global using Lyt.Quantics.Engine.Utilities;

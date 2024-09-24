@@ -9,7 +9,7 @@ public sealed class QuBit : IEquatable<QuBit>
 {
     private Vector<Complex> state;
 
-    public QuBit(BasisState basisState)
+    public QuBit(QuState basisState)
     {
         var tensor = basisState.ToTensor();
         this.state = tensor.ToVector();
