@@ -32,7 +32,7 @@ public abstract class Gate
 
     public abstract Matrix<Complex> Matrix { get; }
 
-    // public abstract Complex[,] Matrix { get; }
+    public int Length => this.Matrix.RowCount;
 
     public abstract string Name { get; }
 

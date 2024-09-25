@@ -46,6 +46,16 @@ public sealed class Tests_Core
     #endregion Fixtures 
 
     [TestMethod]
+    public void Test_Tooling()
+    {
+        var gates = GateFactory.AvailableProducts;
+        Assert.IsTrue(gates is not null );
+        var gate = GateFactory.Produce("H");
+        Assert.IsTrue(gate is not null);
+        Assert.IsTrue(gate.Name is not null);
+    }
+
+    [TestMethod]
     public void Test_Basics()
     {
         var q1 = new QuBit(QuState.Zero);

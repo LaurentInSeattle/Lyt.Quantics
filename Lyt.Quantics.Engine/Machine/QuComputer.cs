@@ -2,7 +2,7 @@
 
 public sealed class QuComputer
 {
-    private readonly List<QuStep> steps; 
+    private readonly List<QuStage> steps; 
 
     public QuComputer(int quBitsCount)
     {
@@ -15,7 +15,13 @@ public sealed class QuComputer
         this.steps = [];
     }
 
-    public int QuBitsCount { get; private set; }
+    public int QuBitsCount { get; set; }
+
+    public List<QuState> InitialStates { get; set; }
+
+    public List<QuStage> Stages { get; set; }
+
+
 
     public void Initialize(QuState quState = QuState.Zero)
     {
@@ -25,14 +31,14 @@ public sealed class QuComputer
     {
     }
 
-    public bool AddStep(QuStep step)
+    public bool AddStep(QuStage step)
     {
         // TODO 
         this.steps.Add(step);
         return true;
     }
 
-    public bool RemoveStep(QuStep step)
+    public bool RemoveStep(QuStage step)
     {
         // TODO 
         this.steps.Remove(step);
