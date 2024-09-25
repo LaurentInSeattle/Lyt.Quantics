@@ -2,9 +2,9 @@
 
 public sealed class QuStageOperator
 {
-    public List<int> Inputs { get; set; }
+    public List<int> Inputs { get; set; } = [];
 
-    public List<int> Outputs { get; set; }
+    public List<int> Outputs { get; set; } = [];
 
-    public string GateKey { get; set; }
+    public string GateKey { get; set; } = "I"; 
 }

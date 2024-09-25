@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Entanglement.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Computers\Entanglement.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MathNet.Numerics" Version="5.0.0" />
     <PackageReference Include="System.Numerics.Tensors" Version="9.0.0-rc.1.24431.7" />
   </ItemGroup>

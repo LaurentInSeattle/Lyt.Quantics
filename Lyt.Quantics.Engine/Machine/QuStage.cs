@@ -2,7 +2,9 @@
 
 public sealed class QuStage
 {
-    public List<QuStageOperator> Elements { get; set; }
+    public QuStage() { /* Required for deserialization */ }
+
+    public List<QuStageOperator> Operators { get; set; } = [];
 
     public bool IsComplete => false; // For Now 
 }

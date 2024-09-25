@@ -2,46 +2,90 @@
 
 public sealed class QuComputer
 {
-    private readonly List<QuStage> steps; 
+    public QuComputer() { /* Required for deserialization */ }
 
-    public QuComputer(int quBitsCount)
-    {
-        if ( ( quBitsCount < 0) || ( quBitsCount > 10 ) )
-        {
-            throw new ArgumentException("This quantum computer can handle only ten QuBits", nameof( quBitsCount ));
-        }
+    public string Name { get; set; } = "< Untitled >";
 
-        this.QuBitsCount = quBitsCount;
-        this.steps = [];
-    }
+    public string Description { get; set; } = "< Undocumented >";
 
     public int QuBitsCount { get; set; }
 
-    public List<QuState> InitialStates { get; set; }
+    public List<QuState> InitialStates { get; set; } = [];
 
-    public List<QuStage> Stages { get; set; }
+    public List<QuStage> Stages { get; set; }= [];
 
+    [JsonIgnore]
+    public List<QuRegister> Registers { get; set; } = [];
 
-
-    public void Initialize(QuState quState = QuState.Zero)
+    public bool Validate()
     {
+        return true; 
     }
 
-    public void Initialize(IEnumerable<QuState> quStates)
-    {
+    public bool Prepare () 
+    { 
+        return true; 
     }
 
-    public bool AddStep(QuStage step)
+    public bool Step()
     {
-        // TODO 
-        this.steps.Add(step);
         return true;
     }
 
-    public bool RemoveStep(QuStage step)
+    public bool Run()
     {
-        // TODO 
-        this.steps.Remove(step);
         return true;
     }
+
+
+    #region LATER 
+
+    //public bool AddStage(QuStage stage)
+    //{
+    //    // TODO 
+    //    this.Stages.Add(stage);
+    //    return true;
+    //}
+
+    //public bool RemoveStage(QuStage stage)
+    //{
+    //    // TODO 
+    //    this.Stages.Remove(stage);
+    //    return true;
+    //}
+
+    #endregion LATER 
+
+    #region   Do NOT Delete ~~~ Used for Unit Tests Serialization 
+
+    public static QuComputer Example =
+        new QuComputer()
+        {
+            Name = "Entanglement", 
+            Description = "Hadamard followed by CNot",
+            QuBitsCount = 2,
+            InitialStates = new List<QuState>() {  QuState.Zero , QuState.One },
+            Stages = new List<QuStage>()
+            {
+                new QuStage()
+                {                   
+                   Operators =  
+                        new List <QuStageOperator> () 
+                        {
+                             new QuStageOperator { GateKey = "H" , Inputs = [0] , Outputs = [0] },
+                             new QuStageOperator { GateKey = "I" , Inputs = [1] , Outputs = [1] },
+                        } ,
+                },
+                new QuStage()
+                {
+                   Operators =
+                        new List <QuStageOperator> ()
+                        {
+                             new QuStageOperator { GateKey = "CX" , Inputs = [0,1] , Outputs = [0,1] },
+                        } ,
+                },
+            },
+        };
+
+    #endregion   Do NOT Delete ~~~ Used for Unit Tests Serialization 
 }

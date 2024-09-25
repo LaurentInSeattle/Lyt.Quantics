@@ -1,6 +1,4 @@
-﻿using Lyt.QuantumSimulator.UnitTests;
-
-namespace Lyt.Quantics.Engine.Tests;
+﻿namespace Lyt.Quantics.Engine.Tests;
 
 [TestClass]
 public sealed class Tests_Core
@@ -53,6 +51,21 @@ public sealed class Tests_Core
         var gate = GateFactory.Produce("H");
         Assert.IsTrue(gate is not null);
         Assert.IsTrue(gate.Name is not null);
+
+        try
+        {
+            string serialized = SerializationUtilities.Serialize(QuComputer.Example);
+            // Debug.WriteLine(serialized);
+            var computer = SerializationUtilities.Deserialize<QuComputer>(serialized);
+            Assert.IsTrue(computer is not null);
+            serialized = SerializationUtilities.LoadEmbeddedTextResource("Entanglement.json");
+            computer = SerializationUtilities.Deserialize<QuComputer>(serialized);
+            Assert.IsTrue(computer is not null);
+        }
+        catch 
+        {
+            Assert.Fail();
+        }
     }
 
     [TestMethod]

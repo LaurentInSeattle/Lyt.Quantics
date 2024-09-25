@@ -1,0 +1,33 @@
+{
+  "Name": "Entanglement",
+  "Description": "Hadamard followed by CNot",
+  "QuBitsCount": 2,
+  "InitialStates": [ "Zero", "One" ],
+  "Stages": [
+    {
+      "Operators": [
+        {
+          "Inputs": [ 0 ],
+          "Outputs": [ 0 ],
+          "GateKey": "H"
+        },
+        {
+          "Inputs": [ 1 ],
+          "Outputs": [ 1 ],
+          "GateKey": "I"
+        }
+      ],
+      "IsComplete": false
+    },
+    {
+      "Operators": [
+        {
+          "Inputs": [ 0, 1 ],
+          "Outputs": [ 0, 1 ],
+          "GateKey": "CX"
+        }
+      ],
+      "IsComplete": false
+    }
+  ]
+}

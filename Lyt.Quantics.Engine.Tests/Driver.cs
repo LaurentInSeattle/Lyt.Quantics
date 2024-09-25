@@ -1,4 +1,4 @@
-﻿namespace Lyt.QuantumSimulator.UnitTests;
+﻿namespace Lyt.Quantics.Engine.Tests;
 
 public static class Driver
 {

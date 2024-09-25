@@ -16,6 +16,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lyt.QuantumSimulator", "Lyt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lyt.QuantumSimulator.UnitTests", "Lyt.QuantumSimulator.UnitTests\Lyt.QuantumSimulator.UnitTests.csproj", "{20F00974-EAA6-4867-B787-545CA89C2A0D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OtherImplementation", "OtherImplementation", "{968BEB89-5DEE-40A0-AB99-8343C3A7E550}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9468B341-5D70-40EF-A338-02865A05C2E2} = {968BEB89-5DEE-40A0-AB99-8343C3A7E550}
+		{20F00974-EAA6-4867-B787-545CA89C2A0D} = {968BEB89-5DEE-40A0-AB99-8343C3A7E550}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AE3F677D-2838-47EE-8DB0-77930CEA80A9}

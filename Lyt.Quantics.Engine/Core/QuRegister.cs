@@ -12,7 +12,7 @@ public sealed class QuRegister
 
     public QuRegister(IEnumerable<QuBit> quBits) =>
         // TODO 
-        this.state = Vector<Complex>.Build.Dense(quBits.Count());
+        this.state = Vector<Complex>.Build.Dense(2 * quBits.Count());
 
     public QuRegister(QuBit quBit1, QuBit quBit2)
         => this.state = MathUtilities.TensorProduct(quBit1.State, quBit2.State);
