@@ -1,4 +1,4 @@
-﻿namespace Lyt.Quantics.Engine.Machine; 
+﻿namespace Lyt.Quantics.Engine.Machine;
 
 public sealed class QuComputer
 {
@@ -12,19 +12,88 @@ public sealed class QuComputer
 
     public List<QuState> InitialStates { get; set; } = [];
 
-    public List<QuStage> Stages { get; set; }= [];
+    public List<QuStage> Stages { get; set; } = [];
 
     [JsonIgnore]
     public List<QuRegister> Registers { get; set; } = [];
 
-    public bool Validate()
+    public bool Validate(out string message)
     {
-        return true; 
+        message = string.Empty;
+        if( string.IsNullOrWhiteSpace(this.Name) )
+        {
+            message = "Validate: QuComputer has no name"; 
+            return false;
+        }
+
+        if (string.IsNullOrWhiteSpace(this.Description))
+        {
+            message = "Validate: QuComputer has no documentation";
+            return false;
+        }
+
+        if (this.QuBitsCount <= 0)
+        {
+            message = "Validate: Invalid QuBit count.";
+            return false;
+        }
+
+        if (this.QuBitsCount > 10)
+        {
+            message = "Validate: Intractable QuBit count. (>10)";
+            return false;
+        }
+
+        if (this.InitialStates.Count != this.QuBitsCount)
+        {
+            message = "Validate: Count of initial states does not match QuBit count.";
+            return false;
+        }
+
+        if (this.Stages.Count == 0)
+        {
+            message = "Validate: No stages defined.";
+            return false;
+        }
+
+        int stageIndex = 0 ;
+        foreach (QuStage stage in this.Stages)
+        {
+            if ( ! stage.Validate(out message))
+            {
+                string prefix = string.Format("Validate: At stage index {0}: ", stageIndex);
+                message = string.Concat(prefix, message);
+                return false;
+            }
+
+            ++stageIndex;
+        }
+
+        return true;
     }
 
-    public bool Prepare () 
-    { 
-        return true; 
+    public bool Build(out string message)
+    {
+        message = string.Empty;
+
+        int stageIndex = 0;
+        foreach (QuStage stage in this.Stages)
+        {
+            if (!stage.Build(this, out message))
+            {
+                string prefix = string.Format("Build: At stage index {0}: ", stageIndex);
+                message = string.Concat(prefix, message);
+                return false;
+            }
+
+            ++stageIndex;
+        }
+        return true;
+    }
+
+    public bool Prepare()
+    {
+        return true;
     }
 
     public bool Step()
@@ -58,33 +127,33 @@ public sealed class QuComputer
 
     #region   Do NOT Delete ~~~ Used for Unit Tests Serialization 
 
+#pragma warning disable CA2211 // Non-constant fields should not be visible
     public static QuComputer Example =
-        new QuComputer()
+#pragma warning restore CA2211 
+        new()
         {
-            Name = "Entanglement", 
+            Name = "Entanglement",
             Description = "Hadamard followed by CNot",
             QuBitsCount = 2,
-            InitialStates = new List<QuState>() {  QuState.Zero , QuState.One },
-            Stages = new List<QuStage>()
-            {
+            InitialStates = [QuState.Zero, QuState.One],
+            Stages =
+            [
                 new QuStage()
-                {                   
-                   Operators =  
-                        new List <QuStageOperator> () 
-                        {
-                             new QuStageOperator { GateKey = "H" , Inputs = [0] , Outputs = [0] },
-                             new QuStageOperator { GateKey = "I" , Inputs = [1] , Outputs = [1] },
-                        } ,
+                {
+                   Operators =
+                    [
+                            new QuStageOperator { GateKey = "H" , QuBitIndices = [0]  },
+                            new QuStageOperator { GateKey = "I" , QuBitIndices = [1]  },
+                    ] ,
                 },
                 new QuStage()
                 {
                    Operators =
-                        new List <QuStageOperator> ()
-                        {
-                             new QuStageOperator { GateKey = "CX" , Inputs = [0,1] , Outputs = [0,1] },
-                        } ,
+                    [
+                            new QuStageOperator { GateKey = "CX" , QuBitIndices = [0,1]},
+                    ] ,
                 },
-            },
+            ],
         };
 
     #endregion   Do NOT Delete ~~~ Used for Unit Tests Serialization 

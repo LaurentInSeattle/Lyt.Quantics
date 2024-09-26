@@ -10,6 +10,9 @@ public sealed class QuRegister
 {
     private Vector<Complex> state;
 
+    public QuRegister(int quBitsCount) =>
+        this.state = Vector<Complex>.Build.Dense(2 * quBitsCount);
+
     public QuRegister(IEnumerable<QuBit> quBits) =>
         // TODO 
         this.state = Vector<Complex>.Build.Dense(2 * quBits.Count());

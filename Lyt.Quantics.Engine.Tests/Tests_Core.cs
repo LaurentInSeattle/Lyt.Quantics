@@ -47,22 +47,41 @@ public sealed class Tests_Core
     public void Test_Tooling()
     {
         var gates = GateFactory.AvailableProducts;
-        Assert.IsTrue(gates is not null );
+        Assert.IsTrue(gates is not null);
         var gate = GateFactory.Produce("H");
         Assert.IsTrue(gate is not null);
         Assert.IsTrue(gate.Name is not null);
 
         try
         {
+            static void ValidateAndBuild(QuComputer computer)
+            {
+                Assert.IsTrue(computer is not null);
+                bool isValid = computer.Validate(out string message);
+                if (!string.IsNullOrWhiteSpace(message))
+                {
+                    Debug.WriteLine(message);
+                }
+                Assert.IsTrue(isValid);
+
+                isValid = computer.Build(out message);
+                if (!string.IsNullOrWhiteSpace(message))
+                {
+                    Debug.WriteLine(message);
+                }
+                Assert.IsTrue(isValid);
+            }
+
             string serialized = SerializationUtilities.Serialize(QuComputer.Example);
-            // Debug.WriteLine(serialized);
+            Debug.WriteLine(serialized);
             var computer = SerializationUtilities.Deserialize<QuComputer>(serialized);
-            Assert.IsTrue(computer is not null);
+            ValidateAndBuild(computer);
+
             serialized = SerializationUtilities.LoadEmbeddedTextResource("Entanglement.json");
             computer = SerializationUtilities.Deserialize<QuComputer>(serialized);
-            Assert.IsTrue(computer is not null);
+            ValidateAndBuild(computer);
         }
-        catch 
+        catch
         {
             Assert.Fail();
         }
@@ -108,7 +127,7 @@ public sealed class Tests_Core
         // Negate One 
         var one = new QuBit(QuState.One);
         one.Apply(pauliX);
-        Assert.IsTrue(one.Measure()== 0);
+        Assert.IsTrue(one.Measure() == 0);
 
         // Pauli Z on zero 
         zero = new QuBit(QuState.Zero);

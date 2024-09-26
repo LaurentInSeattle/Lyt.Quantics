@@ -32,7 +32,9 @@ public static class GateFactory
         }
     }
 
+#pragma warning disable CA2211 // Non-constant fields should not be visible
     public static Dictionary<string, Type> AvailableProducts = new(32);
+#pragma warning restore CA2211 
 
     public static Gate Produce(string caption)
     {

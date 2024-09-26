@@ -25,7 +25,8 @@ global using System.Windows.Input;
 
 // This one conflicts with MathNet but is still needed for basic Complex operations 
 global using System.Numerics;
- 
+
+global using MathNet.Numerics;
 global using MathNet.Numerics.Statistics;
 global using MathNet.Numerics.LinearAlgebra;
 global using MathNet.Numerics.LinearAlgebra.Complex;

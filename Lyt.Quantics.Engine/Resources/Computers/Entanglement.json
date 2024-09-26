@@ -7,13 +7,11 @@
     {
       "Operators": [
         {
-          "Inputs": [ 0 ],
-          "Outputs": [ 0 ],
+          "QuBitIndices": [ 0 ],
           "GateKey": "H"
         },
         {
-          "Inputs": [ 1 ],
-          "Outputs": [ 1 ],
+          "QuBitIndices": [ 1 ],
           "GateKey": "I"
         }
       ],
@@ -22,8 +20,7 @@
     {
       "Operators": [
         {
-          "Inputs": [ 0, 1 ],
-          "Outputs": [ 0, 1 ],
+          "QuBitIndices": [ 0, 1 ],
           "GateKey": "CX"
         }
       ],
