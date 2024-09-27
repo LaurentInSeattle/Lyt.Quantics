@@ -14,8 +14,9 @@ public static class GateFactory
             } 
             catch (MissingMethodException ex) 
             {
+                Debug.WriteLine("First Chance Exception");
                 Debug.WriteLine(ex);
-                Debug.WriteLine(gateType.Name + " does not have a default constructor.");
+                Debug.WriteLine(gateType.Name + " does not have a default parameterless constructor.");
                 continue;
             }
 

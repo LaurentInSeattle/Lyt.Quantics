@@ -17,6 +17,16 @@ public sealed class QuComputer
     [JsonIgnore]
     public List<QuRegister> Registers { get; set; } = [];
 
+    public bool IsValid { get; private set; }
+
+    public bool IsBuilt { get; private set; }
+
+    public bool IsPrepared { get; private set; }
+
+    public bool IsStepping { get; private set; }
+
+    public bool IsRunning { get; private set; }
+
     public bool Validate(out string message)
     {
         message = string.Empty;
@@ -69,43 +79,102 @@ public sealed class QuComputer
             ++stageIndex;
         }
 
+        this.IsValid = true;
         return true;
     }
 
     public bool Build(out string message)
     {
         message = string.Empty;
-
-        int stageIndex = 0;
-        foreach (QuStage stage in this.Stages)
+        try
         {
-            if (!stage.Build(this, out message))
+            this.Registers = new(this.QuBitsCount);
+
+            // Setup initial register
+            var quRegister = new QuRegister(this.InitialStates);
+            this.Registers.Add(quRegister);
+
+            // Build stages 
+            int stageIndex = 0;
+            foreach (QuStage stage in this.Stages)
             {
-                string prefix = string.Format("Build: At stage index {0}: ", stageIndex);
-                message = string.Concat(prefix, message);
-                return false;
+                if (!stage.Build(this, out message))
+                {
+                    string prefix = string.Format("Build: At stage index {0}: ", stageIndex);
+                    message = string.Concat(prefix, message);
+                    return false;
+                }
+
+                ++stageIndex;
             }
-
-            ++stageIndex;
         }
+        catch (Exception ex)
+        {
+            message = string.Concat("Build: Exception thrown: " + ex.Message);
+            return false;
+        }
+
+        this.IsBuilt = true;
         return true;
     }
 
-    public bool Prepare()
+    public bool Prepare(out string message)
     {
+        message = string.Empty;
+        try
+        {
+        }
+        catch (Exception ex)
+        {
+            message = string.Concat("Prepare: Exception thrown: " + ex.Message);
+            return false;
+        }
+
+        this.IsPrepared = true;
         return true;
     }
 
-    public bool Step()
+    public bool Step(out string message)
     {
+        this.IsStepping = true;
+        message = string.Empty;
+        try
+        {
+            // stepping....
+        }
+        catch (Exception ex)
+        {
+            message = string.Concat("Step: Exception thrown: " + ex.Message);
+            return false;
+        }
+        finally
+        {
+            this.IsStepping = false;
+        }
+
         return true;
     }
 
-    public bool Run()
+    public bool Run(out string message)
     {
+        this.IsRunning = true;
+        message = string.Empty;
+        try
+        {
+            // running....
+        }
+        catch (Exception ex)
+        {
+            message = string.Concat("Step: Exception thrown: " + ex.Message);
+            return false;
+        }
+        finally
+        {
+            this.IsRunning = false;
+        }
+
         return true;
     }
-
 
     #region LATER 
 

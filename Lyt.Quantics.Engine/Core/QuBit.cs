@@ -37,7 +37,9 @@ public sealed class QuBit : IEquatable<QuBit>
             result = 1;
         }
 
-        // Debug.WriteLine(result);
+#if VERBOSE
+        Debug.WriteLine(result);
+#endif // VERBOSE
 
         this.IsCollapsed = true;
         this.CollapsedValue = result;

@@ -13,7 +13,7 @@ public static class MathUtilities
     public static int IntegerLog2(int length) => (int)Math.Round(Math.Log(length, 2));
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static int TwoPower(int power) => (1 << power);
+    public static int TwoPower(int power) => 1 << power;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsPowerOfTwo(int n) => n != 0 && (n & (n - 1)) == 0;

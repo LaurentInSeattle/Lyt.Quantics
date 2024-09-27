@@ -1,4 +1,6 @@
-﻿namespace Lyt.Quantics.Engine.Core;
+﻿// #define VERBOSE 
+
+namespace Lyt.Quantics.Engine.Core;
 
 // Cannot use Vector<Complex> using System.Numerics 
 // but we still need System.Numerics for Complex 
@@ -13,9 +15,17 @@ public sealed class QuRegister
     public QuRegister(int quBitsCount) =>
         this.state = Vector<Complex>.Build.Dense(2 * quBitsCount);
 
-    public QuRegister(IEnumerable<QuBit> quBits) =>
-        // TODO 
-        this.state = Vector<Complex>.Build.Dense(2 * quBits.Count());
+    public QuRegister(List<QuState> initialStates)
+    {
+        this.state = Vector<Complex>.Build.Dense(2 * initialStates.Count);
+        for (int i = 0; i < initialStates.Count; ++i)
+        {
+            QuState quState = initialStates[i]; 
+            Complex[] quBitState = quState.ToTensor();
+            this.state.At(i, quBitState[0]);
+            this.state.At(i+1, quBitState[1]);
+        }
+    } 
 
     public QuRegister(QuBit quBit1, QuBit quBit2)
         => this.state = MathUtilities.TensorProduct(quBit1.State, quBit2.State);
@@ -60,10 +70,12 @@ public sealed class QuRegister
             result.Insert(0, bitValue);
         }
 
+#if VERBOSE
         for (int i = 0; i < resultLength; ++i)
         {
             Debug.WriteLine(result[i]);
         }
+#endif // VERBOSE
 
         return result;
     }
