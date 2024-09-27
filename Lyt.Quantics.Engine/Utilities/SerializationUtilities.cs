@@ -15,15 +15,15 @@ public static class SerializationUtilities
     
     public static string LoadEmbeddedTextResource(string name)
     {
-        Assembly assembly = Assembly.GetExecutingAssembly();
-        string? resourceName = GetFullResourceName (name, assembly);
+        var assembly = Assembly.GetExecutingAssembly();
+        string? resourceName = SerializationUtilities.GetFullResourceName(name, assembly);
         if (!string.IsNullOrEmpty(resourceName))
         {
             var stream = assembly.GetManifestResourceStream(resourceName);
             if (stream is not null)
             {
                 using (stream)
-                using (StreamReader reader = new StreamReader(stream))
+                using (var reader = new StreamReader(stream))
                 {
                     return reader.ReadToEnd();
                 }
@@ -33,17 +33,17 @@ public static class SerializationUtilities
         throw new Exception("Failed to load resource: " + name );
     }
 
-    public static string Serialize<T>(T deserialized) where T : class
+    public static string Serialize<T>(T binaryObject) where T : class
     {
         try
         {
-            string serialized = JsonSerializer.Serialize(deserialized, typeof(T), jsonSerializerOptions);
+            string serialized = JsonSerializer.Serialize(binaryObject, jsonSerializerOptions);
             if (!string.IsNullOrWhiteSpace(serialized))
             {
                 return serialized;
             }
 
-            throw new Exception();
+            throw new Exception("Serialized as null or empty string.");
         }
         catch (Exception ex)
         {
@@ -56,10 +56,10 @@ public static class SerializationUtilities
     {
         try
         {
-            object? deserialized = JsonSerializer.Deserialize(serialized, typeof(T), jsonSerializerOptions);
-            if (deserialized is T deserializedOfT)
+            object? deserialized = JsonSerializer.Deserialize<T>(serialized, jsonSerializerOptions);
+            if (deserialized is T binaryObject)
             {
-                return deserializedOfT;
+                return binaryObject;
             }
 
             throw new Exception();
