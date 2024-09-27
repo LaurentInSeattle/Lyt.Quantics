@@ -3,6 +3,8 @@ using MathNet.Numerics.LinearAlgebra;
 
 public sealed class IdentityGate : Gate
 {
+    public const string Key = "I"; 
+
     private static readonly Matrix<Complex> IdentityGateMatrix ; 
 
     static IdentityGate()
@@ -20,5 +22,5 @@ public sealed class IdentityGate : Gate
 
     public override string AlternateName => "Identity Gate";
 
-    public override string CaptionKey => "I";
+    public override string CaptionKey => IdentityGate.Key;
 }

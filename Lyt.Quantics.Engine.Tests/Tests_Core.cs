@@ -64,12 +64,12 @@ public sealed class Tests_Core
                 }
                 Assert.IsTrue(isValid);
 
-                isValid = computer.Build(out message);
+                bool isBuilt = computer.Build(out message);
                 if (!string.IsNullOrWhiteSpace(message))
                 {
                     Debug.WriteLine(message);
                 }
-                Assert.IsTrue(isValid);
+                Assert.IsTrue(isBuilt);
             }
 
             string serialized = SerializationUtilities.Serialize(QuComputer.Example);

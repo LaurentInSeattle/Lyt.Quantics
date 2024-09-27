@@ -1,7 +1,6 @@
 ﻿namespace Lyt.Quantics.Engine.Gates;
 using MathNet.Numerics.LinearAlgebra;
 
-
 public sealed class PauliYGate : Gate
 {
     // The single-qubit Pauli-Y gate (σy​).

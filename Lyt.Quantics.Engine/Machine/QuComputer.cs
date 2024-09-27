@@ -2,11 +2,14 @@
 
 public sealed class QuComputer
 {
+    private const string DefaultName = "< Untitled >";
+    private const string DefaultDescription = "< Undocumented >";
+
     public QuComputer() { /* Required for deserialization */ }
 
-    public string Name { get; set; } = "< Untitled >";
+    public string Name { get; set; } = DefaultName;
 
-    public string Description { get; set; } = "< Undocumented >";
+    public string Description { get; set; } = DefaultDescription;
 
     public int QuBitsCount { get; set; }
 
@@ -30,13 +33,13 @@ public sealed class QuComputer
     public bool Validate(out string message)
     {
         message = string.Empty;
-        if( string.IsNullOrWhiteSpace(this.Name) )
+        if (string.IsNullOrWhiteSpace(this.Name) || this.Name.Equals(DefaultName))
         {
-            message = "Validate: QuComputer has no name"; 
+            message = "Validate: QuComputer has no name";
             return false;
         }
 
-        if (string.IsNullOrWhiteSpace(this.Description))
+        if (string.IsNullOrWhiteSpace(this.Description) || this.Description.Equals(DefaultDescription))
         {
             message = "Validate: QuComputer has no documentation";
             return false;
@@ -66,10 +69,10 @@ public sealed class QuComputer
             return false;
         }
 
-        int stageIndex = 0 ;
+        int stageIndex = 0;
         foreach (QuStage stage in this.Stages)
         {
-            if ( ! stage.Validate(out message))
+            if (!stage.Validate(this, out message))
             {
                 string prefix = string.Format("Validate: At stage index {0}: ", stageIndex);
                 message = string.Concat(prefix, message);

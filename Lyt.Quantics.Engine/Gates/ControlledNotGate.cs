@@ -4,6 +4,9 @@ using MathNet.Numerics.LinearAlgebra;
 
 public sealed class ControlledNotGate : Gate
 {
+    // The CNOT (or controlled Pauli-X) gate can be described as the gate that maps the
+    // basis states:  |a,b> => |a, a xor b> 
+
     private static readonly Matrix<Complex> ControlledNotMatrix; 
 
     static ControlledNotGate()
