@@ -1,11 +1,15 @@
 ﻿namespace Lyt.Quantics.Engine.Machine;
 
+using MathNet.Numerics.LinearAlgebra; 
+
 public sealed class QuComputer
 {
     private const string DefaultName = "< Untitled >";
     private const string DefaultDescription = "< Undocumented >";
 
     public QuComputer() { /* Required for deserialization */ }
+
+    #region JSON Properties 
 
     public string Name { get; set; } = DefaultName;
 
@@ -17,18 +21,34 @@ public sealed class QuComputer
 
     public List<QuStage> Stages { get; set; } = [];
 
-    [JsonIgnore]
-    public List<QuRegister> Registers { get; set; } = [];
+    #endregion JSON Properties 
 
+    [JsonIgnore]
+    public QuRegister InitialRegister { get; private set; } = new(1);
+
+    [JsonIgnore]
+    public Vector<float> Result { get; private set; } = Vector<float>.Build.Dense(1);
+
+    [JsonIgnore]
     public bool IsValid { get; private set; }
 
+    [JsonIgnore]
     public bool IsBuilt { get; private set; }
 
+    [JsonIgnore]
     public bool IsPrepared { get; private set; }
 
+    [JsonIgnore]
     public bool IsStepping { get; private set; }
 
+    [JsonIgnore]
     public bool IsRunning { get; private set; }
+
+    [JsonIgnore]
+    public bool IsComplete { get; private set; }
+
+    [JsonIgnore]
+    public int StepIndex { get; private set; }
 
     public bool Validate(out string message)
     {
@@ -91,12 +111,6 @@ public sealed class QuComputer
         message = string.Empty;
         try
         {
-            this.Registers = new(this.QuBitsCount);
-
-            // Setup initial register
-            var quRegister = new QuRegister(this.InitialStates);
-            this.Registers.Add(quRegister);
-
             // Build stages 
             int stageIndex = 0;
             foreach (QuStage stage in this.Stages)
@@ -110,6 +124,8 @@ public sealed class QuComputer
 
                 ++stageIndex;
             }
+
+            this.Prepare(out message);
         }
         catch (Exception ex)
         {
@@ -121,11 +137,30 @@ public sealed class QuComputer
         return true;
     }
 
+    public bool Prepare(List<QuState> initialStates, out string message)
+    {
+        message = string.Empty;
+        if (initialStates.Count != this.QuBitsCount)
+        {
+            message = "Validate: Count of initial states does not match QuBit count.";
+            return false;
+        }
+
+        this.InitialStates = initialStates;
+        return this.Prepare(out message);
+    }
+
     public bool Prepare(out string message)
     {
         message = string.Empty;
         try
         {
+            this.IsComplete = false;
+            this.IsRunning = false;
+
+            // Setup initial register
+            this.StepIndex = 0;
+            this.InitialRegister = new QuRegister(this.InitialStates);
         }
         catch (Exception ex)
         {
@@ -139,11 +174,30 @@ public sealed class QuComputer
 
     public bool Step(out string message)
     {
+        if (this.IsRunning)
+        {
+            message = "Step: Machine is running: Can't Step.";
+            return false;
+        }
+
+        if (this.IsComplete)
+        {
+            message = "Step: Machine is in Complete State: Invoke Prepare before Stepping";
+            return false;
+        }
+
+        if (!this.IsPrepared)
+        {
+            message = "Step: Machine has not been prepared: Invoke Prepare before Stepping";
+            return false;
+        }
+
         this.IsStepping = true;
         message = string.Empty;
         try
         {
-            // stepping....
+            // stepping
+            this.DoStep(out message);
         }
         catch (Exception ex)
         {
@@ -158,13 +212,66 @@ public sealed class QuComputer
         return true;
     }
 
+    private bool DoStep(out string message)
+    {
+        try
+        {
+            // Single Step
+            QuRegister sourceRegister = 
+                this.StepIndex == 0 ? this.InitialRegister : this.Stages[this.StepIndex-1].StageRegister;
+            this.Stages[this.StepIndex].Calculate(sourceRegister, out message);
+        }
+        catch (Exception ex)
+        {
+            message = string.Concat("Step: Exception thrown: " + ex.Message);
+            return false;
+        }
+
+        return true;
+    }
+
     public bool Run(out string message)
     {
+        if (this.IsRunning)
+        {
+            message = "Run: Machine is already running.";
+            return false;
+        }
+
+        if (this.IsComplete)
+        {
+            message = "Run: Machine is in Complete State: Invoke Prepare before running";
+            return false;
+        }
+
+        if (!this.IsPrepared)
+        {
+            message = "Run: Machine has not been prepared: Invoke Prepare before running";
+            return false;
+        }
+
         this.IsRunning = true;
         message = string.Empty;
         try
         {
-            // running....
+            // running the stages 
+            for (int i = 0; i < this.Stages.Count; i++)
+            {
+                if (this.DoStep(out message))
+                {
+                    ++ this.StepIndex; 
+                }
+                else
+                {
+                    return false;
+                } 
+            }
+
+            // Measure last register
+            QuRegister lastRegister = this.Stages[^1].StageRegister;
+            Vector<float> measure = Vector<float>.Build.Dense([.. lastRegister.Measure()]);
+            Debug.WriteLine(measure); 
+            this.Result = measure;
         }
         catch (Exception ex)
         {
@@ -174,28 +281,11 @@ public sealed class QuComputer
         finally
         {
             this.IsRunning = false;
+            this.IsComplete = true;
         }
 
         return true;
     }
-
-    #region LATER 
-
-    //public bool AddStage(QuStage stage)
-    //{
-    //    // TODO 
-    //    this.Stages.Add(stage);
-    //    return true;
-    //}
-
-    //public bool RemoveStage(QuStage stage)
-    //{
-    //    // TODO 
-    //    this.Stages.Remove(stage);
-    //    return true;
-    //}
-
-    #endregion LATER 
 
     #region   Do NOT Delete ~~~ Used for Unit Tests Serialization 
 
@@ -207,23 +297,16 @@ public sealed class QuComputer
             Name = "Entanglement",
             Description = "Hadamard followed by CNot",
             QuBitsCount = 2,
-            InitialStates = [QuState.Zero, QuState.One],
+            InitialStates = [QuState.Zero, QuState.Zero],
             Stages =
             [
                 new QuStage()
                 {
-                   Operators =
-                    [
-                            new QuStageOperator { GateKey = "H" , QuBitIndices = [0]  },
-                            new QuStageOperator { GateKey = "I" , QuBitIndices = [1]  },
-                    ] ,
+                   Operators =  [ new QuStageOperator { GateKey = "H" , QuBitIndices = [0]  }, ] ,
                 },
                 new QuStage()
                 {
-                   Operators =
-                    [
-                            new QuStageOperator { GateKey = "CX" , QuBitIndices = [0,1]},
-                    ] ,
+                   Operators = [ new QuStageOperator { GateKey = "CX" , QuBitIndices = [0,1]}, ] ,
                 },
             ],
         };

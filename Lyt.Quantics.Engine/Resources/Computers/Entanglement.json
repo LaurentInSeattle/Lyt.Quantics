@@ -14,8 +14,7 @@
           "QuBitIndices": [ 1 ],
           "GateKey": "I"
         }
-      ],
-      "IsComplete": false
+      ]
     },
     {
       "Operators": [
@@ -23,8 +22,7 @@
           "QuBitIndices": [ 0, 1 ],
           "GateKey": "CX"
         }
-      ],
-      "IsComplete": false
+      ]
     }
   ]
 }

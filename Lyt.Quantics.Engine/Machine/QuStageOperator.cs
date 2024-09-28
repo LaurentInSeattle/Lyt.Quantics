@@ -48,7 +48,7 @@ public sealed class QuStageOperator
         return true;
     }
 
-    public bool Build(QuComputer computer, out string message)
+    public bool Build(QuComputer _, out string message)
     {
         message = string.Empty;
 

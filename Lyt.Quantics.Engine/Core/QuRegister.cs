@@ -25,7 +25,13 @@ public sealed class QuRegister
             this.state.At(i, quBitState[0]);
             this.state.At(i+1, quBitState[1]);
         }
-    } 
+    }
+
+    public Vector<Complex> State 
+    {  
+        get  => this.state; 
+        set => this.state = value; 
+    }
 
     public QuRegister(QuBit quBit1, QuBit quBit2)
         => this.state = MathUtilities.TensorProduct(quBit1.State, quBit2.State);

@@ -6,13 +6,23 @@ public static class SerializationUtilities
 
     static SerializationUtilities()
     {
-        jsonSerializerOptions = new JsonSerializerOptions { AllowTrailingCommas = true };
+        jsonSerializerOptions =
+            new JsonSerializerOptions
+            {
+                AllowTrailingCommas = true,
+                AllowOutOfOrderMetadataProperties = true,
+                WriteIndented = true,
+                IndentSize = 4,
+                ReadCommentHandling = JsonCommentHandling.Skip,
+                RespectRequiredConstructorParameters = true,
+                RespectNullableAnnotations= true,
+            };
         jsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     }
 
     public static string? GetFullResourceName(string name, Assembly assembly)
         => assembly.GetManifestResourceNames().Single(str => str.EndsWith(name));
-    
+
     public static string LoadEmbeddedTextResource(string name)
     {
         var assembly = Assembly.GetExecutingAssembly();
@@ -28,9 +38,9 @@ public static class SerializationUtilities
                     return reader.ReadToEnd();
                 }
             }
-        } 
+        }
 
-        throw new Exception("Failed to load resource: " + name );
+        throw new Exception("Failed to load resource: " + name);
     }
 
     public static string Serialize<T>(T binaryObject) where T : class

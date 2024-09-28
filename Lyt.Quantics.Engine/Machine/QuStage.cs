@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Lyt.Quantics.Engine.Machine;
+﻿namespace Lyt.Quantics.Engine.Machine;
 
 public sealed class QuStage
 {
@@ -37,12 +35,6 @@ public sealed class QuStage
         {
             int length = computer.QuBitsCount;
 
-            // Reorder the operators by increasing value of their first qubit index 
-            var sorted = 
-                (from op in this.Operators orderby op.QuBitIndices[0] ascending select op)
-                .ToList();
-            this.Operators = sorted;
-
             // Check for duplicate qubit slots and for empty qubit slots 
             var usedIndices = new HashSet<int>(length);
             var emptyIndices = new HashSet<int>(length);
@@ -71,15 +63,21 @@ public sealed class QuStage
             // For empty qubit slots, substitute the Identity Gate
             foreach (int index in emptyIndices)
             {
-                var quStageOperator = 
+                var quStageOperator =
                     new QuStageOperator() { GateKey = IdentityGate.Key, QuBitIndices = [index] };
                 this.Operators.Add(quStageOperator);
             }
 
+            // Reorder the operators by increasing value of their first qubit index 
+            var sorted =
+                (from op in this.Operators orderby op.QuBitIndices[0] ascending select op)
+                .ToList();
+            this.Operators = sorted;
+
             // Build operators 
             foreach (var stageOperator in this.Operators)
             {
-                if (stageOperator.Build(computer, out message))
+                if (!stageOperator.Build(computer, out message))
                 {
                     // Failed to build 
                     return false;
@@ -89,9 +87,28 @@ public sealed class QuStage
             // Combine all operator matrices to create the stage matrix
             int powTwo = MathUtilities.TwoPower(length);
             this.StageMatrix = Matrix<Complex>.Build.Sparse(powTwo, powTwo, Complex.Zero);
-            // TODO 
-            // TODO 
-            // TODO 
+
+            int offset = 0;
+            foreach (var stageOperator in this.Operators)
+            {
+                var matrix = stageOperator.StageOperatorMatrix;
+                int matrixDimension = matrix.ColumnCount;
+                for (int row = 0; row < matrixDimension; ++row)
+                {
+                    for (int col = 0; col < matrixDimension; ++col)
+                    {
+                        Complex value = matrix.At(row, col);
+                        if (value != Complex.Zero)
+                        {
+                            this.StageMatrix[offset + row, offset + col] = value;
+                        }
+                    }
+                }
+
+                offset += matrixDimension; 
+            }
+
+            Debug.WriteLine(this.StageMatrix);
 
             // Finally create a register for future calculations 
             this.StageRegister = new QuRegister(length);
@@ -105,4 +122,21 @@ public sealed class QuStage
         return true;
     }
 
+    public bool Calculate(QuRegister sourceRegister, out string message)
+    {
+        message = string.Empty;
+        try
+        {
+            // Single Step
+            this.StageRegister.State = this.StageMatrix.Multiply(sourceRegister.State);
+            Debug.WriteLine(this.StageRegister.State);
+        }
+        catch (Exception ex)
+        {
+            message = string.Concat("Step: Exception thrown: " + ex.Message);
+            return false;
+        }
+
+        return true;
+    }
 }

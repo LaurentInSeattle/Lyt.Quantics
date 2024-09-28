@@ -1,4 +1,6 @@
-﻿namespace Lyt.Quantics.Engine.Tests;
+﻿using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
+
+namespace Lyt.Quantics.Engine.Tests;
 
 [TestClass]
 public sealed class Tests_Core
@@ -70,6 +72,21 @@ public sealed class Tests_Core
                     Debug.WriteLine(message);
                 }
                 Assert.IsTrue(isBuilt);
+
+                bool isPrepared = computer.Prepare(out message);
+                if (!string.IsNullOrWhiteSpace(message))
+                {
+                    Debug.WriteLine(message);
+                }
+                Assert.IsTrue(isPrepared);
+
+                bool isComplete = computer.Run(out message);
+                if (!string.IsNullOrWhiteSpace(message))
+                {
+                    Debug.WriteLine(message);
+                }
+                Assert.IsTrue(isComplete);
+                Debug.WriteLine(computer.Result);
             }
 
             string serialized = SerializationUtilities.Serialize(QuComputer.Example);
@@ -81,8 +98,9 @@ public sealed class Tests_Core
             computer = SerializationUtilities.Deserialize<QuComputer>(serialized);
             ValidateAndBuild(computer);
         }
-        catch
+        catch(Exception ex)
         {
+            Debug.WriteLine(ex);
             Assert.Fail();
         }
     }
