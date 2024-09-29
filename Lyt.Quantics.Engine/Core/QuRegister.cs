@@ -20,37 +20,53 @@ public sealed class QuRegister
         this.state = Vector<Complex>.Build.Dense(2 * initialStates.Count);
         for (int i = 0; i < initialStates.Count; ++i)
         {
-            QuState quState = initialStates[i]; 
+            QuState quState = initialStates[i];
             Complex[] quBitState = quState.ToTensor();
             this.state.At(i, quBitState[0]);
-            this.state.At(i+1, quBitState[1]);
+            this.state.At(i + 1, quBitState[1]);
         }
     }
 
-    public Vector<Complex> State 
-    {  
-        get  => this.state; 
-        set => this.state = value; 
+    public Vector<Complex> State
+    {
+        get => this.state;
+        set => this.state = value;
     }
 
+    // For unit tests 
     public QuRegister(QuBit quBit1, QuBit quBit2)
         => this.state = MathUtilities.TensorProduct(quBit1.State, quBit2.State);
 
+    // For unit tests 
     public void Apply(Gate gate) => this.state = gate.Matrix.Multiply(this.state);
 
-    public List<int> Measure()
+    public List<double> Probabilities()
     {
         int length = this.state.Count;
-        int resultLength = MathUtilities.IntegerLog2(length);
-        double[] probabilities = new double[length];
+        List<double> probabilities = new(length);
         for (int i = 0; i < length; ++i)
         {
             Complex complex = this.state[i];
             var conjugate = Complex.Conjugate(complex);
-            probabilities[i] = (conjugate * complex).Real;
+            probabilities.Add((conjugate * complex).Real);
         }
 
-        List<int> result = new(resultLength);
+#if VERBOSE
+        Debug.WriteLine("");
+        for (int i = 0; i < length; ++i)
+        {
+            Debug.Write(probabilities[i] + "\t");
+        }
+        Debug.WriteLine("");
+#endif // VERBOSE
+
+        return probabilities;
+    }
+
+    public List<int> Measure()
+    {
+        List<double> probabilities = this.Probabilities();
+        int length = this.state.Count;
         double sample = RandomUtility.NextDouble();
         int slot = -1;
         double sumProbabilities = 0.0;
@@ -69,6 +85,8 @@ public sealed class QuRegister
             throw new Exception("Failed to find slot ???");
         }
 
+        int resultLength = MathUtilities.IntegerLog2(length);
+        List<int> result = new(resultLength);
         for (int i = 0; i < resultLength; ++i)
         {
             int mask = 1 << i;
