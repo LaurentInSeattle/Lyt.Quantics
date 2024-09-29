@@ -10,12 +10,14 @@ public static class SerializationUtilities
             new JsonSerializerOptions
             {
                 AllowTrailingCommas = true,
-                AllowOutOfOrderMetadataProperties = true,
                 WriteIndented = true,
-                IndentSize = 4,
                 ReadCommentHandling = JsonCommentHandling.Skip,
-                RespectRequiredConstructorParameters = true,
-                RespectNullableAnnotations= true,
+                // .Net 9 properties 
+                //
+                // AllowOutOfOrderMetadataProperties = true,
+                // IndentSize = 4,
+                // RespectRequiredConstructorParameters = true,
+                // RespectNullableAnnotations= true,
             };
         jsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     }
