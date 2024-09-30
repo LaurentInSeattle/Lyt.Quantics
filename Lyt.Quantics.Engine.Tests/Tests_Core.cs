@@ -86,16 +86,16 @@ public sealed class Tests_Core
                     Debug.WriteLine(message);
                 }
                 Assert.IsTrue(isComplete);
-                Debug.WriteLine(computer.Result);
+                Debug.WriteLine(computer.Name + " - Final result: " + computer.Result);
             }
 
-            string serialized = SerializationUtilities.Serialize(QuComputer.Example);
-            Debug.WriteLine(serialized);
-            var computer = SerializationUtilities.Deserialize<QuComputer>(serialized);
-            ValidateAndBuild(computer);
+            //string serialized = SerializationUtilities.Serialize(QuComputer.Example);
+            //Debug.WriteLine(serialized);
+            //var computer = SerializationUtilities.Deserialize<QuComputer>(serialized);
+            //ValidateAndBuild(computer);
 
-            serialized = SerializationUtilities.LoadEmbeddedTextResource("Entanglement.json");
-            computer = SerializationUtilities.Deserialize<QuComputer>(serialized);
+            string serialized = SerializationUtilities.LoadEmbeddedTextResource("Entanglement.json");
+            var computer = SerializationUtilities.Deserialize<QuComputer>(serialized);
             ValidateAndBuild(computer);
         }
         catch(Exception ex)

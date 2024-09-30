@@ -2,7 +2,7 @@
   "Name": "Entanglement",
   "Description": "Hadamard followed by CNot",
   "QuBitsCount": 2,
-  "InitialStates": [ "Zero", "One" ],
+  "InitialStates": [ "Zero", "Zero" ],
   "Stages": [
     {
       "Operators": [

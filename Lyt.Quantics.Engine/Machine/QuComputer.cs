@@ -1,6 +1,6 @@
 ﻿namespace Lyt.Quantics.Engine.Machine;
 
-using MathNet.Numerics.LinearAlgebra; 
+using MathNet.Numerics.LinearAlgebra;
 
 public sealed class QuComputer
 {
@@ -124,8 +124,6 @@ public sealed class QuComputer
 
                 ++stageIndex;
             }
-
-            this.Prepare(out message);
         }
         catch (Exception ex)
         {
@@ -161,6 +159,10 @@ public sealed class QuComputer
             // Setup initial register
             this.StepIndex = 0;
             this.InitialRegister = new QuRegister(this.InitialStates);
+            Debug.WriteLine(
+                string.Format(
+                    "Initial State: Probabilities: {0}", 
+                    Vector<double>.Build.Dense(this.InitialRegister.Probabilities().ToArray())));
         }
         catch (Exception ex)
         {
@@ -217,9 +219,19 @@ public sealed class QuComputer
         try
         {
             // Single Step
-            QuRegister sourceRegister = 
-                this.StepIndex == 0 ? this.InitialRegister : this.Stages[this.StepIndex-1].StageRegister;
-            this.Stages[this.StepIndex].Calculate(sourceRegister, out message);
+            Debug.WriteLine( string.Format("Step: {0}", this.StepIndex));
+            QuRegister sourceRegister =
+                this.StepIndex == 0 ? this.InitialRegister : this.Stages[this.StepIndex - 1].StageRegister;
+            var stage = this.Stages[this.StepIndex];
+            stage.Calculate(sourceRegister, out message);
+            if (!string.IsNullOrEmpty(message))
+            {
+                Debug.WriteLine(message);
+                return false;
+            }
+
+            Debug.WriteLine(
+                string.Format("Step: {0} - Probabilities: {1}", this.StepIndex, stage.Probabilities));
         }
         catch (Exception ex)
         {
@@ -259,18 +271,18 @@ public sealed class QuComputer
             {
                 if (this.DoStep(out message))
                 {
-                    ++ this.StepIndex; 
+                    ++this.StepIndex;
                 }
                 else
                 {
                     return false;
-                } 
+                }
             }
 
             // Measure last register
             QuRegister lastRegister = this.Stages[^1].StageRegister;
             Vector<float> measure = Vector<float>.Build.Dense([.. lastRegister.Measure()]);
-            Debug.WriteLine(measure); 
+            Debug.WriteLine("Last stage, measure: " + measure.ToString());
             this.Result = measure;
         }
         catch (Exception ex)

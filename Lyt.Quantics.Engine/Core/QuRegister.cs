@@ -21,9 +21,10 @@ public sealed class QuRegister
         for (int i = 0; i < initialStates.Count; ++i)
         {
             QuState quState = initialStates[i];
+            int j = i << 1; 
             Complex[] quBitState = quState.ToTensor();
-            this.state.At(i, quBitState[0]);
-            this.state.At(i + 1, quBitState[1]);
+            this.state.At(j, quBitState[0]);
+            this.state.At(j + 1, quBitState[1]);
         }
     }
 

@@ -1,5 +1,7 @@
 ﻿namespace Lyt.Quantics.Engine.Machine;
 
+using MathNet.Numerics.LinearAlgebra;
+
 public sealed class QuStage
 {
     public QuStage() { /* Required for deserialization */ }
@@ -110,6 +112,10 @@ public sealed class QuStage
 
             Debug.WriteLine(this.StageMatrix);
 
+            var dagger = this.StageMatrix.ConjugateTranspose();
+            var identity = this.StageMatrix.Multiply(dagger);
+            Debug.WriteLine("Build: check identity: " + identity);
+
             // Finally create a register for future calculations 
             this.StageRegister = new QuRegister(length);
         }
@@ -129,7 +135,7 @@ public sealed class QuStage
         {
             // Single Step
             this.StageRegister.State = this.StageMatrix.Multiply(sourceRegister.State);
-            Debug.WriteLine(this.StageRegister.State);
+            Debug.WriteLine("Step Result: " + this.StageRegister.State.ToString());
         }
         catch (Exception ex)
         {
@@ -139,4 +145,7 @@ public sealed class QuStage
 
         return true;
     }
+
+    public Vector<double> Probabilities => 
+        Vector<double>.Build.Dense(this.StageRegister.Probabilities().ToArray()); 
 }
