@@ -14,6 +14,20 @@ public sealed class QuStage
     [JsonIgnore]
     public Matrix<Complex> StageMatrix { get; private set; } = Matrix<Complex>.Build.Dense(1, 1);
 
+    public string Operations
+    {
+        get
+        {
+            var sb = new StringBuilder();
+            foreach (var op in this.Operators)
+            {
+                sb.Append(op.GateKey);
+                sb.Append( "   ");
+            }
+            return sb.ToString();
+        }
+    }
+
     public bool Validate(QuComputer computer, out string message)
     {
         message = string.Empty;
@@ -90,25 +104,36 @@ public sealed class QuStage
             int powTwo = MathUtilities.TwoPower(length);
             this.StageMatrix = Matrix<Complex>.Build.Sparse(powTwo, powTwo, Complex.Zero);
 
-            int offset = 0;
-            foreach (var stageOperator in this.Operators)
+            if (this.Operators.Count == 1)
             {
-                var matrix = stageOperator.StageOperatorMatrix;
-                int matrixDimension = matrix.ColumnCount;
-                for (int row = 0; row < matrixDimension; ++row)
-                {
-                    for (int col = 0; col < matrixDimension; ++col)
-                    {
-                        Complex value = matrix.At(row, col);
-                        if (value != Complex.Zero)
-                        {
-                            this.StageMatrix[offset + row, offset + col] = value;
-                        }
-                    }
-                }
-
-                offset += matrixDimension; 
+                this.StageMatrix = this.Operators[0].StageOperatorMatrix;
             }
+            else if (this.Operators.Count == 2)
+            {
+                this.StageMatrix =                     
+                    this.Operators[0].StageOperatorMatrix.KroneckerProduct(this.Operators[1].StageOperatorMatrix);
+            } 
+
+            // This is wrong !
+            //int offset = 0;
+            //foreach (var stageOperator in this.Operators)
+            //{
+            //    var matrix = stageOperator.StageOperatorMatrix;
+            //    int matrixDimension = matrix.ColumnCount;
+            //    for (int row = 0; row < matrixDimension; ++row)
+            //    {
+            //        for (int col = 0; col < matrixDimension; ++col)
+            //        {
+            //            Complex value = matrix.At(row, col);
+            //            if (value != Complex.Zero)
+            //            {
+            //                this.StageMatrix[offset + row, offset + col] = value;
+            //            }
+            //        }
+            //    }
+            //
+            //    offset += matrixDimension; 
+            //}
 
             Debug.WriteLine(this.StageMatrix);
 

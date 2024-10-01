@@ -21,13 +21,22 @@ public sealed class QuComputer
 
     public List<QuStage> Stages { get; set; } = [];
 
+    public List<double> ExpectedFinalProbabilities { get; set; } = [];
+
     #endregion JSON Properties 
+
+    #region Runtime Properties not serialized
 
     [JsonIgnore]
     public QuRegister InitialRegister { get; private set; } = new(1);
 
     [JsonIgnore]
     public Vector<float> Result { get; private set; } = Vector<float>.Build.Dense(1);
+
+    // TODO:
+    // Use a finite state machine instead of all those potentially overlapping
+    // and inconsistent states.
+    // 
 
     [JsonIgnore]
     public bool IsValid { get; private set; }
@@ -47,8 +56,12 @@ public sealed class QuComputer
     [JsonIgnore]
     public bool IsComplete { get; private set; }
 
+    // TODO: END 
+
     [JsonIgnore]
     public int StepIndex { get; private set; }
+
+    #endregion Runtime Properties not serialized
 
     public bool Validate(out string message)
     {
@@ -159,9 +172,10 @@ public sealed class QuComputer
             // Setup initial register
             this.StepIndex = 0;
             this.InitialRegister = new QuRegister(this.InitialStates);
+            Debug.WriteLine(string.Format("Initial State: {0}", this.InitialRegister.State));
             Debug.WriteLine(
                 string.Format(
-                    "Initial State: Probabilities: {0}", 
+                    "Initial State Probabilities: {0}",
                     Vector<double>.Build.Dense(this.InitialRegister.Probabilities().ToArray())));
         }
         catch (Exception ex)
@@ -219,10 +233,10 @@ public sealed class QuComputer
         try
         {
             // Single Step
-            Debug.WriteLine( string.Format("Step: {0}", this.StepIndex));
+            var stage = this.Stages[this.StepIndex];
+            Debug.WriteLine(string.Format("Step: {0}  {1}", this.StepIndex, stage.Operations));
             QuRegister sourceRegister =
                 this.StepIndex == 0 ? this.InitialRegister : this.Stages[this.StepIndex - 1].StageRegister;
-            var stage = this.Stages[this.StepIndex];
             stage.Calculate(sourceRegister, out message);
             if (!string.IsNullOrEmpty(message))
             {
@@ -279,6 +293,11 @@ public sealed class QuComputer
                 }
             }
 
+            if (!this.AsExpected(out message))
+            {
+                return false;
+            }
+
             // Measure last register
             QuRegister lastRegister = this.Stages[^1].StageRegister;
             Vector<float> measure = Vector<float>.Build.Dense([.. lastRegister.Measure()]);
@@ -295,6 +314,46 @@ public sealed class QuComputer
             this.IsRunning = false;
             this.IsComplete = true;
         }
+
+        return true;
+    }
+
+    private bool AsExpected(out string message)
+    {
+        message = string.Empty;
+        QuRegister lastRegister = this.Stages[^1].StageRegister;
+        if ((this.ExpectedFinalProbabilities is not null) &&
+            (this.ExpectedFinalProbabilities.Count == lastRegister.State.Count))
+        {
+            bool valid = true;
+            List<double> probabilities = lastRegister.Probabilities();
+            for (int i = 0; i < probabilities.Count; i++)
+            {
+                if (!MathUtilities.AreAlmostEqual(this.ExpectedFinalProbabilities[i], probabilities[i]))
+                {
+                    message = "Run: Machine not providing expected probabilities.";
+                    valid = false;
+                }
+            }
+
+            if (!valid)
+            {
+                Debug.WriteLine("Run: Machine not providing expected probabilities.");
+                for (int i = 0; i < probabilities.Count; i++)
+                {
+                    Debug.WriteLine(
+                        string.Format(
+                            "Bit: {0}, Expected: {1:F2}, Returned: {2:F2}",
+                            i, this.ExpectedFinalProbabilities[i], probabilities[i]));
+                }
+
+                return false;
+            }
+        }
+        else
+        {
+            Debug.WriteLine("Run: Machine not defining expected probabilities.");
+        } 
 
         return true;
     }

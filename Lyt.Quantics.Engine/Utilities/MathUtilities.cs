@@ -7,6 +7,8 @@ using MathNet.Numerics.LinearAlgebra;
 
 public static class MathUtilities
 {
+    public const double Epsilon = 0.000_000_000_000_1;
+
     public const double SqrtOfTwo = 1.414_213_562_373_095_048_801_688_724_209_698_078_569_672;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -29,6 +31,10 @@ public static class MathUtilities
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int SetBitValue(int x, int pos, bool v) => v ? (x | (1 << pos)) : (x & (~(1 << pos)));
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool AreAlmostEqual(double x, double y)
+        => Math.Abs(x - y) <= MathUtilities.Epsilon; 
 
     public static double SquaredMagnitude(this Complex[] tensor)
     {
@@ -62,6 +68,16 @@ public static class MathUtilities
             tensor[i] /= factor;
         }
     }
+
+    /// <summary> Tensor product for two single row matrices using Math.Net. </summary>
+    //public static Vector<Complex> TensorProduct(Vector<Complex> v1, Vector<Complex> v2)
+    //{
+    //    Matrix<Complex> mat1 = Matrix<Complex>.Build.Dense(1, v1.Count, v1.AsArray());
+    //    Matrix<Complex> mat2 = Matrix<Complex>.Build.Dense(v2.Count, 1, v2.AsArray());
+    //    var kron = mat1.KroneckerProduct(mat2);
+    //    var flat = kron.ToColumnMajorArray();
+    //    return Vector<Complex>.Build.Dense(flat) ;
+    //}
 
     /// <summary> Tensor product for the (very) special case of two single row matrices. </summary>
     /// <remarks> Similar to Outer Product but returns a flat vector. </remarks>

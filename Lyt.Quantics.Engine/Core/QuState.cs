@@ -29,4 +29,7 @@ public static class BasisStateExtensions
 
     public static Vector<Complex> ToVector(this Complex[] complexes)
         => Vector<Complex>.Build.Dense(complexes);
+
+    public static Vector<Complex> ToVector(this QuState state)
+        => Vector<Complex>.Build.Dense(state.ToTensor());
 }

@@ -18,13 +18,25 @@ public sealed class QuRegister
     public QuRegister(List<QuState> initialStates)
     {
         this.state = Vector<Complex>.Build.Dense(2 * initialStates.Count);
+        //for (int i = 0; i < initialStates.Count; ++i)
+        //{
+        //    QuState quState = initialStates[i];
+        //    int j = i << 1; 
+        //    Complex[] quBitState = quState.ToTensor();
+        //    this.state.At(j, quBitState[0]);
+        //    this.state.At(j + 1, quBitState[1]);
+        //}
+
+        List<Vector<Complex>> vectors = new(initialStates.Count);
         for (int i = 0; i < initialStates.Count; ++i)
         {
-            QuState quState = initialStates[i];
-            int j = i << 1; 
-            Complex[] quBitState = quState.ToTensor();
-            this.state.At(j, quBitState[0]);
-            this.state.At(j + 1, quBitState[1]);
+            vectors.Add (initialStates[i].ToVector());
+        }
+
+        this.state = vectors[0];
+        for (int i = 1; i < initialStates.Count; ++i) // start at One 
+        {
+            this.state = MathUtilities.TensorProduct(this.state, vectors[i]);
         }
     }
 
@@ -73,8 +85,8 @@ public sealed class QuRegister
         double sumProbabilities = 0.0;
         for (int i = 0; i < length; ++i)
         {
-            double probability = sumProbabilities + probabilities[i];
-            if (sample < probability)
+            sumProbabilities += probabilities[i];
+            if (sample <= sumProbabilities)
             {
                 slot = i;
                 break;

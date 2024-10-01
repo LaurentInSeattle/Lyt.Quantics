@@ -3,6 +3,7 @@
   "Description": "Hadamard followed by CNot",
   "QuBitsCount": 2,
   "InitialStates": [ "Zero", "Zero" ],
+  "ExpectedFinalProbabilities": [ 0.5, 0.0, 0.0, 0.5 ],
   "Stages": [
     {
       "Operators": [
