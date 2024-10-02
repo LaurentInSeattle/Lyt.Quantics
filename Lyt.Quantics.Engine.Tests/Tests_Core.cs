@@ -56,8 +56,12 @@ public sealed class Tests_Core
 
         try
         {
-            static void ValidateAndBuild(QuComputer computer)
+            static void ValidateAndBuild(string resourceFileName)
             {
+                Assert.IsFalse(string.IsNullOrWhiteSpace(resourceFileName));
+                string serialized = SerializationUtilities.LoadEmbeddedTextResource(resourceFileName);
+                Assert.IsFalse(string.IsNullOrWhiteSpace(serialized));
+                var computer = SerializationUtilities.Deserialize<QuComputer>(serialized);
                 Assert.IsTrue(computer is not null);
                 bool isValid = computer.Validate(out string message);
                 if (!string.IsNullOrWhiteSpace(message))
@@ -94,11 +98,11 @@ public sealed class Tests_Core
             //var computer = SerializationUtilities.Deserialize<QuComputer>(serialized);
             //ValidateAndBuild(computer);
 
-            string serialized = SerializationUtilities.LoadEmbeddedTextResource("Entanglement.json");
-            var computer = SerializationUtilities.Deserialize<QuComputer>(serialized);
-            ValidateAndBuild(computer);
+            // ValidateAndBuild("Entanglement.json");
+            // ValidateAndBuild("EntanglementNot.json");
+            ValidateAndBuild("EntanglementFlipped.json");
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Debug.WriteLine(ex);
             Assert.Fail();

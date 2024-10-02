@@ -1,4 +1,4 @@
-﻿// #define VERBOSE 
+﻿#define VERBOSE 
 
 namespace Lyt.Quantics.Engine.Core;
 
@@ -30,7 +30,7 @@ public sealed class QuRegister
         List<Vector<Complex>> vectors = new(initialStates.Count);
         for (int i = 0; i < initialStates.Count; ++i)
         {
-            vectors.Add (initialStates[i].ToVector());
+            vectors.Add(initialStates[i].ToVector());
         }
 
         this.state = vectors[0];
@@ -53,7 +53,7 @@ public sealed class QuRegister
     // For unit tests 
     public void Apply(Gate gate) => this.state = gate.Matrix.Multiply(this.state);
 
-    public List<double> Probabilities()
+    public List<double> KetProbabilities()
     {
         int length = this.state.Count;
         List<double> probabilities = new(length);
@@ -68,7 +68,9 @@ public sealed class QuRegister
         Debug.WriteLine("");
         for (int i = 0; i < length; ++i)
         {
-            Debug.Write(probabilities[i] + "\t");
+            string ket =
+                "|" + BinaryStringUtilities.ToBinary(i, MathUtilities.IntegerLog2(length)) + ">";
+            Debug.Write(ket + "  " + probabilities[i].ToString("F2") + "\t");
         }
         Debug.WriteLine("");
 #endif // VERBOSE
@@ -76,9 +78,35 @@ public sealed class QuRegister
         return probabilities;
     }
 
+    public List<Tuple<string, double>> BitValuesProbabilities()
+    {
+        int length = this.state.Count;
+        var bitValuesProbabilities = new List<Tuple<string, double>>(length);
+        List<double> probabilities = this.KetProbabilities();
+        for (int i = 0; i < length; ++i)
+        {
+            string ket = BinaryStringUtilities.ToBinary(i, MathUtilities.IntegerLog2(length));
+            string bits = ket.Reverse();
+            bitValuesProbabilities.Add(new Tuple<string, double>(bits, probabilities[i]));
+        }
+
+        bitValuesProbabilities =
+            (from bvp in bitValuesProbabilities orderby bvp.Item1 select bvp).ToList();
+#if VERBOSE
+        Debug.WriteLine("");
+        for (int i = 0; i < length; ++i)
+        {
+            var bvp = bitValuesProbabilities[i];
+            Debug.Write( " " + bvp.Item1 + ":  " + bvp.Item2.ToString("F2") + "\t");
+        }
+        Debug.WriteLine("");
+#endif // VERBOSE
+        return bitValuesProbabilities;
+    }
+
     public List<int> Measure()
     {
-        List<double> probabilities = this.Probabilities();
+        List<double> probabilities = this.KetProbabilities();
         int length = this.state.Count;
         double sample = RandomUtility.NextDouble();
         int slot = -1;

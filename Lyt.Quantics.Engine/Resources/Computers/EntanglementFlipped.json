@@ -1,0 +1,52 @@
+{
+    "Name": "Entanglement - Flipped",
+    "Description": "Building flipped CNOT with H gates and CNOT",
+    "QuBitsCount": 2,
+    "InitialStates": [ "Zero", "Zero" ],
+    // "ExpectedFinalProbabilities": [ 0.25, 0.25, 0.25, 0.25 ], // First stage only
+    // "ExpectedFinalProbabilities": [ 0.5, 0.5, 0.0, 0.0 ], // First and Second stages
+    // "ExpectedFinalProbabilities": [ 0.5, 0.0, 0.0, 0.5 ], // First Second and third stages 
+    "ExpectedFinalProbabilities": [ 0.5, 0.0, 0.0, 0.5 ], // All four stages 
+    "Stages": [
+        {
+            "Operators": [
+                {
+                    "QuBitIndices": [ 0 ],
+                    "GateKey": "H"
+                },
+                {
+                    "QuBitIndices": [ 1 ],
+                    "GateKey": "H"
+                }
+            ]
+        },
+        {
+            "Operators": [
+                {
+                    "QuBitIndices": [ 1 ],
+                    "GateKey": "H"
+                }
+            ]
+        },
+        {
+            "Operators": [
+                {
+                    "QuBitIndices": [ 0, 1 ],
+                    "GateKey": "CX"
+                }
+            ]
+        },
+        {
+            "Operators": [
+                {
+                    "QuBitIndices": [ 0 ],
+                    "GateKey": "H"
+                },
+                {
+                    "QuBitIndices": [ 1 ],
+                    "GateKey": "H"
+                }
+            ]
+        }
+    ]
+}

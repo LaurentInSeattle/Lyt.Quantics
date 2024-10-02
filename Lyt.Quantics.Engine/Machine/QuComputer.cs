@@ -21,6 +21,11 @@ public sealed class QuComputer
 
     public List<QuStage> Stages { get; set; } = [];
 
+    /// <summary> 
+    /// Expected Final Probabilities provided for bit values so that they should match the 
+    /// results displayed in our 'official' QRyd simulator. 
+    /// Web page: https://designer.thequantumlaend.de/ 
+    /// </summary>
     public List<double> ExpectedFinalProbabilities { get; set; } = [];
 
     #endregion JSON Properties 
@@ -176,7 +181,7 @@ public sealed class QuComputer
             Debug.WriteLine(
                 string.Format(
                     "Initial State Probabilities: {0}",
-                    Vector<double>.Build.Dense(this.InitialRegister.Probabilities().ToArray())));
+                    Vector<double>.Build.Dense(this.InitialRegister.KetProbabilities().ToArray())));
         }
         catch (Exception ex)
         {
@@ -326,10 +331,11 @@ public sealed class QuComputer
             (this.ExpectedFinalProbabilities.Count == lastRegister.State.Count))
         {
             bool valid = true;
-            List<double> probabilities = lastRegister.Probabilities();
-            for (int i = 0; i < probabilities.Count; i++)
+            List<Tuple<string, double>> bitValuesProbabilities = lastRegister.BitValuesProbabilities();
+            for (int i = 0; i < bitValuesProbabilities.Count; i++)
             {
-                if (!MathUtilities.AreAlmostEqual(this.ExpectedFinalProbabilities[i], probabilities[i]))
+                if (!MathUtilities.AreAlmostEqual(
+                    this.ExpectedFinalProbabilities[i], bitValuesProbabilities[i].Item2))
                 {
                     message = "Run: Machine not providing expected probabilities.";
                     valid = false;
@@ -339,12 +345,14 @@ public sealed class QuComputer
             if (!valid)
             {
                 Debug.WriteLine("Run: Machine not providing expected probabilities.");
-                for (int i = 0; i < probabilities.Count; i++)
+                for (int i = 0; i < bitValuesProbabilities.Count; i++)
                 {
                     Debug.WriteLine(
                         string.Format(
-                            "Bit: {0}, Expected: {1:F2}, Returned: {2:F2}",
-                            i, this.ExpectedFinalProbabilities[i], probabilities[i]));
+                            "Bits: {0}, Expected: {1:F2}, Returned: {2:F2}",
+                            bitValuesProbabilities[i].Item1, 
+                            this.ExpectedFinalProbabilities[i], 
+                            bitValuesProbabilities[i].Item2));
                 }
 
                 return false;

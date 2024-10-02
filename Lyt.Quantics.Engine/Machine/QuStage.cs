@@ -172,5 +172,5 @@ public sealed class QuStage
     }
 
     public Vector<double> Probabilities => 
-        Vector<double>.Build.Dense(this.StageRegister.Probabilities().ToArray()); 
+        Vector<double>.Build.Dense(this.StageRegister.KetProbabilities().ToArray()); 
 }
