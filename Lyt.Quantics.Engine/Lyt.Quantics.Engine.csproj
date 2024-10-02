@@ -9,10 +9,14 @@
   <ItemGroup>
     <None Remove="Resources\Computers\EntanglementFlipped.json" />
     <None Remove="Resources\Computers\EntanglementNot.json" />
+    <None Remove="Resources\Computers\HX_PhaseFlip.json" />
+    <None Remove="Resources\Computers\HX_Swap.json" />
     <None Remove="Resources\Entanglement.json" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Resources\Computers\HX_PhaseFlip.json" />
+    <EmbeddedResource Include="Resources\Computers\HX_Swap.json" />
     <EmbeddedResource Include="Resources\Computers\EntanglementFlipped.json" />
     <EmbeddedResource Include="Resources\Computers\EntanglementNot.json" />
     <EmbeddedResource Include="Resources\Computers\Entanglement.json" />

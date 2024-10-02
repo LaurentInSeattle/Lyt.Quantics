@@ -1,0 +1,29 @@
+{
+    "Name": "Swap",
+    "Description": "Hadamard + Not followed by Swap",
+    "QuBitsCount": 2,
+    "InitialStates": [ "Zero", "Zero" ],
+    "ExpectedFinalProbabilities": [ 0.0, 0.5, 0.0, 0.5 ],
+    "Stages": [
+        {
+            "Operators": [
+                {
+                    "QuBitIndices": [ 0 ],
+                    "GateKey": "H"
+                },
+                {
+                    "QuBitIndices": [ 1 ],
+                    "GateKey": "X"
+                }
+            ]
+        },
+        {
+            "Operators": [
+                {
+                    "QuBitIndices": [ 0, 1 ],
+                    "GateKey": "Swap"
+                }
+            ]
+        }
+    ]
+}

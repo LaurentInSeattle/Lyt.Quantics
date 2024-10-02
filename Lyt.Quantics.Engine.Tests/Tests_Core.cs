@@ -98,9 +98,11 @@ public sealed class Tests_Core
             //var computer = SerializationUtilities.Deserialize<QuComputer>(serialized);
             //ValidateAndBuild(computer);
 
-            // ValidateAndBuild("Entanglement.json");
-            // ValidateAndBuild("EntanglementNot.json");
+            ValidateAndBuild("HX_PhaseFlip.json");
+            ValidateAndBuild("Entanglement.json");
+            ValidateAndBuild("EntanglementNot.json");
             ValidateAndBuild("EntanglementFlipped.json");
+            ValidateAndBuild("HX_Swap.json");
         }
         catch (Exception ex)
         {
