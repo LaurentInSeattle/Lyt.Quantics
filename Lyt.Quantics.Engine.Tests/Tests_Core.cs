@@ -87,6 +87,7 @@ public sealed class Tests_Core
             static void ValidateBuildAndRun(string resourceFileName)
             {
                 Assert.IsFalse(string.IsNullOrWhiteSpace(resourceFileName));
+                resourceFileName += ".json"; 
                 string serialized = SerializationUtilities.LoadEmbeddedTextResource(resourceFileName);
                 Assert.IsFalse(string.IsNullOrWhiteSpace(serialized));
                 var computer = SerializationUtilities.Deserialize<QuComputer>(serialized);
@@ -121,12 +122,13 @@ public sealed class Tests_Core
                 Debug.WriteLine(computer.Name + " - Final result: " + computer.Result);
             }
 
-            ValidateBuildAndRun("Toffoli_Basic.json");
-            ValidateBuildAndRun("HX_PhaseFlip.json");
-            ValidateBuildAndRun("Entanglement.json");
-            ValidateBuildAndRun("EntanglementNot.json");
-            ValidateBuildAndRun("EntanglementFlipped.json");
-            ValidateBuildAndRun("HX_Swap.json");
+            ValidateBuildAndRun("SX_Test");
+            ValidateBuildAndRun("Toffoli_Basic");
+            ValidateBuildAndRun("HX_PhaseFlip");
+            ValidateBuildAndRun("Entanglement");
+            ValidateBuildAndRun("EntanglementNot");
+            ValidateBuildAndRun("EntanglementFlipped");
+            ValidateBuildAndRun("HX_Swap");
         }
         catch (Exception ex)
         {

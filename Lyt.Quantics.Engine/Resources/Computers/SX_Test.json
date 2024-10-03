@@ -1,0 +1,37 @@
+{
+    "Name": "Test SX Gate",
+    "Description": "Two SX followed by X should cancel each other",
+    "QuBitsCount": 2,
+    "InitialStates": [ "Zero", "Zero" ],
+    "ExpectedFinalProbabilities": [ 0.0, 0.0, 1.0, 0.0 ],
+    "Stages": [
+        {
+            "Operators": [
+                {
+                    "QuBitIndices": [ 0 ],
+                    "GateKey": "SX"
+                },
+                {
+                    "QuBitIndices": [ 1 ],
+                    "GateKey": "X"
+                }
+            ]
+        },
+        {
+            "Operators": [
+                {
+                    "QuBitIndices": [ 0 ],
+                    "GateKey": "SX"
+                }
+            ]
+        },
+        {
+            "Operators": [
+                {
+                    "QuBitIndices": [ 0 ],
+                    "GateKey": "X"
+                }
+            ]
+        }
+    ]
+}

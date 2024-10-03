@@ -4,8 +4,9 @@ using MathNet.Numerics.LinearAlgebra;
 
 public abstract class Gate
 {
+    // See: https://en.wikipedia.org/wiki/List_of_quantum_logic_gates 
+
     // TODO: Core
-    // T Dagger gate 
     // S Dagger gate 
 
     // TODO: UI 
