@@ -4,9 +4,12 @@ using MathNet.Numerics.LinearAlgebra;
 
 public abstract class Gate
 {
+    // TODO: Core
+    // T Dagger gate 
+    // S Dagger gate 
 
-    // TODO: 
-
+    // TODO: UI 
+    // Assign Colors to gates 
     // Gate Icons (SVG) : https://commons.wikimedia.org/w/index.php?title=Special:ListFiles&user=Geek3
 
 
