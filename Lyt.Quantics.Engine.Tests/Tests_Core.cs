@@ -58,17 +58,63 @@ public sealed class Tests_Core
                 var gate = GateFactory.Produce(gateKey);
                 Assert.IsTrue(gate is not null);
                 Assert.IsTrue(gate.Name is not null);
-                int dimension = gate.Matrix.RowCount; 
+                int dimension = gate.Matrix.RowCount;
                 Debug.WriteLine(gate.CaptionKey + ":  " + gate.Name + "  Dim: " + dimension.ToString());
                 var dagger = gate.Matrix.ConjugateTranspose();
                 var shouldBeIdentity = gate.Matrix.Multiply(dagger);
                 var trueIdentity = Matrix<Complex>.Build.DenseIdentity(dimension, dimension);
-                double tolerance = MathUtilities.Epsilon; 
-                if (! shouldBeIdentity.AlmostEqual(trueIdentity, tolerance))
+                double tolerance = MathUtilities.Epsilon;
+                if (!shouldBeIdentity.AlmostEqual(trueIdentity, tolerance))
                 {
+                    Debug.WriteLine("Unitary Test");
                     Debug.WriteLine("shouldBeIdentity: " + shouldBeIdentity);
                     Debug.WriteLine("trueIdentity: " + trueIdentity);
                     Assert.Fail();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            Assert.Fail();
+        }
+    }
+
+    [TestMethod]
+    public void Test_RotationGates()
+    {
+        try
+        {
+            foreach (RotationGate.Axis axis in
+                new RotationGate.Axis[] { RotationGate.Axis.X, RotationGate.Axis.Y, RotationGate.Axis.Z })
+            {
+                for (double theta = 0; theta <= Math.Tau; theta += Math.PI / 6)
+                {
+                    var gate = new RotationGate(axis, theta);
+                    int dimension = gate.Matrix.RowCount;
+                    var dagger = gate.Matrix.ConjugateTranspose();
+                    var shouldBeIdentity = gate.Matrix.Multiply(dagger);
+                    var trueIdentity = Matrix<Complex>.Build.DenseIdentity(dimension, dimension);
+                    double tolerance = MathUtilities.Epsilon;
+                    if (!shouldBeIdentity.AlmostEqual(trueIdentity, tolerance))
+                    {
+                        Debug.WriteLine("Unitary Test");
+                        Debug.WriteLine(gate.CaptionKey + ":  " + gate.Name + "  Dim: " + dimension.ToString());
+                        Debug.WriteLine("shouldBeIdentity: " + shouldBeIdentity);
+                        Debug.WriteLine("trueIdentity: " + trueIdentity);
+                        Assert.Fail();
+                    }
+
+                    var rotatedGate = new RotationGate(axis, Math.Tau - theta);
+                    shouldBeIdentity = gate.Matrix.Multiply(rotatedGate.Matrix);
+                    shouldBeIdentity = shouldBeIdentity.Multiply(-1); 
+                    if (!shouldBeIdentity.AlmostEqual(trueIdentity, tolerance))
+                    {
+                        Debug.WriteLine("Rotated Test");
+                        Debug.WriteLine("shouldBeIdentity: " + shouldBeIdentity);
+                        Debug.WriteLine("trueIdentity: " + trueIdentity);
+                        Assert.Fail();
+                    }
                 }
             }
         }
@@ -87,7 +133,7 @@ public sealed class Tests_Core
             static void ValidateBuildAndRun(string resourceFileName)
             {
                 Assert.IsFalse(string.IsNullOrWhiteSpace(resourceFileName));
-                resourceFileName += ".json"; 
+                resourceFileName += ".json";
                 string serialized = SerializationUtilities.LoadEmbeddedTextResource(resourceFileName);
                 Assert.IsFalse(string.IsNullOrWhiteSpace(serialized));
                 var computer = SerializationUtilities.Deserialize<QuComputer>(serialized);

@@ -1,8 +1,6 @@
-﻿using MathNet.Numerics.Distributions;
+﻿namespace Lyt.Quantics.Engine.Gates.Base;
 
-namespace Lyt.Quantics.Engine.Gates.Base;
-
-public class RotationOperator : Gate
+public class RotationGate : Gate
 {
     public enum Axis
     {
@@ -28,11 +26,14 @@ public class RotationOperator : Gate
     //  exp(iAx)=cos⁡(x)I+isin⁡(x)A exp(iAx)=cos(x)I+isin(x)A  where A is one of the three
     //  Pauli Matrices.
 
-    private Matrix<Complex> matrix ;
-    private string captionKey ;
+    private readonly Matrix<Complex> matrix ;
+    private readonly string captionKey ;
 
-    public RotationOperator(Axis axis, double theta = Math.PI / 2.0 )
+    public RotationGate(Axis axis, double theta = Math.PI / 2.0 )
     {
+        this.Theta = theta; 
+        this.RotationAxis = axis ;
+
         double half = theta / 2.0;
         double  sinReal = Math.Sin(half);
         double  cosReal = Math.Cos(half);
@@ -71,11 +72,15 @@ public class RotationOperator : Gate
         }
     }
 
+    public Axis RotationAxis { get; private set; }
+
+    public double Theta { get; private set; }
+
     public override Matrix<Complex> Matrix => this.matrix;
 
-    public override string Name => "Rotation Operator";
+    public override string Name => "Rotation Gate";
 
     public override string AlternateName => "Rotation Operator";
 
-    public override string CaptionKey => "R";
+    public override string CaptionKey => this.captionKey;
 }

@@ -1,27 +1,16 @@
 ﻿namespace Lyt.Quantics.Engine.Gates.Base;
 
+using static Lyt.Quantics.Engine.Gates.Base.RotationGate;
+using static RotationGate; 
 public static class GateFactory
 {
     static GateFactory()
     {
-        var gateTypes = ReflectionUtilities.DerivedFrom<Gate>();
-        foreach (var gateType in gateTypes)
+        static void AddGate(Gate? gate)
         {
-            object? gate;
-            try
-            {
-                gate = Activator.CreateInstance(gateType);
-            }
-            catch (MissingMethodException ex)
-            {
-                Debug.WriteLine("First Chance Exception");
-                Debug.WriteLine(ex);
-                Debug.WriteLine(gateType.Name + " does not have a default parameterless constructor.");
-                continue;
-            }
-
             if (gate is not null)
             {
+                var gateType = gate.GetType();
                 var captionProperty =
                     gateType.GetProperty("CaptionKey", BindingFlags.Public | BindingFlags.Instance);
                 if (captionProperty is not null &&
@@ -30,6 +19,45 @@ public static class GateFactory
                     AvailableProducts.Add(caption, gateType);
                 }
             }
+        }
+
+        try
+        {
+            var gateTypes = ReflectionUtilities.DerivedFrom<Gate>();
+            foreach (var gateType in gateTypes)
+            {
+                try
+                {
+                    object? gateObject = Activator.CreateInstance(gateType);
+                    if (gateObject is Gate gate)
+                    {
+                        AddGate(gate);
+                    }
+                    else
+                    {
+                        throw new Exception("Failed to instantiate gate: " + gateType.FullName);
+                    }
+                }
+                catch (MissingMethodException ex)
+                {
+                    Debug.WriteLine("First Chance Exception");
+                    Debug.WriteLine(ex);
+                    Debug.WriteLine(gateType.Name + " does not have a default parameterless constructor.");
+                    continue;
+                }
+            }
+
+            // Add all three Pi / 2 rotation gates 
+            foreach (Axis axis in new Axis[] { Axis.X, Axis.Y, Axis.Z })
+            {
+                var gate = new RotationGate(axis, Math.PI / 2.0);
+                AddGate(gate);
+            }
+        }
+        catch ( Exception ex)
+        {
+            Debug.WriteLine("First Chance Exception");
+            Debug.WriteLine(ex);
         }
     }
 
@@ -41,10 +69,30 @@ public static class GateFactory
     {
         if (AvailableProducts.TryGetValue(caption, out Type? gateType) && gateType is not null)
         {
-            object? instance = Activator.CreateInstance(gateType);
-            if (instance is Gate gate)
+            try
             {
-                return gate;
+                object? instance = Activator.CreateInstance(gateType);
+                if (instance is Gate gate)
+                {
+                    return gate;
+                }
+            }
+            catch (MissingMethodException)
+            {
+                if (gateType.FullName == typeof(RotationGate).FullName)
+                {
+                    switch (caption)
+                    {
+                        case "Rx": return new RotationGate(Axis.X, Math.PI / 2.0);
+                        case "Ry": return new RotationGate(Axis.Y, Math.PI / 2.0);
+                        case "Rz": return new RotationGate(Axis.Z, Math.PI / 2.0);
+                        default:
+                            throw new NotSupportedException("Unsupported gate type: " + gateType.FullName);
+                    }
+
+                }
+
+                throw new NotSupportedException("Unsupported gate type: " + gateType.FullName); 
             }
         }
 
