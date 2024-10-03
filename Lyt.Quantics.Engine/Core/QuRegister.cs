@@ -18,15 +18,6 @@ public sealed class QuRegister
     public QuRegister(List<QuState> initialStates)
     {
         this.state = Vector<Complex>.Build.Dense(2 * initialStates.Count);
-        //for (int i = 0; i < initialStates.Count; ++i)
-        //{
-        //    QuState quState = initialStates[i];
-        //    int j = i << 1; 
-        //    Complex[] quBitState = quState.ToTensor();
-        //    this.state.At(j, quBitState[0]);
-        //    this.state.At(j + 1, quBitState[1]);
-        //}
-
         List<Vector<Complex>> vectors = new(initialStates.Count);
         for (int i = 0; i < initialStates.Count; ++i)
         {

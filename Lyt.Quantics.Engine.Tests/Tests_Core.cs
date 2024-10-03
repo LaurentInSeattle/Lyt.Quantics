@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
+﻿using MathNet.Numerics;
+using MathNet.Numerics.LinearAlgebra;
 
 namespace Lyt.Quantics.Engine.Tests;
 
@@ -46,17 +47,44 @@ public sealed class Tests_Core
     #endregion Fixtures 
 
     [TestMethod]
-    public void Test_Tooling()
+    public void Test_GateDefinitions()
     {
-        var gates = GateFactory.AvailableProducts;
-        Assert.IsTrue(gates is not null);
-        var gate = GateFactory.Produce("H");
-        Assert.IsTrue(gate is not null);
-        Assert.IsTrue(gate.Name is not null);
-
         try
         {
-            static void ValidateAndBuild(string resourceFileName)
+            var gates = GateFactory.AvailableProducts;
+            Assert.IsTrue(gates is not null);
+            foreach (string gateKey in gates.Keys)
+            {
+                var gate = GateFactory.Produce(gateKey);
+                Assert.IsTrue(gate is not null);
+                Assert.IsTrue(gate.Name is not null);
+                int dimension = gate.Matrix.RowCount; 
+                Debug.WriteLine(gate.CaptionKey + ":  " + gate.Name + "  Dim: " + dimension.ToString());
+                var dagger = gate.Matrix.ConjugateTranspose();
+                var shouldBeIdentity = gate.Matrix.Multiply(dagger);
+                var trueIdentity = Matrix<Complex>.Build.DenseIdentity(dimension, dimension);
+                double tolerance = MathUtilities.Epsilon; 
+                if (! shouldBeIdentity.AlmostEqual(trueIdentity, tolerance))
+                {
+                    Debug.WriteLine("shouldBeIdentity: " + shouldBeIdentity);
+                    Debug.WriteLine("trueIdentity: " + trueIdentity);
+                    Assert.Fail();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            Assert.Fail();
+        }
+    }
+
+    [TestMethod]
+    public void Test_Machines()
+    {
+        try
+        {
+            static void ValidateBuildAndRun(string resourceFileName)
             {
                 Assert.IsFalse(string.IsNullOrWhiteSpace(resourceFileName));
                 string serialized = SerializationUtilities.LoadEmbeddedTextResource(resourceFileName);
@@ -93,16 +121,12 @@ public sealed class Tests_Core
                 Debug.WriteLine(computer.Name + " - Final result: " + computer.Result);
             }
 
-            //string serialized = SerializationUtilities.Serialize(QuComputer.Example);
-            //Debug.WriteLine(serialized);
-            //var computer = SerializationUtilities.Deserialize<QuComputer>(serialized);
-            //ValidateAndBuild(computer);
-
-            ValidateAndBuild("HX_PhaseFlip.json");
-            ValidateAndBuild("Entanglement.json");
-            ValidateAndBuild("EntanglementNot.json");
-            ValidateAndBuild("EntanglementFlipped.json");
-            ValidateAndBuild("HX_Swap.json");
+            ValidateBuildAndRun("Toffoli_Basic.json");
+            ValidateBuildAndRun("HX_PhaseFlip.json");
+            ValidateBuildAndRun("Entanglement.json");
+            ValidateBuildAndRun("EntanglementNot.json");
+            ValidateBuildAndRun("EntanglementFlipped.json");
+            ValidateBuildAndRun("HX_Swap.json");
         }
         catch (Exception ex)
         {

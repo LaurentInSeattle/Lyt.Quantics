@@ -26,8 +26,16 @@ global using System.Windows.Input;
 
 global using System.Numerics.Tensors;
 
-//global using Lyt.Quantics.Engine.Algorithms;
+global using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
+
+// LATER: global using Lyt.Quantics.Engine.Algorithms;
 global using Lyt.Quantics.Engine.Core;
 global using Lyt.Quantics.Engine.Gates;
+global using Lyt.Quantics.Engine.Gates.Base;
+global using Lyt.Quantics.Engine.Gates.Unary;
+global using Lyt.Quantics.Engine.Gates.Binary;
+global using Lyt.Quantics.Engine.Gates.Ternary;
 global using Lyt.Quantics.Engine.Machine;
 global using Lyt.Quantics.Engine.Utilities;
+
+

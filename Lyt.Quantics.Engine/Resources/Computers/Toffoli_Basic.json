@@ -1,0 +1,17 @@
+{
+    "Name": "Toffoli Basic",
+    "Description": "Toffoli",
+    "QuBitsCount": 3,
+    "InitialStates": [ "Zero", "Zero", "Zero" ],
+    "ExpectedFinalProbabilities": [ 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ],
+    "Stages": [
+        {
+            "Operators": [
+                {
+                    "QuBitIndices": [ 0, 1, 2 ],
+                    "GateKey": "CCNot"
+                }
+            ]
+        }
+    ]
+}

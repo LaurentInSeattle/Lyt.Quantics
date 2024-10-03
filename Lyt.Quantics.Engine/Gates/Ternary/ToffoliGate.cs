@@ -1,0 +1,43 @@
+﻿namespace Lyt.Quantics.Engine.Gates.Ternary;
+
+using MathNet.Numerics.LinearAlgebra;
+
+public sealed class ToffoliGate : Gate
+{
+    // the Toffoli gate, also known as the CCNOT gate (“controlled-controlled-not”),
+    // invented by Tommaso Toffoli, is a CNOT gate with two control qubits and one target
+    // qubit. That is, the target qubit (third qubit) will be inverted if the first and
+    // second qubits are both 1. It is a universal reversible logic gate, which means
+    // that any classical reversible circuit can be constructed from Toffoli gates. 
+
+    private static readonly Matrix<Complex> ToffoliMatrix;
+
+    static ToffoliGate()
+    {
+        //    { 1, 0, 0, 0 , 0, 0, 0, 0},
+        //    { 0, 1, 0, 0 , 0, 0, 0, 0},
+        //    { 0, 0, 1, 0 , 0, 0, 0, 0},
+        //    { 0, 0, 0, 1 , 0, 0, 0, 0},
+        //    { 0, 0, 0, 0 , 1, 0, 0, 0},
+        //    { 0, 0, 0, 0 , 0, 1, 0, 0},
+        //    { 0, 0, 0, 0 , 0, 0, 0, 1},
+        //    { 0, 0, 0, 0 , 0, 0, 1, 0},
+
+        ToffoliMatrix = Matrix<Complex>.Build.Sparse(8, 8, Complex.Zero);
+        for (int i = 0; i < 6; i++)
+        {
+            ToffoliMatrix.At(i, i, Complex.One);
+        }
+
+        ToffoliMatrix.At(6, 7, Complex.One);
+        ToffoliMatrix.At(7, 6, Complex.One);
+    }
+
+    public override Matrix<Complex> Matrix => ToffoliGate.ToffoliMatrix;
+
+    public override string Name => "Toffoli";
+
+    public override string AlternateName => "CCNOT";
+
+    public override string CaptionKey => "CCNot";
+}

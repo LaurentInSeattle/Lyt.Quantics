@@ -1,4 +1,6 @@
-﻿namespace Lyt.Quantics.Engine.Machine;
+﻿using Lyt.Quantics.Engine.Gates.Base;
+
+namespace Lyt.Quantics.Engine.Machine;
 
 public sealed class QuStageOperator
 {

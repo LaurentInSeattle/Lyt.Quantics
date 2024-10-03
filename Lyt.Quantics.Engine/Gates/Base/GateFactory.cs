@@ -1,4 +1,4 @@
-﻿namespace Lyt.Quantics.Engine.Gates;
+﻿namespace Lyt.Quantics.Engine.Gates.Base;
 
 public static class GateFactory
 {
@@ -7,12 +7,12 @@ public static class GateFactory
         var gateTypes = ReflectionUtilities.DerivedFrom<Gate>();
         foreach (var gateType in gateTypes)
         {
-            object? gate; 
+            object? gate;
             try
             {
                 gate = Activator.CreateInstance(gateType);
-            } 
-            catch (MissingMethodException ex) 
+            }
+            catch (MissingMethodException ex)
             {
                 Debug.WriteLine("First Chance Exception");
                 Debug.WriteLine(ex);
@@ -24,10 +24,10 @@ public static class GateFactory
             {
                 var captionProperty =
                     gateType.GetProperty("CaptionKey", BindingFlags.Public | BindingFlags.Instance);
-                if ((captionProperty is not null) &&
-                    (captionProperty.GetValue(gate) is string caption))
+                if (captionProperty is not null &&
+                    captionProperty.GetValue(gate) is string caption)
                 {
-                    GateFactory.AvailableProducts.Add(caption, gateType);
+                    AvailableProducts.Add(caption, gateType);
                 }
             }
         }
@@ -39,7 +39,7 @@ public static class GateFactory
 
     public static Gate Produce(string caption)
     {
-        if ((AvailableProducts.TryGetValue(caption, out Type? gateType)) && (gateType is not null))
+        if (AvailableProducts.TryGetValue(caption, out Type? gateType) && gateType is not null)
         {
             object? instance = Activator.CreateInstance(gateType);
             if (instance is Gate gate)

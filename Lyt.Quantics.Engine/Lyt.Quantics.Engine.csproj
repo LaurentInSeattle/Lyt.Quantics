@@ -9,13 +9,17 @@
   <ItemGroup>
     <None Remove="Resources\Computers\EntanglementFlipped.json" />
     <None Remove="Resources\Computers\EntanglementNot.json" />
+    <None Remove="Resources\Computers\Fredkin_Basic.json" />
     <None Remove="Resources\Computers\HX_PhaseFlip.json" />
     <None Remove="Resources\Computers\HX_Swap.json" />
+    <None Remove="Resources\Computers\Toffoli_Basic.json" />
     <None Remove="Resources\Entanglement.json" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Resources\Computers\HX_PhaseFlip.json" />
+    <EmbeddedResource Include="Resources\Computers\Fredkin_Basic.json" />
+    <EmbeddedResource Include="Resources\Computers\Toffoli_Basic.json" />
     <EmbeddedResource Include="Resources\Computers\HX_Swap.json" />
     <EmbeddedResource Include="Resources\Computers\EntanglementFlipped.json" />
     <EmbeddedResource Include="Resources\Computers\EntanglementNot.json" />

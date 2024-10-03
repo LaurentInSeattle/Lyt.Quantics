@@ -104,42 +104,39 @@ public sealed class QuStage
             int powTwo = MathUtilities.TwoPower(length);
             this.StageMatrix = Matrix<Complex>.Build.Sparse(powTwo, powTwo, Complex.Zero);
 
-            if (this.Operators.Count == 1)
+            if (computer.QuBitsCount <= 2)
             {
-                this.StageMatrix = this.Operators[0].StageOperatorMatrix;
+                if (this.Operators.Count == 1)
+                {
+                    this.StageMatrix = this.Operators[0].StageOperatorMatrix;
+                }
+                else if (this.Operators.Count == 2)
+                {
+                    this.StageMatrix =
+                        this.Operators[0].StageOperatorMatrix.KroneckerProduct(this.Operators[1].StageOperatorMatrix);
+                }
             }
-            else if (this.Operators.Count == 2)
+            else if (computer.QuBitsCount == 3)
             {
-                this.StageMatrix =                     
-                    this.Operators[0].StageOperatorMatrix.KroneckerProduct(this.Operators[1].StageOperatorMatrix);
-            } 
+                if (this.Operators.Count == 1)
+                {
+                    this.StageMatrix = this.Operators[0].StageOperatorMatrix;
+                }
+            }
 
-            // This is wrong !
-            //int offset = 0;
-            //foreach (var stageOperator in this.Operators)
-            //{
-            //    var matrix = stageOperator.StageOperatorMatrix;
-            //    int matrixDimension = matrix.ColumnCount;
-            //    for (int row = 0; row < matrixDimension; ++row)
-            //    {
-            //        for (int col = 0; col < matrixDimension; ++col)
-            //        {
-            //            Complex value = matrix.At(row, col);
-            //            if (value != Complex.Zero)
-            //            {
-            //                this.StageMatrix[offset + row, offset + col] = value;
-            //            }
-            //        }
-            //    }
-            //
-            //    offset += matrixDimension; 
-            //}
 
             Debug.WriteLine(this.StageMatrix);
-
             var dagger = this.StageMatrix.ConjugateTranspose();
-            var identity = this.StageMatrix.Multiply(dagger);
-            Debug.WriteLine("Build: check identity: " + identity);
+            var shouldBeIdentity = this.StageMatrix.Multiply(dagger);
+            var trueIdentity = Matrix<Complex>.Build.DenseIdentity(powTwo, powTwo);
+            double tolerance = MathUtilities.Epsilon;
+            if (!shouldBeIdentity.AlmostEqual(trueIdentity, tolerance))
+            {
+                message = string.Concat("Stage matrix is not unitary.");
+                Debug.WriteLine("shouldBeIdentity: " + shouldBeIdentity);
+                Debug.WriteLine("trueIdentity: " + trueIdentity);
+                return false;
+            }
 
             // Finally create a register for future calculations 
             this.StageRegister = new QuRegister(length);

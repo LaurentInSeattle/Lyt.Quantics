@@ -1,4 +1,4 @@
-﻿namespace Lyt.Quantics.Engine.Gates;
+﻿namespace Lyt.Quantics.Engine.Gates.Base;
 
 using MathNet.Numerics.LinearAlgebra;
 
@@ -7,8 +7,6 @@ public abstract class Gate
 
     // TODO: 
 
-    // Toffoli 
-    // Fredkin (Controlled SWAP) 
     // Gate Icons (SVG) : https://commons.wikimedia.org/w/index.php?title=Special:ListFiles&user=Geek3
 
 
