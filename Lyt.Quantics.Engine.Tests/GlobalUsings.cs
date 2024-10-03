@@ -28,6 +28,10 @@ global using System.Numerics.Tensors;
 
 global using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
 
+global using MathNet.Numerics;
+global using MathNet.Numerics.LinearAlgebra;
+
+
 // LATER: global using Lyt.Quantics.Engine.Algorithms;
 global using Lyt.Quantics.Engine.Core;
 global using Lyt.Quantics.Engine.Gates;

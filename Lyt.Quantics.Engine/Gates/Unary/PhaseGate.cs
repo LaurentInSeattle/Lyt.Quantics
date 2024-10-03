@@ -7,6 +7,9 @@ public sealed class PhaseGate : Gate
     // Single-qubit rotation about the Z axis.
     // This is a diagonal gate.
 
+    // P(λ=π)=Z
+    // P(λ= π / 2)=S
+    // P(λ= π / 4)=T
     private static readonly Matrix<Complex> PhaseGateMatrix ;
 
     static PhaseGate()

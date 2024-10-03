@@ -100,35 +100,28 @@ public sealed class QuStage
                 }
             }
 
-            // Combine all operator matrices to create the stage matrix
+            // Combine all operator matrices to create the stage matrix using the Knonecker product
             int powTwo = MathUtilities.TwoPower(length);
-            this.StageMatrix = Matrix<Complex>.Build.Sparse(powTwo, powTwo, Complex.Zero);
-
-            if (computer.QuBitsCount <= 2)
+            var stageMatrix = this.Operators[0].StageOperatorMatrix;
+            if (powTwo == stageMatrix.RowCount)
             {
-                if (this.Operators.Count == 1)
-                {
-                    this.StageMatrix = this.Operators[0].StageOperatorMatrix;
-                }
-                else if (this.Operators.Count == 2)
-                {
-                    this.StageMatrix =
-                        this.Operators[0].StageOperatorMatrix.KroneckerProduct(this.Operators[1].StageOperatorMatrix);
-                }
+                this.StageMatrix = stageMatrix;
             }
-            else if (computer.QuBitsCount == 3)
+            else
             {
-                if (this.Operators.Count == 1)
+                for ( int i = 1; i < this.Operators.Count; ++i ) // Must start at ONE!
                 {
-                    this.StageMatrix = this.Operators[0].StageOperatorMatrix;
+                    stageMatrix = stageMatrix.KroneckerProduct(this.Operators[i].StageOperatorMatrix);
                 }
-            }
 
+                this.StageMatrix = stageMatrix;
+            } 
 
             Debug.WriteLine(this.StageMatrix);
             var dagger = this.StageMatrix.ConjugateTranspose();
             var shouldBeIdentity = this.StageMatrix.Multiply(dagger);
-            var trueIdentity = Matrix<Complex>.Build.DenseIdentity(powTwo, powTwo);
+            int dimension = this.StageMatrix.RowCount; 
+            var trueIdentity = Matrix<Complex>.Build.DenseIdentity(dimension, dimension);
             double tolerance = MathUtilities.Epsilon;
             if (!shouldBeIdentity.AlmostEqual(trueIdentity, tolerance))
             {

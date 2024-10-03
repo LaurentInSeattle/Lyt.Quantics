@@ -1,7 +1,7 @@
 ﻿namespace Lyt.Quantics.Engine.Gates.Base;
 
-using static Lyt.Quantics.Engine.Gates.Base.RotationGate;
 using static RotationGate; 
+
 public static class GateFactory
 {
     static GateFactory()
