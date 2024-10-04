@@ -115,12 +115,12 @@ public sealed class QuStage
                 }
 
                 this.StageMatrix = stageMatrix;
-            } 
+            }
 
+            int dimension = this.StageMatrix.RowCount;
             Debug.WriteLine(this.StageMatrix);
             var dagger = this.StageMatrix.ConjugateTranspose();
             var shouldBeIdentity = this.StageMatrix.Multiply(dagger);
-            int dimension = this.StageMatrix.RowCount; 
             var trueIdentity = Matrix<Complex>.Build.DenseIdentity(dimension, dimension);
             double tolerance = MathUtilities.Epsilon;
             if (!shouldBeIdentity.AlmostEqual(trueIdentity, tolerance))

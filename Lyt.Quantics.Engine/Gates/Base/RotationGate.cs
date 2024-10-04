@@ -2,13 +2,6 @@
 
 public class RotationGate : Gate
 {
-    public enum Axis
-    {
-        X, 
-        Y, 
-        Z, 
-    }
-
     // See: https://www.quantum-inspire.com/kbase/rotation-operators/ 
     //
     // The rotation operators are defined as:

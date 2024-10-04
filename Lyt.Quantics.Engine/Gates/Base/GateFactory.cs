@@ -1,7 +1,5 @@
 ﻿namespace Lyt.Quantics.Engine.Gates.Base;
 
-using static RotationGate; 
-
 public static class GateFactory
 {
     static GateFactory()
@@ -65,7 +63,7 @@ public static class GateFactory
     public static Dictionary<string, Type> AvailableProducts = new(32);
 #pragma warning restore CA2211 
 
-    public static Gate Produce(string caption)
+    public static Gate Produce(string caption, Axis axis = Axis.X, double angle = Math.PI / 2.0)
     {
         if (AvailableProducts.TryGetValue(caption, out Type? gateType) && gateType is not null)
         {
