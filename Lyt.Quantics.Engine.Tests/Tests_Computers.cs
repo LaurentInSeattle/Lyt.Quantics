@@ -56,6 +56,9 @@ public sealed class Tests_Computers
                 Assert.IsFalse(string.IsNullOrWhiteSpace(serialized));
                 var computer = SerializationUtilities.Deserialize<QuComputer>(serialized);
                 Assert.IsTrue(computer is not null);
+                Debug.WriteLine(" ");
+                Debug.WriteLine(" ");
+                Debug.WriteLine("Processing:  " + computer.Name + "  from:  " + resourceFileName);
                 bool isValid = computer.Validate(out string message);
                 if (!string.IsNullOrWhiteSpace(message))
                 {
@@ -86,6 +89,8 @@ public sealed class Tests_Computers
                 Debug.WriteLine(computer.Name + " - Final result: " + computer.Result);
             }
 
+            ValidateBuildAndRun("Deutsch_Balanced");
+            ValidateBuildAndRun("Deutsch_Constant");
             ValidateBuildAndRun("RxyzCnot_Test");
             ValidateBuildAndRun("Rxyz_Test");
             ValidateBuildAndRun("SX_Test");

@@ -25,7 +25,7 @@ public sealed class SwapGate : Gate
 
     public override string Name => "Swap";
 
-    public override string AlternateName => "FCNOT";
+    public override string AlternateName => "Swap";
 
     public override string CaptionKey => "Swap";
 }

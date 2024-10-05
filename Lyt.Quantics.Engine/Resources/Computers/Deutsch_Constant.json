@@ -1,0 +1,57 @@
+{
+    "Name": "Deutsch Constant",
+    "Description": "X and Hadamard gates querying a constant binary gate: QBit zero always 0",
+    "QuBitsCount": 2,
+    "InitialStates": [ "Zero", "Zero" ],
+    "ExpectedFinalProbabilities": [ 0.5, 0.0, 0.5, 0.0 ],
+    "Stages": [
+        {
+            "Operators": [
+                {
+                    "QuBitIndices": [ 0 ],
+                    "GateKey": "H"
+                },
+                {
+                    "QuBitIndices": [ 1 ],
+                    "GateKey": "X"
+                }
+            ]
+        },
+        {
+            "Operators": [
+                {
+                    "QuBitIndices": [ 1 ],
+                    "GateKey": "H"
+                }
+            ]
+        },
+        {
+            "Operators": [
+                {
+                    "QuBitIndices": [ 0 ],
+                    "GateKey": "I"
+                },
+                {
+                    "QuBitIndices": [ 1 ],
+                    "GateKey": "I"
+                }
+            ]
+        },
+        {
+            "Operators": [
+                {
+                    "QuBitIndices": [ 1 ],
+                    "GateKey": "X"
+                }
+            ]
+        },
+        {
+            "Operators": [
+                {
+                    "QuBitIndices": [ 0 ],
+                    "GateKey": "H"
+                }
+            ]
+        }
+    ]
+}

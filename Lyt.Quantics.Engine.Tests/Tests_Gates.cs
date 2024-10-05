@@ -176,12 +176,43 @@ public sealed class Tests_Gates
     }
 
     [TestMethod]
+    public void Test_SwapGate()
+    {
+        try
+        {
+            // TODO 
+
+            // Verify that:
+            // Swap == CNOT Flipped CNOT CNOT 
+
+            //var gate = new ControlledGate(srcCaptionKey);
+            //int dimension = gate.Dimension;
+            //var checkGate = GateFactory.Produce(dstCaptionKey);
+            //double tolerance = MathUtilities.Epsilon;
+            //if (!gate.Matrix.AlmostEqual(checkGate.Matrix, tolerance))
+            //{
+            //    Debug.WriteLine("Controlled Test");
+            //    Debug.WriteLine(gate.CaptionKey + ":  " + gate.Name + "  Dim: " + dimension.ToString());
+            //    Debug.WriteLine("Phase gate: " + gate);
+            //    Debug.WriteLine("Check: " + dstCaptionKey + checkGate);
+            //    Assert.Fail();
+            //}
+
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            Assert.Fail();
+        }
+    }
+
+    [TestMethod]
     public void Test_ControlledGates()
     {
         try
         {
             foreach (string baseGateCaptionKey in
-                new string[] { "I", "X", "Y", "Z" , "S", "SX", "Swap", "CX", "H", "T" })
+                new string[] { "I", "X", "Y", "Z", "H", "T", "S", "SX", "Swap", "CX", "CZ" })
             {
                 var gate = new ControlledGate(baseGateCaptionKey);
                 int dimension = gate.Dimension;
@@ -200,11 +231,11 @@ public sealed class Tests_Gates
             }
 
             // Verify that:
-            // Controlled I == I 
             // Controlled Swap == CSwap (Fredkin ) 
             // Controlled CX == CCNot (Toffoli)  
             // Controlled X == CX (CNot)  
             // Controlled Z == CZ 
+            // Controlled S == CS 
             static void Verify(string srcCaptionKey, string dstCaptionKey)
             {
                 var gate = new ControlledGate(srcCaptionKey);
@@ -225,6 +256,7 @@ public sealed class Tests_Gates
             // Verify("I", "I");
 
             Verify("X", "CX");
+            Verify("S", "CS");
             Verify("Z", "CZ");
             Verify("Swap", "CSwap");
             Verify("CX", "CCNot");

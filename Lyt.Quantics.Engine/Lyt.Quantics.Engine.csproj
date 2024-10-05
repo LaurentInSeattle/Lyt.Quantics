@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Computers\Deutsch_Balanced.json" />
+    <None Remove="Resources\Computers\Deutsch_Constant.json" />
     <None Remove="Resources\Computers\EntanglementFlipped.json" />
     <None Remove="Resources\Computers\EntanglementNot.json" />
     <None Remove="Resources\Computers\Fredkin_Basic.json" />
@@ -20,6 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Resources\Computers\Deutsch_Balanced.json" />
+    <EmbeddedResource Include="Resources\Computers\Deutsch_Constant.json" />
     <EmbeddedResource Include="Resources\Computers\RxyzCnot_Test.json" />
     <EmbeddedResource Include="Resources\Computers\Rxyz_Test.json" />
     <EmbeddedResource Include="Resources\Computers\SX_Test.json" />

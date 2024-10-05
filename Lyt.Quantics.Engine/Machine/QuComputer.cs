@@ -6,6 +6,7 @@ public sealed class QuComputer
 {
     private const string DefaultName = "< Untitled >";
     private const string DefaultDescription = "< Undocumented >";
+    private const string DefaultComment = "< No comments >";
 
     public QuComputer() { /* Required for deserialization */ }
 
@@ -15,6 +16,8 @@ public sealed class QuComputer
 
     public string Description { get; set; } = DefaultDescription;
 
+    public string Comment { get; set; } = DefaultComment;
+
     public int QuBitsCount { get; set; }
 
     public List<QuState> InitialStates { get; set; } = [];
@@ -22,9 +25,9 @@ public sealed class QuComputer
     public List<QuStage> Stages { get; set; } = [];
 
     /// <summary> 
-    /// Expected Final Probabilities provided for bit values so that they should match the 
-    /// results displayed in our 'official' QRyd simulator. 
-    /// Web page: https://designer.thequantumlaend.de/ 
+    /// Expected Final Probabilities are provided for bit values (not kets) so that they 
+    /// should match the results displayed in our 'official' QRyd simulator. 
+    /// See Web page: https://designer.thequantumlaend.de/ 
     /// </summary>
     public List<double> ExpectedFinalProbabilities { get; set; } = [];
 

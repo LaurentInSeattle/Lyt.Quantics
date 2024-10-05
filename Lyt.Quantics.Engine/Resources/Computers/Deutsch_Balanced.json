@@ -1,0 +1,54 @@
+{
+    "Name": "Deutsch Balanced",
+    "Description": "X and Hadamard gates querying a balanced binary gate: QBit zero always 1",
+    "Comment": "See: https://learning.quantum.ibm.com/course/fundamentals-of-quantum-algorithms/quantum-query-algorithms",
+    "QuBitsCount": 2,
+    "InitialStates": [ "Zero", "Zero" ],
+    "ExpectedFinalProbabilities": [ 0.0, 0.5, 0.0, 0.5 ],
+    "Stages": [
+        {
+            "Operators": [
+                {
+                    "QuBitIndices": [ 0 ],
+                    "GateKey": "H"
+                },
+                {
+                    "QuBitIndices": [ 1 ],
+                    "GateKey": "X"
+                }
+            ]
+        },
+        {
+            "Operators": [
+                {
+                    "QuBitIndices": [ 1 ],
+                    "GateKey": "H"
+                }
+            ]
+        },
+        {
+            "Operators": [
+                {
+                    "QuBitIndices": [ 0, 1 ],
+                    "GateKey": "CX"
+                }
+            ]
+        },
+        {
+            "Operators": [
+                {
+                    "QuBitIndices": [ 1 ],
+                    "GateKey": "X"
+                }
+            ]
+        },
+        {
+            "Operators": [
+                {
+                    "QuBitIndices": [ 0 ],
+                    "GateKey": "H"
+                }
+            ]
+        }
+    ]
+}

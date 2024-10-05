@@ -7,10 +7,9 @@ public abstract class Gate
     // See: https://en.wikipedia.org/wiki/List_of_quantum_logic_gates 
 
     // TODO: Core
+    // Random State 
+    // Partial measurement operator and collapsed states 
     // Introduce gate parameters 
-    // See: https://en.wikipedia.org/wiki/Quantum_logic_gate#Controlled_gates 
-    //      Controlled Controlled Phase 
-    //      Controlled Controlled Z
 
     // TODO: UI 
     // Assign Colors to gates 
