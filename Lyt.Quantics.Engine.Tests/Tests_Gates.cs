@@ -232,7 +232,7 @@ public sealed class Tests_Gates
 
             // Verify that:
             // Controlled Swap == CSwap (Fredkin ) 
-            // Controlled CX == CCNot (Toffoli)  
+            // Controlled CX == CCX (Toffoli)  
             // Controlled X == CX (CNot)  
             // Controlled Z == CZ 
             // Controlled S == CS 
@@ -259,7 +259,7 @@ public sealed class Tests_Gates
             Verify("S", "CS");
             Verify("Z", "CZ");
             Verify("Swap", "CSwap");
-            Verify("CX", "CCNot");
+            Verify("CX", "CCX");
         }
         catch (Exception ex)
         {

@@ -156,9 +156,8 @@ public sealed class QuComputer
         return true;
     }
 
-    public bool Prepare(List<QuState> initialStates, out string message)
+    public bool Prepare(List<QuState> initialStates, List<double> expectedFinalProbabilities, out string message)
     {
-        message = string.Empty;
         if (initialStates.Count != this.QuBitsCount)
         {
             message = "Validate: Count of initial states does not match QuBit count.";
@@ -166,6 +165,7 @@ public sealed class QuComputer
         }
 
         this.InitialStates = initialStates;
+        this.ExpectedFinalProbabilities = expectedFinalProbabilities;
         return this.Prepare(out message);
     }
 

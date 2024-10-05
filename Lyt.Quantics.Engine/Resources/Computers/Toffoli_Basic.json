@@ -9,7 +9,7 @@
             "Operators": [
                 {
                     "QuBitIndices": [ 0, 1, 2 ],
-                    "GateKey": "CCNot"
+                    "GateKey": "CCX"
                 }
             ]
         }

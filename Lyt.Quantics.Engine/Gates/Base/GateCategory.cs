@@ -13,7 +13,7 @@ public enum GateCategory
 
     DarkGreen, // Sqrt X (== SX) , Sqrt Z (== S)
 
-    Purple,  // CCNot,  CSwap , CCZ 
+    Purple,  // CCX,  CSwap , CCZ 
 
     DarkRed , // Rx Ry Rz
 

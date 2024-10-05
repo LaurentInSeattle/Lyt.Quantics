@@ -1,0 +1,85 @@
+{
+    "Name": "Full Adder",
+    "Description": "Addition with Toffoli gates",
+    "QuBitsCount": 4,
+    "InitialStates": [ "Zero", "Zero", "Zero", "Zero" ],
+    "ExpectedFinalProbabilities": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+
+        0.0,
+        0.0,
+        0.0,
+        0.0
+    ],
+    "Stages": [
+        {
+            "Operators": [
+                {
+                    "QuBitIndices": [ 2, 3 ],
+                    "GateKey": "Swap"
+                }
+            ]
+        },
+        {
+            "Operators": [
+                {
+                    "QuBitIndices": [ 0, 1, 2 ],
+                    "GateKey": "CCX"
+                }
+            ]
+        },
+        {
+            "Operators": [
+                {
+                    "QuBitIndices": [ 2, 3 ],
+                    "GateKey": "Swap"
+                }
+            ]
+        },
+        {
+            "Operators": [
+                {
+                    "QuBitIndices": [ 0, 1 ],
+                    "GateKey": "CX"
+                }
+            ]
+        },
+        {
+            "Operators": [
+                {
+                    "QuBitIndices": [ 1, 2, 3 ],
+                    "GateKey": "CCX"
+                }
+            ]
+        },
+        {
+            "Operators": [
+                {
+                    "QuBitIndices": [ 1, 2 ],
+                    "GateKey": "CX"
+                }
+            ]
+        },
+        {
+            "Operators": [
+                {
+                    "QuBitIndices": [ 0, 1 ],
+                    "GateKey": "CX"
+                }
+            ]
+        }
+    ]
+}

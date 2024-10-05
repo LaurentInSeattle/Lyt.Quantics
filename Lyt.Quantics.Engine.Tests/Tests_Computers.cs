@@ -44,7 +44,7 @@ public sealed class Tests_Computers
     #endregion Fixtures 
 
     [TestMethod]
-    public void Test_Machines()
+    public void Test_MachinesSingleRun()
     {
         try
         {
@@ -89,6 +89,7 @@ public sealed class Tests_Computers
                 Debug.WriteLine(computer.Name + " - Final result: " + computer.Result);
             }
 
+            ValidateBuildAndRun("FullAdder");
             ValidateBuildAndRun("Deutsch_Balanced");
             ValidateBuildAndRun("Deutsch_Constant");
             ValidateBuildAndRun("RxyzCnot_Test");
@@ -100,6 +101,104 @@ public sealed class Tests_Computers
             ValidateBuildAndRun("EntanglementNot");
             ValidateBuildAndRun("EntanglementFlipped");
             ValidateBuildAndRun("HX_Swap");
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            Assert.Fail();
+        }
+    }
+
+    [TestMethod]
+    public void Test_MachinesManyRuns()
+    {
+        try
+        {
+            static QuComputer ValidateAndBuild(string resourceFileName)
+            {
+                Assert.IsFalse(string.IsNullOrWhiteSpace(resourceFileName));
+                resourceFileName += ".json";
+                string serialized = SerializationUtilities.LoadEmbeddedTextResource(resourceFileName);
+                Assert.IsFalse(string.IsNullOrWhiteSpace(serialized));
+                var computer = SerializationUtilities.Deserialize<QuComputer>(serialized);
+                Assert.IsTrue(computer is not null);
+                Debug.WriteLine(" ");
+                Debug.WriteLine(" ");
+                Debug.WriteLine("Processing:  " + computer.Name + "  from:  " + resourceFileName);
+                bool isValid = computer.Validate(out string message);
+                if (!string.IsNullOrWhiteSpace(message))
+                {
+                    Debug.WriteLine(message);
+                }
+                Assert.IsTrue(isValid);
+
+                bool isBuilt = computer.Build(out message);
+                if (!string.IsNullOrWhiteSpace(message))
+                {
+                    Debug.WriteLine(message);
+                }
+                Assert.IsTrue(isBuilt);
+
+                return computer;
+            }
+
+            static void PrepareAndRun(
+                QuComputer computer, List<List<QuState>> states, List<List<double>> expected)
+            {
+                Assert.IsTrue(computer is not null);
+                Assert.IsTrue(states.Count == expected.Count);
+                Debug.WriteLine(" ");
+                Debug.WriteLine(" ");
+                Debug.WriteLine("Batch Processing:  " + computer.Name);
+
+                for (int i = 0; i < states.Count;  i++)
+                {
+                    bool isPrepared = computer.Prepare(states[i], expected[i], out string message);
+                    if (!string.IsNullOrWhiteSpace(message))
+                    {
+                        Debug.WriteLine(message);
+                    }
+
+                    Assert.IsTrue(isPrepared);
+
+                    bool isComplete = computer.Run(out message);
+                    if (!string.IsNullOrWhiteSpace(message))
+                    {
+                        Debug.WriteLine(message);
+                    }
+
+                    Assert.IsTrue(isComplete);
+                    Debug.WriteLine(computer.Name + " - Final result: " + computer.Result);
+                }
+            }
+
+            var adder = ValidateAndBuild("FullAdder");
+            List<List<QuState>> adderStates =
+            [
+                [QuState.Zero, QuState.Zero, QuState.Zero, QuState.Zero],
+                [QuState.Zero, QuState.One, QuState.Zero, QuState.Zero],
+                [QuState.Zero, QuState.Zero, QuState.One, QuState.Zero],
+                [QuState.Zero, QuState.One, QuState.One, QuState.Zero],
+
+                [QuState.One, QuState.Zero, QuState.Zero, QuState.Zero],
+                [QuState.One, QuState.One, QuState.Zero, QuState.Zero],
+                [QuState.One, QuState.Zero, QuState.One, QuState.Zero],
+                [QuState.One, QuState.One, QuState.One, QuState.Zero],
+            ];
+            List<List<double>> adderExpected =
+            [
+                [ 1.0, 0.0, 0.0, 0.0,  0.0, 0.0, 0.0, 0.0,  0.0, 0.0, 0.0, 0.0,  0.0, 0.0, 0.0, 0.0 ],
+                [ 0.0, 0.0, 0.0, 0.0,  0.0, 0.0, 1.0, 0.0,  0.0, 0.0, 0.0, 0.0,  0.0, 0.0, 0.0, 0.0 ],
+                [ 0.0, 0.0, 0.0, 0.0,  1.0, 0.0, 0.0, 0.0,  0.0, 0.0, 0.0, 0.0,  0.0, 0.0, 0.0, 0.0 ],
+                [ 0.0, 0.0, 0.0, 0.0,  0.0, 0.0, 0.0, 0.0,  0.0, 0.0, 1.0, 0.0,  0.0, 0.0, 0.0, 0.0 ],
+
+                [ 0.0, 0.0, 0.0, 0.0,  0.0, 1.0, 0.0, 0.0,  0.0, 0.0, 0.0, 0.0,  0.0, 0.0, 0.0, 0.0 ],
+                [ 0.0, 0.0, 0.0, 0.0,  0.0, 0.0, 0.0, 0.0,  0.0, 0.0, 0.0, 1.0,  0.0, 0.0, 0.0, 0.0 ],
+                [ 0.0, 0.0, 0.0, 0.0,  0.0, 0.0, 0.0, 0.0,  0.0, 1.0, 0.0, 0.0,  0.0, 0.0, 0.0, 0.0 ],
+                [ 0.0, 0.0, 0.0, 0.0,  0.0, 0.0, 0.0, 0.0,  0.0, 0.0, 0.0, 0.0,  0.0, 0.0, 0.0, 1.0 ],
+            ];
+
+            PrepareAndRun(adder, adderStates, adderExpected); 
         }
         catch (Exception ex)
         {
