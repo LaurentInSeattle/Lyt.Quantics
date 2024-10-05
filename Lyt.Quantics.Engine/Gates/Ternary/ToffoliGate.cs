@@ -9,6 +9,8 @@ public sealed class ToffoliGate : Gate
     // qubit. That is, the target qubit (third qubit) will be inverted if the first and
     // second qubits are both 1. It is a universal reversible logic gate, which means
     // that any classical reversible circuit can be constructed from Toffoli gates. 
+    //
+    // Note: The Toffoli gate also works like a 'AND' gate.
 
     private static readonly Matrix<Complex> ToffoliMatrix;
 

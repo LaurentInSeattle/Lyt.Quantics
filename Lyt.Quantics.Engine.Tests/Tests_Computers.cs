@@ -198,7 +198,43 @@ public sealed class Tests_Computers
                 [ 0.0, 0.0, 0.0, 0.0,  0.0, 0.0, 0.0, 0.0,  0.0, 0.0, 0.0, 0.0,  0.0, 0.0, 0.0, 1.0 ],
             ];
 
-            PrepareAndRun(adder, adderStates, adderExpected); 
+            PrepareAndRun(adder, adderStates, adderExpected);
+
+            var orGate = ValidateAndBuild("OR_Gate");
+            List<List<QuState>> orGateStates =
+            [
+                [QuState.Zero, QuState.Zero, QuState.Zero],
+                [QuState.Zero, QuState.One, QuState.Zero ],
+                [QuState.One, QuState.Zero, QuState.Zero ],
+                [QuState.One, QuState.One, QuState.Zero ],
+            ];
+            List<List<double>> orGateExpected =
+            [
+                [ 0.0, 0.0, 0.0, 1.0,  0.0, 0.0, 0.0, 0.0 ],
+                [ 0.0, 0.0, 0.0, 0.0,  0.0, 1.0, 0.0, 0.0 ],
+                [ 0.0, 0.0, 0.0, 0.0,  0.0, 0.0, 1.0, 0.0 ],
+                [ 0.0, 0.0, 0.0, 0.0,  1.0, 0.0, 0.0, 0.0 ],
+            ];
+
+            PrepareAndRun(orGate, orGateStates, orGateExpected);
+
+            var andGate = ValidateAndBuild("Toffoli_Basic");
+            List<List<QuState>> andGateStates =
+            [
+                [QuState.Zero, QuState.Zero, QuState.Zero],
+                [QuState.Zero, QuState.One, QuState.Zero ],
+                [QuState.One, QuState.Zero, QuState.Zero ],
+                [QuState.One, QuState.One, QuState.Zero ],
+            ];
+            List<List<double>> andGateExpected =
+            [
+                [ 1.0, 0.0, 0.0, 0.0,  0.0, 0.0, 0.0, 0.0 ],
+                [ 0.0, 0.0, 1.0, 0.0,  0.0, 0.0, 0.0, 0.0 ],
+                [ 0.0, 1.0, 0.0, 0.0,  0.0, 0.0, 0.0, 0.0 ],
+                [ 0.0, 0.0, 0.0, 0.0,  0.0, 0.0, 0.0, 1.0 ],
+            ];
+
+            PrepareAndRun(andGate, andGateStates, andGateExpected);
         }
         catch (Exception ex)
         {

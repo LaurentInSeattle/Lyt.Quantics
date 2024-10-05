@@ -1,0 +1,38 @@
+{
+    "Name": "OR Gate",
+    "Description": "OR gate using Toffoli gate",
+    "Comment": "See: ",
+    "QuBitsCount": 3,
+    "InitialStates": [ "Zero", "Zero", "Zero" ],
+    "ExpectedFinalProbabilities": [ 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0 ],
+    "Stages": [
+        {
+            "Operators": [
+                {
+                    "QuBitIndices": [ 0 ],
+                    "GateKey": "X"
+                },
+                {
+                    "QuBitIndices": [ 1 ],
+                    "GateKey": "X"
+                }
+            ]
+        },
+        {
+            "Operators": [
+                {
+                    "QuBitIndices": [ 0, 1, 2 ],
+                    "GateKey": "CCX"
+                }
+            ]
+        },
+        {
+            "Operators": [
+                {
+                    "QuBitIndices": [ 2 ],
+                    "GateKey": "X"
+                }
+            ]
+        }
+    ]
+}

@@ -110,6 +110,16 @@ public sealed class QuComputer
             return false;
         }
 
+        if (this.ExpectedFinalProbabilities.Count != 0)
+        {
+            double sum = this.ExpectedFinalProbabilities.Sum();
+            if (!sum.AlmostEqual(1.0))
+            {
+                message = "Validate: Sum of expected probabilities is not equal to 1.";
+                return false;
+            }
+        }
+
         int stageIndex = 0;
         foreach (QuStage stage in this.Stages)
         {
@@ -160,8 +170,25 @@ public sealed class QuComputer
     {
         if (initialStates.Count != this.QuBitsCount)
         {
-            message = "Validate: Count of initial states does not match QuBit count.";
+            message = "Prepare: Count of initial states does not match QuBit count.";
             return false;
+        }
+
+        int length = this.ExpectedFinalProbabilities.Count;
+        if (length != 0)
+        {
+            if (length != MathUtilities.TwoPower(this.QuBitsCount))
+            {
+                message = "Prepare: Invalid count of expected probabilities.";
+                return false;
+            }
+
+            double sum = this.ExpectedFinalProbabilities.Sum();
+            if (!sum.AlmostEqual(1.0))
+            {
+                message = "Prepare: Sum of expected probabilities is not equal to 1.";
+                return false;
+            }
         }
 
         this.InitialStates = initialStates;
@@ -353,8 +380,8 @@ public sealed class QuComputer
                     Debug.WriteLine(
                         string.Format(
                             "Bits: {0}, Expected: {1:F2}, Returned: {2:F2}",
-                            bitValuesProbabilities[i].Item1, 
-                            this.ExpectedFinalProbabilities[i], 
+                            bitValuesProbabilities[i].Item1,
+                            this.ExpectedFinalProbabilities[i],
                             bitValuesProbabilities[i].Item2));
                 }
 
@@ -364,7 +391,7 @@ public sealed class QuComputer
         else
         {
             Debug.WriteLine("Run: Machine not defining expected probabilities.");
-        } 
+        }
 
         return true;
     }

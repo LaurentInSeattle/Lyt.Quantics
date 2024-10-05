@@ -2,27 +2,28 @@
 
 using MathNet.Numerics.LinearAlgebra;
 
+/// <summary> Base class for all gates, regardless of dimension.</summary>
 public abstract class Gate
 {
     // See: https://en.wikipedia.org/wiki/List_of_quantum_logic_gates 
 
-    // TODO: Core
-    // Random State 
-    // Partial measurement operator and collapsed states 
-    // Introduce gate parameters 
+    /// <summary> Unique idenfifier for the gate.</summary>
+    public abstract string CaptionKey { get; }
 
-    // TODO: UI 
-    // Assign Colors to gates 
-    // Gate Icons (SVG) :
-    // https://commons.wikimedia.org/w/index.php?title=Special:ListFiles&user=Geek3
-
+    /// <summary> Matrix of the gate, can be dense or sparse, Math.Net handles that for us. </summary>
     public abstract Matrix<Complex> Matrix { get; }
 
     public int Dimension => this.Matrix.RowCount;
 
+    /// <summary> Convenience human readable info.</summary>
     public abstract string Name { get; }
 
+    /// <summary> Convenience human readable info.</summary>
     public abstract string AlternateName { get; }
-    
-    public abstract string CaptionKey { get; }
+
+    /// <summary> TODO </summary>
+    public virtual string Documentation { get; set; } = string.Empty;
+ 
+    /// <summary> TODO </summary>
+    public virtual GateCategory Category { get; set; } = GateCategory.Gray;
 }

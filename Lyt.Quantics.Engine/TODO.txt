@@ -1,0 +1,12 @@
+﻿    // TODO: Core
+    //
+    // Teleportation 
+    // Random State ?? 
+    // Partial measurement operator and collapsed states ?? 
+
+    // TODO: UI 
+    //
+    // Assign Colors to gates 
+    // Gate Icons (SVG) :
+    // https://commons.wikimedia.org/w/index.php?title=Special:ListFiles&user=Geek3
+
