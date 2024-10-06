@@ -4,9 +4,11 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Computers\DenseCoding.json" />
     <None Remove="Resources\Computers\Deutsch_Balanced.json" />
     <None Remove="Resources\Computers\Deutsch_Constant.json" />
     <None Remove="Resources\Computers\EntanglementFlipped.json" />
@@ -19,11 +21,14 @@
     <None Remove="Resources\Computers\RxyzCnot_Test.json" />
     <None Remove="Resources\Computers\Rxyz_Test.json" />
     <None Remove="Resources\Computers\SX_Test.json" />
+    <None Remove="Resources\Computers\Teleport.json" />
     <None Remove="Resources\Computers\Toffoli_Basic.json" />
     <None Remove="Resources\Entanglement.json" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Resources\Computers\DenseCoding.json" />
+    <EmbeddedResource Include="Resources\Computers\Teleport.json" />
     <EmbeddedResource Include="Resources\Computers\OR_Gate.json" />
     <EmbeddedResource Include="Resources\Computers\Deutsch_Balanced.json" />
     <EmbeddedResource Include="Resources\Computers\Deutsch_Constant.json" />

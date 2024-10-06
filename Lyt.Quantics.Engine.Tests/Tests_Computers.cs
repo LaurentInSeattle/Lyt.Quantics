@@ -172,7 +172,13 @@ public sealed class Tests_Computers
                 }
             }
 
-            var adder = ValidateAndBuild("FullAdder");
+            static void ManyRuns(
+                string resourceFileName, List<List<QuState>> states, List<List<double>> expected)
+            {
+                var adder = ValidateAndBuild(resourceFileName);
+                PrepareAndRun(adder, states, expected);
+            }
+
             List<List<QuState>> adderStates =
             [
                 [QuState.Zero, QuState.Zero, QuState.Zero, QuState.Zero],
@@ -197,10 +203,8 @@ public sealed class Tests_Computers
                 [ 0.0, 0.0, 0.0, 0.0,  0.0, 0.0, 0.0, 0.0,  0.0, 1.0, 0.0, 0.0,  0.0, 0.0, 0.0, 0.0 ],
                 [ 0.0, 0.0, 0.0, 0.0,  0.0, 0.0, 0.0, 0.0,  0.0, 0.0, 0.0, 0.0,  0.0, 0.0, 0.0, 1.0 ],
             ];
+            ManyRuns("FullAdder", adderStates, adderExpected); 
 
-            PrepareAndRun(adder, adderStates, adderExpected);
-
-            var orGate = ValidateAndBuild("OR_Gate");
             List<List<QuState>> orGateStates =
             [
                 [QuState.Zero, QuState.Zero, QuState.Zero],
@@ -215,10 +219,8 @@ public sealed class Tests_Computers
                 [ 0.0, 0.0, 0.0, 0.0,  0.0, 0.0, 1.0, 0.0 ],
                 [ 0.0, 0.0, 0.0, 0.0,  1.0, 0.0, 0.0, 0.0 ],
             ];
+            ManyRuns("OR_Gate", orGateStates, orGateExpected);
 
-            PrepareAndRun(orGate, orGateStates, orGateExpected);
-
-            var andGate = ValidateAndBuild("Toffoli_Basic");
             List<List<QuState>> andGateStates =
             [
                 [QuState.Zero, QuState.Zero, QuState.Zero],
@@ -233,8 +235,20 @@ public sealed class Tests_Computers
                 [ 0.0, 1.0, 0.0, 0.0,  0.0, 0.0, 0.0, 0.0 ],
                 [ 0.0, 0.0, 0.0, 0.0,  0.0, 0.0, 0.0, 1.0 ],
             ];
+            ManyRuns("Toffoli_Basic", andGateStates, andGateExpected);
 
-            PrepareAndRun(andGate, andGateStates, andGateExpected);
+            List<List<QuState>> teleporterStates =
+            [
+                [QuState.Zero, QuState.Zero, QuState.Zero],
+                [QuState.One, QuState.Zero, QuState.Zero ],
+            ];
+            List<List<double>> teleporterExpected =
+            [
+                [0.0, 0.0, 0.25, 0.25, 0.25, 0.25, 0.0, 0.0],
+                [ 0.25, 0.25, 0.0, 0.0, 0.0, 0.0, 0.25, 0.25 ],
+            ];
+            ManyRuns("Teleport", teleporterStates, teleporterExpected);
+
         }
         catch (Exception ex)
         {

@@ -3,20 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35309.182
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lyt.Quantics.Engine", "Lyt.Quantics.Engine\Lyt.Quantics.Engine.csproj", "{9FBCC785-EF96-4A5D-B65F-997119801598}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lyt.Quantics.Engine", "Lyt.Quantics.Engine\Lyt.Quantics.Engine.csproj", "{9FBCC785-EF96-4A5D-B65F-997119801598}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2BB989A8-0887-441E-8648-912042EE4F8D}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lyt.Quantics.Engine.Tests", "Lyt.Quantics.Engine.Tests\Lyt.Quantics.Engine.Tests.csproj", "{A3689409-5E54-4EA0-8AF5-39E71A9A43DB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lyt.QuantumSimulator", "Lyt.QuantumSimulator\Lyt.QuantumSimulator.csproj", "{9468B341-5D70-40EF-A338-02865A05C2E2}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lyt.QuantumSimulator.UnitTests", "Lyt.QuantumSimulator.UnitTests\Lyt.QuantumSimulator.UnitTests.csproj", "{20F00974-EAA6-4867-B787-545CA89C2A0D}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OtherImplementation", "OtherImplementation", "{968BEB89-5DEE-40A0-AB99-8343C3A7E550}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lyt.Quantics.Engine.Tests", "Lyt.Quantics.Engine.Tests\Lyt.Quantics.Engine.Tests.csproj", "{A3689409-5E54-4EA0-8AF5-39E71A9A43DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,21 +26,9 @@ Global
 		{A3689409-5E54-4EA0-8AF5-39E71A9A43DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3689409-5E54-4EA0-8AF5-39E71A9A43DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3689409-5E54-4EA0-8AF5-39E71A9A43DB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9468B341-5D70-40EF-A338-02865A05C2E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9468B341-5D70-40EF-A338-02865A05C2E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9468B341-5D70-40EF-A338-02865A05C2E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9468B341-5D70-40EF-A338-02865A05C2E2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{20F00974-EAA6-4867-B787-545CA89C2A0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{20F00974-EAA6-4867-B787-545CA89C2A0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{20F00974-EAA6-4867-B787-545CA89C2A0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{20F00974-EAA6-4867-B787-545CA89C2A0D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{9468B341-5D70-40EF-A338-02865A05C2E2} = {968BEB89-5DEE-40A0-AB99-8343C3A7E550}
-		{20F00974-EAA6-4867-B787-545CA89C2A0D} = {968BEB89-5DEE-40A0-AB99-8343C3A7E550}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AE3F677D-2838-47EE-8DB0-77930CEA80A9}
