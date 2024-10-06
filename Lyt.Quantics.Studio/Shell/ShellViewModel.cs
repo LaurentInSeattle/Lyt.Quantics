@@ -8,8 +8,7 @@ public sealed class ShellViewModel : Bindable<ShellView>
     private readonly IMessenger messenger;
     private readonly IProfiler profiler;
 
-    public ShellViewModel(
-        IToaster toaster, IMessenger messenger, IProfiler profiler)
+    public ShellViewModel(IToaster toaster, IMessenger messenger, IProfiler profiler)
     {
         this.toaster = toaster;
         this.messenger = messenger;

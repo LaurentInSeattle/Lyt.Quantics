@@ -37,11 +37,18 @@
 			Fill="#70000020"
             Grid.ColumnSpan="1" Grid.RowSpan="999"
 			/>
+		<Image
+            Stretch="UniformToFill"
+            Source="\Assets\Images\ket.png"
+            Grid.Row="0" Margin="8 0 0 0"
+			VerticalAlignment="Center" HorizontalAlignment="Left"
+			Height="28" Width="28"
+            />
 		<TextBlock 
 			Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
 			Text="Quantics Studio" 
 			HorizontalAlignment="Left" VerticalAlignment="Center"
-			Margin="16 0 0 0"
+			Margin="48 0 0 0"
 			FontSize="24" 
 			FontStyle="Italic"
 			Foreground="{x:Static theme:ColorTheme.UiText}"
@@ -51,7 +58,7 @@
 			Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
 			Text="Version 0.0.1"
 			HorizontalAlignment="Left" VerticalAlignment="Center"
-			Margin="220 0 0 0"
+			Margin="260 0 0 0"
 			FontSize="12"
 			FontStyle="Normal"
 			Foreground="{x:Static theme:ColorTheme.UiText}"
