@@ -145,10 +145,9 @@ public sealed class ShellViewModel : Bindable<ShellView>
             vm.CreateViewAndBind();
         }
 
-        //CreateAndBind<IntroViewModel, IntroView>();
-        //CreateAndBind<SetupViewModel, SetupView>();
-        //CreateAndBind<NewParticipantViewModel, NewParticipantView>();
-        //CreateAndBind<GameViewModel, GameView>();
-        //CreateAndBind<GameOverViewModel, GameOverView>();
+        CreateAndBind<IntroViewModel, IntroView>();
+        CreateAndBind<SaveViewModel, SaveView>();
+        CreateAndBind<LoadViewModel, LoadView>();
+        CreateAndBind<RunViewModel, RunView>();
     }
 }

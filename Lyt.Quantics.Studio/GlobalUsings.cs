@@ -1,5 +1,4 @@
-﻿
-#region System + MSFT 
+﻿#region System + MSFT 
 
 global using System;
 global using System.Collections;
@@ -83,11 +82,10 @@ global using Lyt.Quantics.Engine;
 
 global using Lyt.Quantics.Studio;
 global using Lyt.Quantics.Studio.Messaging;
-//global using Lyt.Quantics.Studio.Model;
-//global using Lyt.Quantics.Studio.Model.History;
+global using Lyt.Quantics.Studio.Model;
 global using Lyt.Quantics.Studio.Shell;
 //global using Lyt.Quantics.Studio.Utilities;
-//global using Lyt.Quantics.Studio.Workflow.Intro;
-//global using Lyt.Quantics.Studio.Workflow.Load;
-//global using Lyt.Quantics.Studio.Workflow.Run;
-//global using Lyt.Quantics.Studio.Workflow.Save;
+global using Lyt.Quantics.Studio.Workflow.Intro;
+global using Lyt.Quantics.Studio.Workflow.Load;
+global using Lyt.Quantics.Studio.Workflow.Run;
+global using Lyt.Quantics.Studio.Workflow.Save;

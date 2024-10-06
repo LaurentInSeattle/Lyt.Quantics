@@ -35,11 +35,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Model\" />
     <Folder Include="Utilities\" />
-    <Folder Include="Workflow\Intro\" />
-    <Folder Include="Workflow\Load\" />
-    <Folder Include="Workflow\Save\" />
-    <Folder Include="Workflow\Run\" />
   </ItemGroup>
 </Project>

@@ -17,15 +17,15 @@ public partial class App : ApplicationBase
         [
             // Models 
             typeof(FileManagerModel),
-            //typeof(StudioModel),
+            typeof(QuanticsStudioModel),
         ],
         [
            // Singletons
            typeof(ShellViewModel),
-           //typeof(IntroViewModel),
-           //typeof(LoadViewModel),
-           //typeof(RunViewModel),
-           //typeof(SaveViewModel),
+           typeof(IntroViewModel),
+           typeof(LoadViewModel),
+           typeof(RunViewModel),
+           typeof(SaveViewModel),
         ],
         [
             // Services 
