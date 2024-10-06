@@ -1,0 +1,27 @@
+<Window 
+    x:Class="Lyt.Quantics.Studio.Shell.MainWindow"
+	xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" d:DesignWidth="1080" d:DesignHeight="640"
+    Icon="/Assets/Images/ket.ico"
+    Title="Quantics Studio"
+	Width="1080" Height="640"
+	MinWidth="400" MinHeight="360"
+	SizeToContent="Manual"
+	>
+	<Grid
+		x:Name="MainWindowGrid"
+		>
+		<Image
+            Stretch="UniformToFill"
+            Source="\Assets\Images\dark.jpg"
+            Grid.ColumnSpan="999" Grid.RowSpan="999"
+            />
+		<Rectangle
+			Fill="#20000020"
+            Grid.ColumnSpan="999" Grid.RowSpan="999"
+			/>
+	</Grid>
+</Window>

@@ -1,0 +1,82 @@
+<UserControl 
+    x:Class="Lyt.Quantics.Studio.Shell.ShellView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:glyphs="clr-namespace:Lyt.Avalonia.Controls.Glyphs;assembly=Lyt.Avalonia.Controls"
+    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+    xmlns:vm="clr-namespace:Lyt.Quantics.Studio.Shell"
+    x:DataType="vm:ShellViewModel" 
+    xmlns:theme="clr-namespace:Lyt.Quantics.Studio"
+    Background="Transparent"
+    >
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+         to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:ShellViewModel />
+    </Design.DataContext>
+
+	<Grid
+        x:Name="InnerGrid"
+        Background="Transparent"
+        >
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="0" />
+			<ColumnDefinition Width="*" />
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="32" MaxHeight="32" />
+			<RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+		<Rectangle
+			Fill="#70000020"
+            Grid.Column="1" Grid.ColumnSpan="999" Grid.RowSpan="1"
+			/>
+		<Rectangle
+			Fill="#70000020"
+            Grid.ColumnSpan="1" Grid.RowSpan="999"
+			/>
+		<TextBlock 
+			Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+			Text="Quantics Studio" 
+			HorizontalAlignment="Left" VerticalAlignment="Center"
+			Margin="16 0 0 0"
+			FontSize="24" 
+			FontStyle="Italic"
+			Foreground="{x:Static theme:ColorTheme.UiText}"
+			TextWrapping="Wrap"
+			/>
+		<TextBlock
+			Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+			Text="Version 0.0.1"
+			HorizontalAlignment="Left" VerticalAlignment="Center"
+			Margin="220 0 0 0"
+			FontSize="12"
+			FontStyle="Normal"
+			Foreground="{x:Static theme:ColorTheme.UiText}"
+			TextWrapping="Wrap"
+			/>
+		<TextBlock
+			Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+			Text="Copyright 2024-2025 Laurent Yves Testud.    Provided to you under the terms of the MIT License. (No warranty of any kind.)"
+			HorizontalAlignment="Right" VerticalAlignment="Center"
+			Margin="0 0 16 0"
+			FontSize="12"
+			FontStyle="Normal"
+			Foreground="{x:Static theme:ColorTheme.UiText}"
+			TextWrapping="Wrap"
+			/>
+		<!-- Do not add rows and/or columns to the toaster host-->
+		<Grid
+			x:Name="ToasterHost"
+			Grid.Column="1" Grid.Row="1"
+			VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+			> 			
+			<ContentControl
+				x:Name="ShellViewContent"
+				VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+				/>
+		</Grid>
+	</Grid>
+</UserControl>
