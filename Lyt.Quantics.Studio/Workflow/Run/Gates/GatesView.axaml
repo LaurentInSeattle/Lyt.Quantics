@@ -8,5 +8,9 @@
     xmlns:vm="clr-namespace:Lyt.Quantics.Studio.Workflow.Run.Gates"
     x:DataType="vm:GatesViewModel" 
     xmlns:theme="clr-namespace:Lyt.Quantics.Studio"
+	Width="340" 
+	Background="Aquamarine"
+	Opacity="0.3"
+	VerticalAlignment="Stretch"
 	>
 </UserControl>

@@ -1,16 +1,18 @@
 <UserControl 
-	x:Class="Lyt.Quantics.Studio.Workflow.Run.Code.CodeView"
+	x:Class="Lyt.Quantics.Studio.Workflow.Run.Code.CodeToolbarView"
 	xmlns="https://github.com/avaloniaui"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
     xmlns:vm="clr-namespace:Lyt.Quantics.Studio.Workflow.Run.Code"
-    x:DataType="vm:CodeViewModel" 
+    x:DataType="vm:CodeToolbarViewModel" 
     xmlns:theme="clr-namespace:Lyt.Quantics.Studio"
-	Width="360" 
-	Background="LemonChiffon"
-	Opacity="0.6"
-	VerticalAlignment="Stretch"
-	>
+    >
+    <Grid
+        Background="LemonChiffon"
+        Height="38" Width="100"
+        > 
+        
+    </Grid>
 </UserControl>

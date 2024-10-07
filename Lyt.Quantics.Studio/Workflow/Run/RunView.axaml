@@ -21,9 +21,9 @@
 			Grid.Row="0"
 			>
 			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="320" />
+				<ColumnDefinition Width="Auto" />
 				<ColumnDefinition Width="*" />
-				<ColumnDefinition Width="420" />
+				<ColumnDefinition Width="Auto" />
 			</Grid.ColumnDefinitions>
 			<ContentControl
 				Grid.Column="0"
@@ -31,13 +31,16 @@
 				/>
 			<ContentControl
 				Grid.Column="1"
+				Content="{Binding Computer}"
 				/>
 			<ContentControl
 				Grid.Column="2"
+				Content="{Binding Code}"
 				/>
 		</Grid>
 		<ContentControl
 			Grid.Row="1"
-				/>
+			Content="{Binding Histogram}"
+			/>
 	</Grid>
 </UserControl>

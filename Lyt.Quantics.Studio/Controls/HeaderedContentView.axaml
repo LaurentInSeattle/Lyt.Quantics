@@ -24,9 +24,8 @@
 				>
 				<Grid.RowDefinitions>
 					<RowDefinition Height="6"/>
-					<RowDefinition Height="48"/>
-					<RowDefinition Height="Auto"/>
-					<RowDefinition Height="2"/>
+					<RowDefinition Height="56"/>
+					<RowDefinition Height="*"/>
 				</Grid.RowDefinitions>
 				<Rectangle
 					Grid.Row="0"
@@ -39,13 +38,14 @@
 					Fill="#60202040"
 					/>
 				<glyphs:GlyphButton
+					IsVisible="{Binding IsCollapseVisible}"
 					Grid.Row="1"
 					Style="{StaticResource ToolbarIconButton}"
 					Behaviour="Tap"
 					HorizontalAlignment="Left" VerticalAlignment="Center"
 					Width="48" Height="48"
 					Margin="4"
-					GlyphSource="chevron_left"
+					GlyphSource="{Binding CollapseIconSource}"
 					ButtonBackground="BorderlessRectangle"
 					GlyphStrokeThickness="0"
 					Text="Collapse"
@@ -55,7 +55,7 @@
 					Grid.Row="1" Grid.Column="0"
 					Text="{Binding Title}"
 					HorizontalAlignment="Left" VerticalAlignment="Center"
-					Margin="64 0 0 0"
+					Margin="96 0 0 0"
 					FontSize="24"
 					Foreground="{StaticResource LightAqua_0_080}"
 					TextWrapping="Wrap"
@@ -64,12 +64,14 @@
 					x:Name="ToolbarContent"
 					Grid.Row="1"
 					HorizontalAlignment="Right" VerticalAlignment="Center"
+					Margin="0 0 12 0"
 					Content="{Binding Toolbar}"
 					/>
 				<ContentControl
 					x:Name="ExpandedContent"
 					Grid.Row="2"
 					Content="{Binding ContentView}"
+					VerticalAlignment="Stretch"
 					/>
 			</Grid>
 		</Border>
@@ -86,7 +88,7 @@
 				>
 				<Grid.RowDefinitions>
 					<RowDefinition Height="6"/>
-					<RowDefinition Height="48"/>
+					<RowDefinition Height="56"/>
 					<RowDefinition Height="*"/>
 				</Grid.RowDefinitions>
 				<Rectangle
@@ -106,7 +108,7 @@
 					HorizontalAlignment="Center" VerticalAlignment="Center"
 					Width="48" Height="48"
 					Margin="4"
-					GlyphSource="chevron_right"
+					GlyphSource="{Binding ExpandIconSource}"
 					ButtonBackground="BorderlessRectangle"
 					GlyphStrokeThickness="0"
 					Text="Expand"

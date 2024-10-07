@@ -8,5 +8,8 @@
     xmlns:vm="clr-namespace:Lyt.Quantics.Studio.Workflow.Run.Histogram"
     x:DataType="vm:HistogramViewModel" 
     xmlns:theme="clr-namespace:Lyt.Quantics.Studio"
+	Background="DodgerBlue"
+	Opacity="0.3"
+	VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
 	>
 </UserControl>
