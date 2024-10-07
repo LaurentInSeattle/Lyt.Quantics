@@ -37,4 +37,10 @@
   <ItemGroup>
     <Folder Include="Utilities\" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Controls\HeaderedContentView.axaml.cs">
+      <DependentUpon>HeaderedContentView.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
 </Project>

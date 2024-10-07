@@ -81,6 +81,7 @@ global using Lyt.Avalonia.Persistence;
 global using Lyt.Quantics.Engine;
 
 global using Lyt.Quantics.Studio;
+global using Lyt.Quantics.Studio.Controls;
 global using Lyt.Quantics.Studio.Messaging;
 global using Lyt.Quantics.Studio.Model;
 global using Lyt.Quantics.Studio.Shell;
@@ -88,4 +89,9 @@ global using Lyt.Quantics.Studio.Shell;
 global using Lyt.Quantics.Studio.Workflow.Intro;
 global using Lyt.Quantics.Studio.Workflow.Load;
 global using Lyt.Quantics.Studio.Workflow.Run;
+global using Lyt.Quantics.Studio.Workflow.Run.Code;
+global using Lyt.Quantics.Studio.Workflow.Run.Computer;
+global using Lyt.Quantics.Studio.Workflow.Run.Gates;
+global using Lyt.Quantics.Studio.Workflow.Run.Histogram;
 global using Lyt.Quantics.Studio.Workflow.Save;
+

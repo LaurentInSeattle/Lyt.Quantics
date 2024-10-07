@@ -25,17 +25,18 @@
 				<ColumnDefinition Width="*" />
 				<ColumnDefinition Width="420" />
 			</Grid.ColumnDefinitions>
-			<header:HeaderedContentControl 
+			<ContentControl
 				Grid.Column="0"
+				Content="{Binding Gates}"
 				/>
-			<header:HeaderedContentControl
+			<ContentControl
 				Grid.Column="1"
 				/>
-			<header:HeaderedContentControl
+			<ContentControl
 				Grid.Column="2"
 				/>
 		</Grid>
-		<header:HeaderedContentControl
+		<ContentControl
 			Grid.Row="1"
 				/>
 	</Grid>

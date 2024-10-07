@@ -5,16 +5,11 @@ using static Lyt.Quantics.Studio.Messaging.ViewActivationMessage;
 public sealed class ShellViewModel : Bindable<ShellView>
 {
     private readonly IToaster toaster;
-    private readonly IMessenger messenger;
-    private readonly IProfiler profiler;
 
-    public ShellViewModel(IToaster toaster, IMessenger messenger, IProfiler profiler)
+    public ShellViewModel(IToaster toaster)
     {
         this.toaster = toaster;
-        this.messenger = messenger;
-        this.profiler = profiler;
-
-        this.messenger.Subscribe<ViewActivationMessage>(this.OnViewActivation);
+        this.Messenger.Subscribe<ViewActivationMessage>(this.OnViewActivation);
     }
 
     protected override void OnViewLoaded()
@@ -43,7 +38,7 @@ public sealed class ShellViewModel : Bindable<ShellView>
         this.toaster.Show(
             "Welcome to Quantics Studio!",
             "An interactive playground for Quantum Computing...",
-            3333_000, InformationLevel.Info);
+            3_000, InformationLevel.Info);
         this.Logger.Debug("OnViewLoaded complete");
     }
 
@@ -131,7 +126,7 @@ public sealed class ShellViewModel : Bindable<ShellView>
 
         if (!isFirstActivation)
         {
-            this.profiler.MemorySnapshot(newViewModel.View.GetType().Name + ":  Activated");
+            this.Profiler.MemorySnapshot(newViewModel.View.GetType().Name + ":  Activated");
         }
     }
 

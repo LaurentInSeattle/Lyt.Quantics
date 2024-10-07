@@ -1,0 +1,131 @@
+<UserControl 
+    x:Class="Lyt.Quantics.Studio.Controls.HeaderedContentView"
+	xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+	xmlns:glyphs="clr-namespace:Lyt.Avalonia.Controls.Glyphs;assembly=Lyt.Avalonia.Controls"
+    xmlns:vm="clr-namespace:Lyt.Quantics.Studio.Controls"
+    xmlns:header="clr-namespace:Lyt.Quantics.Studio.Controls"
+    x:DataType="vm:HeaderedContentViewModel" 
+    xmlns:theme="clr-namespace:Lyt.Quantics.Studio"
+	>
+	<Grid>
+		<!-- Expanded Layout-->
+		<Border
+			IsVisible="{Binding IsExpanded}"
+			Margin ="2"
+			BorderThickness="1.0"
+			BorderBrush="{StaticResource ResourceKey= LightAqua_2_100}"
+			Background="Transparent"
+			>		
+			<Grid
+				>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="6"/>
+					<RowDefinition Height="48"/>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="2"/>
+				</Grid.RowDefinitions>
+				<Rectangle
+					Grid.Row="0"
+					VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+					Fill="{StaticResource ResourceKey= OrangePeel_2_080}"
+					/>
+				<Rectangle
+					Grid.Row="1"
+					VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+					Fill="#60202040"
+					/>
+				<glyphs:GlyphButton
+					Grid.Row="1"
+					Style="{StaticResource ToolbarIconButton}"
+					Behaviour="Tap"
+					HorizontalAlignment="Left" VerticalAlignment="Center"
+					Width="48" Height="48"
+					Margin="4"
+					GlyphSource="chevron_left"
+					ButtonBackground="BorderlessRectangle"
+					GlyphStrokeThickness="0"
+					Text="Collapse"
+					Command="{Binding CollapseCommand}"
+	    			/>
+				<TextBlock
+					Grid.Row="1" Grid.Column="0"
+					Text="{Binding Title}"
+					HorizontalAlignment="Left" VerticalAlignment="Center"
+					Margin="64 0 0 0"
+					FontSize="24"
+					Foreground="{StaticResource LightAqua_0_080}"
+					TextWrapping="Wrap"
+					/>
+				<ContentControl
+					x:Name="ToolbarContent"
+					Grid.Row="1"
+					HorizontalAlignment="Right" VerticalAlignment="Center"
+					Content="{Binding Toolbar}"
+					/>
+				<ContentControl
+					x:Name="ExpandedContent"
+					Grid.Row="2"
+					Content="{Binding ContentView}"
+					/>
+			</Grid>
+		</Border>
+		<!-- Collapsed Layout-->
+		<Border
+			IsVisible="{Binding IsCollapsed}"
+			Margin ="2"
+			BorderThickness="1.0"
+			BorderBrush="{StaticResource ResourceKey= LightAqua_2_100}"
+			Background="Transparent"
+			Width="56"
+			>
+			<Grid
+				>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="6"/>
+					<RowDefinition Height="48"/>
+					<RowDefinition Height="*"/>
+				</Grid.RowDefinitions>
+				<Rectangle
+					Grid.Row="0"
+					VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+					Fill="{StaticResource ResourceKey= OrangePeel_2_080}"
+					/>
+				<Rectangle
+					Grid.Row="1"
+					VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+					Fill="#60202040"
+					/>
+				<glyphs:GlyphButton
+					Grid.Row="1"
+					Style="{StaticResource ToolbarIconButton}"
+					Behaviour="Tap"
+					HorizontalAlignment="Center" VerticalAlignment="Center"
+					Width="48" Height="48"
+					Margin="4"
+					GlyphSource="chevron_right"
+					ButtonBackground="BorderlessRectangle"
+					GlyphStrokeThickness="0"
+					Text="Expand"
+					Command="{Binding ExpandCommand}"
+	    			/>
+				<TextBlock
+					Grid.Row="2" Grid.Column="0"
+					Text="{Binding Title}"
+					HorizontalAlignment="Center" VerticalAlignment="Center"
+					Margin="0 0 0 120"
+					FontSize="20"
+					Width="300"
+					Foreground="{StaticResource LightAqua_0_080}"
+					>
+					<TextBlock.RenderTransform>
+						<RotateTransform Angle="270" />
+					</TextBlock.RenderTransform>
+				</TextBlock>
+			</Grid>
+		</Border>
+	</Grid>
+</UserControl>
