@@ -35,7 +35,7 @@ public sealed class ShellViewModel : Bindable<ShellView>
 
         this.Logger.Debug("OnViewLoaded BindGroupIcons complete");
 
-        this.OnViewActivation(ActivatedView.Intro, parameter: null, isFirstActivation: true);
+        this.OnViewActivation(ActivatedView.Run, parameter: null, isFirstActivation: true);
         this.Logger.Debug("OnViewLoaded OnViewActivation complete");
 
         // Ready 
@@ -43,7 +43,7 @@ public sealed class ShellViewModel : Bindable<ShellView>
         this.toaster.Show(
             "Welcome to Quantics Studio!",
             "An interactive playground for Quantum Computing...",
-            3_000, InformationLevel.Info);
+            3333_000, InformationLevel.Info);
         this.Logger.Debug("OnViewLoaded complete");
     }
 
@@ -87,7 +87,7 @@ public sealed class ShellViewModel : Bindable<ShellView>
                 break;
 
             case ActivatedView.Run:
-                // this.Activate<NewParticipantViewModel, NewParticipantView>(isFirstActivation, null);
+                this.Activate<RunViewModel, RunView>(isFirstActivation, null);
                 break;
 
             case ActivatedView.Save:

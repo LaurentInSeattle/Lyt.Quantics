@@ -8,14 +8,14 @@
         <Border Padding="20" Background="Transparent" Width="400" Height="200">
 			<glyphs:GlyphButton 
 				Theme="{StaticResource ToolbarIconButton}"
-				GlyphSource="person"
+				GlyphSource="info"
 				Text="Login"
 				GlyphStrokeThickness="0"
 				/>
         </Border>
     </Design.PreviewWith>
 
-	<system:String x:Key="Toast.Dismiss">Chuidi</system:String>
+	<system:String x:Key="Toast.Dismiss">Close</system:String>
 
 	<ControlTheme x:Key="GlyphButtonTypography" TargetType="TextBlock">
 		<Setter Property="Background" Value="Transparent"/>

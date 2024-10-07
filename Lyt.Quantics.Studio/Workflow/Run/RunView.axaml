@@ -4,9 +4,39 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+	mc:Ignorable="d" d:DesignWidth="1080" d:DesignHeight="450"
     xmlns:vm="clr-namespace:Lyt.Quantics.Studio.Workflow.Run"
+    xmlns:header="clr-namespace:Lyt.Quantics.Studio.Controls"
     x:DataType="vm:RunViewModel" 
     xmlns:theme="clr-namespace:Lyt.Quantics.Studio"
 	>
+	<Grid
+		Margin="4"
+		>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*" />
+			<RowDefinition Height="320" />
+		</Grid.RowDefinitions>
+		<Grid
+			Grid.Row="0"
+			>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="320" />
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="420" />
+			</Grid.ColumnDefinitions>
+			<header:HeaderedContentControl 
+				Grid.Column="0"
+				/>
+			<header:HeaderedContentControl
+				Grid.Column="1"
+				/>
+			<header:HeaderedContentControl
+				Grid.Column="2"
+				/>
+		</Grid>
+		<header:HeaderedContentControl
+			Grid.Row="1"
+				/>
+	</Grid>
 </UserControl>
