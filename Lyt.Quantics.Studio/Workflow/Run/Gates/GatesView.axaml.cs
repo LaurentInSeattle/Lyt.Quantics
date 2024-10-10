@@ -11,18 +11,14 @@ public partial class GatesView : UserControl
     private void OnLoaded(object? sender, RoutedEventArgs e)
     {
         DragDrop.SetAllowDrop(this, true);
-        this.AddHandler(
-            DragDrop.DragOverEvent,
-            this.OnDragOver,
-            RoutingStrategies.Direct | RoutingStrategies.Bubble | RoutingStrategies.Tunnel,
-            handledEventsToo: true);
+        this.AddHandler(DragDrop.DragOverEvent, this.OnDragOver);
         this.AddHandler(DragDrop.DropEvent, this.OnDrop);
     }
 
     private void OnDragOver(object? sender, DragEventArgs dragEventArgs)
     {
         // Debug.WriteLine("On Drag Over Gates View");
-        dragEventArgs.DragEffects = DragDropEffects.Move;
+        dragEventArgs.DragEffects = DragDropEffects.None;
         var data = dragEventArgs.Data;
         if (data.Get(GateViewModel.CustomDragAndDropFormat) is GateViewModel gateViewModel)
         {
@@ -30,22 +26,9 @@ public partial class GatesView : UserControl
         }
     }
 
-    private void OnDrop(object? sender, DragEventArgs e)
+    private void OnDrop(object? sender, DragEventArgs dragEventArgs)
     {
-        Debug.WriteLine("Drop");
-
-        var data = e.Data.Get(GateViewModel.CustomDragAndDropFormat);
-        if (data is not GateViewModel gateViewModel)
-        {
-            Debug.WriteLine("No data");
-            return;
-        }
-
-        if (this.DataContext is not GatesViewModel gatesViewModel)
-        {
-            return;
-        }
-
-        // gatesViewModel.Drop(gateViewModel);
+        // Debug.WriteLine("Drop");
+        dragEventArgs.DragEffects = DragDropEffects.None;
     }
 }

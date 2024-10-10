@@ -1,7 +1,3 @@
-using Avalonia.Controls;
-using Avalonia.Input;
-using Lyt.Quantics.Studio.Workflow.Save;
-
 namespace Lyt.Quantics.Studio.Workflow.Run.Gates;
 
 public partial class GateView : UserControl
@@ -122,7 +118,7 @@ public partial class GateView : UserControl
         this.ghostView = new GateView(isGhost:true)
         {
             DataContext = gateViewModel,
-            Opacity = 1.0,
+            Opacity = 0.8,
             ZIndex = 999_999,
         };
 
@@ -144,8 +140,6 @@ public partial class GateView : UserControl
             return;
         }
 
-        // Debugger.Break();
-        // pointerEventArgs.Source = this;
         this.UnhookPointerEvents();
         canvas.Children.Add(this.ghostView);
         this.AdjustGhostPosition(pointerEventArgs.GetPosition(canvas));
@@ -168,10 +162,6 @@ public partial class GateView : UserControl
     public void OnParentDragOver(DragEventArgs dragEventArgs)
     {
         // Debug.WriteLine("On Drag Over Gate");
-
-        // set drag cursor icon
-        dragEventArgs.DragEffects = DragDropEffects.Move;
-
         if (!this.ValidateGhost(out Canvas? canvas))
         {
             return;
@@ -179,20 +169,11 @@ public partial class GateView : UserControl
 
         Point position = dragEventArgs.GetPosition(canvas!);
         this.AdjustGhostPosition(position);
-
-        //if (DataContext is not DragAndDropPageViewModel vm) return;
-        //var data = e.Data.Get(DragAndDropPageViewModel.CustomFormat);
-        //if (data is not TaskItem taskItem) return;
-        //if (!vm.IsDestinationValid(taskItem, (e.Source as Control)?.Name))
-        //{
-        //    e.DragEffects = DragDropEffects.None;
-        //}
     }
 
     private void AdjustGhostPosition(Point position)
     {
         // Debug.WriteLine("AdjustGhostPosition from point");
-
         if (!this.ValidateGhost(out Canvas? _))
         {
             return;
@@ -205,8 +186,7 @@ public partial class GateView : UserControl
 
     private void AdjustGhostPosition(PointerEventArgs pointerEventArgs)
     {
-        Debug.WriteLine("AdjustGhostPosition from pointer");
-
+        // Debug.WriteLine("AdjustGhostPosition from pointer");
         if (!this.ValidateGhost(out Canvas? canvas))
         {
             return;

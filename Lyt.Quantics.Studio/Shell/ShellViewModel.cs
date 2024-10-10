@@ -38,7 +38,7 @@ public sealed class ShellViewModel : Bindable<ShellView>
         this.toaster.Show(
             "Welcome to Quantics Studio!",
             "An interactive playground for Quantum Computing...",
-            5_000, InformationLevel.Info);
+            4_000, InformationLevel.Info);
         this.Logger.Debug("OnViewLoaded complete");
     }
 

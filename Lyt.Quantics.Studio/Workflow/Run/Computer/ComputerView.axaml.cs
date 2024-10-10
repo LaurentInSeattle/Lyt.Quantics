@@ -1,3 +1,5 @@
+using Avalonia.Input;
+
 namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
 
 public partial class ComputerView : UserControl
@@ -5,41 +7,38 @@ public partial class ComputerView : UserControl
     public ComputerView()
     {
         this.InitializeComponent();
-        this.AddHandler(
-            DragDrop.DragOverEvent,
-            this.OnDragOver,
-            RoutingStrategies.Direct | RoutingStrategies.Bubble | RoutingStrategies.Tunnel,
-            handledEventsToo: true);
+        this.AddHandler(DragDrop.DragOverEvent,this.OnDragOver);
         this.AddHandler(DragDrop.DropEvent, this.OnDrop);
     }
 
     private void OnDragOver(object? sender, DragEventArgs dragEventArgs)
     {
         // Debug.WriteLine("On Drag Over Gates View");
-        dragEventArgs.DragEffects = DragDropEffects.Move;
+        dragEventArgs.DragEffects = DragDropEffects.None;
         var data = dragEventArgs.Data;
         if (data.Get(GateViewModel.CustomDragAndDropFormat) is GateViewModel gateViewModel)
         {
             gateViewModel.View.OnParentDragOver(dragEventArgs);
         }
+
+        if (this.DataContext is ComputerViewModel computerViewModel)
+        {
+            if ( computerViewModel.CanDrop (dragEventArgs.GetPosition(this)))
+            {
+                dragEventArgs.DragEffects = DragDropEffects.Move;
+            }
+        } 
     }
 
-    private void OnDrop(object? sender, DragEventArgs e)
+    private void OnDrop(object? sender, DragEventArgs dragEventArgs)
     {
-        Debug.WriteLine("Drop");
-
-        var data = e.Data.Get(GateViewModel.CustomDragAndDropFormat);
-        if (data is not GateViewModel gateViewModel)
+        var data = dragEventArgs.Data.Get(GateViewModel.CustomDragAndDropFormat);
+        if (data is GateViewModel gateViewModel)
         {
-            Debug.WriteLine("No data");
-            return;
+            if (this.DataContext is ComputerViewModel computerViewModel)
+            {
+                computerViewModel.OnDrop(dragEventArgs.GetPosition(this), gateViewModel);
+            }
         }
-
-        if (this.DataContext is not GatesViewModel gatesViewModel)
-        {
-            return;
-        }
-
-        // gatesViewModel.Drop(gateViewModel);
     }
 }
