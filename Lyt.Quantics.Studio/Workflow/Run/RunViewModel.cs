@@ -8,13 +8,12 @@ public sealed class RunViewModel : Bindable<RunView>
 
     protected override void OnViewLoaded()
     {
-        Control CreateContent<TViewModel, TControl, TToolbarViewModel, TToolbarControl>(
+        static Control CreateContent<TViewModel, TControl, TToolbarViewModel, TToolbarControl>(
             string title, bool canCollapse, bool collapseLeft)
             where TViewModel : Bindable<TControl>, new()
             where TControl : Control, new()
             where TToolbarViewModel : Bindable<TToolbarControl>, new()
             where TToolbarControl : Control, new()
-
         {
             var baseVm = new TViewModel();
             baseVm.CreateViewAndBind();
@@ -38,9 +37,9 @@ public sealed class RunViewModel : Bindable<RunView>
             CreateContent<ComputerViewModel, ComputerView, ComputerToolbarViewModel, ComputerToolbarView>(
                 "Quantum Computer", canCollapse: false, collapseLeft: false);
 
-        this.Histogram =
-            CreateContent<HistogramViewModel, HistogramView, HistogramToolbarViewModel, HistogramToolbarView>(
-                "Histogram", canCollapse: false, collapseLeft: false);
+        this.Amplitudes =
+            CreateContent<AmplitudesViewModel, AmplitudesView, AmplitudesToolbarViewModel, AmplitudesToolbarView>(
+                "Amplitudes Histogram", canCollapse: false, collapseLeft: false);
     }
 
     public Control Gates { get => this.Get<Control>()!; set => this.Set(value); }
@@ -49,5 +48,5 @@ public sealed class RunViewModel : Bindable<RunView>
 
     public Control Computer { get => this.Get<Control>()!; set => this.Set(value); }
 
-    public Control Histogram { get => this.Get<Control>()!; set => this.Set(value); }
+    public Control Amplitudes { get => this.Get<Control>()!; set => this.Set(value); }
 }

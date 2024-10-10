@@ -42,5 +42,11 @@
     <Compile Update="Controls\HeaderedContentView.axaml.cs">
       <DependentUpon>HeaderedContentView.axaml</DependentUpon>
     </Compile>
+    <Compile Update="Workflow\Run\Amplitudes\AmplitudesView.axaml.cs">
+      <DependentUpon>AmplitudesView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Workflow\Run\Amplitudes\AmplitudesToolbarView.axaml.cs">
+      <DependentUpon>AmplitudesToolbarView.axaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

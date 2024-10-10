@@ -40,7 +40,7 @@
 		</Grid>
 		<ContentControl
 			Grid.Row="1"
-			Content="{Binding Histogram}"
+			Content="{Binding Amplitudes}"
 			/>
 	</Grid>
 </UserControl>
