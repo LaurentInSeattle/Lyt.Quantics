@@ -10,7 +10,7 @@
     xmlns:theme="clr-namespace:Lyt.Quantics.Studio"
 	Width="320" 
 	VerticalAlignment="Stretch"
-	
+	Background="#01010101"
 	DragDrop.AllowDrop="True"
 	>
 	<Grid
