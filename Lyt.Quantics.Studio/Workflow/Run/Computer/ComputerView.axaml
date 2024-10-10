@@ -12,5 +12,6 @@
 	Opacity="0.7"
 	VerticalAlignment="Stretch"
 	HorizontalAlignment="Stretch"
+	DragDrop.AllowDrop="True"
 	>
 </UserControl>

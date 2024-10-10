@@ -1,7 +1,4 @@
-﻿using Avalonia;
-using System;
-
-namespace Lyt.Quantics.Studio
+﻿namespace Lyt.Quantics.Studio
 {
     internal class Program
     {

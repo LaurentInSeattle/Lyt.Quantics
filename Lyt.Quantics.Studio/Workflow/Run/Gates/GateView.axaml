@@ -1,0 +1,41 @@
+<UserControl 
+	x:Class="Lyt.Quantics.Studio.Workflow.Run.Gates.GateView"
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d" d:DesignWidth="64" d:DesignHeight="64"
+    xmlns:vm="clr-namespace:Lyt.Quantics.Studio.Workflow.Run.Gates"
+    x:DataType="vm:GateViewModel" 
+    xmlns:theme="clr-namespace:Lyt.Quantics.Studio"
+	Width="64" Height="64"
+	>
+	<Border
+		Margin ="0"
+		Padding="0"
+		CornerRadius="2"
+		BorderThickness="1.0"
+		BorderBrush="{StaticResource ResourceKey= LightAqua_2_100}"
+		Background="Transparent"
+		>
+		<Grid
+			Margin="0"
+			>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="4" />
+				<RowDefinition Height="*" />
+			</Grid.RowDefinitions>
+			<Rectangle 
+				Fill="DodgerBlue"
+				/>
+			<TextBlock
+				Grid.Row="1"
+				VerticalAlignment="Center" HorizontalAlignment="Center"
+				Text="X"
+				FontSize="48"
+				FontWeight="DemiBold"
+				Foreground="AntiqueWhite"
+				/>
+		</Grid>
+	</Border>
+</UserControl>

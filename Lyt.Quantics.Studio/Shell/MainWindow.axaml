@@ -23,5 +23,12 @@
 			Fill="#20000020"
             Grid.ColumnSpan="999" Grid.RowSpan="999"
 			/>
+		<Canvas 
+			x:Name="MainWindowCanvas"
+			Background="Transparent"
+			IsHitTestVisible="false"
+			ZIndex="999"
+			DragDrop.AllowDrop="True"
+			/>
 	</Grid>
 </Window>
