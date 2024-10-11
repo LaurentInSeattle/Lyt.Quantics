@@ -10,6 +10,7 @@
     x:DataType="vm:AmplitudesViewModel" 
     xmlns:theme="clr-namespace:Lyt.Quantics.Studio"
 	VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+	Background="Transparent"
 	>
 	<Grid
 		x:Name="AmplitudesGrid"

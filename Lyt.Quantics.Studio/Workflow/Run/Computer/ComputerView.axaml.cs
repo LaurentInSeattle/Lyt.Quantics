@@ -1,5 +1,3 @@
-using Avalonia.Input;
-
 namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
 
 public partial class ComputerView : UserControl

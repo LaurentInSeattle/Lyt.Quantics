@@ -4,7 +4,7 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="380"
+	mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="360"
     xmlns:vm="clr-namespace:Lyt.Quantics.Studio.Controls.Histogram"
     x:DataType="vm:HistogramViewModel" 
     xmlns:theme="clr-namespace:Lyt.Quantics.Studio"
@@ -23,7 +23,7 @@
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="8" />
-			<RowDefinition Height="40" />
+			<RowDefinition Height="30" />
 			<RowDefinition Height="2" />
 			<RowDefinition Height="48" />
 			<RowDefinition Height="1" />
@@ -33,12 +33,12 @@
 			<RowDefinition Height="1" />
 			<RowDefinition Height="48" />
 			<RowDefinition Height="2" />
-			<RowDefinition Height="40" />
+			<RowDefinition Height="30" />
 			<RowDefinition Height="8" />
 		</Grid.RowDefinitions>
 		<Rectangle
 			Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="3"
-			Fill="AntiqueWhite"
+			Fill="{StaticResource ResourceKey= LightAqua_2_100}"
 			Opacity="0.8"
 			/>
 		<TextBlock
@@ -46,11 +46,12 @@
 			Margin="0 -10 10 0"
 			Text="{Binding Value100}"
 			VerticalAlignment="Top" HorizontalAlignment="Right"
-			Opacity="0.8"
+			Foreground="{StaticResource ResourceKey= LightAqua_2_100}"
+			Opacity="1.0"
 			/>
 		<Rectangle
 			Grid.Row="4" Grid.Column="4" Grid.ColumnSpan="2"
-			Fill="AntiqueWhite"
+			Fill="{StaticResource ResourceKey= LightAqua_2_100}"
 			Opacity="0.6"
 			/>
 		<TextBlock
@@ -58,11 +59,12 @@
 			Margin="0 -10 10 0"
 			Text="{Binding Value75}"
 			VerticalAlignment="Top" HorizontalAlignment="Right"
-			Opacity="0.6"
+			Foreground="{StaticResource ResourceKey= LightAqua_2_100}"
+			Opacity="0.8"
 			/>
 		<Rectangle
 			Grid.Row="6" Grid.Column="3" Grid.ColumnSpan="3"
-			Fill="AntiqueWhite"
+			Fill="{StaticResource ResourceKey= LightAqua_2_100}"
 			Opacity="0.8"
 			/>
 		<TextBlock
@@ -70,11 +72,12 @@
 			Margin="0 -10 10 0"
 			Text="{Binding Value50}"
 			VerticalAlignment="Top" HorizontalAlignment="Right"
-			Opacity="0.8"
+			Foreground="{StaticResource ResourceKey= LightAqua_2_100}"
+			Opacity="1.0"
 			/>
 		<Rectangle
 			Grid.Row="8" Grid.Column="4" Grid.ColumnSpan="2"
-			Fill="AntiqueWhite"
+			Fill="{StaticResource ResourceKey= LightAqua_2_100}"
 			Opacity="0.6"
 			/>
 		<TextBlock
@@ -82,11 +85,12 @@
 			Margin="0 -10 10 0"
 			Text="{Binding Value25}"
 			VerticalAlignment="Top" HorizontalAlignment="Right"
-			Opacity="0.6"
+			Foreground="{StaticResource ResourceKey= LightAqua_2_100}"
+			Opacity="0.8"
 			/>
 		<Rectangle
 			Grid.Row="10" Grid.Column="3" Grid.ColumnSpan="3"
-			Fill="AntiqueWhite"
+			Fill="{StaticResource ResourceKey= LightAqua_2_100}"
 			Opacity="0.8"
 			/>
 		<TextBlock
@@ -94,7 +98,8 @@
 			Margin="0 -10 10 0"
 			Text="{Binding Value0}"
 			VerticalAlignment="Top" HorizontalAlignment="Right"
-			Opacity="0.8"
+			Foreground="{StaticResource ResourceKey= LightAqua_2_100}"
+			Opacity="1.0"
 			/>
 		<ScrollViewer
 			Grid.Row="1" Grid.RowSpan="11" Grid.Column="5" Grid.ColumnSpan="1"

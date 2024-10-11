@@ -18,37 +18,39 @@
 			<ColumnDefinition Width="8" />
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
-			<RowDefinition Height="40" />
+			<RowDefinition Height="30" />
 			<RowDefinition Height="200" />
-			<RowDefinition Height="40" />
+			<RowDefinition Height="30" />
 		</Grid.RowDefinitions>
-		<TextBlock
-			Grid.Row="0" Grid.Column="1" 
-			Margin="0"
-			Text="{Binding Value}"
-			VerticalAlignment="Center" HorizontalAlignment="Center"
-			Opacity="0.8"
-			/>
 		<Rectangle
 			Grid.Row="0" Grid.RowSpan="3" Grid.Column="1"
-			Fill="AntiqueWhite"
-			Opacity="0.1"
+			Fill="{StaticResource ResourceKey= LightAqua_2_100}"
+			Opacity="0.15"
 			VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
 			/>
 		<Rectangle
 			Grid.Row="1" Grid.Column="1"
-			Fill="AntiqueWhite"
+			Fill="{StaticResource ResourceKey= OrangePeel_0_100}"
 			Margin="0 0 0 0"
-			Opacity="0.8"
+			Opacity="0.9"
 			Height="{Binding Height}"
 			VerticalAlignment="Bottom" HorizontalAlignment="Stretch"
+			/>
+		<TextBlock
+			Grid.Row="0" Grid.Column="1"
+			Margin="0"
+			Text="{Binding Value}"
+			VerticalAlignment="Center" HorizontalAlignment="Center"
+			Foreground="{StaticResource ResourceKey= LightAqua_2_100}"
+			Opacity="1.0"
 			/>
 		<TextBlock
 			Grid.Row="2" Grid.Column="1" 
 			Margin="0"
 			Text="{Binding Label}"
 			VerticalAlignment="Center" HorizontalAlignment="Center"
-			Opacity="0.8"
+			Foreground="{StaticResource ResourceKey= LightAqua_2_100}"
+			Opacity="1.0"
 			/>
 	</Grid>
 </UserControl>

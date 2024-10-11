@@ -18,6 +18,14 @@ public sealed class HistogramViewModel : Bindable<HistogramView>
             new HistogramEntry(0.05, "110"),
             new HistogramEntry(0.10, "111"),
         ];
+
+        this.entries =
+        [
+            new HistogramEntry(0.55, "00"),
+            new HistogramEntry(0.15, "01"),
+            new HistogramEntry(0.05, "10"),
+            new HistogramEntry(0.25, "11"),
+        ];
     }
 
     protected override void OnViewLoaded()
