@@ -15,7 +15,7 @@
 		>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*" />
-			<RowDefinition Height="320" />
+			<RowDefinition Height="360" />
 		</Grid.RowDefinitions>
 		<Grid
 			Grid.Row="0"

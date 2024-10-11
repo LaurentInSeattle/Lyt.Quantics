@@ -14,7 +14,6 @@
         <AvaloniaResource Include="Assets\**" />
     </ItemGroup>
 
-
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="11.1.4" />
     <PackageReference Include="Avalonia.Desktop" Version="11.1.4" />
@@ -36,17 +35,5 @@
 
   <ItemGroup>
     <Folder Include="Utilities\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Controls\HeaderedContentView.axaml.cs">
-      <DependentUpon>HeaderedContentView.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Workflow\Run\Amplitudes\AmplitudesView.axaml.cs">
-      <DependentUpon>AmplitudesView.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Workflow\Run\Amplitudes\AmplitudesToolbarView.axaml.cs">
-      <DependentUpon>AmplitudesToolbarView.axaml</DependentUpon>
-    </Compile>
   </ItemGroup>
 </Project>

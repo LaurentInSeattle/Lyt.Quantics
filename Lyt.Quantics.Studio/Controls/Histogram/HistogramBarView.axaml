@@ -1,0 +1,54 @@
+<UserControl 
+	x:Class="Lyt.Quantics.Studio.Controls.Histogram.HistogramBarView"
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d" d:DesignWidth="60" d:DesignHeight="280"
+    xmlns:vm="clr-namespace:Lyt.Quantics.Studio.Controls.Histogram"
+    x:DataType="vm:HistogramBarViewModel" 
+    xmlns:theme="clr-namespace:Lyt.Quantics.Studio"
+	>
+	<Grid
+		ShowGridLines="False"
+		>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="8" />
+			<ColumnDefinition Width="44" />
+			<ColumnDefinition Width="8" />
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="40" />
+			<RowDefinition Height="200" />
+			<RowDefinition Height="40" />
+		</Grid.RowDefinitions>
+		<TextBlock
+			Grid.Row="0" Grid.Column="1" 
+			Margin="0"
+			Text="{Binding Value}"
+			VerticalAlignment="Center" HorizontalAlignment="Center"
+			Opacity="0.8"
+			/>
+		<Rectangle
+			Grid.Row="0" Grid.RowSpan="3" Grid.Column="1"
+			Fill="AntiqueWhite"
+			Opacity="0.1"
+			VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+			/>
+		<Rectangle
+			Grid.Row="1" Grid.Column="1"
+			Fill="AntiqueWhite"
+			Margin="0 0 0 0"
+			Opacity="0.8"
+			Height="{Binding Height}"
+			VerticalAlignment="Bottom" HorizontalAlignment="Stretch"
+			/>
+		<TextBlock
+			Grid.Row="2" Grid.Column="1" 
+			Margin="0"
+			Text="{Binding Label}"
+			VerticalAlignment="Center" HorizontalAlignment="Center"
+			Opacity="0.8"
+			/>
+	</Grid>
+</UserControl>

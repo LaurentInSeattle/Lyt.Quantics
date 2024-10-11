@@ -1,13 +1,6 @@
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
-
-namespace Lyt.Quantics.Studio;
+namespace Lyt.Quantics.Studio.Controls.Histogram;
 
 public partial class HistogramView : UserControl
 {
-    public HistogramView()
-    {
-        InitializeComponent();
-    }
+    public HistogramView() => this.InitializeComponent();
 }

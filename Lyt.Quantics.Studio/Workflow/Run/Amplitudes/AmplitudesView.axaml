@@ -5,11 +5,14 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+    xmlns:hist="clr-namespace:Lyt.Quantics.Studio.Controls.Histogram;assembly=Lyt.Quantics.Studio"
     xmlns:vm="clr-namespace:Lyt.Quantics.Studio.Workflow.Run.Amplitudes"
     x:DataType="vm:AmplitudesViewModel" 
     xmlns:theme="clr-namespace:Lyt.Quantics.Studio"
-	Background="DodgerBlue"
-	Opacity="0.3"
 	VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
 	>
+	<Grid
+		x:Name="AmplitudesGrid"
+		>
+	</Grid>
 </UserControl>
