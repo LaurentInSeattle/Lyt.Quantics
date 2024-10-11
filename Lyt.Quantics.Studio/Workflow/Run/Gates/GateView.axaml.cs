@@ -13,17 +13,25 @@ public partial class GateView : UserControl
 
     public GateView(bool isGhost)
     {
-        this.isGhost = isGhost; 
+        this.isGhost = isGhost;
         this.InitializeComponent();
         if (!isGhost)
         {
+            // Don't do that for the ghost view 
+            this.DataContextChanged += this.OnGateViewDataContextChanged;
             this.HookPointerEvents();
         }
-
-        this.PropertyChanged += this.OnPropertyChanged;
     }
 
-    private void HookPointerEvents ()
+    private void OnGateViewDataContextChanged(object? sender, EventArgs e)
+    {
+        if (this.DataContext is GateViewModel gateViewModel)
+        {
+            gateViewModel.BindingOnDataContextChanged(this);
+        }
+    }
+
+    private void HookPointerEvents()
     {
         this.PointerPressed += this.OnPointerPressed;
         this.PointerReleased += this.OnPointerReleased;
@@ -35,13 +43,6 @@ public partial class GateView : UserControl
         this.PointerPressed -= this.OnPointerPressed;
         this.PointerReleased -= this.OnPointerReleased;
         this.PointerMoved -= this.OnPointerMoved;
-    }
-
-    private void OnPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
-    {
-        //string ghost = this.isGhost ? "Ghost  " : "Source  "; 
-        //Debug.WriteLine(
-        //    ghost + "Gate View Property Changed: " + e.Property.Name + "  " + e.NewValue?.ToString()); 
     }
 
     private void OnPointerPressed(object? sender, PointerPressedEventArgs pointerPressedEventArgs)
@@ -115,7 +116,7 @@ public partial class GateView : UserControl
         Debug.WriteLine("Drag == true ");
         this.isDragging = true;
 
-        this.ghostView = new GateView(isGhost:true)
+        this.ghostView = new GateView(isGhost: true)
         {
             DataContext = gateViewModel,
             Opacity = 0.8,

@@ -79,6 +79,11 @@ global using Lyt.Avalonia.Persistence;
 #endregion Framework 
 
 global using Lyt.Quantics.Engine;
+global using Lyt.Quantics.Engine.Gates;
+global using Lyt.Quantics.Engine.Gates.Base;
+global using Lyt.Quantics.Engine.Gates.Unary;
+global using Lyt.Quantics.Engine.Gates.Binary;
+global using Lyt.Quantics.Engine.Gates.Ternary;
 
 global using Lyt.Quantics.Studio;
 global using Lyt.Quantics.Studio.Controls;

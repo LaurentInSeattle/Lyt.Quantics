@@ -74,4 +74,19 @@ public sealed class QuanticsStudioModel : ModelBase
         return Task.CompletedTask;
     }
 
+    public static List<Gate> Gates 
+    {  
+        get
+        {
+            var gateTypes = GateFactory.AvailableProducts;
+            var list = new List<Gate>(gateTypes.Count);
+            foreach (var gateType in gateTypes)
+            {
+                var gate = GateFactory.Produce(gateType.Key); 
+                list.Add(gate);
+            } 
+
+            return list;
+        }
+    }
 }

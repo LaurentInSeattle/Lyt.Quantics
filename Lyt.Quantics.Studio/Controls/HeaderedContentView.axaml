@@ -15,7 +15,7 @@
 		<!-- Expanded Layout-->
 		<Border
 			IsVisible="{Binding IsExpanded}"
-			Margin ="2"
+			Margin ="1"
 			BorderThickness="1.0"
 			BorderBrush="{StaticResource ResourceKey= LightAqua_2_100}"
 			Background="Transparent"

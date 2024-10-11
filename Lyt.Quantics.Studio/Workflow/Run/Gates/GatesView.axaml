@@ -18,19 +18,30 @@
 		DragDrop.AllowDrop="True"
 		>
 		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
 			<RowDefinition Height="80" />
-			<RowDefinition Height="80" />
-			<RowDefinition Height="80" />
-			<RowDefinition Height="80" />
-			<RowDefinition Height="80" />
-			<RowDefinition Height="80" />
-			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="80" />
-			<ColumnDefinition Width="80" />
-			<ColumnDefinition Width="80" />
-			<ColumnDefinition Width="80" />
-		</Grid.ColumnDefinitions>
+		<ScrollViewer
+			Grid.Row="0" 
+			Padding="0" Margin="0"
+			Background="#40101040"
+			>
+			<ItemsControl
+				x:Name="GatesItemsControl"
+				ItemsSource="{Binding Gates}"
+				Margin="0" Padding="0"
+				>
+				<ItemsControl.ItemsPanel>
+					<ItemsPanelTemplate>
+						<WrapPanel Orientation="Horizontal" Margin="0" />
+					</ItemsPanelTemplate>
+				</ItemsControl.ItemsPanel>
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<vm:GateView Margin="8" />
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+		</ScrollViewer>
 	</Grid>
 </UserControl>
