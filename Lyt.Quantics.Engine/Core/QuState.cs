@@ -32,4 +32,15 @@ public static class BasisStateExtensions
 
     public static Vector<Complex> ToVector(this QuState state)
         => Vector<Complex>.Build.Dense(state.ToTensor());
+
+    public static string ToUiString(this QuState state)
+        => state switch
+        {
+            QuState.One => "1",
+            QuState.Plus => "+",
+            QuState.Minus => "-",
+            QuState.PlusIota => "i",
+            QuState.MinusIota => "-i",
+            _ => "0", // Basis state Zero 
+        };
 }

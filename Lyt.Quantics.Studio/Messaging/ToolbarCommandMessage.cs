@@ -5,6 +5,7 @@ public sealed class ToolbarCommandMessage(
 {
     public enum ToolbarCommand
     {
+        // Computer tool bar 
         AddQubit,
         RemoveQubit, 
         HideProbabilities, 
@@ -12,6 +13,9 @@ public sealed class ToolbarCommandMessage(
         Step,
         Run,
         Loop,
+
+        // QuBit actions
+        InitialQuStateChanged,
         Exit,
     }
 
