@@ -25,4 +25,6 @@ public sealed class S_DaggerGate : Gate
     public override string AlternateName => "S Dagger";
 
     public override string CaptionKey => "Sdg";
+
+    public override GateCategory Category => GateCategory.C_Phase;
 }

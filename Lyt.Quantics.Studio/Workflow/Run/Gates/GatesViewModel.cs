@@ -15,9 +15,14 @@ public sealed class GatesViewModel : Bindable<GatesView>
         base.OnViewLoaded();
 
         // Load the gates symbols in the 'toolbox' 
-        // TODO: Sort and reorder by categories 
-        var gates = QuanticsStudioModel.Gates;
-        var list = new List<GateViewModel>(gates.Count);
+        // Sort and reorder by categories 
+        var gates = 
+            (from gate in QuanticsStudioModel.Gates 
+             where gate.Category != GateCategory.X_Special 
+             orderby gate.Category.ToString() ascending,
+             gate.CaptionKey ascending
+             select gate);
+        var list = new List<GateViewModel>(gates.Count());
         foreach (var gate in gates)
         {
             var vm = new GateViewModel(gate);

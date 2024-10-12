@@ -25,23 +25,24 @@ public class ControlledGate : Gate
     private readonly Matrix<Complex> matrix;
     private readonly string baseCaptionKey;
 
+    public ControlledGate(string captionKey) : this(GateFactory.Produce(captionKey)) { }
+
     /// <summary> Creates a Controlled gate from the provided one (U) via its caption key </summary>
     /// <remarks> Assumes that the Control QuBit is the first one, 'on top' </remarks>
     /// <param name="captionKey"></param>
-    public ControlledGate(string captionKey)
+    public ControlledGate(Gate baseGate)
     {
-        this.baseCaptionKey = captionKey;
-        var baseGate = GateFactory.Produce(captionKey);
+        this.baseCaptionKey = baseGate.CaptionKey;
         int baseDimension = baseGate.Dimension;
-        int dimension = 2 * baseDimension ;
-        int delta = dimension - baseDimension; 
+        int dimension = 2 * baseDimension;
+        int delta = dimension - baseDimension;
         this.matrix = Matrix<Complex>.Build.Sparse(dimension, dimension, Complex.Zero);
 
         // Identity part 
         for (int diagonal = 0; diagonal < delta; ++diagonal)
         {
             this.matrix.At(diagonal, diagonal, Complex.One);
-        } 
+        }
 
         // Copy values from base into bottom right square area
         // Indices then start at position delta
@@ -64,4 +65,6 @@ public class ControlledGate : Gate
     public override string AlternateName => this.Name;
 
     public override string CaptionKey => "C" + this.baseCaptionKey;
+
+    public override GateCategory Category => GateCategory.X_Special;
 }

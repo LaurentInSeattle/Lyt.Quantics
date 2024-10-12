@@ -3,29 +3,49 @@
 public sealed class GateViewModel : Bindable<GateView> // : IDraggable
 {
     public const string CustomDragAndDropFormat = "GateViewModel";
-    
+
     private readonly Gate gate;
 
     public GateViewModel(Gate gate)
     {
+        this.DisablePropertyChangedLogging = true;
         this.gate = gate;
-        this.Name = gate.CaptionKey;
-        this.FontSize = gate.CaptionKey.Length switch
+        this.Name = gate.CaptionKey.Replace("dg", "\u2020");
+        this.FontSize = Name.Length switch
         {
-            1 => 48,
-            2 => 38,
-            3 => 28,
-            4 => (double)20,
-            _ => (double)16,
+            1 => 42.0,
+            2 => 42.0,
+            3 => 28.0,
+            4 => 20.0,
+            _ => 16.0,
+        };
+
+        this.GateCategoryBrush = GateViewModel.GateCategoryToBrush(gate.Category);
+    }
+
+    private static IBrush GateCategoryToBrush(GateCategory gateCategory)
+    {
+        return gateCategory switch
+        {
+            GateCategory.A_HadamardAndT => Brushes.DarkOrange,
+            GateCategory.B_Pauli => Brushes.DodgerBlue,
+            GateCategory.C_Phase => Brushes.MediumAquamarine,
+            GateCategory.D_BinaryControlled => Brushes.DarkGreen,
+            GateCategory.E_Other => Brushes.DarkGray,
+            GateCategory.F_TernaryControlled => Brushes.MediumPurple,
+            /* default */
+            _ => Brushes.DarkRed,
         };
     }
 
-    public bool BeginDrag() 
-    { 
+    public bool BeginDrag()
+    {
         return true;
     }
 
     public string? Name { get => this.Get<string?>(); set => this.Set(value); }
 
     public double FontSize { get => this.Get<double>(); set => this.Set(value); }
+
+    public IBrush? GateCategoryBrush { get => this.Get<IBrush?>(); set => this.Set(value); }
 }

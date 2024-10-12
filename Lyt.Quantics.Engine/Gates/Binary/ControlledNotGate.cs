@@ -29,4 +29,6 @@ public sealed class ControlledNotGate : Gate
     public override string AlternateName => "CNOT";
 
     public override string CaptionKey => "CX";
+
+    public override GateCategory Category => GateCategory.D_BinaryControlled;
 }

@@ -2,4 +2,5 @@
 
 public sealed class GatesToolbarViewModel : Bindable<GatesToolbarView>
 {
+    // Nothing for now
 }

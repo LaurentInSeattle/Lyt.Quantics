@@ -30,4 +30,6 @@ public sealed class HadamardGate : Gate
     public override string AlternateName => "Hadamard";
 
     public override string CaptionKey => "H";
+
+    public override GateCategory Category => GateCategory.A_HadamardAndT;
 }

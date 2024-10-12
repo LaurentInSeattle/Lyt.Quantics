@@ -24,6 +24,6 @@ public abstract class Gate
     /// <summary> TODO </summary>
     public virtual string Documentation { get; set; } = string.Empty;
  
-    /// <summary> TODO </summary>
-    public virtual GateCategory Category { get; set; } = GateCategory.Gray;
+    /// <summary> Gate category </summary>
+    public abstract GateCategory Category { get; }
 }

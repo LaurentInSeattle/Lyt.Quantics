@@ -8,11 +8,7 @@
     xmlns:vm="clr-namespace:Lyt.Quantics.Studio.Workflow.Run.Gates"
     x:DataType="vm:GatesToolbarViewModel" 
     xmlns:theme="clr-namespace:Lyt.Quantics.Studio"
+    Background="Transparent"
     >
-    <Grid
-        Background="Aquamarine"
-        Height="38" Width="100"
-        > 
-        
-    </Grid>
+	<!-- Nothing for now -->
 </UserControl>

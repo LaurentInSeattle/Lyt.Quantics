@@ -48,4 +48,6 @@ public sealed class PhaseGate : Gate
     public override string AlternateName => "Phase Gate";
 
     public override string CaptionKey => this.captionKey;
+
+    public override GateCategory Category => GateCategory.X_Special;
 }

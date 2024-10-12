@@ -36,4 +36,6 @@ public sealed class T_Gate : Gate
     public override string AlternateName => "Pi Over 8";
 
     public override string CaptionKey => "T";
+
+    public override GateCategory Category => GateCategory.A_HadamardAndT;
 }

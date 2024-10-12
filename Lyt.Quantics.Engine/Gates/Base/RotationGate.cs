@@ -76,4 +76,6 @@ public class RotationGate : Gate
     public override string AlternateName => "Rotation Operator";
 
     public override string CaptionKey => this.captionKey;
+
+    public override GateCategory Category => GateCategory.X_Special;
 }

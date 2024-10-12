@@ -37,4 +37,6 @@ public sealed class SX_Gate : Gate
     public override string AlternateName => "SQRT of X";
 
     public override string CaptionKey => "SX";
+
+    public override GateCategory Category => GateCategory.C_Phase;
 }

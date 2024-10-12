@@ -26,4 +26,6 @@ public sealed class PauliZGate : Gate
     public override string AlternateName => "Z Gate";
 
     public override string CaptionKey => "Z";
+
+    public override GateCategory Category => GateCategory.B_Pauli;
 }

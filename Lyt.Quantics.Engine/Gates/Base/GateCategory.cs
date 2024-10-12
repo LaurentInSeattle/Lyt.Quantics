@@ -3,21 +3,20 @@
 // Gate categories in the QRyd simulator 
 // (Somewhat refined)
 // 
+// Categories are prefixed by alphebetical order in the UI toolbox
 public enum GateCategory
 {
-    Red, // H , T , T dagger
+    A_HadamardAndT, // H , T , T dagger
 
-    Blue, // CNOT, Swap, CZ 
+    B_Pauli, // X Y Z , 
 
-    Green, // X Y Z , Sqrt X , Sqrt Z
+    C_Phase, // Sqrt X (== SX) , Sqrt Z (== S)  S dagger
 
-    DarkGreen, // Sqrt X (== SX) , Sqrt Z (== S)
+    D_BinaryControlled, // CX, Swap, CZ , FCX, CS
 
-    Purple,  // CCX,  CSwap , CCZ 
+    E_Other, // I , 
 
-    DarkRed , // Rx Ry Rz
+    F_TernaryControlled,   // CCX,  CSwap , CCZ 
 
-    DarkPurple, // P , CP , CCP 
-
-    Gray, // I , Barrier
+    X_Special, // Barrier (needed?) // Rx Ry Rz  // P , CP , CCP 
 }

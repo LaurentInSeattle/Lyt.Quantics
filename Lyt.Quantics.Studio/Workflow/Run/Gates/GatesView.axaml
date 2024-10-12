@@ -8,40 +8,35 @@
     xmlns:vm="clr-namespace:Lyt.Quantics.Studio.Workflow.Run.Gates"
     x:DataType="vm:GatesViewModel" 
     xmlns:theme="clr-namespace:Lyt.Quantics.Studio"
-	Width="320" 
+	Width="250" 
 	VerticalAlignment="Stretch"
 	Background="Transparent" DragDrop.AllowDrop="True"
 	>
 	<Grid
 		ShowGridLines="False"
 		x:Name="MainGrid"
-		DragDrop.AllowDrop="True"
 		>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="80" />
 		</Grid.RowDefinitions>
-		<ScrollViewer
+		<ItemsControl
+			x:Name="GatesItemsControl"
+			ItemsSource="{Binding Gates}"
 			Grid.Row="0" 
-			Padding="0" Margin="0"
-			Background="#40101040"
+			Margin="0" Padding="0"
+			HorizontalAlignment="Center"
 			>
-			<ItemsControl
-				x:Name="GatesItemsControl"
-				ItemsSource="{Binding Gates}"
-				Margin="0" Padding="0"
-				>
-				<ItemsControl.ItemsPanel>
-					<ItemsPanelTemplate>
-						<WrapPanel Orientation="Horizontal" Margin="0" />
-					</ItemsPanelTemplate>
-				</ItemsControl.ItemsPanel>
-				<ItemsControl.ItemTemplate>
-					<DataTemplate>
-						<vm:GateView Margin="8" />
-					</DataTemplate>
-				</ItemsControl.ItemTemplate>
-			</ItemsControl>
-		</ScrollViewer>
+			<ItemsControl.ItemsPanel>
+				<ItemsPanelTemplate>
+					<WrapPanel Orientation="Horizontal" Margin="0" />
+				</ItemsPanelTemplate>
+			</ItemsControl.ItemsPanel>
+			<ItemsControl.ItemTemplate>
+				<DataTemplate>
+					<vm:GateView Margin="8" />
+				</DataTemplate>
+			</ItemsControl.ItemTemplate>
+		</ItemsControl>
 	</Grid>
 </UserControl>

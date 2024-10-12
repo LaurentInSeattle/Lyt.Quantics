@@ -29,4 +29,6 @@ public sealed class T_DaggerGate : Gate
     public override string AlternateName => "Minus Pi Over 8";
 
     public override string CaptionKey => "Tdg";
+
+    public override GateCategory Category => GateCategory.A_HadamardAndT;
 }

@@ -28,4 +28,6 @@ public sealed class S_Gate : Gate
     public override string AlternateName => "Z 90";
 
     public override string CaptionKey => "S";
+
+    public override GateCategory Category => GateCategory.C_Phase;
 }
