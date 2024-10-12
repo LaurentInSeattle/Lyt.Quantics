@@ -4,15 +4,104 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+	mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="56"
     xmlns:vm="clr-namespace:Lyt.Quantics.Studio.Workflow.Run.Computer"
-    x:DataType="vm:ComputerToolbarView" 
+    x:DataType="vm:ComputerToolbarViewModel" 
     xmlns:theme="clr-namespace:Lyt.Quantics.Studio"
+	xmlns:glyphs="clr-namespace:Lyt.Avalonia.Controls.Glyphs;assembly=Lyt.Avalonia.Controls"
+	xmlns:toggle="clr-namespace:Lyt.Avalonia.Controls.Toggle;assembly=Lyt.Avalonia.Controls"
     >
     <Grid
-        Background="MistyRose"
-        Height="38" Width="100"
-        > 
-        
-    </Grid>
+        Height="56" 
+		>
+		<Grid.ColumnDefinitions>
+			<!-- Add / Remove -->
+			<ColumnDefinition Width="84" />
+			<ColumnDefinition Width="84" />
+			<!-- Prob. Toggle -->
+			<ColumnDefinition Width="190" />
+			<!-- Run Control -->
+			<ColumnDefinition Width="72" />
+			<ColumnDefinition Width="72" />
+			<ColumnDefinition Width="72" />
+			<!-- Loop Control -->
+			<ColumnDefinition Width="84" />
+			<ColumnDefinition Width="72" />
+		</Grid.ColumnDefinitions>
+		<glyphs:GlyphButton
+			Style="{StaticResource ToolbarIconButton}"
+			Behaviour="Tap"
+			HorizontalAlignment="Center" VerticalAlignment="Center"
+			Width="80" Height="48"
+			Margin="4"
+			GlyphSource="add_circle"
+			ButtonBackground="BorderlessRectangle"
+			GlyphStrokeThickness="0"
+			Text="Add Qubit"
+			Command="{Binding AddQubitCommand}"
+	    	/>
+		<glyphs:GlyphButton
+			Grid.Column="1"
+			Style="{StaticResource ToolbarIconButton}"
+			Behaviour="Tap"
+			HorizontalAlignment="Center" VerticalAlignment="Center"
+			Width="80" Height="48"
+			Margin="4"
+			GlyphSource="subtract_circle"
+			ButtonBackground="BorderlessRectangle"
+			GlyphStrokeThickness="0"
+			Text="Remove Qubit"
+			Command="{Binding RemoveQubitCommand}"
+	    	/>
+		<toggle:ToggleSwitch
+			x:Name="IsHiddenSwitch"
+			Grid.Column="2"
+			Margin="4"
+			Style="{StaticResource StandardToggleSwitch}"
+			TrueText="Prob."
+			FalseText="Hide"
+			Height="30" Width="180"
+			HorizontalAlignment="Center" VerticalAlignment="Center"
+			Value="{Binding HideProbabilities}"
+			/>
+		<glyphs:GlyphButton
+			Grid.Column="3"
+			Style="{StaticResource ToolbarIconButton}"
+			Behaviour="Tap"
+			HorizontalAlignment="Center" VerticalAlignment="Center"
+			Width="64" Height="48"
+			Margin="4"
+			GlyphSource="record_stop"
+			ButtonBackground="BorderlessRectangle"
+			GlyphStrokeThickness="0"
+			Text="Reset"
+			Command="{Binding ResetCommand}"
+	    	/>
+		<glyphs:GlyphButton
+			Grid.Column="4"
+			Style="{StaticResource ToolbarIconButton}"
+			Behaviour="Tap"
+			HorizontalAlignment="Center" VerticalAlignment="Center"
+			Width="64" Height="48"
+			Margin="4"
+			GlyphSource="step"
+			ButtonBackground="BorderlessRectangle"
+			GlyphStrokeThickness="0"
+			Text="Step"
+			Command="{Binding StepCommand}"
+	    	/>
+		<glyphs:GlyphButton
+			Grid.Column="5"
+			Style="{StaticResource ToolbarIconButton}"
+			Behaviour="Tap"
+			HorizontalAlignment="Center" VerticalAlignment="Center"
+			Width="64" Height="48"
+			Margin="4"
+			GlyphSource="run"
+			ButtonBackground="BorderlessRectangle"
+			GlyphStrokeThickness="0"
+			Text="Run"
+			Command="{Binding RunCommand}"
+	    	/>
+	</Grid>
 </UserControl>
