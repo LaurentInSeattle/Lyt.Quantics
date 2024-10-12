@@ -4,12 +4,24 @@ using static ToolbarCommandMessage;
 
 public sealed class ComputerViewModel : Bindable<ComputerView>
 {
-    public const int MaxQubits = 8; // For now ~ 10 could be doable ? 
+    public const int MaxQubits = 10; // For now ~ 10 could be doable ? 
+
+    private readonly QuanticsStudioModel quanticsStudioModel;
+    private readonly IToaster toaster;
 
     public ComputerViewModel()
     {
-        this.Qubits = new ObservableCollection<QubitViewModel>(); 
+        // Do not use Injection directly as this is loaded programmatically by the RunView 
+        this.quanticsStudioModel = App.GetRequiredService<QuanticsStudioModel>();
+        this.toaster = App.GetRequiredService<IToaster>();
+        this.Qubits = [];
         this.Messenger.Subscribe<ToolbarCommandMessage>(this.OnToolbarCommandMessage);
+        this.Messenger.Subscribe<QubitChangedMessage>(this.OnQubitChangedMessage);
+    }
+
+    private void OnQubitChangedMessage(QubitChangedMessage message)
+    {
+
     }
 
     private void OnToolbarCommandMessage(ToolbarCommandMessage message)
@@ -24,7 +36,12 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
                 } 
                 else
                 {
-                    // TODO : message 
+                    // message 
+                    // TODO: Still missing its icon ! 
+                    this.toaster.Show(
+                        string.Format("Max {0} Qubits!", MaxQubits),
+                        string.Format("This Quantum Computer implementation is limited to {0} Qubits...", MaxQubits),
+                        4_000, InformationLevel.Warning);
                 }
                 break;
 

@@ -39,6 +39,9 @@ public sealed class QuanticsStudioModel : ModelBase
     {
         try
         {
+            // FORNOW: Create a 'blank' computer at initialization time 
+            this.QuComputer = new QuComputer(); 
+
             //if (!this.fileManager.Exists(Area.User, Kind.Json, TemplatesModel.TemplatesModelFilename))
             //{
             //    this.fileManager.Save(Area.User, Kind.Json, TemplatesModel.TemplatesModelFilename, TemplatesModel.DefaultTemplate);
@@ -73,6 +76,9 @@ public sealed class QuanticsStudioModel : ModelBase
 
         return Task.CompletedTask;
     }
+
+    [JsonIgnore]
+    public QuComputer QuComputer { get; private set; }
 
     public static List<Gate> Gates 
     {  
