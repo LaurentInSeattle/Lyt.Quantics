@@ -1,0 +1,61 @@
+<UserControl 
+	x:Class="Lyt.Quantics.Studio.Workflow.Run.Computer.QubitView"
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="56"
+    xmlns:vm="clr-namespace:Lyt.Quantics.Studio.Workflow.Run.Computer"
+    x:DataType="vm:QubitViewModel"
+    xmlns:theme="clr-namespace:Lyt.Quantics.Studio"
+	xmlns:glyphs="clr-namespace:Lyt.Avalonia.Controls.Glyphs;assembly=Lyt.Avalonia.Controls"
+	xmlns:toggle="clr-namespace:Lyt.Avalonia.Controls.Toggle;assembly=Lyt.Avalonia.Controls"
+	>
+	<Grid
+		Background="#40202060" 
+		Height="56"
+		>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="40" />
+			<ColumnDefinition Width="56" />
+			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="48" />
+		</Grid.ColumnDefinitions>
+		<TextBlock
+			Text="{Binding Name}"			
+			Grid.Column="0"
+			VerticalAlignment="Center" HorizontalAlignment="Center"
+			FontSize="24"
+			Foreground="{StaticResource ResourceKey= LightAqua_0_120}"
+			Opacity="1.0"
+			Margin="0 -8 0 0"
+			/>
+		<glyphs:GlyphButton
+			Grid.Column="1"
+			Style="{StaticResource ToolbarIconButton}"
+			FontSize="22" FontWeight="DemiBold"
+			Layout="TextOnly"
+			Behaviour="Tap"
+			HorizontalAlignment="Center" VerticalAlignment="Center"
+			Width="52" Height="48"
+			Margin="4"
+			ButtonBackground="BorderlessRectangle"
+			Text="{Binding Ket}"
+			Command="{Binding KetCommand}"
+	    	/>
+		<TextBlock
+			Grid.Column="3"
+			Text="M"
+			VerticalAlignment="Center" HorizontalAlignment="Center"
+			FontSize="18"
+			Foreground="{StaticResource ResourceKey= LightAqua_0_120}"
+			Opacity="1.0"
+			/>
+		<Rectangle
+			Grid.Column="2" 
+			Fill="{StaticResource ResourceKey= LightAqua_1_100}"
+			Opacity="0.8"
+			Height="2.0"
+			/>
+	</Grid>
+</UserControl>

@@ -6,7 +6,7 @@ public sealed class GatesViewModel : Bindable<GatesView>
 
     public GatesViewModel()
     {
-        // Do not use Injection directly as this is loaded as a collection 
+        // Do not use Injection directly as this is loaded programmatically by the RunView 
         this.quanticsStudioModel = App.GetRequiredService<QuanticsStudioModel>();    
     }
 

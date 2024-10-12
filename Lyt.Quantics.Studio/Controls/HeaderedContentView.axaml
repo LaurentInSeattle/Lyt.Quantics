@@ -37,6 +37,12 @@
 					VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
 					Fill="#60202040"
 					/>
+				<Rectangle
+					Grid.Row="1"
+					Height="1"
+					VerticalAlignment="Bottom" HorizontalAlignment="Stretch"
+					Fill="#F0202060"
+					/>
 				<glyphs:GlyphButton
 					IsVisible="{Binding IsCollapseVisible}"
 					Grid.Row="1"
@@ -55,8 +61,8 @@
 					Grid.Row="1" Grid.Column="0"
 					Text="{Binding Title}"
 					HorizontalAlignment="Left" VerticalAlignment="Center"
-					Margin="96 0 0 0"
-					FontSize="24"
+					Margin="80 0 0 0"
+					FontSize="26"
 					Foreground="{StaticResource LightAqua_0_080}"
 					TextWrapping="Wrap"
 					/>
@@ -101,6 +107,12 @@
 					VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
 					Fill="#60202040"
 					/>
+				<Rectangle
+					Grid.Row="1"
+					Height="1"
+					VerticalAlignment="Bottom" HorizontalAlignment="Stretch"
+					Fill="#F0202060"
+					/>
 				<glyphs:GlyphButton
 					Grid.Row="1"
 					Style="{StaticResource ToolbarIconButton}"
@@ -119,7 +131,7 @@
 					Text="{Binding Title}"
 					HorizontalAlignment="Center" VerticalAlignment="Center"
 					Margin="0 0 0 120"
-					FontSize="20"
+					FontSize="22"
 					Width="300"
 					Foreground="{StaticResource LightAqua_0_080}"
 					>

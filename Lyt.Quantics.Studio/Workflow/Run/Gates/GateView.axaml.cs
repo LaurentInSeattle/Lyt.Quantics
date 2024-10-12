@@ -27,7 +27,7 @@ public partial class GateView : UserControl
     {
         if (this.DataContext is GateViewModel gateViewModel)
         {
-            gateViewModel.BindingOnDataContextChanged(this);
+            gateViewModel.BindOnDataContextChanged(this);
         }
     }
 

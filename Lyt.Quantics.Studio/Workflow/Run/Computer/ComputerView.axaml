@@ -8,10 +8,38 @@
     xmlns:vm="clr-namespace:Lyt.Quantics.Studio.Workflow.Run.Computer"
     x:DataType="vm:ComputerViewModel"
     xmlns:theme="clr-namespace:Lyt.Quantics.Studio"
-	Background="MistyRose"
-	Opacity="0.7"
+	Background="Transparent"
 	VerticalAlignment="Stretch"
 	HorizontalAlignment="Stretch"
 	DragDrop.AllowDrop="True"
 	>
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*" />
+			<RowDefinition Height="80" />
+		</Grid.RowDefinitions>		
+		<Rectangle
+			Grid.Row="1"
+			Fill="#20202040"
+			VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+			/>
+		<ItemsControl
+			x:Name="QubitsItemsControl"
+			Grid.Row="0"
+			ItemsSource="{Binding Qubits}"
+			Margin="0" Padding="0"
+			HorizontalAlignment="Stretch"
+			>
+			<ItemsControl.ItemsPanel>
+				<ItemsPanelTemplate>
+					<StackPanel Orientation="Vertical" Margin="0" />
+				</ItemsPanelTemplate>
+			</ItemsControl.ItemsPanel>
+			<ItemsControl.ItemTemplate>
+				<DataTemplate>
+					<vm:QubitView Margin="2" />
+				</DataTemplate>
+			</ItemsControl.ItemTemplate>
+		</ItemsControl>
+	</Grid>
 </UserControl>
