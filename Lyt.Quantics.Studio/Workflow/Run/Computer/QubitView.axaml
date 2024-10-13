@@ -19,7 +19,7 @@
 			<ColumnDefinition Width="40" />
 			<ColumnDefinition Width="56" />
 			<ColumnDefinition Width="*" />
-			<ColumnDefinition Width="48" />
+			<ColumnDefinition Width="64" />
 		</Grid.ColumnDefinitions>
 		<TextBlock
 			Text="{Binding Name}"			
@@ -43,19 +43,36 @@
 			Text="{Binding Ket}"
 			Command="{Binding KetCommand}"
 	    	/>
-		<TextBlock
-			Grid.Column="3"
-			Text="M"
-			VerticalAlignment="Center" HorizontalAlignment="Center"
-			FontSize="18"
-			Foreground="{StaticResource ResourceKey= LightAqua_0_120}"
-			Opacity="1.0"
-			/>
 		<Rectangle
 			Grid.Column="2" 
 			Fill="{StaticResource ResourceKey= LightAqua_1_100}"
 			Opacity="0.8"
 			Height="2.0"
 			/>
+		<!-- Measure SVG broken ??? -->
+		<glyphs:SvgIcon
+			Source="arrow_collapse_all"
+			Width="38" Height="38"
+			Grid.Column="3"
+			VerticalAlignment="Center" HorizontalAlignment="Center"
+			Foreground="{StaticResource ResourceKey= LightAqua_1_100}"
+			Background="Transparent"
+			StrokeThickness="0.01"
+			Opacity="0.8"
+			>
+			<glyphs:SvgIcon.RenderTransform>
+				<RotateTransform Angle="180" />
+			</glyphs:SvgIcon.RenderTransform>
+		</glyphs:SvgIcon>
+		<!-- Should be moved elsewhere 
+		<TextBlock
+			Grid.Column="3"
+			Text="Collapse"
+			VerticalAlignment="Top" HorizontalAlignment="Center"
+			FontSize="12"
+			Foreground="{StaticResource ResourceKey= LightAqua_0_120}"
+			Opacity="1.0"
+			/>
+		-->
 	</Grid>
 </UserControl>

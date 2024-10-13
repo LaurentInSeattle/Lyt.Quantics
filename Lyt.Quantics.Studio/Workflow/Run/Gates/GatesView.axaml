@@ -8,7 +8,7 @@
     xmlns:vm="clr-namespace:Lyt.Quantics.Studio.Workflow.Run.Gates"
     x:DataType="vm:GatesViewModel" 
     xmlns:theme="clr-namespace:Lyt.Quantics.Studio"
-	Width="250" 
+	Width="230" 
 	VerticalAlignment="Stretch"
 	Background="Transparent" DragDrop.AllowDrop="True"
 	>
@@ -24,7 +24,7 @@
 			x:Name="GatesItemsControl"
 			ItemsSource="{Binding Gates}"
 			Grid.Row="0" 
-			Margin="0" Padding="0"
+			Margin="0 0 8 0" Padding="0"
 			HorizontalAlignment="Center"
 			>
 			<ItemsControl.ItemsPanel>
@@ -34,7 +34,7 @@
 			</ItemsControl.ItemsPanel>
 			<ItemsControl.ItemTemplate>
 				<DataTemplate>
-					<vm:GateView Margin="8" />
+					<vm:GateView Margin="12" />
 				</DataTemplate>
 			</ItemsControl.ItemTemplate>
 		</ItemsControl>

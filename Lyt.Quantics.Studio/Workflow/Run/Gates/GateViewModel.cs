@@ -13,11 +13,11 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
         this.Name = gate.CaptionKey.Replace("dg", "\u2020");
         this.FontSize = Name.Length switch
         {
-            1 => 42.0,
-            2 => 42.0,
-            3 => 28.0,
-            4 => 20.0,
-            _ => 16.0,
+            1 => 30.0,
+            2 => 30.0,
+            3 => 20.0,
+            4 => 15.0,
+            _ => 13.0,
         };
 
         this.GateCategoryBrush = GateViewModel.GateCategoryToBrush(gate.Category);

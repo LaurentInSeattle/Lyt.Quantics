@@ -1,5 +1,6 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
 
+using Tmds.DBus.Protocol;
 using static ToolbarCommandMessage;
 
 public sealed class ComputerViewModel : Bindable<ComputerView>
@@ -105,7 +106,13 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
 
     private void RemoveQubit(int count)
     {
-        if (count > 0)
+        if ( count == 1)
+        {
+            this.toaster.Show(
+                "Last Qubit!", "The last Qubit cannot be removed.", 
+                4_000, InformationLevel.Warning);
+        }
+        else if (count > 1)
         {
             if (this.quanticsStudioModel.RemoveQubit(count, out string message))
             {

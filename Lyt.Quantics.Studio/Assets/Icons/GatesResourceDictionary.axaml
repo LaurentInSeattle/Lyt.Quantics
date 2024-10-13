@@ -1,0 +1,147 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+		<DrawingGroup x:Key="Layer_1">
+			<DrawingGroup.ClipGeometry>
+				<RectangleGeometry Rect="0.0,0.0,6.6273499,5.1830001"/>
+			</DrawingGroup.ClipGeometry>
+			<DrawingGroup.Transform>
+				<MatrixTransform Matrix="1.0,0.0,0.0,1.0,-101.6,-145.78541"/>
+			</DrawingGroup.Transform>
+			<GeometryDrawing>
+				<GeometryDrawing.Pen>
+					<Pen Brush="#ff000000" LineJoin="Miter" Thickness="0.13163"/>
+				</GeometryDrawing.Pen>
+				<GeometryDrawing.Geometry>
+					<PathGeometry Figures="m 101.666 150.903 v -5.05137" FillRule="NonZero"/>
+				</GeometryDrawing.Geometry>
+			</GeometryDrawing>
+			<DrawingGroup>
+				<DrawingGroup>
+					<DrawingGroup.Transform>
+						<MatrixTransform Matrix="0.33072917,0.0,0.0,0.33072917,7.4390079,87.048616"/>
+					</DrawingGroup.Transform>
+					<DrawingGroup>
+						<DrawingGroup.Transform>
+							<MatrixTransform Matrix="1.0,0.0,0.0,1.0,286.27301,197.43201"/>
+						</DrawingGroup.Transform>
+						<GeometryDrawing Brush="#ff000000">
+							<GeometryDrawing.Geometry>
+								<PathGeometry Figures="m 8.46875 -12.1562 c -3.35938 0 -6.39062 1.34375 -8.60938 3.54688 c -0.03125 0.03125 -0.0625 0.09375 -0.0625 0.140625 c 0 0.0625 0.03125 0.109375 0.0625 0.15625 C -0.09375 -8.29688 -0.0625 -8.28125 0 -8.28125 c 0.0625 0 0.09375 -0.015625 0.140625 -0.03125 c 2.125 -2.14062 5.07812 -3.45312 8.32812 -3.45312 c 0.109375 0 0.203125 -0.09375 0.203125 -0.203125 c 0 -0.109375 -0.09375 -0.1875 -0.203125 -0.1875 z m 0 0" FillRule="NonZero"/>
+							</GeometryDrawing.Geometry>
+						</GeometryDrawing>
+					</DrawingGroup>
+					<DrawingGroup>
+						<DrawingGroup.Transform>
+							<MatrixTransform Matrix="1.0,0.0,0.0,1.0,294.72626,197.43201"/>
+						</DrawingGroup.Transform>
+						<GeometryDrawing Brush="#ff000000">
+							<GeometryDrawing.Geometry>
+								<PathGeometry Figures="m 0 -12.1562 c -0.125 0 -0.203125 0.07813 -0.203125 0.1875 c 0 0.109375 0.078125 0.203125 0.203125 0.203125 c 3.25 0 6.20312 1.3125 8.3125 3.45312 c 0.046875 0.015625 0.09375 0.03125 0.15625 0.03125 c 0.046875 0 0.109375 -0.015625 0.140625 -0.03125 c 0.046875 -0.046875 0.046875 -0.09375 0.046875 -0.15625 c 0 -0.046875 0 -0.109375 -0.046875 -0.140625 C 6.40625 -10.8125 3.375 -12.1562 0 -12.1562 Z m 0 0" FillRule="NonZero"/>
+							</GeometryDrawing.Geometry>
+						</GeometryDrawing>
+					</DrawingGroup>
+				</DrawingGroup>
+				<DrawingGroup>
+					<DrawingGroup.Transform>
+						<MatrixTransform Matrix="0.33072917,0.0,0.0,0.33072917,7.4390079,87.048616"/>
+					</DrawingGroup.Transform>
+					<DrawingGroup>
+						<DrawingGroup.Transform>
+							<MatrixTransform Matrix="1.0,0.0,0.0,1.0,297.73901,184.364"/>
+						</DrawingGroup.Transform>
+						<GeometryDrawing Brush="#ff000000">
+							<GeometryDrawing.Geometry>
+								<PathGeometry Figures="M 2.45312 -4.25 C 2.46875 -4.28125 2.46875 -4.3125 2.46875 -4.34375 C 2.46875 -4.42188 2.4375 -4.48438 2.375 -4.51562 C 2.34375 -4.53125 2.29688 -4.54688 2.26562 -4.54688 c -0.0625 0 -0.125 0.046875 -0.15625 0.09375 L -0.34375 -0.09375 C -0.359375 -0.0625 -0.375 -0.03125 -0.375 0 c 0 0.0625 0.046875 0.140625 0.109375 0.171875 c 0.03125 0.015625 0.0625 0.03125 0.09375 0.03125 C -0.09375 0.203125 -0.03125 0.15625 0 0.09375 Z m 0 0" FillRule="NonZero"/>
+							</GeometryDrawing.Geometry>
+						</GeometryDrawing>
+					</DrawingGroup>
+				</DrawingGroup>
+				<DrawingGroup>
+					<DrawingGroup.Transform>
+						<MatrixTransform Matrix="0.33072917,0.0,0.0,0.33072917,7.4390079,87.048616"/>
+					</DrawingGroup.Transform>
+					<DrawingGroup>
+						<DrawingGroup.Transform>
+							<MatrixTransform Matrix="1.0,0.0,0.0,1.0,296.21799,187.103"/>
+						</DrawingGroup.Transform>
+						<GeometryDrawing Brush="#ff000000">
+							<GeometryDrawing.Geometry>
+								<PathGeometry Figures="M 2.45312 -4.25 C 2.46875 -4.28125 2.46875 -4.3125 2.46875 -4.34375 C 2.46875 -4.42188 2.4375 -4.48438 2.375 -4.51562 C 2.34375 -4.53125 2.29688 -4.54688 2.26562 -4.54688 c -0.0625 0 -0.125 0.046875 -0.15625 0.09375 L -0.34375 -0.09375 C -0.359375 -0.0625 -0.375 -0.03125 -0.375 0 c 0 0.0625 0.046875 0.140625 0.109375 0.171875 c 0.03125 0.015625 0.0625 0.03125 0.09375 0.03125 C -0.09375 0.203125 -0.03125 0.15625 0 0.09375 Z m 0 0" FillRule="NonZero"/>
+							</GeometryDrawing.Geometry>
+						</GeometryDrawing>
+					</DrawingGroup>
+				</DrawingGroup>
+				<DrawingGroup>
+					<DrawingGroup.Transform>
+						<MatrixTransform Matrix="0.33072917,0.0,0.0,0.33072917,7.4390079,87.048616"/>
+					</DrawingGroup.Transform>
+					<DrawingGroup>
+						<DrawingGroup.Transform>
+							<MatrixTransform Matrix="1.0,0.0,0.0,1.0,294.69699,189.841"/>
+						</DrawingGroup.Transform>
+						<GeometryDrawing Brush="#ff000000">
+							<GeometryDrawing.Geometry>
+								<PathGeometry Figures="M 2.45312 -4.25 C 2.46875 -4.28125 2.46875 -4.3125 2.46875 -4.34375 C 2.46875 -4.42188 2.4375 -4.48438 2.375 -4.51562 C 2.34375 -4.53125 2.29688 -4.54688 2.26562 -4.54688 c -0.0625 0 -0.125 0.046875 -0.15625 0.09375 L -0.34375 -0.09375 C -0.359375 -0.0625 -0.375 -0.03125 -0.375 0 c 0 0.0625 0.046875 0.140625 0.109375 0.171875 c 0.03125 0.015625 0.0625 0.03125 0.09375 0.03125 C -0.09375 0.203125 -0.03125 0.15625 0 0.09375 Z m 0 0" FillRule="NonZero"/>
+							</GeometryDrawing.Geometry>
+						</GeometryDrawing>
+					</DrawingGroup>
+				</DrawingGroup>
+				<GeometryDrawing>
+					<GeometryDrawing.Pen>
+						<Pen Brush="#ff000000" LineJoin="Miter" Thickness="0.13163"/>
+					</GeometryDrawing.Pen>
+					<GeometryDrawing.Geometry>
+						<PathGeometry Figures="m 101.666 145.851 h 6.49572" FillRule="NonZero"/>
+					</GeometryDrawing.Geometry>
+				</GeometryDrawing>
+				<GeometryDrawing>
+					<GeometryDrawing.Pen>
+						<Pen Brush="#ff000000" LineJoin="Miter" Thickness="0.13163"/>
+					</GeometryDrawing.Pen>
+					<GeometryDrawing.Geometry>
+						<PathGeometry Figures="m 108.162 150.903 v -5.05137" FillRule="NonZero"/>
+					</GeometryDrawing.Geometry>
+				</GeometryDrawing>
+				<GeometryDrawing>
+					<GeometryDrawing.Pen>
+						<Pen Brush="#ff000000" LineJoin="Miter" Thickness="0.13163"/>
+					</GeometryDrawing.Pen>
+					<GeometryDrawing.Geometry>
+						<PathGeometry Figures="m 101.666 150.903 h 6.49572" FillRule="NonZero"/>
+					</GeometryDrawing.Geometry>
+				</GeometryDrawing>
+			</DrawingGroup>
+		</DrawingGroup>
+		<DrawingImage Drawing="{StaticResource Layer_1}" x:Key="measure"/>
+
+	<!--  icon_info_circle  -->
+	<DrawingGroup x:Key = "icon_info_circleDrawingGroup">
+		<DrawingGroup>
+			<DrawingGroup.ClipGeometry>
+				<RectangleGeometry Rect="0,0,32,32" />
+			</DrawingGroup.ClipGeometry>
+			<DrawingGroup >
+				<DrawingGroup.ClipGeometry>
+					<RectangleGeometry  Rect="0,0,32,32" />
+				</DrawingGroup.ClipGeometry>
+				<GeometryDrawing Brush="#FF000000" >
+					<GeometryDrawing.Geometry>
+						<PathGeometry FillRule="NonZero" Figures="M13.7703,21.9458L14.5136,21.9458 14.5136,14.5136 13.7703,14.5136C13.3599,14.5136,13.0271,14.1808,13.0271,13.7703L13.0271,13.2749C13.0271,12.8644,13.3599,12.5316,13.7703,12.5316L16.7432,12.5316C17.1537,12.5316,17.4865,12.8644,17.4865,13.2749L17.4865,21.9458 18.2297,21.9458C18.6401,21.9458,18.9729,22.2786,18.9729,22.689L18.9729,23.1845C18.9729,23.595,18.6401,23.9278,18.2297,23.9278L13.7703,23.9278C13.3599,23.9278,13.0271,23.595,13.0271,23.1845L13.0271,22.689C13.0271,22.2786,13.3599,21.9458,13.7703,21.9458z" />
+					</GeometryDrawing.Geometry>
+				</GeometryDrawing>
+				<GeometryDrawing Brush="#FF000000" >
+					<GeometryDrawing.Geometry>
+						<PathGeometry FillRule="NonZero" Figures="M16,7.0813C14.9054,7.0813 14.0181,7.9687 14.0181,9.0632 14.0181,10.1578 14.9054,11.0452 16,11.0452 17.0946,11.0452 17.9819,10.1578 17.9819,9.0632 17.9819,7.9687 17.0946,7.0813 16,7.0813z" />
+					</GeometryDrawing.Geometry>
+				</GeometryDrawing>
+				<GeometryDrawing Brush="#FF000000" >
+					<GeometryDrawing.Geometry>
+						<PathGeometry FillRule="EvenOdd" Figures="M16,0.64C7.5175,0.64 0.64,7.52 0.64,16 0.64,24.485 7.5175,31.36 16,31.36 24.4825,31.36 31.36,24.485 31.36,16 31.36,7.52 24.4825,0.64 16,0.64z M16,2.622C23.3469,2.622 29.3781,8.5724 29.3781,16 29.3781,23.3884 23.3945,29.3781 16,29.3781 8.6146,29.3781 2.622,23.3975 2.622,16 2.622,8.6171 8.605,2.622 16,2.622z" />
+					</GeometryDrawing.Geometry>
+				</GeometryDrawing>
+			</DrawingGroup>
+		</DrawingGroup>
+	</DrawingGroup>
+	<DrawingImage x:Key="icon_info_circle" Drawing="{StaticResource icon_info_circleDrawingGroup}" />
+
+</ResourceDictionary>
