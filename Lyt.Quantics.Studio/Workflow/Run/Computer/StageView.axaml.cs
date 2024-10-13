@@ -1,13 +1,6 @@
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
-
-namespace Lyt.Quantics.Studio;
+namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
 
 public partial class StageView : UserControl
 {
-    public StageView()
-    {
-        InitializeComponent();
-    }
+    public StageView() => this.InitializeComponent();
 }

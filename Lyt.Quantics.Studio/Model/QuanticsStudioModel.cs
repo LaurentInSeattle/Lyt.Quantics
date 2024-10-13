@@ -15,6 +15,7 @@ public sealed partial class QuanticsStudioModel : ModelBase
         // Do not inject the FileManagerModel instance: a parameter-less ctor is required for Deserialization 
         // Empty CTOR required for deserialization 
         this.ShouldAutoSave = false;
+
     }
 #pragma warning restore IDE0021
 #pragma warning restore CS8625 
@@ -24,6 +25,9 @@ public sealed partial class QuanticsStudioModel : ModelBase
     {
         this.fileManager = fileManager;
         this.ShouldAutoSave = true;
+
+        // FORNOW: Create a 'blank' computer at initialization time 
+        this.QuComputer = new("Untitled", "New quantum computer project.");
     }
 
     public override async Task Initialize() => await this.Load();
