@@ -22,13 +22,18 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
 
     protected override void OnViewLoaded()
     {
-        Schedule.OnUiThread(
-            5_000, () =>
-            {
+        // this.toaster.Host = this.View.ToasterHost;
 
-                this.toaster.Dismiss();
-                this.toaster.Host = this.View.ToasterHost;
-            }, DispatcherPriority.ApplicationIdle);
+        // TODO:
+        // Relocating this way the toaster prevents clicks on the close button
+        // 
+        //Schedule.OnUiThread(
+        //    5_000, () =>
+        //    {
+
+        //        this.toaster.Dismiss();
+        //        this.toaster.Host = this.View.ToasterHost;
+        //    }, DispatcherPriority.ApplicationIdle);
     }
 
     private void OnQubitChangedMessage(QubitChangedMessage message)
