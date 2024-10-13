@@ -19,39 +19,29 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
         this.Messenger.Subscribe<QubitChangedMessage>(this.OnQubitChangedMessage);
     }
 
-    private void OnQubitChangedMessage(QubitChangedMessage message)
+    protected override void OnViewLoaded()
     {
+        Schedule.OnUiThread(
+            5_000, () =>
+            {
 
+                this.toaster.Dismiss();
+                this.toaster.Host = this.View.ToasterHost;
+            }, DispatcherPriority.ApplicationIdle);
     }
+
+    private void OnQubitChangedMessage(QubitChangedMessage message)
+        => this.UpdateQubit(message.Index, message.InitialState);
 
     private void OnToolbarCommandMessage(ToolbarCommandMessage message)
     {
         int count = this.Qubits.Count;
         switch (message.Command)
         {
-            case ToolbarCommand.AddQubit:
-                if (count < ComputerViewModel.MaxQubits)
-                {
-                    this.Qubits.Add(new QubitViewModel(count));
-                } 
-                else
-                {
-                    // message 
-                    // TODO: Still missing its icon ! 
-                    this.toaster.Show(
-                        string.Format("Max {0} Qubits!", MaxQubits),
-                        string.Format("This Quantum Computer implementation is limited to {0} Qubits...", MaxQubits),
-                        4_000, InformationLevel.Warning);
-                }
-                break;
+            case ToolbarCommand.AddQubit: this.AddQubit(count); break;
 
-            case ToolbarCommand.RemoveQubit:
-                if (count > 0)
-                {
-                    this.Qubits.RemoveAt(count-1);
-                }
+            case ToolbarCommand.RemoveQubit: this.RemoveQubit(count); break;
 
-                break;
             case ToolbarCommand.HideProbabilities:
                 break;
             case ToolbarCommand.Reset:
@@ -69,6 +59,65 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
         }
     }
 
+    private void UpdateQubit(int index, QuState newState)
+    {
+        if (( index <= ComputerViewModel.MaxQubits) || ( index < 0 ))
+        {
+            if (!this.quanticsStudioModel.UpdateQubit(index, newState, out string message))
+            {
+                this.toaster.Show("Failed to update Qubit!", message, 4_000, InformationLevel.Error);
+            }
+        }
+        else
+        {
+            // message 
+            // TODO: Still missing its icon ! 
+            this.toaster.Show(
+                string.Format("No such Qubit at index: {0}!", index),
+                string.Format("Failed to correctly index Qubit at: {0}.", index),
+                4_000, InformationLevel.Error);
+        }
+    }
+
+    private void AddQubit(int count)
+    {
+        if (count < ComputerViewModel.MaxQubits)
+        {
+            if( this.quanticsStudioModel.AddQubit(count, out string message))
+            {
+                this.Qubits.Add(new QubitViewModel(count));
+            }
+            else
+            {
+                this.toaster.Show( "Failed to Add Qubit!", message, 4_000, InformationLevel.Error);
+            }
+        }
+        else
+        {
+            // message 
+            // TODO: Still missing its icon ! 
+            this.toaster.Show(
+                string.Format("Add Qubit: Max {0}!", MaxQubits),
+                string.Format("This Quantum Computer implementation is limited to {0} Qubits...", MaxQubits),
+                4_000, InformationLevel.Warning);
+        }
+    }
+
+    private void RemoveQubit(int count)
+    {
+        if (count > 0)
+        {
+            if (this.quanticsStudioModel.RemoveQubit(count, out string message))
+            {
+                this.Qubits.RemoveAt(count - 1);
+            }
+            else
+            {
+                this.toaster.Show("Failed to Remove last Qubit!", message, 4_000, InformationLevel.Error);
+            }
+        }
+    }
+
     public bool CanDrop(Point point)
     {
         // TODO
@@ -81,9 +130,9 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
         Debug.WriteLine("ComputerViewModel: OnDrop");
     }
 
-    public ObservableCollection<QubitViewModel> Qubits 
-    { 
-        get => this.Get<ObservableCollection<QubitViewModel>>()!; 
-        set => this.Set(value); 
+    public ObservableCollection<QubitViewModel> Qubits
+    {
+        get => this.Get<ObservableCollection<QubitViewModel>>()!;
+        set => this.Set(value);
     }
 }

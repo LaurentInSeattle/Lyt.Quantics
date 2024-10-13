@@ -2,13 +2,19 @@
 
 using MathNet.Numerics.LinearAlgebra;
 
-public sealed class QuComputer
+public sealed partial class QuComputer
 {
     private const string DefaultName = "< Untitled >";
     private const string DefaultDescription = "< Undocumented >";
     private const string DefaultComment = "< No comments >";
 
     public QuComputer() { /* Required for deserialization */ }
+
+    public QuComputer(string name, string description) 
+    {
+        this.Name = name;
+        this.Description = description; 
+    }
 
     #region JSON Properties 
 

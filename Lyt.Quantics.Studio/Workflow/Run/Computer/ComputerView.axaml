@@ -17,7 +17,12 @@
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*" />
 			<RowDefinition Height="80" />
-		</Grid.RowDefinitions>		
+		</Grid.RowDefinitions>	
+		<Panel
+			x:Name="ToasterHost"
+			Grid.RowSpan="2"
+			Background="Transparent"
+			/>
 		<Rectangle
 			Grid.Row="1"
 			Fill="#20202040"

@@ -1,8 +1,9 @@
 ﻿namespace Lyt.Quantics.Studio.Model;
 
+using Lyt.Quantics.Engine.Core;
 using static FileManagerModel;
 
-public sealed class QuanticsStudioModel : ModelBase
+public sealed partial class QuanticsStudioModel : ModelBase
 {
     private readonly FileManagerModel fileManager;
 
@@ -40,7 +41,7 @@ public sealed class QuanticsStudioModel : ModelBase
         try
         {
             // FORNOW: Create a 'blank' computer at initialization time 
-            this.QuComputer = new QuComputer(); 
+            this.QuComputer = new ("Untitled", "New quantum computer project."); 
 
             //if (!this.fileManager.Exists(Area.User, Kind.Json, TemplatesModel.TemplatesModelFilename))
             //{
@@ -76,9 +77,6 @@ public sealed class QuanticsStudioModel : ModelBase
 
         return Task.CompletedTask;
     }
-
-    [JsonIgnore]
-    public QuComputer QuComputer { get; private set; }
 
     public static List<Gate> Gates 
     {  
