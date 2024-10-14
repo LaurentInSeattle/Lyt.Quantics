@@ -17,6 +17,7 @@
 			<FontFamily x:Key="InterV">avares://TextoCopier/Assets/Inter-V.ttf</FontFamily>
 			-->
 			<ResourceDictionary.MergedDictionaries>
+				<ResourceInclude Source="/Assets/Icons/PathResourceDictionary.axaml"/>
 				<ResourceInclude Source="/Assets/Icons/GatesResourceDictionary.axaml"/>
 				<ResourceInclude Source="/Assets/Icons/FluentSVGResourceDictionary.axaml"/>
 				<ResourceInclude Source="/Assets/Theme/Buttons.axaml"/>

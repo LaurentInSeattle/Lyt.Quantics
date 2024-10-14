@@ -16,6 +16,7 @@
 
     <ItemGroup>
       <AvaloniaXaml Remove="Assets\Icons\GatesResourceDictionary.axaml" />
+      <AvaloniaXaml Remove="Assets\Icons\PathResourceDictionary.axaml" />
     </ItemGroup>
 
   <ItemGroup>
@@ -43,6 +44,9 @@
 
   <ItemGroup>
     <AvaloniaResource Update="Assets\Icons\GatesResourceDictionary.axaml">
+      <SubType>Designer</SubType>
+    </AvaloniaResource>
+    <AvaloniaResource Update="Assets\Icons\PathResourceDictionary.axaml">
       <SubType>Designer</SubType>
     </AvaloniaResource>
   </ItemGroup>
