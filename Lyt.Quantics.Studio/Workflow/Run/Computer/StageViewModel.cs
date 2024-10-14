@@ -1,18 +1,22 @@
-﻿
-namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
+﻿namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
 
 public sealed class StageViewModel : Bindable<StageView>
 {
     public readonly int stageIndex;
     public readonly QuanticsStudioModel quanticsStudioModel; 
+    public readonly IToaster toaster;
 
     public StageViewModel(int stageIndex, QuanticsStudioModel quanticsStudioModel)
     {
         this.stageIndex = stageIndex;
         this.quanticsStudioModel = quanticsStudioModel;
+        this.Gates = new GateViewModel?[ComputerViewModel.MaxQubits];
         this.Name = (1+stageIndex).ToString();
         this.IsMarkerVisible = true; 
+        this.toaster = App.GetRequiredService<IToaster>();
     }
+
+    public GateViewModel? [ ] Gates { get; private set; }
 
     protected override void OnViewLoaded()
     {
@@ -72,10 +76,37 @@ public sealed class StageViewModel : Bindable<StageView>
 
     private void AddGateAt(int qubitIndex, Gate gate)
     {
-        // TODO
+        if (!this.quanticsStudioModel.AddGate(this.stageIndex, qubitIndex, gate, out string message))
+        {
+            this.toaster.Show("Failed to Add Gate!", message, 4_000, InformationLevel.Error);
+            return;
+        }
+
+        var gateViewModel = new GateViewModel(gate, isToolbox: false);
+        gateViewModel.CreateViewAndBind();
+        this.Gates[qubitIndex] = gateViewModel;
+        this.UpdateUiGates();
+    }
+
+    private void UpdateUiGates ()
+    {
+        this.View.GatesGrid.Children.Clear();
+        for (int i = 0; i < ComputerViewModel.MaxQubits; i++)
+        {
+            var viewModel = this.Gates[i];
+            if (viewModel is null)
+            {
+                continue;
+            } 
+
+            var view = viewModel.View;
+            view.SetValue(Grid.RowProperty, i);
+            this.View.GatesGrid.Children.Add(view);
+        }
     }
 
     public string Name { get => this.Get<string>()!; set => this.Set(value); } 
 
     public bool IsMarkerVisible { get => this.Get<bool>(); set => this.Set(value); }
+
 }

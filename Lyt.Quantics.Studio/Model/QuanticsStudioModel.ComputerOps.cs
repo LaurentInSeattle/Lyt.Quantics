@@ -14,4 +14,6 @@ public sealed partial class QuanticsStudioModel : ModelBase
     public bool UpdateQubit(int index, QuState newState, out string message)
         => this.QuComputer.UpdateQubit(index, newState, out message);
 
+    public bool AddGate(int stageIndex, int qubitIndex, Gate gate, out string message)
+        => this.QuComputer.AddGate(stageIndex, qubitIndex, gate, out message);
 }

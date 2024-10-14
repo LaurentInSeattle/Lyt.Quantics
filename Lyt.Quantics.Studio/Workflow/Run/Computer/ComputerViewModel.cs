@@ -77,7 +77,6 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
         else
         {
             // message 
-            // TODO: Still missing its icon ! 
             this.toaster.Show(
                 string.Format("No such Qubit at index: {0}!", index),
                 string.Format("Failed to correctly index Qubit at: {0}.", index),

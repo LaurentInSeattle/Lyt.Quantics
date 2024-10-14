@@ -39,4 +39,10 @@ public sealed partial class QuComputer
         this.IsValid = false;
         return this.Validate(out message);
     }
+
+    public bool AddGate(int stageIndex, int qubitIndex, Gate gate, out string message)
+    {
+        message = string.Empty;
+        return true;
+    }
 }
