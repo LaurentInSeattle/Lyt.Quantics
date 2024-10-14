@@ -16,7 +16,7 @@
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*" />
-			<RowDefinition Height="80" />
+			<RowDefinition Height="10" />
 		</Grid.RowDefinitions>	
 		<Panel
 			x:Name="ToasterHost"
@@ -29,7 +29,6 @@
 			VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
 			/>
 		<ItemsControl
-			x:Name="QubitsItemsControl"
 			Grid.Row="0"
 			ItemsSource="{Binding Qubits}"
 			Margin="0" Padding="0"
@@ -43,6 +42,23 @@
 			<ItemsControl.ItemTemplate>
 				<DataTemplate>
 					<vm:QubitView Margin="2" />
+				</DataTemplate>
+			</ItemsControl.ItemTemplate>
+		</ItemsControl>
+		<ItemsControl
+			Grid.Row="0"
+			ItemsSource="{Binding Stages}"
+			Margin="120 0 0 0" Padding="0"
+			HorizontalAlignment="Stretch"
+			>
+			<ItemsControl.ItemsPanel>
+				<ItemsPanelTemplate>
+					<StackPanel Orientation="Horizontal" Margin="0" />
+				</ItemsPanelTemplate>
+			</ItemsControl.ItemsPanel>
+			<ItemsControl.ItemTemplate>
+				<DataTemplate>
+					<vm:StageView Margin="2" />
 				</DataTemplate>
 			</ItemsControl.ItemTemplate>
 		</ItemsControl>

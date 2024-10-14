@@ -10,5 +10,68 @@
     xmlns:theme="clr-namespace:Lyt.Quantics.Studio"
 	xmlns:glyphs="clr-namespace:Lyt.Avalonia.Controls.Glyphs;assembly=Lyt.Avalonia.Controls"
 	xmlns:toggle="clr-namespace:Lyt.Avalonia.Controls.Toggle;assembly=Lyt.Avalonia.Controls"
+	DragDrop.AllowDrop="True"
+	Background="Transparent"
 	>
+	<Grid
+		Background="#80101020"
+		Height="640" Width="86"
+		VerticalAlignment="Top"
+		>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="20" />
+			<ColumnDefinition Width="2" />
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*" />
+			<RowDefinition Height="20" />
+			<RowDefinition Height="20" />
+		</Grid.RowDefinitions>
+		<Rectangle
+			Grid.Column="2"
+			Fill="Transparent"
+			Stroke="{StaticResource ResourceKey= LightAqua_1_100}"
+			StrokeThickness="1"
+			StrokeDashArray="1,16"
+			Opacity="0.5"
+			VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+			/>
+		<TextBlock
+			Text="{Binding Name}"
+			Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1"
+			VerticalAlignment="Center" HorizontalAlignment="Center"
+			FontSize="16"
+			Foreground="{StaticResource ResourceKey= LightAqua_0_120}"
+			Opacity="1.0"
+			/>
+		<PathIcon
+			IsVisible="{Binding IsMarkerVisible}"
+			Data="{StaticResource path_caret_up}"
+			Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2"
+			VerticalAlignment="Center" HorizontalAlignment="Center"
+			Foreground="{StaticResource ResourceKey= LightAqua_0_120}"
+			Opacity="1.0"
+			/>
+		<Grid
+			x:Name="MinibarsGrid"
+			Grid.Row="0" Grid.Column="1"
+			>
+			<!-- 10 rows: one for each qubits -->			
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*" />
+				<RowDefinition Height="*" />
+				<RowDefinition Height="*" />
+				<RowDefinition Height="*" />
+				
+				<RowDefinition Height="*" />
+				<RowDefinition Height="*" />
+				<RowDefinition Height="*" />
+				<RowDefinition Height="*" />
+				
+				<RowDefinition Height="*" />
+				<RowDefinition Height="*" />
+			</Grid.RowDefinitions>
+		</Grid>
+	</Grid>
 </UserControl>

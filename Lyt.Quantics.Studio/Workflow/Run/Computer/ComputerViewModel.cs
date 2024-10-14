@@ -1,6 +1,5 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
 
-using Tmds.DBus.Protocol;
 using static ToolbarCommandMessage;
 
 public sealed class ComputerViewModel : Bindable<ComputerView>
@@ -16,6 +15,7 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
         this.quanticsStudioModel = App.GetRequiredService<QuanticsStudioModel>();
         this.toaster = App.GetRequiredService<IToaster>();
         this.Qubits = [];
+        this.Stages = [];
         this.Messenger.Subscribe<ToolbarCommandMessage>(this.OnToolbarCommandMessage);
         this.Messenger.Subscribe<QubitChangedMessage>(this.OnQubitChangedMessage);
     }
@@ -92,6 +92,10 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
             if (this.quanticsStudioModel.AddQubit(count, out string message))
             {
                 this.Qubits.Add(new QubitViewModel(count));
+                if ( count == 0)
+                {
+                    this.Stages.Add(new StageViewModel(0, this.quanticsStudioModel));
+                }
             }
             else
             {
@@ -145,6 +149,12 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
     public ObservableCollection<QubitViewModel> Qubits
     {
         get => this.Get<ObservableCollection<QubitViewModel>>()!;
+        set => this.Set(value);
+    }
+
+    public ObservableCollection<StageViewModel> Stages
+    {
+        get => this.Get<ObservableCollection<StageViewModel>>()!;
         set => this.Set(value);
     }
 }

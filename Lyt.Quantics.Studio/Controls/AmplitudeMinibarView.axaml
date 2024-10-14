@@ -1,0 +1,34 @@
+<UserControl 
+	x:Class="Lyt.Quantics.Studio.Controls.AmplitudeMinibarView"
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+	xmlns:glyphs="clr-namespace:Lyt.Avalonia.Controls.Glyphs;assembly=Lyt.Avalonia.Controls"
+    xmlns:vm="clr-namespace:Lyt.Quantics.Studio.Controls"
+    xmlns:header="clr-namespace:Lyt.Quantics.Studio.Controls"
+    x:DataType="vm:AmplitudeMinibarViewModel" 
+    xmlns:theme="clr-namespace:Lyt.Quantics.Studio"
+	>
+	<Grid
+		x:Name="MainGrid"
+		IsVisible="{Binding Visible}"
+		VerticalAlignment="Center" HorizontalAlignment="Center"
+		Width="12" Height="42"
+		ShowGridLines="False"
+		>
+		<Rectangle
+			Fill="{StaticResource ResourceKey= LightAqua_2_100}"
+			Opacity="0.30"
+			VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+			/>
+		<Rectangle
+			Fill="{StaticResource ResourceKey= OrangePeel_0_100}"
+			Margin="0 0 0 0"
+			Opacity="0.9"
+			Height="{Binding Height}"
+			VerticalAlignment="Bottom" HorizontalAlignment="Stretch"
+			/>
+	</Grid>
+</UserControl>

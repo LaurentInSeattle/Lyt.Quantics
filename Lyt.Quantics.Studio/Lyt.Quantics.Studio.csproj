@@ -50,4 +50,10 @@
       <SubType>Designer</SubType>
     </AvaloniaResource>
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Controls\AmplitudeMinibarView.axaml.cs">
+      <DependentUpon>AmplitudeMinibarView.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
 </Project>
