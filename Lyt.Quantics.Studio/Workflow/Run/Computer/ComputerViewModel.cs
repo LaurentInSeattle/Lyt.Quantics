@@ -22,10 +22,10 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
 
     protected override void OnViewLoaded()
     {
-        // this.toaster.Host = this.View.ToasterHost;
-
         // TODO:
         // Relocating this way the toaster prevents clicks on the close button
+        // The glyph button does not respond any longer to pointer events 
+        // Not related to drag and drop apparently 
         // 
         //Schedule.OnUiThread(
         //    5_000, () =>
@@ -67,7 +67,7 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
 
     private void UpdateQubit(int index, QuState newState)
     {
-        if (( index <= ComputerViewModel.MaxQubits) || ( index < 0 ))
+        if ((index <= ComputerViewModel.MaxQubits) || (index < 0))
         {
             if (!this.quanticsStudioModel.UpdateQubit(index, newState, out string message))
             {
@@ -89,13 +89,13 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
     {
         if (count < ComputerViewModel.MaxQubits)
         {
-            if( this.quanticsStudioModel.AddQubit(count, out string message))
+            if (this.quanticsStudioModel.AddQubit(count, out string message))
             {
                 this.Qubits.Add(new QubitViewModel(count));
             }
             else
             {
-                this.toaster.Show( "Failed to Add Qubit!", message, 4_000, InformationLevel.Error);
+                this.toaster.Show("Failed to Add Qubit!", message, 4_000, InformationLevel.Error);
             }
         }
         else
@@ -105,16 +105,16 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
             this.toaster.Show(
                 string.Format("Add Qubit: Max {0}!", MaxQubits),
                 string.Format("This Quantum Computer implementation is limited to {0} Qubits...", MaxQubits),
-                4_000, InformationLevel.Warning);
+                4_000, InformationLevel.Error);
         }
     }
 
     private void RemoveQubit(int count)
     {
-        if ( count == 1)
+        if (count == 1)
         {
             this.toaster.Show(
-                "Last Qubit!", "The last Qubit cannot be removed.", 
+                "Last Qubit!", "The last Qubit cannot be removed.",
                 4_000, InformationLevel.Warning);
         }
         else if (count > 1)
