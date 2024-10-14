@@ -5,27 +5,28 @@ public partial class ComputerView : UserControl
     public ComputerView()
     {
         this.InitializeComponent();
-        this.AddHandler(DragDrop.DragOverEvent,this.OnDragOver);
+
+        this.SetValue(DragDrop.AllowDropProperty, true);
+        this.AddHandler(DragDrop.DragOverEvent, this.OnDragOver);
         this.AddHandler(DragDrop.DropEvent, this.OnDrop);
     }
 
     private void OnDragOver(object? sender, DragEventArgs dragEventArgs)
     {
-        // Debug.WriteLine("On Drag Over Gates View");
+        // Debug.WriteLine("On Drag Over Gate Computer View");
         dragEventArgs.DragEffects = DragDropEffects.None;
         var data = dragEventArgs.Data;
         if (data.Get(GateViewModel.CustomDragAndDropFormat) is GateViewModel gateViewModel)
         {
             gateViewModel.View.OnParentDragOver(dragEventArgs);
-        }
-
-        if (this.DataContext is ComputerViewModel computerViewModel)
-        {
-            if ( computerViewModel.CanDrop (dragEventArgs.GetPosition(this)))
+            if (this.DataContext is ComputerViewModel computerViewModel)
             {
-                dragEventArgs.DragEffects = DragDropEffects.Move;
+                if (computerViewModel.CanDrop(dragEventArgs.GetPosition(this), gateViewModel))
+                {
+                    dragEventArgs.DragEffects = DragDropEffects.Move;
+                }
             }
-        } 
+        }
     }
 
     private void OnDrop(object? sender, DragEventArgs dragEventArgs)

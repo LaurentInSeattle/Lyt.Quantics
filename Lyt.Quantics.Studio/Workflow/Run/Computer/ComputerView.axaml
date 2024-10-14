@@ -11,7 +11,6 @@
 	Background="Transparent"
 	VerticalAlignment="Stretch"
 	HorizontalAlignment="Stretch"
-	DragDrop.AllowDrop="True"
 	>
 	<Grid>
 		<Grid.RowDefinitions>

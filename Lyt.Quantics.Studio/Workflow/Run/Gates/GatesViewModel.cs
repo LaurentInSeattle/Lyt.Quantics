@@ -25,7 +25,7 @@ public sealed class GatesViewModel : Bindable<GatesView>
         var list = new List<GateViewModel>(gates.Count());
         foreach (var gate in gates)
         {
-            var vm = new GateViewModel(gate);
+            var vm = new GateViewModel(gate, isToolbox: true);
             list.Add(vm);
         }
 

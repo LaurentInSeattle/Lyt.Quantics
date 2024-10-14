@@ -26,15 +26,17 @@ public partial class StageView : UserControl
         if (data.Get(GateViewModel.CustomDragAndDropFormat) is GateViewModel gateViewModel)
         {
             gateViewModel.View.OnParentDragOver(dragEventArgs);
-        }
-
-        if (this.DataContext is StageViewModel stageViewModel)
-        {
-            if (stageViewModel.CanDrop(dragEventArgs.GetPosition(this)))
+            if (this.DataContext is StageViewModel stageViewModel)
             {
-                dragEventArgs.DragEffects = DragDropEffects.Move;
+                if (stageViewModel.CanDrop(dragEventArgs.GetPosition(this), gateViewModel))
+                {
+                    dragEventArgs.DragEffects = DragDropEffects.Move;
+                }
             }
         }
+
+        // Must do this below so that the computer view is not corrupting the effect
+        dragEventArgs.Handled =true;
     }
 
     private void OnDrop(object? sender, DragEventArgs dragEventArgs)

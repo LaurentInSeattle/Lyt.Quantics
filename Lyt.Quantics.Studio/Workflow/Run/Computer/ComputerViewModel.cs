@@ -134,16 +134,29 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
         }
     }
 
-    public bool CanDrop(Point point)
+    public bool CanDrop(Point point, GateViewModel gateViewModel)  
     {
-        // TODO
-        return point.X > point.Y;
+        // TODO: Incomplete 
+        if (gateViewModel.IsToolbox)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        } 
     }
 
     public void OnDrop(Point point, GateViewModel gateViewModel)
     {
-        // TODO
         Debug.WriteLine("ComputerViewModel: OnDrop");
+        // TODO: Incomplete 
+        if (gateViewModel.IsToolbox)
+        {
+        }
+        else
+        {
+        }
     }
 
     public ObservableCollection<QubitViewModel> Qubits

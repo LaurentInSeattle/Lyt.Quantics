@@ -4,12 +4,11 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
 {
     public const string CustomDragAndDropFormat = "GateViewModel";
 
-    private readonly Gate gate;
-
-    public GateViewModel(Gate gate)
+    public GateViewModel(Gate gate, bool isToolbox)
     {
         this.DisablePropertyChangedLogging = true;
-        this.gate = gate;
+        this.Gate = gate;
+        this.IsToolbox = isToolbox; 
         this.Name = gate.CaptionKey.Replace("dg", "\u2020");
         this.FontSize = Name.Length switch
         {
@@ -37,6 +36,11 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
             _ => Brushes.DarkRed,
         };
     }
+
+    /// <summary> True when this is a toolbox gate view model. </summary>
+    public bool IsToolbox { get; private set; }
+
+    public Gate Gate { get; private set; }
 
     public bool BeginDrag()
     {

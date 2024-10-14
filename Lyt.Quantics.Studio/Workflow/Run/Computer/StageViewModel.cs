@@ -1,4 +1,5 @@
-﻿namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
+﻿
+namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
 
 public sealed class StageViewModel : Bindable<StageView>
 {
@@ -32,16 +33,46 @@ public sealed class StageViewModel : Bindable<StageView>
         }
     }
 
-    public bool CanDrop(Point point)
+    public bool CanDrop(Point point, GateViewModel gateViewModel)
     {
-        // TODO
-        return point.X > point.Y;
+        if (!gateViewModel.IsToolbox)
+        {
+            return false;
+        }
+
+        // 600 pixels for 10 qubits ~ Magic numbers !
+        double offset = point.Y / 60.0; 
+        if ( ( offset < 0.0 ) || ( offset >= 10.0 )) 
+        {
+            // outside qubit area: reject
+            return false;
+        }
+
+        return true;
     }
 
     public void OnDrop(Point point, GateViewModel gateViewModel)
     {
+        if (!gateViewModel.IsToolbox)
+        {
+            return;
+        }
+
+        // 600 pixels for 10 qubits ~ Magic numbers !
+        double offset = point.Y / 60.0;
+        if ((offset < 0.0) || (offset >= 10.0))
+        {
+            // outside qubit area: reject
+            return;
+        }
+
+        int qubitIndex = (int)Math.Floor(offset);
+        this.AddGateAt(qubitIndex, gateViewModel.Gate);
+    }
+
+    private void AddGateAt(int qubitIndex, Gate gate)
+    {
         // TODO
-        Debug.WriteLine("ComputerViewModel: OnDrop");
     }
 
     public string Name { get => this.Get<string>()!; set => this.Set(value); } 

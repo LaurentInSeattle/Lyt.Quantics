@@ -54,6 +54,28 @@
 			Opacity="1.0"
 			/>
 		<Grid
+			x:Name="GatesGrid"
+			Grid.Row="0" Grid.Column="0"
+			DragDrop.AllowDrop="True"
+			Background="Transparent"
+			>
+			<!-- 10 rows: one for each qubits -->
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*" />
+				<RowDefinition Height="*" />
+				<RowDefinition Height="*" />
+				<RowDefinition Height="*" />
+
+				<RowDefinition Height="*" />
+				<RowDefinition Height="*" />
+				<RowDefinition Height="*" />
+				<RowDefinition Height="*" />
+
+				<RowDefinition Height="*" />
+				<RowDefinition Height="*" />
+			</Grid.RowDefinitions>
+		</Grid>
+		<Grid
 			x:Name="MinibarsGrid"
 			Grid.Row="0" Grid.Column="1"
 			>
