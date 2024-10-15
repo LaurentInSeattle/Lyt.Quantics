@@ -4,11 +4,22 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
 {
     public const string CustomDragAndDropFormat = "GateViewModel";
 
-    public GateViewModel(Gate gate, bool isToolbox)
+    private readonly QuanticsStudioModel quanticsStudioModel;
+    private readonly IToaster toaster;
+
+    public GateViewModel(
+        Gate gate, bool isToolbox = false, int stageIndex = -1, int qubitIndex = -1 )
     {
         this.DisablePropertyChangedLogging = true;
+
+        // Do not use Injection directly as this is loaded programmatically by the RunView 
+        this.quanticsStudioModel = App.GetRequiredService<QuanticsStudioModel>();
+        this.toaster = App.GetRequiredService<IToaster>();
+
         this.Gate = gate;
         this.IsToolbox = isToolbox; 
+        this.StageIndex = stageIndex;
+        this.QubitIndex = qubitIndex;
         this.Name = gate.CaptionKey.Replace("dg", "\u2020");
         this.FontSize = Name.Length switch
         {
@@ -40,7 +51,25 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
     /// <summary> True when this is a toolbox gate view model. </summary>
     public bool IsToolbox { get; private set; }
 
+    /// <summary> Only valid when this is a toolbox gate view model. </summary>
+    public int StageIndex { get; private set; }
+
+    /// <summary> Only valid when this is a toolbox gate view model. </summary>
+    public int QubitIndex { get; private set; }
+
     public Gate Gate { get; private set; }
+
+    public void Remove()
+    {
+        Debug.WriteLine("Removing gate: " + this.Gate.CaptionKey);
+        if (!this.quanticsStudioModel.RemoveGate( 
+            this.StageIndex, this.QubitIndex, this.Gate, out string message))
+        {
+            this.toaster.Show(
+                "Failed to Remove gate: " + this.Gate.CaptionKey, message,
+                4_000, InformationLevel.Error);
+        }
+    }
 
     public bool BeginDrag()
     {

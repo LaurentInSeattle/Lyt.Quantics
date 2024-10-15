@@ -82,7 +82,8 @@ public sealed class StageViewModel : Bindable<StageView>
             return;
         }
 
-        var gateViewModel = new GateViewModel(gate, isToolbox: false);
+        var gateViewModel = 
+            new GateViewModel(gate, isToolbox: false, this.stageIndex, qubitIndex);
         gateViewModel.CreateViewAndBind();
         this.Gates[qubitIndex] = gateViewModel;
         this.UpdateUiGates();

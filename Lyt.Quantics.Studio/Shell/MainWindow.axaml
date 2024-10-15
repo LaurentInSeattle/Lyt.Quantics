@@ -7,7 +7,7 @@
     mc:Ignorable="d" d:DesignWidth="1080" d:DesignHeight="640"
     Icon="/Assets/Images/ket.ico"
     Title="Quantics Studio"
-	Width="1680" Height="840"
+	Width="1680" Height="980"
 	MinWidth="400" MinHeight="360"
 	SizeToContent="Manual"
 	>
