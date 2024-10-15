@@ -81,9 +81,10 @@
 					/>
 			</Grid>
 		</Border>
-		<!-- Collapsed Layout-->
+		
+		<!-- Side Collapsed Layout-->
 		<Border
-			IsVisible="{Binding IsCollapsed}"
+			IsVisible="{Binding IsSideCollapsed}"
 			Margin ="1"
 			BorderThickness="1.0"
 			BorderBrush="{StaticResource ResourceKey= LightAqua_2_100}"
@@ -139,6 +140,61 @@
 						<RotateTransform Angle="270" />
 					</TextBlock.RenderTransform>
 				</TextBlock>
+			</Grid>
+		</Border>
+
+		<!-- Updown Collapsed Layout-->
+		<Border
+			IsVisible="{Binding IsUpdownCollapsed}"
+			Margin ="1"
+			BorderThickness="1.0"
+			BorderBrush="{StaticResource ResourceKey= LightAqua_2_100}"
+			Background="Transparent"
+			>
+			<Grid
+				>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="6"/>
+					<RowDefinition Height="56"/>
+				</Grid.RowDefinitions>
+				<Rectangle
+					Grid.Row="0"
+					VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+					Fill="{StaticResource ResourceKey= OrangePeel_2_080}"
+					/>
+				<Rectangle
+					Grid.Row="1"
+					VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+					Fill="#60202040"
+					/>
+				<Rectangle
+					Grid.Row="1"
+					Height="1"
+					VerticalAlignment="Bottom" HorizontalAlignment="Stretch"
+					Fill="#F0202060"
+					/>
+				<glyphs:GlyphButton
+					Grid.Row="1"
+					Style="{StaticResource ToolbarIconButton}"
+					Behaviour="Tap"
+					HorizontalAlignment="Left" VerticalAlignment="Center"
+					Width="48" Height="48"
+					Margin="4"
+					GlyphSource="{Binding ExpandIconSource}"
+					ButtonBackground="BorderlessRectangle"
+					GlyphStrokeThickness="0"
+					Text="Expand"
+					Command="{Binding ExpandCommand}"
+	    			/>
+				<TextBlock
+					Grid.Row="1" Grid.Column="0"
+					Text="{Binding Title}"
+					HorizontalAlignment="Left" VerticalAlignment="Center"
+					Margin="80 0 0 0"
+					FontSize="26"
+					Foreground="{StaticResource LightAqua_0_080}"
+					TextWrapping="Wrap"
+					/>
 			</Grid>
 		</Border>
 	</Grid>
