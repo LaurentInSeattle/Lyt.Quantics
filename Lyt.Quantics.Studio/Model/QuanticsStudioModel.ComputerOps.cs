@@ -12,6 +12,10 @@ public sealed partial class QuanticsStudioModel : ModelBase
         {
             this.Messenger.Publish(new ModelStructureUpdateMessage(qubitsChanged: true));
         }
+        else
+        {
+            this.PublishError(message);
+        }
 
         return status;
     } 
@@ -23,6 +27,10 @@ public sealed partial class QuanticsStudioModel : ModelBase
         {
             this.Messenger.Publish(new ModelStructureUpdateMessage(qubitsChanged: true));
         }
+        else
+        {
+            this.PublishError(message);
+        }
 
         return status;
     }    
@@ -33,6 +41,10 @@ public sealed partial class QuanticsStudioModel : ModelBase
         if (status)
         {
             this.Messenger.Publish(new ModelResultsUpdateMessage());
+        }
+        else
+        {
+            this.PublishError(message);
         }
 
         return status;
@@ -47,6 +59,10 @@ public sealed partial class QuanticsStudioModel : ModelBase
                 new ModelStructureUpdateMessage(
                     qubitsChanged: false, stageChanged:true, stageIndex));
         }
+        else
+        {
+            this.PublishError(message);
+        }
 
         return status;
     }
@@ -60,9 +76,14 @@ public sealed partial class QuanticsStudioModel : ModelBase
                 new ModelStructureUpdateMessage(
                     qubitsChanged: false, stageChanged: true, stageIndex));
         }
+        else
+        {
+            this.PublishError(message);
+        }
 
         return status;
     }
 
-
+    private void PublishError(string message)
+        => this.Messenger.Publish(new ModelUpdateErrorMessage(message));
 }

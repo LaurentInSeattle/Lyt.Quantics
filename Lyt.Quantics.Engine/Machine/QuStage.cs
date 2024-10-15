@@ -22,10 +22,36 @@ public sealed class QuStage
             foreach (var op in this.Operators)
             {
                 sb.Append(op.GateKey);
-                sb.Append( "   ");
+                sb.Append("   ");
             }
             return sb.ToString();
         }
+    }
+
+    public int ClearAtQubit(int qubitIndex)
+    {
+        var listToRemove = new List<QuStageOperator>();
+        foreach (var stageOperator in this.Operators)
+        {
+            if (stageOperator.QuBitIndices.Contains(qubitIndex))
+            {
+                listToRemove.Add(stageOperator);
+            }
+        }
+
+        foreach (var stageOperator in listToRemove)
+        {
+            this.Operators.Remove(stageOperator);
+        }
+
+        return listToRemove.Count;
+    }
+
+    public void AddAtQubit(int qubitIndex, Gate gate)
+    {
+        var stageOperator = new QuStageOperator() { GateKey = gate.CaptionKey };
+        stageOperator.QuBitIndices.Add(qubitIndex);
+        this.Operators.Add(stageOperator);
     }
 
     public bool Validate(QuComputer computer, out string message)
@@ -109,7 +135,7 @@ public sealed class QuStage
             }
             else
             {
-                for ( int i = 1; i < this.Operators.Count; ++i ) // Must start at ONE!
+                for (int i = 1; i < this.Operators.Count; ++i) // Must start at ONE!
                 {
                     stageMatrix = stageMatrix.KroneckerProduct(this.Operators[i].StageOperatorMatrix);
                 }
@@ -161,6 +187,6 @@ public sealed class QuStage
         return true;
     }
 
-    public Vector<double> Probabilities => 
-        Vector<double>.Build.Dense(this.StageRegister.KetProbabilities().ToArray()); 
+    public Vector<double> Probabilities =>
+        Vector<double>.Build.Dense(this.StageRegister.KetProbabilities().ToArray());
 }
