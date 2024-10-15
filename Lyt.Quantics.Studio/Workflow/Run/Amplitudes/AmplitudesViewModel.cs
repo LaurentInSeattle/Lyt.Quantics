@@ -2,6 +2,11 @@
 
 public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
 {
+    public AmplitudesViewModel()
+    {
+        this.Messenger.Subscribe<ModelResultsUpdateMessage>(this.OnModelResultsUpdateMessage);
+    }
+
     // TODO : 
     // Show only non zero / show all 
     // Show only above value 
@@ -13,4 +18,11 @@ public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
         vm.CreateViewAndBind();
         this.View.AmplitudesGrid.Children.Add(vm.View);
     }
+
+    private void OnModelResultsUpdateMessage(ModelResultsUpdateMessage message)
+    {
+        // TODO
+        // Update probabilities 
+    }
+
 }

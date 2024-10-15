@@ -74,6 +74,16 @@ public sealed class StageViewModel : Bindable<StageView>
         this.AddGateAt(qubitIndex, gateViewModel.Gate);
     }
 
+    public void UpdateOnQubitRemoved(int removedQubitIndex)
+    {
+        this.UpdateUiGates();
+    }
+
+    public void Update()
+    {
+        this.UpdateUiGates();
+    }
+
     private void AddGateAt(int qubitIndex, Gate gate)
     {
         if (!this.quanticsStudioModel.AddGate(this.stageIndex, qubitIndex, gate, out string message))
@@ -81,12 +91,6 @@ public sealed class StageViewModel : Bindable<StageView>
             this.toaster.Show("Failed to Add Gate!", message, 4_000, InformationLevel.Error);
             return;
         }
-
-        var gateViewModel = 
-            new GateViewModel(gate, isToolbox: false, this.stageIndex, qubitIndex);
-        gateViewModel.CreateViewAndBind();
-        this.Gates[qubitIndex] = gateViewModel;
-        this.UpdateUiGates();
     }
 
     private void UpdateUiGates ()

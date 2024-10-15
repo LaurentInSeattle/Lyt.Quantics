@@ -23,21 +23,8 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
         this.Messenger.Subscribe<ModelResultsUpdateMessage>(this.OnModelResultsUpdateMessage);
     }
 
-    private void OnModelResultsUpdateMessage(ModelResultsUpdateMessage message)
-    {
-        // Stages need to update the qubits probabilities 
-    }
-
-    private void OnModelStructureUpdateMessage(ModelStructureUpdateMessage message)
-    {
-        // Add remove qubits if needed 
-        // Stages need to update 
-        // May need to create a new UI stage so that we drop new gates 
-    }
-
     protected override void OnViewLoaded()
     {
-        // TODO:
         // Relocating this way the toaster prevents clicks on the close button
         // The glyph button does not respond any longer to pointer events 
         // Not related to drag and drop apparently 
@@ -49,6 +36,80 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
                 this.toaster.Dismiss();
                 this.toaster.Host = this.View.ToasterHost;
             }, DispatcherPriority.ApplicationIdle);
+    }
+
+    private void OnModelResultsUpdateMessage(ModelResultsUpdateMessage message)
+    {
+        try
+        {
+            var computer = this.quanticsStudioModel.QuComputer;
+            int qubitCount = computer.QuBitsCount;
+            // TODO 
+            // Stages need to update the qubits probabilities 
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            string uiMessage = "Model Structure Update: Exception thrown: " + ex.Message;
+            this.toaster.Show("Unexpected Error", uiMessage, 4_000, InformationLevel.Error);
+        }
+    }
+
+    private void OnModelStructureUpdateMessage(ModelStructureUpdateMessage message)
+    {
+        try
+        {
+            var computer = this.quanticsStudioModel.QuComputer;
+            int qubitCount = computer.QuBitsCount;
+            if (message.QubitsChanged)
+            {
+                if (this.Qubits.Count < qubitCount)
+                {
+                    // Create one new Qubit View, stages are unchanged 
+                    int addedQubitIndex = qubitCount - 1;
+                    this.Qubits.Add(new QubitViewModel(addedQubitIndex));
+                    if (addedQubitIndex == 0)
+                    {
+                        // Create an empty stage for the very first qubit so that we can
+                        // drop new gates into it 
+                        this.Stages.Add(new StageViewModel(0, this.quanticsStudioModel));
+                    }
+                }
+                else if (this.Qubits.Count > qubitCount)
+                {
+                    // Remove last Qubit View 
+                    int removedQubitIndex = qubitCount - 1;
+                    this.Qubits.RemoveAt(removedQubitIndex);
+
+                    // All stages may need an update 
+                    foreach (var stage in this.Stages)
+                    {
+                        stage.UpdateOnQubitRemoved(removedQubitIndex);
+                    }
+                }
+                else
+                {
+                    // No change ? 
+                    this.toaster.Show("Unexpected Error", "Conflicting QuBits count", 4_000, InformationLevel.Error);
+                }
+            }
+
+            if (message.StageChanged)
+            {
+                var stage = this.Stages[message.IndexStageChanged];
+                stage.Update();
+            }
+
+            // TODO 
+            // May need to create a new UI stage so that we can drop new gates 
+            // May need to remove the last UI stage if gates have been removed  
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            string uiMessage = "Model Structure Update: Exception thrown: " + ex.Message;
+            this.toaster.Show("Unexpected Error", uiMessage, 4_000, InformationLevel.Error);
+        }
     }
 
     private void OnQubitChangedMessage(QubitChangedMessage message)
@@ -103,15 +164,7 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
     {
         if (count < ComputerViewModel.MaxQubits)
         {
-            if (this.quanticsStudioModel.AddQubit(count, out string message))
-            {
-                this.Qubits.Add(new QubitViewModel(count));
-                if ( count == 0)
-                {
-                    this.Stages.Add(new StageViewModel(0, this.quanticsStudioModel));
-                }
-            }
-            else
+            if (!this.quanticsStudioModel.AddQubit(count, out string message))
             {
                 this.toaster.Show("Failed to Add Qubit!", message, 4_000, InformationLevel.Error);
             }
@@ -119,7 +172,6 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
         else
         {
             // message 
-            // TODO: Still missing its icon ! 
             this.toaster.Show(
                 string.Format("Add Qubit: Max {0}!", MaxQubits),
                 string.Format("This Quantum Computer implementation is limited to {0} Qubits...", MaxQubits),
@@ -139,7 +191,6 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
         {
             if (this.quanticsStudioModel.RemoveQubit(count, out string message))
             {
-                this.Qubits.RemoveAt(count - 1);
             }
             else
             {
@@ -148,7 +199,7 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
         }
     }
 
-    public bool CanDrop(Point point, GateViewModel gateViewModel)  
+    public bool CanDrop(Point point, GateViewModel gateViewModel)
     {
         if (gateViewModel.IsToolbox)
         {
@@ -157,7 +208,7 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
         else
         {
             return true;
-        } 
+        }
     }
 
     public void OnDrop(Point point, GateViewModel gateViewModel)
