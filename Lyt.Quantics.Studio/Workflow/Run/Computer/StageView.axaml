@@ -32,9 +32,9 @@
 			Grid.Column="2"
 			Fill="Transparent"
 			Stroke="{StaticResource ResourceKey= LightAqua_1_100}"
-			StrokeThickness="1"
-			StrokeDashArray="1,16"
-			Opacity="0.5"
+			StrokeThickness="2"
+			StrokeDashArray="2,12"
+			Opacity="0.7"
 			VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
 			/>
 		<TextBlock

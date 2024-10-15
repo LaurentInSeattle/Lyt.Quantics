@@ -1,5 +1,6 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
 
+using System;
 using static ToolbarCommandMessage;
 
 public sealed class ComputerViewModel : Bindable<ComputerView>
@@ -18,6 +19,20 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
         this.Stages = [];
         this.Messenger.Subscribe<ToolbarCommandMessage>(this.OnToolbarCommandMessage);
         this.Messenger.Subscribe<QubitChangedMessage>(this.OnQubitChangedMessage);
+        this.Messenger.Subscribe<ModelStructureUpdateMessage>(this.OnModelStructureUpdateMessage);
+        this.Messenger.Subscribe<ModelResultsUpdateMessage>(this.OnModelResultsUpdateMessage);
+    }
+
+    private void OnModelResultsUpdateMessage(ModelResultsUpdateMessage message)
+    {
+        // Stages need to update the qubits probabilities 
+    }
+
+    private void OnModelStructureUpdateMessage(ModelStructureUpdateMessage message)
+    {
+        // Add remove qubits if needed 
+        // Stages need to update 
+        // May need to create a new UI stage so that we drop new gates 
     }
 
     protected override void OnViewLoaded()
@@ -27,13 +42,13 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
         // The glyph button does not respond any longer to pointer events 
         // Not related to drag and drop apparently 
         // 
-        //Schedule.OnUiThread(
-        //    5_000, () =>
-        //    {
+        Schedule.OnUiThread(
+            5_000, () =>
+            {
 
-        //        this.toaster.Dismiss();
-        //        this.toaster.Host = this.View.ToasterHost;
-        //    }, DispatcherPriority.ApplicationIdle);
+                this.toaster.Dismiss();
+                this.toaster.Host = this.View.ToasterHost;
+            }, DispatcherPriority.ApplicationIdle);
     }
 
     private void OnQubitChangedMessage(QubitChangedMessage message)

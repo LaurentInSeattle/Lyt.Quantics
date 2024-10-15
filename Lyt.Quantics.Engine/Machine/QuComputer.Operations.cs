@@ -42,6 +42,14 @@ public sealed partial class QuComputer
 
     public bool AddGate(int stageIndex, int qubitIndex, Gate gate, out string message)
     {
+        // TODO ! 
+        message = string.Empty;
+        return true;
+    }
+
+    public bool RemoveGate(int stageIndex, int qubitIndex, Gate gate, out string message)
+    {
+        // TODO ! 
         message = string.Empty;
         return true;
     }
