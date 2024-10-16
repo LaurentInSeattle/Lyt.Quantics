@@ -1,6 +1,5 @@
 ﻿namespace Lyt.Quantics.Engine.Machine;
 
-using Lyt.Quantics.Engine.Gates.Base;
 using MathNet.Numerics.LinearAlgebra;
 
 public sealed partial class QuComputer

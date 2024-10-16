@@ -130,6 +130,13 @@ public sealed class StageViewModel : Bindable<StageView>
 
             var stage = computer.Stages[this.stageIndex];
             var probabilities = stage.Probabilities;
+            if ( probabilities.Count != computer.QuBitsCount)
+            {
+                string uiMessage = "Mismatch between probabilities count and Qubit count." ;
+                this.toaster.Show("Error", uiMessage, 4_000, InformationLevel.Error);
+                return; 
+            }
+
             for (int qubitIndex = 0; qubitIndex < computer.QuBitsCount; qubitIndex++)
             {
                 double value = probabilities.At(qubitIndex);

@@ -21,6 +21,7 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
         this.Messenger.Subscribe<QubitChangedMessage>(this.OnQubitChangedMessage);
         this.Messenger.Subscribe<ModelStructureUpdateMessage>(this.OnModelStructureUpdateMessage);
         this.Messenger.Subscribe<ModelResultsUpdateMessage>(this.OnModelResultsUpdateMessage);
+        this.Messenger.Subscribe<ModelUpdateErrorMessage>(this.OnModelUpdateErrorMessage);
     }
 
     protected override void OnViewLoaded()
@@ -33,6 +34,9 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
                 this.toaster.Host = this.View.ToasterHost;
             }, DispatcherPriority.ApplicationIdle);
     }
+
+    private void OnModelUpdateErrorMessage(ModelUpdateErrorMessage message)
+        => this.toaster.Show("Error", message.Message, 4_000, InformationLevel.Error);
 
     private void OnModelResultsUpdateMessage(ModelResultsUpdateMessage message)
     {

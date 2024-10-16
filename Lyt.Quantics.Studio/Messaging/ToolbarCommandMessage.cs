@@ -17,9 +17,14 @@ public sealed class ToolbarCommandMessage(
         // QuBit actions
         InitialQuStateChanged,
         Exit,
+
+        // Amplitudes toolbar 
+        ShowAll, 
+        ShowByBitOrder,
     }
 
     public ToolbarCommand Command { get; private set; } = command;
 
     public object? CommandParameter { get; private set; } = commandParameter;
+
 }

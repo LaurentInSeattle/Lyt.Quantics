@@ -4,15 +4,49 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+	mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="56"
     xmlns:vm="clr-namespace:Lyt.Quantics.Studio.Workflow.Run.Amplitudes"
     x:DataType="vm:AmplitudesToolbarViewModel" 
     xmlns:theme="clr-namespace:Lyt.Quantics.Studio"
+	xmlns:glyphs="clr-namespace:Lyt.Avalonia.Controls.Glyphs;assembly=Lyt.Avalonia.Controls"
+	xmlns:toggle="clr-namespace:Lyt.Avalonia.Controls.Toggle;assembly=Lyt.Avalonia.Controls"
     >
     <Grid
-        Background="DodgerBlue"
-        Height="38" Width="100"
-        > 
-        
-    </Grid>
+        Height="56" 
+        >
+		<Grid.ColumnDefinitions>
+			<!-- Stage Control (Later)-->
+			<ColumnDefinition Width="72" />
+			<ColumnDefinition Width="72" />
+			<ColumnDefinition Width="72" />
+			<!-- Prob. Toggle -->
+			<ColumnDefinition Width="250" />
+			<ColumnDefinition Width="250" />
+			<!-- Spacer -->
+			<ColumnDefinition Width="84" />
+			<ColumnDefinition Width="72" />
+		</Grid.ColumnDefinitions>
+		<toggle:ToggleSwitch
+			x:Name="NonZeroSwitch"
+			Grid.Column="3"
+			Margin="4"
+			Style="{StaticResource StandardToggleSwitch}"
+			TrueText="All"
+			FalseText="Non Zero Only"
+			Height="30" Width="240"
+			HorizontalAlignment="Center" VerticalAlignment="Center"
+			Value="{Binding ShowAll}"
+			/>
+		<toggle:ToggleSwitch
+			x:Name="OrderSwitch"
+			Grid.Column="4"
+			Margin="4"
+			Style="{StaticResource StandardToggleSwitch}"
+			TrueText="Bit Order"
+			FalseText="Decr. Values"
+			Height="30" Width="240"
+			HorizontalAlignment="Center" VerticalAlignment="Center"
+			Value="{Binding ShowByBitOrder}"
+			/>
+	</Grid>
 </UserControl>
