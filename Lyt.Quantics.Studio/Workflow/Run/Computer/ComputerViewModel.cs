@@ -25,10 +25,6 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
 
     protected override void OnViewLoaded()
     {
-        // Relocating this way the toaster prevents clicks on the close button
-        // The glyph button does not respond any longer to pointer events 
-        // Not related to drag and drop apparently 
-        // 
         Schedule.OnUiThread(
             5_000, () =>
             {
@@ -163,29 +159,9 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
     {
         try
         {
-            var computer = this.quanticsStudioModel.QuComputer;
-            bool status = computer.Validate(out string message);
-            if (status)
+            if (this.quanticsStudioModel.Run())
             {
-                status = computer.Build(out message);
-                if (status)
-                {
-                    status = computer.Prepare(out message);
-                    if (status)
-                    {
-                        status = computer.Run(out message);
-
-                    }
-                }
-            }
-
-            if (status)
-            {
-                this.toaster.Show("Complete!", "Successfully performed a single run.", 4_000, InformationLevel.Success);
-            }
-            else
-            {
-                this.toaster.Show("Failed to Run", message, 4_000, InformationLevel.Error);
+                this.toaster.Show("Ready!", "Succesful single Run! ", 4_000, InformationLevel.Success);
             }
         }
         catch (Exception ex)

@@ -105,6 +105,31 @@ public sealed partial class QuanticsStudioModel : ModelBase
         return false;
     }
 
+    public bool Run ()
+    {
+            bool status = this.QuComputer.Validate(out string message);
+            if (status)
+            {
+                status = this.QuComputer.Build(out message);
+                if (status)
+                {
+                    status = this.QuComputer.Prepare(out message);
+                    if (status)
+                    {
+                        status = this.QuComputer.Run(out message);
+                        if (status)
+                        {
+                            this.Messenger.Publish(new ModelResultsUpdateMessage());
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            this.PublishError(message);
+            return false;
+    }
+
     private void PublishError(string message)
         => this.Messenger.Publish(new ModelUpdateErrorMessage(message));
 }

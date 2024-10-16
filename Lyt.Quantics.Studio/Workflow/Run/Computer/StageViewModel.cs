@@ -93,6 +93,12 @@ public sealed class StageViewModel : Bindable<StageView>
             var stage = computer.Stages[this.stageIndex];
             foreach (var stageOperator in stage.Operators)
             {
+                if (stageOperator.GateKey == IdentityGate.Key)
+                {
+                    // No need to show the identity operator
+                    continue; 
+                }
+
                 int firstIndex = stageOperator.QuBitIndices.Min();
                 var gate = GateFactory.Produce(stageOperator.GateKey);
                 var gateViewModel =
