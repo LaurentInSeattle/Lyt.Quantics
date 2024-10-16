@@ -1,6 +1,6 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
 
-using System;
+using Tmds.DBus.Protocol;
 using static ToolbarCommandMessage;
 
 public sealed class ComputerViewModel : Bindable<ComputerView>
@@ -44,8 +44,9 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
         {
             var computer = this.quanticsStudioModel.QuComputer;
             int qubitCount = computer.QuBitsCount;
-            // TODO 
-            // Stages need to update the qubits probabilities 
+
+            // All Stages need to update the qubits probabilities 
+
         }
         catch (Exception ex)
         {
@@ -78,7 +79,7 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
                 else if (this.Qubits.Count > qubitCount)
                 {
                     // Remove last Qubit View 
-                    int removedQubitIndex = qubitCount - 1;
+                    int removedQubitIndex = qubitCount;
                     this.Qubits.RemoveAt(removedQubitIndex);
 
                     // All stages may need an update 
@@ -126,18 +127,72 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
 
             case ToolbarCommand.HideProbabilities:
                 break;
-            case ToolbarCommand.Reset:
-                break;
-            case ToolbarCommand.Step:
-                break;
-            case ToolbarCommand.Run:
-                break;
+            case ToolbarCommand.Reset: this.OnReset(); break;
+
+            case ToolbarCommand.Step: this.OnRun(); break;
+
+            case ToolbarCommand.Run: this.OnRun(); break;
+
             case ToolbarCommand.Loop:
                 break;
             case ToolbarCommand.Exit:
                 break;
             default:
                 break;
+        }
+    }
+
+    private void OnReset()
+    {
+        try
+        {
+            if (this.quanticsStudioModel.Reset())
+            {
+                this.toaster.Show("Ready!", "Ready to Run! (or Step...)", 4_000, InformationLevel.Success);
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            string uiMessage = "Reset: Exception thrown: " + ex.Message;
+            this.toaster.Show("Unexpected Error", uiMessage, 4_000, InformationLevel.Error);
+        }
+    }
+
+    private void OnRun()
+    {
+        try
+        {
+            var computer = this.quanticsStudioModel.QuComputer;
+            bool status = computer.Validate(out string message);
+            if (status)
+            {
+                status = computer.Build(out message);
+                if (status)
+                {
+                    status = computer.Prepare(out message);
+                    if (status)
+                    {
+                        status = computer.Run(out message);
+
+                    }
+                }
+            }
+
+            if (status)
+            {
+                this.toaster.Show("Complete!", "Successfully performed a single run.", 4_000, InformationLevel.Success);
+            }
+            else
+            {
+                this.toaster.Show("Failed to Run", message, 4_000, InformationLevel.Error);
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            string uiMessage = "Reset: Exception thrown: " + ex.Message;
+            this.toaster.Show("Unexpected Error", uiMessage, 4_000, InformationLevel.Error);
         }
     }
 

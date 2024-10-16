@@ -16,9 +16,8 @@ public partial class MainWindow : Window
 
     private void OnLoadedOnUi()
     {
-        var vm = App.GetRequiredService<ShellViewModel>();
-        vm.CreateViewAndBind();
-        this.MainWindowGrid.Children.Add (vm.View);
+        var vm = App.GetRequiredService<ShellViewModel>();        
+        this.MainWindowGrid.Children.Add (vm.CreateViewAndBind());
     }
     
     private void OnMainWindowClosing(object? sender, CancelEventArgs e)

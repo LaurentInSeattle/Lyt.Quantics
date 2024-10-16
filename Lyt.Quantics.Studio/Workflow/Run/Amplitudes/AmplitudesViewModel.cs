@@ -14,9 +14,8 @@ public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
 
     protected override void OnViewLoaded()
     {
-        var vm = new HistogramViewModel();
-        vm.CreateViewAndBind();
-        this.View.AmplitudesGrid.Children.Add(vm.View);
+        var vm = new HistogramViewModel();        
+        this.View.AmplitudesGrid.Children.Add(vm.CreateViewAndBind());
     }
 
     private void OnModelResultsUpdateMessage(ModelResultsUpdateMessage message)

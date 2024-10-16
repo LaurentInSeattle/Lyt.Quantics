@@ -3,7 +3,7 @@
 public sealed class StageViewModel : Bindable<StageView>
 {
     public readonly int stageIndex;
-    public readonly QuanticsStudioModel quanticsStudioModel; 
+    public readonly QuanticsStudioModel quanticsStudioModel;
     public readonly IToaster toaster;
 
     public StageViewModel(int stageIndex, QuanticsStudioModel quanticsStudioModel)
@@ -11,30 +11,31 @@ public sealed class StageViewModel : Bindable<StageView>
         this.stageIndex = stageIndex;
         this.quanticsStudioModel = quanticsStudioModel;
         this.Gates = new GateViewModel?[ComputerViewModel.MaxQubits];
-        this.Name = (1+stageIndex).ToString();
-        this.IsMarkerVisible = true; 
+        this.Name = (1 + stageIndex).ToString();
+        this.IsSelected = true;
         this.toaster = App.GetRequiredService<IToaster>();
     }
 
-    public GateViewModel? [ ] Gates { get; private set; }
+    public bool IsSelected { get; private set; }
 
-    protected override void OnViewLoaded()
+    public GateViewModel?[] Gates { get; private set; }
+
+    public void UpdateOnQubitRemoved(int removedQubitIndex)
     {
-        this.CreateAmplitudeMinibars ();
+        this.UpdateUiGates();
+        this.UpdateUiMinibars();
     }
 
-    private void CreateAmplitudeMinibars()
+    public void Update()
     {
-        this.View.MinibarsGrid.Children.Clear();
-        for (int i = 0; i < ComputerViewModel.MaxQubits; i++)
-        {
-            bool visible = i < this.quanticsStudioModel.QuComputer.QuBitsCount; 
-            var vm = new AmplitudeMinibarViewModel (i*0.1, visible);
-            vm.CreateViewAndBind();
-            var view = vm.View; 
-            view.SetValue(Grid.RowProperty, i);
-            this.View.MinibarsGrid.Children.Add (view);
-        }
+        this.UpdateUiGates();
+        this.UpdateUiMinibars();
+    }
+
+    public void Select(bool select)
+    {
+        this.IsSelected = select;
+        this.IsMarkerVisible = select;
     }
 
     public bool CanDrop(Point point, GateViewModel gateViewModel)
@@ -45,8 +46,8 @@ public sealed class StageViewModel : Bindable<StageView>
         }
 
         // 600 pixels for 10 qubits ~ Magic numbers !
-        double offset = point.Y / 60.0; 
-        if ( ( offset < 0.0 ) || ( offset >= 10.0 )) 
+        double offset = point.Y / 60.0;
+        if ((offset < 0.0) || (offset >= 10.0))
         {
             // outside qubit area: reject
             return false;
@@ -74,16 +75,6 @@ public sealed class StageViewModel : Bindable<StageView>
         this.AddGateAt(qubitIndex, gateViewModel.Gate);
     }
 
-    public void UpdateOnQubitRemoved(int removedQubitIndex)
-    {
-        this.UpdateUiGates();
-    }
-
-    public void Update()
-    {
-        this.UpdateUiGates();
-    }
-
     private void AddGateAt(int qubitIndex, Gate gate)
     {
         if (!this.quanticsStudioModel.AddGate(this.stageIndex, qubitIndex, gate, out string message))
@@ -93,25 +84,64 @@ public sealed class StageViewModel : Bindable<StageView>
         }
     }
 
-    private void UpdateUiGates ()
+    private void UpdateUiGates()
     {
-        this.View.GatesGrid.Children.Clear();
-        for (int i = 0; i < ComputerViewModel.MaxQubits; i++)
+        try
         {
-            var viewModel = this.Gates[i];
-            if (viewModel is null)
+            this.View.GatesGrid.Children.Clear();
+            var computer = this.quanticsStudioModel.QuComputer;
+            var stage = computer.Stages[this.stageIndex];
+            foreach (var stageOperator in stage.Operators)
             {
-                continue;
-            } 
-
-            var view = viewModel.View;
-            view.SetValue(Grid.RowProperty, i);
-            this.View.GatesGrid.Children.Add(view);
+                int firstIndex = stageOperator.QuBitIndices.Min();
+                var gate = GateFactory.Produce(stageOperator.GateKey);
+                var gateViewModel =
+                    new GateViewModel(
+                        gate, isToolbox: false, stageIndex: this.stageIndex, qubitIndex: firstIndex);
+                var view = gateViewModel.CreateViewAndBind();
+                view.SetValue(Grid.RowProperty, firstIndex);
+                this.View.GatesGrid.Children.Add(view);
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            string uiMessage = "UI Gates Update: Exception thrown: " + ex.Message;
+            this.toaster.Show("Unexpected Error", uiMessage, 4_000, InformationLevel.Error);
         }
     }
 
-    public string Name { get => this.Get<string>()!; set => this.Set(value); } 
+    private void UpdateUiMinibars()
+    {
+        try
+        {
+            this.View.MinibarsGrid.Children.Clear();
+            var computer = this.quanticsStudioModel.QuComputer;
+            if (!computer.IsComplete)
+            {
+                return;
+            }
+
+            var stage = computer.Stages[this.stageIndex];
+            var probabilities = stage.Probabilities;
+            for (int qubitIndex = 0; qubitIndex < computer.QuBitsCount; qubitIndex++)
+            {
+                double value = probabilities.At(qubitIndex);
+                var vm = new AmplitudeMinibarViewModel(value);
+                var view = vm.CreateViewAndBind();
+                view.SetValue(Grid.RowProperty, qubitIndex);
+                this.View.MinibarsGrid.Children.Add(view);
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            string uiMessage = "UI Minibars Update: Exception thrown: " + ex.Message;
+            this.toaster.Show("Unexpected Error", uiMessage, 4_000, InformationLevel.Error);
+        }
+    }
+
+    public string Name { get => this.Get<string>()!; set => this.Set(value); }
 
     public bool IsMarkerVisible { get => this.Get<bool>(); set => this.Set(value); }
-
 }
