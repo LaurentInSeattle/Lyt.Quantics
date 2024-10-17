@@ -1,6 +1,5 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
 
-using Tmds.DBus.Protocol;
 using static ToolbarCommandMessage;
 
 public sealed class ComputerViewModel : Bindable<ComputerView>
@@ -32,6 +31,15 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
 
                 this.toaster.Dismiss();
                 this.toaster.Host = this.View.ToasterHost;
+
+                // TODO: Improve toaster
+                //
+                // This below does not work (yet) because the toaster does not recycle the view 
+                // which is somewhat wasteful. 
+                if (this.toaster.View is Control control) // Control always null
+                { 
+                    control.HorizontalAlignment = HorizontalAlignment.Right;
+                } 
             }, DispatcherPriority.ApplicationIdle);
     }
 
@@ -62,6 +70,36 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
         {
             var computer = this.quanticsStudioModel.QuComputer;
             int qubitCount = computer.QuBitsCount;
+
+            void AddEmptyStage()
+            {
+                // We are always adding stages at the end of the circuit (for now) therefore
+                // the new stage index is the current count of stages 
+                int currentStageCount = this.Stages.Count;
+                if ((currentStageCount == 0) || (currentStageCount == computer.Stages.Count))
+                {
+                    // Create an empty stage for the very first qubit and each time we populate 
+                    // the last stage so that we can drop new gates into it 
+                    this.Stages.Add(new StageViewModel(currentStageCount, this.quanticsStudioModel));
+                }
+            }
+
+            void RemoveLastEmptyStageIfNeeded()
+            {
+                int stageCount = this.Stages.Count;
+                if (stageCount <= 1)
+                {
+                    return;
+                }
+
+                int last = stageCount - 1;
+                if (this.Stages[last].IsEmpty() && this.Stages[last-1].IsEmpty())
+                {
+                    var stageToRemove = this.Stages[last];
+                    this.Stages.Remove(stageToRemove);
+                }
+            }
+
             if (message.QubitsChanged)
             {
                 if (this.Qubits.Count < qubitCount)
@@ -71,9 +109,7 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
                     this.Qubits.Add(new QubitViewModel(addedQubitIndex));
                     if (addedQubitIndex == 0)
                     {
-                        // Create an empty stage for the very first qubit so that we can
-                        // drop new gates into it 
-                        this.Stages.Add(new StageViewModel(0, this.quanticsStudioModel));
+                        AddEmptyStage();
                     }
                 }
                 else if (this.Qubits.Count > qubitCount)
@@ -101,9 +137,11 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
                 stage.Update();
             }
 
-            // TODO 
-            // May need to create a new UI stage so that we can drop new gates 
-            // May need to remove the last UI stage if gates have been removed  
+            // Check if we need to create a new UI stage so that we can drop new gates 
+            AddEmptyStage();
+
+            // Check if we need to remove the last UI stage if gates have been removed
+            RemoveLastEmptyStageIfNeeded();
         }
         catch (Exception ex)
         {

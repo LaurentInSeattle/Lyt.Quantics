@@ -38,6 +38,20 @@ public sealed class StageViewModel : Bindable<StageView>
         this.IsMarkerVisible = select;
     }
 
+    public bool IsEmpty()
+    {
+        int activeGates = 0;
+        foreach (var gate in this.Gates)
+        {
+            if (gate is not null)
+            {
+                ++activeGates;
+            }
+        }
+
+        return activeGates == 0;
+    }
+
     public bool CanDrop(Point point, GateViewModel gateViewModel)
     {
         if (!gateViewModel.IsToolbox)
@@ -96,7 +110,7 @@ public sealed class StageViewModel : Bindable<StageView>
                 if (stageOperator.GateKey == IdentityGate.Key)
                 {
                     // No need to show the identity operator
-                    continue; 
+                    continue;
                 }
 
                 int firstIndex = stageOperator.QuBitIndices.Min();
@@ -104,6 +118,7 @@ public sealed class StageViewModel : Bindable<StageView>
                 var gateViewModel =
                     new GateViewModel(
                         gate, isToolbox: false, stageIndex: this.stageIndex, qubitIndex: firstIndex);
+                this.Gates[firstIndex] = gateViewModel;
                 var view = gateViewModel.CreateViewAndBind();
                 view.SetValue(Grid.RowProperty, firstIndex);
                 this.View.GatesGrid.Children.Add(view);
@@ -130,11 +145,11 @@ public sealed class StageViewModel : Bindable<StageView>
 
             var stage = computer.Stages[this.stageIndex];
             var probabilities = stage.Probabilities;
-            if ( probabilities.Count != computer.QuBitsCount)
+            if (probabilities.Count != computer.QuBitsCount)
             {
-                string uiMessage = "Mismatch between probabilities count and Qubit count." ;
+                string uiMessage = "Mismatch between probabilities count and Qubit count.";
                 this.toaster.Show("Error", uiMessage, 4_000, InformationLevel.Error);
-                return; 
+                return;
             }
 
             for (int qubitIndex = 0; qubitIndex < computer.QuBitsCount; qubitIndex++)
