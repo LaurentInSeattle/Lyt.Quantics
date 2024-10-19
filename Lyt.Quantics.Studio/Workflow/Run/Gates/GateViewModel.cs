@@ -8,7 +8,7 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
     private readonly IToaster toaster;
 
     public GateViewModel(
-        Gate gate, bool isToolbox = false, int stageIndex = -1, int qubitIndex = -1 )
+        Gate gate, bool isToolbox = false, int stageIndex = -1, int qubitIndex = -1)
     {
         this.DisablePropertyChangedLogging = true;
 
@@ -17,7 +17,7 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
         this.toaster = App.GetRequiredService<IToaster>();
 
         this.Gate = gate;
-        this.IsToolbox = isToolbox; 
+        this.IsToolbox = isToolbox;
         this.StageIndex = stageIndex;
         this.QubitIndex = qubitIndex;
         this.Name = gate.CaptionKey.Replace("dg", "\u2020");
@@ -30,9 +30,23 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
             _ => 13.0,
         };
 
+        this.GateMargin = new Thickness(this.IsToolbox ? 12 : 0);
+        int gateRows = this.Gate.Dimension / 2;
+        if (this.IsToolbox ||(gateRows == 1) )
+        {
+            this.GateBackground = Brushes.Black; 
+            this.GateHeight = 48;
+        }
+        else
+        {
+            this.GateBackground = Brushes.Transparent;
+            int rowMargin = 8;
+            this.GateHeight = 48 * gateRows + rowMargin * (gateRows - 1);
+        }
+
         this.GateCategoryBrush = GateViewModel.GateCategoryToBrush(gate.Category);
-        var gateControl = SpecialGateToControl(gate.CaptionKey); 
-        if ( gateControl is Control control)
+        var gateControl = SpecialGateToControl(gate.CaptionKey);
+        if (gateControl is Control control)
         {
             this.SpecialGate = control;
             this.IsTextVisible = false;
@@ -84,7 +98,7 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
     public void Remove()
     {
         Debug.WriteLine("Removing gate: " + this.Gate.CaptionKey);
-        if (!this.quanticsStudioModel.RemoveGate( 
+        if (!this.quanticsStudioModel.RemoveGate(
             this.StageIndex, this.QubitIndex, this.Gate, out string message))
         {
             this.toaster.Show(
@@ -93,13 +107,19 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
         }
     }
 
-    public bool BeginDrag() =>  true;  // For now 
-    
+    public bool BeginDrag() => true;  // For now 
+
+    public double GateHeight { get => this.Get<double>(); set => this.Set(value); }
+
+    public Thickness GateMargin { get => this.Get<Thickness>(); set => this.Set(value); }
+
     public string? Name { get => this.Get<string?>(); set => this.Set(value); }
 
     public double FontSize { get => this.Get<double>(); set => this.Set(value); }
 
     public IBrush? GateCategoryBrush { get => this.Get<IBrush?>(); set => this.Set(value); }
+
+    public IBrush? GateBackground { get => this.Get<IBrush?>(); set => this.Set(value); }
 
     public bool IsTextVisible { get => this.Get<bool>(); set => this.Set(value); }
 

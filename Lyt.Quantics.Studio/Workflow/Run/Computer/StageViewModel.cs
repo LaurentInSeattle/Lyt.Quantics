@@ -115,12 +115,14 @@ public sealed class StageViewModel : Bindable<StageView>
 
                 int firstIndex = stageOperator.QuBitIndices.Min();
                 var gate = GateFactory.Produce(stageOperator.GateKey);
+                int gateRows = gate.Dimension / 2;
                 var gateViewModel =
                     new GateViewModel(
                         gate, isToolbox: false, stageIndex: this.stageIndex, qubitIndex: firstIndex);
                 this.Gates[firstIndex] = gateViewModel;
                 var view = gateViewModel.CreateViewAndBind();
                 view.SetValue(Grid.RowProperty, firstIndex);
+                view.SetValue(Grid.RowSpanProperty, gateRows);
                 this.View.GatesGrid.Children.Add(view);
             }
         }

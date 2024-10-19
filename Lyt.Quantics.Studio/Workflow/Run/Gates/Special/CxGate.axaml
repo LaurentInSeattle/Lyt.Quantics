@@ -6,23 +6,27 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	mc:Ignorable="d" d:DesignWidth="48" d:DesignHeight="112"
     xmlns:theme="clr-namespace:Lyt.Quantics.Studio"
-	Width="48" Height="112"
+	Width="48" 
 	IsHitTestVisible="False"
 	>
-	<Grid>
+	<Grid
+		ShowGridLines="True"
+		>
 		<Grid.RowDefinitions>
-			<RowDefinition Height="48" />
-			<RowDefinition Height="16" />
-			<RowDefinition Height="48" />
+			<RowDefinition Height="24" />
+			<RowDefinition Height="24" />
+			<RowDefinition Height="24" />
+			<RowDefinition Height="24" />
+			<RowDefinition Height="24" />
 		</Grid.RowDefinitions>
 		<Ellipse
-			Grid.Row="0"
+			Grid.Row="0" Grid.RowSpan="2"
 			VerticalAlignment="Center" HorizontalAlignment="Center"
 			Height="12" Width="12"
 			Fill="{StaticResource ResourceKey= LightAqua_2_100}"		
 			/>
 		<Ellipse
-			Grid.Row="2"
+			Grid.Row="3" Grid.RowSpan="2"
 			Height="16" Width="16"
 			VerticalAlignment="Center" HorizontalAlignment="Center"
 			Stroke="{StaticResource ResourceKey= LightAqua_2_100}"
@@ -30,9 +34,15 @@
 			Fill="Transparent"
 			/>
 		<Rectangle
-			Grid.Row="0" Grid.RowSpan="3"
-			Height="52" Width="2" Margin="0 -2 0 0"
-			VerticalAlignment="Center" HorizontalAlignment="Center"
+			Grid.Row="2" 
+			Width="20" Margin="0 0 0 0"
+			VerticalAlignment="Stretch" HorizontalAlignment="Center"
+			Fill="{StaticResource ResourceKey= OrangePeel_2_100}"
+			/>
+		<Rectangle
+			Grid.Row="1" Grid.RowSpan="3"
+			Width="2" Margin="0 0 0 0"
+			VerticalAlignment="Stretch" HorizontalAlignment="Center"
 			Fill="{StaticResource ResourceKey= LightAqua_2_100}"		
 			/>
 		<Rectangle
