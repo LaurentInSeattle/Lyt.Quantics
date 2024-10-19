@@ -31,11 +31,23 @@
 			<TextBlock
 				Grid.Row="1"
 				VerticalAlignment="Center" HorizontalAlignment="Center"
+				IsVisible="{Binding IsTextVisible}"
 				Text="{Binding Name}"
 				FontSize="{Binding FontSize}"
 				FontWeight="DemiBold"
 				Foreground="{StaticResource ResourceKey= OrangePeel_0_100}"
 				/>
+			<Viewbox
+				Grid.Row="1"
+				VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+				Stretch="Uniform"
+				>
+				<ContentControl
+					x:Name="GateIconContent"
+					IsVisible="{Binding IsSpecialVisible}"
+					Content="{Binding SpecialGate}"
+				/>
+			</Viewbox>
 		</Grid>
 	</Border>
 </UserControl>

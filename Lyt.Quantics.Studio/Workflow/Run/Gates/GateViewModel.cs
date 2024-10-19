@@ -31,6 +31,18 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
         };
 
         this.GateCategoryBrush = GateViewModel.GateCategoryToBrush(gate.Category);
+        var gateControl = SpecialGateToControl(gate.CaptionKey); 
+        if ( gateControl is Control control)
+        {
+            this.SpecialGate = control;
+            this.IsTextVisible = false;
+            this.IsSpecialVisible = true;
+        }
+        else
+        {
+            this.IsTextVisible = true;
+            this.IsSpecialVisible = false;
+        }
     }
 
     private static IBrush GateCategoryToBrush(GateCategory gateCategory)
@@ -45,6 +57,16 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
             GateCategory.F_TernaryControlled => Brushes.MediumPurple,
             /* default */
             _ => Brushes.DarkRed,
+        };
+    }
+
+    public Control? SpecialGateToControl(string gateCaptionKey)
+    {
+        return gateCaptionKey switch
+        {
+            "CX" => new CxGate(),
+            /* default */
+            _ => null,
         };
     }
 
@@ -71,14 +93,17 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
         }
     }
 
-    public bool BeginDrag()
-    {
-        return true;
-    }
-
+    public bool BeginDrag() =>  true;  // For now 
+    
     public string? Name { get => this.Get<string?>(); set => this.Set(value); }
 
     public double FontSize { get => this.Get<double>(); set => this.Set(value); }
 
     public IBrush? GateCategoryBrush { get => this.Get<IBrush?>(); set => this.Set(value); }
+
+    public bool IsTextVisible { get => this.Get<bool>(); set => this.Set(value); }
+
+    public bool IsSpecialVisible { get => this.Get<bool>(); set => this.Set(value); }
+
+    public Control SpecialGate { get => this.Get<Control>()!; set => this.Set(value); }
 }

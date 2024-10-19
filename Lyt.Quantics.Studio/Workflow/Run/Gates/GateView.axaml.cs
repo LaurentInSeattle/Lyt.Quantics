@@ -7,7 +7,7 @@ public partial class GateView : UserControl
     private bool isPointerPressed;
     private bool isDragging;
     private PointerPoint pointerPressedPoint;
-    private UserControl? ghostView;
+    private GateView? ghostView;
 
     public GateView() : this(isGhost: false) { }
 
@@ -116,12 +116,19 @@ public partial class GateView : UserControl
         Debug.WriteLine("Drag == true ");
         this.isDragging = true;
 
+        // Create the ghost view  
         this.ghostView = new GateView(isGhost: true)
         {
             DataContext = gateViewModel,
             Opacity = 0.8,
             ZIndex = 999_999,
         };
+
+        // Create the special graphics if needed 
+        if (gateViewModel.SpecialGateToControl(gateViewModel.Gate.CaptionKey) is Control control)
+        {
+            this.ghostView.GateIconContent.Content = control;
+        }
 
         if (!this.ValidateGhost(out Canvas? canvas))
         {

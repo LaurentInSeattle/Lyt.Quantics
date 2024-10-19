@@ -55,5 +55,8 @@
     <Compile Update="Controls\AmplitudeMinibarView.axaml.cs">
       <DependentUpon>AmplitudeMinibarView.axaml</DependentUpon>
     </Compile>
+    <Compile Update="Workflow\Run\Gates\Special\CxGate.axaml.cs">
+      <DependentUpon>CxGate.axaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>
