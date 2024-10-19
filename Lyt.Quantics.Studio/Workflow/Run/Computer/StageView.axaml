@@ -61,16 +61,16 @@
 			>
 			<!-- 10 rows: one for each qubits -->
 			<Grid.RowDefinitions>
-				<RowDefinition Height="56" />
-				<RowDefinition Height="56" />
-				<RowDefinition Height="56" />
-				<RowDefinition Height="56" />
-				<RowDefinition Height="56" />
-				<RowDefinition Height="56" />
-				<RowDefinition Height="56" />
-				<RowDefinition Height="56" />
-				<RowDefinition Height="56" />
-				<RowDefinition Height="56" />
+				<RowDefinition Height="60" />
+				<RowDefinition Height="60" />
+				<RowDefinition Height="60" />
+				<RowDefinition Height="60" />
+				<RowDefinition Height="60" />
+				<RowDefinition Height="60" />
+				<RowDefinition Height="60" />
+				<RowDefinition Height="60" />
+				<RowDefinition Height="60" />
+				<RowDefinition Height="60" />
 
 				<RowDefinition Height="*" />
 			</Grid.RowDefinitions>
@@ -81,16 +81,16 @@
 			>
 			<!-- 10 rows: one for each qubits -->			
 			<Grid.RowDefinitions>
-				<RowDefinition Height="56" />
-				<RowDefinition Height="56" />
-				<RowDefinition Height="56" />
-				<RowDefinition Height="56" />				
-				<RowDefinition Height="56" />
-				<RowDefinition Height="56" />
-				<RowDefinition Height="56" />
-				<RowDefinition Height="56" />				
-				<RowDefinition Height="56" />
-				<RowDefinition Height="56" />
+				<RowDefinition Height="60" />
+				<RowDefinition Height="60" />
+				<RowDefinition Height="60" />
+				<RowDefinition Height="60" />				
+				<RowDefinition Height="60" />
+				<RowDefinition Height="60" />
+				<RowDefinition Height="60" />
+				<RowDefinition Height="60" />				
+				<RowDefinition Height="60" />
+				<RowDefinition Height="60" />
 
 				<RowDefinition Height="*" />
 			</Grid.RowDefinitions>

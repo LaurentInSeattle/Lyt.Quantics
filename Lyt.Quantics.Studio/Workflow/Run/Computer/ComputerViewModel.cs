@@ -203,13 +203,13 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
         {
             if (this.quanticsStudioModel.Run())
             {
-                this.toaster.Show("Ready!", "Succesful single Run! ", 4_000, InformationLevel.Success);
+                this.toaster.Show("Complete!", "Successful single Run! ", 4_000, InformationLevel.Success);
             }
         }
         catch (Exception ex)
         {
             Debug.WriteLine(ex);
-            string uiMessage = "Reset: Exception thrown: " + ex.Message;
+            string uiMessage = "Run: Exception thrown: " + ex.Message;
             this.toaster.Show("Unexpected Error", uiMessage, 4_000, InformationLevel.Error);
         }
     }

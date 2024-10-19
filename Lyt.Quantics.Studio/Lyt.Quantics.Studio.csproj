@@ -52,8 +52,21 @@
   </ItemGroup>
 
   <ItemGroup>
+    <AvaloniaXaml Update="Workflow\Run\Gates\Special\CzGate.axaml">
+      <SubType>Designer</SubType>
+    </AvaloniaXaml>
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Controls\AmplitudeMinibarView.axaml.cs">
       <DependentUpon>AmplitudeMinibarView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Workflow\Run\Gates\Special\FCxGate.axaml.cs">
+      <DependentUpon>FCxGate.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Workflow\Run\Gates\Special\CzGate.axaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>CzGate.axaml</DependentUpon>
     </Compile>
     <Compile Update="Workflow\Run\Gates\Special\CxGate.axaml.cs">
       <DependentUpon>CxGate.axaml</DependentUpon>

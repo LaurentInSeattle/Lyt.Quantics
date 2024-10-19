@@ -40,8 +40,9 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
         else
         {
             this.GateBackground = Brushes.Transparent;
-            int rowMargin = 8;
+            int rowMargin = 8 + 4;
             this.GateHeight = 48 * gateRows + rowMargin * (gateRows - 1);
+            Debug.WriteLine("GateHeight: " + this.GateHeight); 
         }
 
         this.GateCategoryBrush = GateViewModel.GateCategoryToBrush(gate.Category);
@@ -79,6 +80,8 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
         return gateCaptionKey switch
         {
             "CX" => new CxGate(),
+            "FCX" => new FCxGate(),
+            "CZ" => new CzGate(),
             /* default */
             _ => null,
         };

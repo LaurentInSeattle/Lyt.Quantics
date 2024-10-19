@@ -104,6 +104,13 @@ public sealed class StageViewModel : Bindable<StageView>
         {
             this.View.GatesGrid.Children.Clear();
             var computer = this.quanticsStudioModel.QuComputer;
+            if ( this.stageIndex >= computer.Stages.Count)
+            {
+                // this is the last empty UI stage used to drop new gates 
+                // Nothing to update in this one, just bail out
+                return; 
+            }
+
             var stage = computer.Stages[this.stageIndex];
             foreach (var stageOperator in stage.Operators)
             {
