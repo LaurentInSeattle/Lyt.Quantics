@@ -26,7 +26,7 @@ public sealed partial class QuanticsStudioModel : ModelBase
         this.fileManager = fileManager;
         this.ShouldAutoSave = true;
 
-        // FORNOW: Create a 'blank' computer at initialization time 
+        // Create a 'blank' computer at initialization time, and two qubits to it 
         this.QuComputer = new("Untitled", "New quantum computer project.");
     }
 

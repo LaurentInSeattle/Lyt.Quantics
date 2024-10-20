@@ -15,9 +15,9 @@
 		<Grid.RowDefinitions>
 			<RowDefinition Height="20" />
 			<RowDefinition Height="24" />
-			<RowDefinition Height="16" />
+			<RowDefinition Height="13" />
 			<RowDefinition Height="24" />
-			<RowDefinition Height="24" />
+			<RowDefinition Height="27" />
 		</Grid.RowDefinitions>
 		<!-- Rectangle to show the spacer 
 		<Rectangle

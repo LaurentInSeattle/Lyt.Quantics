@@ -46,17 +46,17 @@
 			HorizontalAlignment="Left" VerticalAlignment="Center"
 			Margin="56 2 0 0"
 			FontSize="26" 
-			Foreground="{x:Static theme:ColorTheme.UiText}"
+			Foreground="{StaticResource ResourceKey= LightAqua_1_120}"
 			TextWrapping="Wrap"
 			/>
 		<TextBlock
 			Grid.Row="0" 
-			Text="Version 0.0.1"
+			Text="Version 0.0.7"
 			HorizontalAlignment="Left" VerticalAlignment="Center"
 			Margin="280 12 0 0"
 			FontSize="12"
 			FontStyle="Normal"
-			Foreground="{x:Static theme:ColorTheme.UiText}"
+			Foreground="{StaticResource ResourceKey= LightAqua_1_120}"
 			TextWrapping="Wrap"
 			/>
 		<TextBlock
@@ -66,7 +66,7 @@
 			Margin="0 8 16 0"
 			FontSize="12"
 			FontStyle="Normal"
-			Foreground="{x:Static theme:ColorTheme.UiText}"
+			Foreground="{StaticResource ResourceKey= LightAqua_1_120}"
 			TextWrapping="Wrap"
 			/>
 		<!-- Do not add rows and/or columns to the toaster host-->

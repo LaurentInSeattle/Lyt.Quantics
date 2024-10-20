@@ -104,7 +104,7 @@ public sealed partial class QuComputer
             // Remove operator at qubitIndex if any, then add the provided gate
             // Dont care how many removed 
             _ = stage.ClearAtQubit(qubitIndex);
-            stage.AddAtQubit(qubitIndex, gate);
+            stage.AddAtQubit(this, qubitIndex, gate);
 
             return true;
         }

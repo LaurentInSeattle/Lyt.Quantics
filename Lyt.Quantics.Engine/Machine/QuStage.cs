@@ -47,10 +47,27 @@ public sealed class QuStage
         return listToRemove.Count;
     }
 
-    public void AddAtQubit(int qubitIndex, Gate gate)
+    public void AddAtQubit(QuComputer computer, int qubitIndex, Gate gate)
     {
         var stageOperator = new QuStageOperator() { GateKey = gate.CaptionKey };
         stageOperator.QuBitIndices.Add(qubitIndex);
+        if (gate.Dimension >= 4)
+        {
+            // Binary or ternary gate 
+            stageOperator.QuBitIndices.Add(qubitIndex+1);
+        }
+
+        if (gate.Dimension == 8)
+        {
+            // Ternary gate 
+            stageOperator.QuBitIndices.Add(qubitIndex + 2);
+        }
+
+        if (!stageOperator.Validate(computer, out string message))
+        {
+            throw new Exception(message) ;
+        }
+
         this.Operators.Add(stageOperator);
     }
 

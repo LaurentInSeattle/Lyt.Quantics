@@ -32,15 +32,19 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
                 this.toaster.Dismiss();
                 this.toaster.Host = this.View.ToasterHost;
 
-                // TODO: Improve toaster
-                //
-                // This below does not work (yet) because the toaster does not recycle the view 
-                // which is somewhat wasteful. 
-                if (this.toaster.View is Control control) // Control always null
+                // Relocate the location of the toasts for better readability. 
+                if (this.toaster.View is Control control) 
                 { 
                     control.HorizontalAlignment = HorizontalAlignment.Right;
                 } 
             }, DispatcherPriority.ApplicationIdle);
+
+        // FOW NOW: This is only valid for starting from scratch,
+        // and will be different if starting from file
+        // Initialize, starting with two (empty) qubits 
+        _ = this.quanticsStudioModel.AddQubit(0, out string _);
+        _ = this.quanticsStudioModel.AddQubit(1, out string _);
+
     }
 
     private void OnModelUpdateErrorMessage(ModelUpdateErrorMessage message)

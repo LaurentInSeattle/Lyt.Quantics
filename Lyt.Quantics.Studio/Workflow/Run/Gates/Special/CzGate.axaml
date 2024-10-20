@@ -15,9 +15,9 @@
 		<Grid.RowDefinitions>
 			<RowDefinition Height="20" />
 			<RowDefinition Height="24" />
-			<RowDefinition Height="16" />
+			<RowDefinition Height="13" />
 			<RowDefinition Height="24" />
-			<RowDefinition Height="24" />
+			<RowDefinition Height="27" />
 		</Grid.RowDefinitions>
 		<Ellipse
 			Grid.Row="0" Grid.RowSpan="2"

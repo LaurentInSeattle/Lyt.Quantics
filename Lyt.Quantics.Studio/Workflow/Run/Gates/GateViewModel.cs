@@ -10,7 +10,8 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
     public GateViewModel(
         Gate gate, bool isToolbox = false, int stageIndex = -1, int qubitIndex = -1)
     {
-        // this.DisablePropertyChangedLogging = true;
+        // Too many properties here and too many gates !
+        this.DisablePropertyChangedLogging = true;
 
         // Do not use Injection directly as this is loaded programmatically by the RunView 
         this.quanticsStudioModel = App.GetRequiredService<QuanticsStudioModel>();
