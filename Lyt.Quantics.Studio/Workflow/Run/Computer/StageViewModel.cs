@@ -54,6 +54,7 @@ public sealed class StageViewModel : Bindable<StageView>
 
     public bool CanDrop(Point point, GateViewModel gateViewModel)
     {
+        // TODO: This prevents moving a gate !
         if (!gateViewModel.IsToolbox)
         {
             return false;
@@ -65,6 +66,17 @@ public sealed class StageViewModel : Bindable<StageView>
         {
             // outside qubit area: reject
             return false;
+        }
+
+        // Can't drop a binary or ternary gate on last qubit 
+        if (gateViewModel.Gate.Dimension > 2)
+        {
+            var computer = this.quanticsStudioModel.QuComputer;
+            int qubitIndex = (int)Math.Floor(offset);
+            if (qubitIndex >= computer.QuBitsCount - 1)
+            {
+                return false;
+            }
         }
 
         return true;
@@ -72,20 +84,13 @@ public sealed class StageViewModel : Bindable<StageView>
 
     public void OnDrop(Point point, GateViewModel gateViewModel)
     {
-        if (!gateViewModel.IsToolbox)
+        if (!this.CanDrop(point, gateViewModel))
         {
             return;
         }
 
         // 600 pixels for 10 qubits ~ Magic numbers !
-        double offset = point.Y / 60.0;
-        if ((offset < 0.0) || (offset >= 10.0))
-        {
-            // outside qubit area: reject
-            return;
-        }
-
-        int qubitIndex = (int)Math.Floor(offset);
+        int qubitIndex = (int)Math.Floor(point.Y / 60.0);
         this.AddGateAt(qubitIndex, gateViewModel.Gate);
     }
 
@@ -104,11 +109,11 @@ public sealed class StageViewModel : Bindable<StageView>
         {
             this.View.GatesGrid.Children.Clear();
             var computer = this.quanticsStudioModel.QuComputer;
-            if ( this.stageIndex >= computer.Stages.Count)
+            if (this.stageIndex >= computer.Stages.Count)
             {
                 // this is the last empty UI stage used to drop new gates 
                 // Nothing to update in this one, just bail out
-                return; 
+                return;
             }
 
             var stage = computer.Stages[this.stageIndex];

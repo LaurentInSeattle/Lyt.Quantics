@@ -16,7 +16,7 @@
 		Margin ="0"
 		Padding="0"
 		CornerRadius="2"
-		BorderThickness="1.0"
+		BorderThickness="{Binding GateBorderThickness}"
 		BorderBrush="{StaticResource ResourceKey= LightAqua_2_100}"
 		Background="{Binding GateBackground}"
 		>
@@ -28,6 +28,7 @@
 				<RowDefinition Height="*" />
 			</Grid.RowDefinitions>
 			<Rectangle 
+				IsVisible="{Binding IsBorderVisible}"
 				Fill="{Binding GateCategoryBrush}"
 				/>
 			<TextBlock

@@ -10,7 +10,7 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
     public GateViewModel(
         Gate gate, bool isToolbox = false, int stageIndex = -1, int qubitIndex = -1)
     {
-        this.DisablePropertyChangedLogging = true;
+        // this.DisablePropertyChangedLogging = true;
 
         // Do not use Injection directly as this is loaded programmatically by the RunView 
         this.quanticsStudioModel = App.GetRequiredService<QuanticsStudioModel>();
@@ -30,6 +30,7 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
             _ => 13.0,
         };
 
+        this.IsBorderVisible = true;
         this.GateMargin = new Thickness(this.IsToolbox ? 12 : 0);
         int gateRows = this.Gate.Dimension / 2;
         if (this.IsToolbox ||(gateRows == 1) )
@@ -39,6 +40,7 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
         }
         else
         {
+            this.IsBorderVisible = false;
             this.GateBackground = Brushes.Transparent;
             int rowMargin = 8 + 4;
             this.GateHeight = 48 * gateRows + rowMargin * (gateRows - 1);
@@ -127,6 +129,18 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
     public IBrush? GateBackground { get => this.Get<IBrush?>(); set => this.Set(value); }
 
     public bool IsTextVisible { get => this.Get<bool>(); set => this.Set(value); }
+
+    public bool IsBorderVisible 
+    { 
+        get => this.Get<bool>();
+        set
+        {
+            this.Set(value);
+            this.GateBorderThickness = new Thickness(value ? 1.0 : 0.0);
+        } 
+    }
+
+    public Thickness GateBorderThickness { get => this.Get<Thickness>(); set => this.Set(value); }
 
     public bool IsSpecialVisible { get => this.Get<bool>(); set => this.Set(value); }
 
