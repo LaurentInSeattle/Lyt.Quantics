@@ -79,9 +79,11 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
     {
         return gateCaptionKey switch
         {
+            "ACX" => new ACxGate(),
             "CX" => new CxGate(),
             "FCX" => new FCxGate(),
             "CZ" => new CzGate(),
+            "Swap" => new Special.SwapGate(),
             /* default */
             _ => null,
         };

@@ -20,7 +20,7 @@ public sealed class GatesViewModel : Bindable<GatesView>
         // Sort and reorder by categories skipping the X special ones
         var gates = 
             (from gate in QuanticsStudioModel.Gates 
-             where gate.Category != GateCategory.X_Special 
+             where (gate.Category != GateCategory.X_Special) && ( gate.CaptionKey != "I")
              orderby gate.Category.ToString() ascending,
              gate.CaptionKey ascending
              select gate);
