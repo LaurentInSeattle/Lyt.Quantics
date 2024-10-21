@@ -286,7 +286,7 @@ public sealed partial class QuComputer
             }
 
             Debug.WriteLine(
-                string.Format("Step: {0} - Probabilities: {1}", this.StepIndex, stage.Probabilities));
+                string.Format("Step: {0} - Probabilities: {1}", this.StepIndex, stage.KetProbabilities));
         }
         catch (Exception ex)
         {

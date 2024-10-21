@@ -10,17 +10,18 @@
     xmlns:header="clr-namespace:Lyt.Quantics.Studio.Controls"
     x:DataType="vm:AmplitudeMinibarViewModel" 
     xmlns:theme="clr-namespace:Lyt.Quantics.Studio"
+	Margin="-2 -1 0 0"
 	>
 	<Grid
 		x:Name="MainGrid"
 		IsVisible="{Binding Visible}"
 		VerticalAlignment="Center" HorizontalAlignment="Center"
-		Width="12" Height="42"
+		Width="10" Height="48"
 		ShowGridLines="False"
 		>
 		<Rectangle
 			Fill="{StaticResource ResourceKey= LightAqua_2_100}"
-			Opacity="0.30"
+			Opacity="0.40"
 			VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
 			/>
 		<Rectangle

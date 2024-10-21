@@ -154,14 +154,21 @@ public sealed class StageViewModel : Bindable<StageView>
             var computer = this.quanticsStudioModel.QuComputer;
             if (!computer.IsComplete)
             {
+                Debug.WriteLine("Cant update minibars: computer not complete");
+                return;
+            }
+
+            if (this.stageIndex == computer.Stages.Count)
+            {
+                // This is the last empty stage used to drop gates: nothing to do 
                 return;
             }
 
             var stage = computer.Stages[this.stageIndex];
-            var probabilities = stage.Probabilities;
-            if (probabilities.Count != computer.QuBitsCount)
+            var probabilities = stage.QuBitProbabilities;
+            if (probabilities.Count != computer.QuBitsCount) 
             {
-                string uiMessage = "Mismatch between probabilities count and Qubit count.";
+                string uiMessage = "Mismatch between qubit probabilities count and Qubit count.";
                 this.toaster.Show("Error", uiMessage, 4_000, InformationLevel.Error);
                 return;
             }

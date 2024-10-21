@@ -69,6 +69,41 @@ public sealed class QuRegister
         return probabilities;
     }
 
+    public List<double> QuBitProbabilities()
+    {
+        int stateCount = this.state.Count;
+        int quBitCount = MathUtilities.IntegerLog2(stateCount);
+        var bitValuesProbabilities = this.BitValuesProbabilities();
+        List<double> probabilities = new(quBitCount);
+        for (int quBit = 0; quBit < quBitCount; ++quBit)
+        {
+            double probability = 0.0;
+            for (int k = 0; k < stateCount; ++k)
+            {
+                if (MathUtilities.IsBitSet(k, quBit))
+                {
+                    // int i = stateCount - 1 - k;
+                    Debug.WriteLine(
+                        "Qubit: " + quBit + " at " + k + " adding: " + bitValuesProbabilities[k].Item2.ToString("F2"));
+                    probability += bitValuesProbabilities[k].Item2;
+                }
+            }
+
+            probabilities.Add(probability);
+        }
+
+#if VERBOSE
+        Debug.WriteLine("");
+        for (int i = 0; i < quBitCount; ++i)
+        {
+            Debug.Write(probabilities[i].ToString("F2") + "  ");
+        }
+        Debug.WriteLine("");
+#endif // VERBOSE
+
+        return probabilities;
+    }
+
     public List<Tuple<string, double>> BitValuesProbabilities()
     {
         int length = this.state.Count;
@@ -88,7 +123,7 @@ public sealed class QuRegister
         for (int i = 0; i < length; ++i)
         {
             var bvp = bitValuesProbabilities[i];
-            Debug.Write( " " + bvp.Item1 + ":  " + bvp.Item2.ToString("F2") + "\t");
+            Debug.Write(" " + bvp.Item1 + ":  " + bvp.Item2.ToString("F2") + "\t");
         }
         Debug.WriteLine("");
 #endif // VERBOSE

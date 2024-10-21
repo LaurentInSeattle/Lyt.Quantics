@@ -58,7 +58,10 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
             int qubitCount = computer.QuBitsCount;
 
             // All Stages need to update the qubits probabilities 
-
+            foreach (var stage in this.Stages)
+            {
+                stage.Update();
+            }
         }
         catch (Exception ex)
         {

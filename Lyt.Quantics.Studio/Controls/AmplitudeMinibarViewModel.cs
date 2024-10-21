@@ -5,7 +5,7 @@ public sealed class AmplitudeMinibarViewModel : Bindable<AmplitudeMinibarView>
     public AmplitudeMinibarViewModel(double value, bool visible = true)
     {
         this.DisablePropertyChangedLogging = true;
-        this.Height = 42.0 * value;
+        this.Height = 48.0 * value;
         this.Visible = visible;
     }
 

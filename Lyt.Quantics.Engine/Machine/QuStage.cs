@@ -204,6 +204,9 @@ public sealed class QuStage
         return true;
     }
 
-    public Vector<double> Probabilities =>
+    public Vector<double> KetProbabilities =>
         Vector<double>.Build.Dense(this.StageRegister.KetProbabilities().ToArray());
+
+    public Vector<double> QuBitProbabilities =>
+        Vector<double>.Build.Dense(this.StageRegister.QuBitProbabilities().ToArray());
 }
