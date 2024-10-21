@@ -8,6 +8,13 @@ public sealed partial class QuComputer
     private const string DefaultDescription = "< Undocumented >";
     private const string DefaultComment = "< No comments >";
 
+    private bool isValid;
+    private bool isBuilt;
+    private bool isPrepared;
+    private bool isStepping;
+    private bool isRunning;
+    private bool isComplete;
+
     public QuComputer() { /* Required for deserialization */ }
 
     public QuComputer(string name, string description) 
@@ -49,26 +56,72 @@ public sealed partial class QuComputer
 
     // TODO:
     // Use a finite state machine instead of all those potentially overlapping
-    // and inconsistent states.
-    // 
+    // and potentially inconsistent states.
+    
+    [JsonIgnore]
+    public bool IsValid
+    {
+        get => this.isValid;
+        private set
+        {
+            this.isValid = value;
+            if ( ! value )
+            {
+                this.IsBuilt = false; 
+            }
+        } 
+    }
 
     [JsonIgnore]
-    public bool IsValid { get; private set; }
+    public bool IsBuilt 
+    { 
+        get => this.isBuilt; 
+        private set
+        {
+            this.isBuilt = value;
+            if (!value)
+            {
+                this.IsPrepared = false;
+            }
+        }
+    }
 
     [JsonIgnore]
-    public bool IsBuilt { get; private set; }
+    public bool IsPrepared 
+    { 
+        get => this.isPrepared; 
+        private set
+        {
+            this.isPrepared = value;
+            if (!value)
+            {
+                this.IsStepping = false;
+                this.IsRunning = false;
+                this.IsComplete = false;
+            }
+        }
+    }
 
     [JsonIgnore]
-    public bool IsPrepared { get; private set; }
+    public bool IsStepping 
+    { 
+        get => this.isStepping; 
+        private set => this.isStepping = value; 
+    }
 
     [JsonIgnore]
-    public bool IsStepping { get; private set; }
+    public bool IsRunning 
+    { 
+        get => this.isRunning; 
+        private set => this.isRunning = value; 
+    }
 
     [JsonIgnore]
-    public bool IsRunning { get; private set; }
-
-    [JsonIgnore]
-    public bool IsComplete { get; private set; }
+    public bool IsComplete 
+    { 
+        get => this.isComplete; 
+        private set => this.isComplete = value; 
+    }
 
     // TODO: END 
 

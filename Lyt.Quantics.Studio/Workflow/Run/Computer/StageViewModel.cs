@@ -6,25 +6,18 @@ public sealed class StageViewModel : Bindable<StageView>
     public readonly QuanticsStudioModel quanticsStudioModel;
     public readonly IToaster toaster;
 
+    private int activeGates; 
+
     public StageViewModel(int stageIndex, QuanticsStudioModel quanticsStudioModel)
     {
         this.stageIndex = stageIndex;
         this.quanticsStudioModel = quanticsStudioModel;
-        this.Gates = new GateViewModel?[ComputerViewModel.MaxQubits];
         this.Name = (1 + stageIndex).ToString();
         this.IsSelected = true;
         this.toaster = App.GetRequiredService<IToaster>();
     }
 
     public bool IsSelected { get; private set; }
-
-    public GateViewModel?[] Gates { get; private set; }
-
-    public void UpdateOnQubitRemoved(int removedQubitIndex)
-    {
-        this.UpdateUiGates();
-        this.UpdateUiMinibars();
-    }
 
     public void Update()
     {
@@ -38,19 +31,7 @@ public sealed class StageViewModel : Bindable<StageView>
         this.IsMarkerVisible = select;
     }
 
-    public bool IsEmpty()
-    {
-        int activeGates = 0;
-        foreach (var gate in this.Gates)
-        {
-            if (gate is not null)
-            {
-                ++activeGates;
-            }
-        }
-
-        return activeGates == 0;
-    }
+    public bool IsEmpty => this.activeGates == 0; 
 
     public bool CanDrop(Point point, GateViewModel gateViewModel)
     {
@@ -107,6 +88,7 @@ public sealed class StageViewModel : Bindable<StageView>
     {
         try
         {
+            this.activeGates = 0;
             this.View.GatesGrid.Children.Clear();
             var computer = this.quanticsStudioModel.QuComputer;
             if (this.stageIndex >= computer.Stages.Count)
@@ -125,13 +107,13 @@ public sealed class StageViewModel : Bindable<StageView>
                     continue;
                 }
 
+                ++ this.activeGates; 
                 int firstIndex = stageOperator.QuBitIndices.Min();
                 var gate = GateFactory.Produce(stageOperator.GateKey);
                 int gateRows = gate.Dimension / 2;
                 var gateViewModel =
                     new GateViewModel(
                         gate, isToolbox: false, stageIndex: this.stageIndex, qubitIndex: firstIndex);
-                this.Gates[firstIndex] = gateViewModel;
                 var view = gateViewModel.CreateViewAndBind();
                 view.SetValue(Grid.RowProperty, firstIndex);
                 view.SetValue(Grid.RowSpanProperty, gateRows);

@@ -14,6 +14,20 @@ public sealed class QuStage
     [JsonIgnore]
     public Matrix<Complex> StageMatrix { get; private set; } = Matrix<Complex>.Build.Dense(1, 1);
 
+    /// <returns> True is the only operators are Identity. </returns>
+    public bool IsEmpty ()
+    {
+        foreach (var op in this.Operators)
+        {
+            if (op.GateKey != IdentityGate.Key)
+            {
+                return false; 
+            }
+        }
+
+        return true;
+    }
+
     public string Operations
     {
         get
@@ -24,6 +38,7 @@ public sealed class QuStage
                 sb.Append(op.GateKey);
                 sb.Append("   ");
             }
+
             return sb.ToString();
         }
     }

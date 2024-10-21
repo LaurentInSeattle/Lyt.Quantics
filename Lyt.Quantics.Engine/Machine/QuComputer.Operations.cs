@@ -40,6 +40,21 @@ public sealed partial class QuComputer
                 stage.ClearAtQubit(qubitIndex);
             }
 
+            // Remove all empty stages 
+            var toRemove = new List<QuStage>(this.Stages.Count);
+            foreach (var stage in this.Stages)
+            {
+                if (stage.IsEmpty())
+                {
+                    toRemove.Add(stage);
+                }
+            }
+
+            foreach (var stage in toRemove)
+            {
+                this.Stages.Remove(stage);
+            }
+
             this.IsValid = false;
             return this.Validate(out message);
 
@@ -101,9 +116,21 @@ public sealed partial class QuComputer
 
             QuStage stage = this.Stages[stageIndex];
 
-            // Remove operator at qubitIndex if any, then add the provided gate
+            // Remove operators at qubitIndex if any, then add the provided gate
             // Dont care how many removed 
             _ = stage.ClearAtQubit(qubitIndex);
+            if (gate.Dimension >= 4)
+            {
+                // Binary or ternary gate: Clear next spot 
+                _ = stage.ClearAtQubit(qubitIndex+1);
+            }
+
+            if (gate.Dimension == 8)
+            {
+                // Ternary gate: Clear next spot 
+                _ = stage.ClearAtQubit(qubitIndex + 2);
+            }
+
             stage.AddAtQubit(this, qubitIndex, gate);
 
             return true;

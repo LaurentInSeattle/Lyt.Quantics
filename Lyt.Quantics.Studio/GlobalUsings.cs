@@ -86,6 +86,7 @@ global using Lyt.Quantics.Engine.Gates.Unary;
 global using Lyt.Quantics.Engine.Gates.Binary;
 global using Lyt.Quantics.Engine.Gates.Ternary;
 global using Lyt.Quantics.Engine.Machine;
+global using Lyt.Quantics.Engine.Utilities;
 
 global using Lyt.Quantics.Studio;
 global using Lyt.Quantics.Studio.Controls;

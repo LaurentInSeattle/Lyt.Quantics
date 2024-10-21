@@ -1,6 +1,5 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Amplitudes;
 
-using Lyt.Quantics.Engine.Utilities;
 using static Lyt.Avalonia.Controls.Utilities;
 using static Lyt.Quantics.Studio.Messaging.ToolbarCommandMessage;
 
@@ -22,9 +21,6 @@ public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
         this.Messenger.Subscribe<ModelResultsUpdateMessage>(this.OnModelResultsUpdateMessage);
         this.Messenger.Subscribe<ModelStructureUpdateMessage>(this.OnModelStructureUpdateMessage);
     }
-
-    // TODO in toolbar : 
-    // Show only above value ???? 
 
     protected override void OnViewLoaded()
     {
@@ -134,7 +130,7 @@ public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
             FontSize = 16,
             VerticalAlignment = VerticalAlignment.Center,
             HorizontalAlignment = HorizontalAlignment.Center,
-            Margin = new Thickness(16),
+            Margin = new Thickness(32),
             Foreground = brush,
         };
 
