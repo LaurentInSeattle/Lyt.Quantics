@@ -1,22 +1,20 @@
 ﻿
 TODO: 
 
-Icons in Gates (CS missing) 
+Figure out what's going with the Apmpliude view when messaging 
+Binary Gates with non consecutive qubits (Ex: swap 0 and 2)
+Ternary Gates with non consecutive qubits 
 Gate name and doc when hovering in gate view 
-Ternary gates 
+Document gates, so that there's something to show when hovering 
+Ternary gates icons
 Intro page 
 Load from libray 
 Load from file 
 Save to file
-Figure out what's going on with the probabilities minibars 
 Name of 'computer' in title 
-Delete JSON view 
 Stepping 
 Move a gate using Drag/drop
 "Frameworkization" of drag/drop
 Nicer app icon 
 Hide shell title bar when running the computer
-
-Gate Icons (SVG) :
-https://commons.wikimedia.org/w/index.php?title=Special:ListFiles&user=Geek3
 

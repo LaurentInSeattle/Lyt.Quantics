@@ -33,10 +33,12 @@
 				Grid.Column="1"
 				Content="{Binding Computer}"
 				/>
+			<!-- 
 			<ContentControl
 				Grid.Column="2"
 				Content="{Binding Code}"
 				/>
+				-->
 		</Grid>
 		<ContentControl
 			Grid.Row="1"

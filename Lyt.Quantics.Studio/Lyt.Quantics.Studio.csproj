@@ -52,6 +52,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <AvaloniaXaml Update="Workflow\Run\Gates\Special\CsGate.axaml">
+      <SubType>Designer</SubType>
+    </AvaloniaXaml>
     <AvaloniaXaml Update="Workflow\Run\Gates\Special\SwapGate.axaml">
       <SubType>Designer</SubType>
     </AvaloniaXaml>
@@ -66,6 +69,10 @@
     </Compile>
     <Compile Update="Workflow\Run\Gates\Special\ACxGate.axaml.cs">
       <DependentUpon>ACxGate.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Workflow\Run\Gates\Special\CsGate.axaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>CsGate.axaml</DependentUpon>
     </Compile>
     <Compile Update="Workflow\Run\Gates\Special\SwapGate.axaml.cs">
       <SubType>Code</SubType>

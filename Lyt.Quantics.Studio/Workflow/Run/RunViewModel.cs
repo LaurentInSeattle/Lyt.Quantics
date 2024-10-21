@@ -36,9 +36,12 @@ public sealed class RunViewModel : Bindable<RunView>
             CreateContent<GatesViewModel, GatesView, GatesToolbarViewModel, GatesToolbarView>(
                 "Gates", canCollapse: true, CollapseStyle.Left);
 
-        this.Code =
-            CreateContent<CodeViewModel, CodeView, CodeToolbarViewModel, CodeToolbarView>(
-                "JSon Code", canCollapse: true, CollapseStyle.Right, createCollapsed: true);
+        // TODO: Figure out if this is really needed and useful
+        //
+        // Hiding this for now 
+        //this.Code =
+        //    CreateContent<CodeViewModel, CodeView, CodeToolbarViewModel, CodeToolbarView>(
+        //        "JSon Code", canCollapse: true, CollapseStyle.Right, createCollapsed: true);
 
         this.Computer =
             CreateContent<ComputerViewModel, ComputerView, ComputerToolbarViewModel, ComputerToolbarView>(
@@ -51,9 +54,12 @@ public sealed class RunViewModel : Bindable<RunView>
 
     public Control Gates { get => this.Get<Control>()!; set => this.Set(value); }
 
-    public Control Code { get => this.Get<Control>()!; set => this.Set(value); }
-
     public Control Computer { get => this.Get<Control>()!; set => this.Set(value); }
 
     public Control Amplitudes { get => this.Get<Control>()!; set => this.Set(value); }
+
+    // TODO: Figure out if this is really needed and useful
+    //
+    // Hiding this for now 
+    // public Control Code { get => this.Get<Control>()!; set => this.Set(value); }
 }
