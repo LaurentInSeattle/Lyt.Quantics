@@ -1,7 +1,6 @@
 ﻿
 TODO: 
 
-Figure out what's going with the Apmpliude view when messaging 
 Binary Gates with non consecutive qubits (Ex: swap 0 and 2)
 Ternary Gates with non consecutive qubits 
 Gate name and doc when hovering in gate view 

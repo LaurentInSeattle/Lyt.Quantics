@@ -24,7 +24,14 @@ public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
 
     protected override void OnViewLoaded()
     {
-        this.OnModelStructureUpdateMessage(new ModelStructureUpdateMessage(false));
+        if (this.quanticsStudioModel.QuComputer.IsComplete)
+        {
+            this.OnModelResultsUpdateMessage(new ModelResultsUpdateMessage());
+        }
+        else
+        {
+            this.OnModelStructureUpdateMessage(new ModelStructureUpdateMessage(false));
+        }
     }
 
     private void OnToolbarCommandMessage(ToolbarCommandMessage message)
@@ -91,6 +98,8 @@ public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
 
     private void OnModelResultsUpdateMessage(ModelResultsUpdateMessage _)
     {
+        Debug.WriteLine("Amplitudes: OnModelResultsUpdateMessage");
+
         // Update probabilities 
         this.View.AmplitudesGrid.Children.Clear();
         var computer = this.quanticsStudioModel.QuComputer;
@@ -114,6 +123,8 @@ public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
 
     private void OnModelStructureUpdateMessage(ModelStructureUpdateMessage _)
     {
+        Debug.WriteLine("Amplitudes: OnModelStructureUpdateMessage");
+
         // Clear the view: Show nothing, but a "no data" indication  
         this.histogramViewModel = null;
         this.histogramEntries = [];
