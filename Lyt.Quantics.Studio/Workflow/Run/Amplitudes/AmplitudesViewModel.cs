@@ -24,6 +24,9 @@ public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
 
     protected override void OnViewLoaded()
     {
+        // Note that this view gets loaded when we expand it for the very first time
+        // At this moment, we may already have received model result updates, in such case 
+        // we display them, Otherwise just display the "no data" view.
         if (this.quanticsStudioModel.QuComputer.IsComplete)
         {
             this.OnModelResultsUpdateMessage(new ModelResultsUpdateMessage());

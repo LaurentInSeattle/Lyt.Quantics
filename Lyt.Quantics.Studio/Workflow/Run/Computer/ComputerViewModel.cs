@@ -25,6 +25,12 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
 
     protected override void OnViewLoaded()
     {
+        // FOW NOW: This is only valid for starting from scratch,
+        // and will be different if starting from file
+        // Initialize, starting with two (empty) qubits 
+        _ = this.quanticsStudioModel.AddQubit(0, out string _);
+        _ = this.quanticsStudioModel.AddQubit(1, out string _);
+
         Schedule.OnUiThread(
             5_000, () =>
             {
@@ -38,13 +44,6 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
                     control.HorizontalAlignment = HorizontalAlignment.Right;
                 }
             }, DispatcherPriority.ApplicationIdle);
-
-        // FOW NOW: This is only valid for starting from scratch,
-        // and will be different if starting from file
-        // Initialize, starting with two (empty) qubits 
-        _ = this.quanticsStudioModel.AddQubit(0, out string _);
-        _ = this.quanticsStudioModel.AddQubit(1, out string _);
-
     }
 
     private void OnModelUpdateErrorMessage(ModelUpdateErrorMessage message)
@@ -171,12 +170,22 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
                     stage.Update();
                 }
             }
-            else if (!message.QubitsChanged)
+
+            if (message.QubitsChanged)
             {
                 // All stages may need an update 
                 foreach (var stage in this.Stages)
                 {
                     stage.Update();
+                }
+            }
+
+            // We need to do it again... Especially when qubits are removed
+            while (RemoveLastEmptyStageIfNeeded())
+            {
+                if (this.Stages.Count == 1)
+                {
+                    break;
                 }
             }
 

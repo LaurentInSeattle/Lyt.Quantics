@@ -21,6 +21,12 @@ public sealed class StageViewModel : Bindable<StageView>
 
     public void Update()
     {
+        if (this.Control is null)
+        {
+            // Too early: The View might is still null 
+            return;
+        }
+
         this.UpdateUiGates();
         this.UpdateUiMinibars();
     }
@@ -88,8 +94,6 @@ public sealed class StageViewModel : Bindable<StageView>
     {
         try
         {
-            this.activeGates = 0;
-            this.View.GatesGrid.Children.Clear();
             var computer = this.quanticsStudioModel.QuComputer;
             if (this.stageIndex >= computer.Stages.Count)
             {
@@ -98,7 +102,15 @@ public sealed class StageViewModel : Bindable<StageView>
                 return;
             }
 
+            this.activeGates = 0;
+            this.View.GatesGrid.Children.Clear();
             var stage = computer.Stages[this.stageIndex];
+            if (stage.Operators.Count == 0)
+            {
+                // Or nothing to do actually 
+                return;
+            }
+
             foreach (var stageOperator in stage.Operators)
             {
                 if (stageOperator.GateKey == IdentityGate.Key)
@@ -132,7 +144,6 @@ public sealed class StageViewModel : Bindable<StageView>
     {
         try
         {
-            this.View.MinibarsGrid.Children.Clear();
             var computer = this.quanticsStudioModel.QuComputer;
             if (!computer.IsComplete)
             {
@@ -146,6 +157,7 @@ public sealed class StageViewModel : Bindable<StageView>
                 return;
             }
 
+            this.View.MinibarsGrid.Children.Clear();
             var stage = computer.Stages[this.stageIndex];
             var probabilities = stage.QuBitProbabilities;
             if (probabilities.Count != computer.QuBitsCount) 
