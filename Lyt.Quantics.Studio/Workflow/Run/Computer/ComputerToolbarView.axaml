@@ -18,6 +18,7 @@
 			<!-- Add / Remove -->
 			<ColumnDefinition Width="84" />
 			<ColumnDefinition Width="84" />
+			<ColumnDefinition Width="84" />
 			<!-- Prob. Toggle -->
 			<ColumnDefinition Width="190" />
 			<!-- Run Control -->
@@ -53,9 +54,24 @@
 			Text="Remove Qubit"
 			Command="{Binding RemoveQubitCommand}"
 	    	/>
+		<glyphs:GlyphButton
+			Grid.Column="2"
+			Style="{StaticResource ToolbarIconButton}"
+			Behaviour="Tap"
+			HorizontalAlignment="Center" VerticalAlignment="Center"
+			Width="80" Height="48"
+			Margin="4"
+			GlyphSource="ic_fluent_arrow_previous_24_regular"
+			ButtonBackground="BorderlessRectangle"
+			GlyphStrokeThickness="0"
+			Text="Pack Stages"
+			Command="{Binding PackStagesCommand}"
+	    	/>
+		
+
 		<toggle:ToggleSwitch
 			x:Name="IsHiddenSwitch"
-			Grid.Column="2"
+			Grid.Column="3"
 			Margin="4"
 			Style="{StaticResource StandardToggleSwitch}"
 			TrueText="Hide"
@@ -65,7 +81,7 @@
 			Value="{Binding HideProbabilities}"
 			/>
 		<glyphs:GlyphButton
-			Grid.Column="3"
+			Grid.Column="4"
 			Style="{StaticResource ToolbarIconButton}"
 			Behaviour="Tap"
 			HorizontalAlignment="Center" VerticalAlignment="Center"
@@ -78,7 +94,7 @@
 			Command="{Binding ResetCommand}"
 	    	/>
 		<glyphs:GlyphButton
-			Grid.Column="4"
+			Grid.Column="5"
 			Style="{StaticResource ToolbarIconButton}"
 			Behaviour="Tap"
 			HorizontalAlignment="Center" VerticalAlignment="Center"
@@ -91,7 +107,7 @@
 			Command="{Binding StepCommand}"
 	    	/>
 		<glyphs:GlyphButton
-			Grid.Column="5"
+			Grid.Column="6"
 			Style="{StaticResource ToolbarIconButton}"
 			Behaviour="Tap"
 			HorizontalAlignment="Center" VerticalAlignment="Center"

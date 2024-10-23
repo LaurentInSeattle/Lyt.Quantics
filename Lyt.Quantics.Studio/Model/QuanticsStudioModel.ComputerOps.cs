@@ -1,5 +1,7 @@
 ﻿namespace Lyt.Quantics.Studio.Model;
 
+using static ModelStructureUpdateMessage; 
+
 public sealed partial class QuanticsStudioModel : ModelBase
 {
     [JsonIgnore]
@@ -13,7 +15,7 @@ public sealed partial class QuanticsStudioModel : ModelBase
         bool status = this.QuComputer.AddQubit(count, out message);
         if (status)
         {
-            this.Messenger.Publish(new ModelStructureUpdateMessage(qubitsChanged: true));
+            this.Messenger.Publish(MakeQubitsChanged());
         }
         else
         {
@@ -28,7 +30,7 @@ public sealed partial class QuanticsStudioModel : ModelBase
         bool status = this.QuComputer.RemoveQubit(count, out message);
         if (status)
         {
-            this.Messenger.Publish(new ModelStructureUpdateMessage(qubitsChanged: true));
+            this.Messenger.Publish(MakeQubitsChanged());
         }
         else
         {
@@ -36,7 +38,22 @@ public sealed partial class QuanticsStudioModel : ModelBase
         }
 
         return status;
-    }    
+    }
+
+    public bool PackStages(out string message)
+    {
+        bool status = this.QuComputer.PackStages(out message);
+        if (status)
+        {
+            this.Messenger.Publish(MakeStagePacked());
+        }
+        else
+        {
+            this.PublishError(message);
+        }
+
+        return status;
+    }
 
     public bool UpdateQubit(int index, QuState newState, out string message)
     {
@@ -58,9 +75,7 @@ public sealed partial class QuanticsStudioModel : ModelBase
         bool status = this.QuComputer.AddGate(stageIndex, qubitIndex, gate, out message);
         if (status)
         {
-            this.Messenger.Publish(
-                new ModelStructureUpdateMessage(
-                    qubitsChanged: false, stageChanged:true, stageIndex));
+            this.Messenger.Publish(MakeStageChanged(stageIndex)); 
         }
         else
         {
@@ -75,9 +90,7 @@ public sealed partial class QuanticsStudioModel : ModelBase
         bool status = this.QuComputer.RemoveGate(stageIndex, qubitIndex, gate, out message);
         if (status)
         {
-            this.Messenger.Publish(
-                new ModelStructureUpdateMessage(
-                    qubitsChanged: false, stageChanged: true, stageIndex));
+            this.Messenger.Publish(MakeStageChanged(stageIndex));
         }
         else
         {

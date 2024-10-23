@@ -8,6 +8,8 @@ public sealed class ComputerToolbarViewModel : Bindable<ComputerToolbarView>
 
     private void OnRemoveQubit(object? _) => this.Publish(ToolbarCommand.RemoveQubit);
 
+    private void OnPackStages(object? _) => this.Publish(ToolbarCommand.PackStages);
+
     private void OnReset(object? _) => this.Publish(ToolbarCommand.Reset);
 
     private void OnStep(object? _) => this.Publish(ToolbarCommand.Step);
@@ -20,6 +22,8 @@ public sealed class ComputerToolbarViewModel : Bindable<ComputerToolbarView>
     public ICommand AddQubitCommand { get => this.Get<ICommand>()!; set => this.Set(value); }
 
     public ICommand RemoveQubitCommand { get => this.Get<ICommand>()!; set => this.Set(value); }
+
+    public ICommand PackStagesCommand { get => this.Get<ICommand>()!; set => this.Set(value); }
 
     public ICommand ResetCommand { get => this.Get<ICommand>()!; set => this.Set(value); }
 

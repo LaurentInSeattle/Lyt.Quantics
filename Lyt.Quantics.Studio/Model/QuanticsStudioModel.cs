@@ -5,6 +5,8 @@ using static FileManagerModel;
 
 public sealed partial class QuanticsStudioModel : ModelBase
 {
+    public const int MaxQubits = 10; // For now ~ 10 could be doable ? 
+
     private readonly FileManagerModel fileManager;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.

@@ -7,7 +7,8 @@ public sealed class ToolbarCommandMessage(
     {
         // Computer tool bar 
         AddQubit,
-        RemoveQubit, 
+        RemoveQubit,
+        PackStages,
         HideProbabilities, 
         Reset,
         Step,

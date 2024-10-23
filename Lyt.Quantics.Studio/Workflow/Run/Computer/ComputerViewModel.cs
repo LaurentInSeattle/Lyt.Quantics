@@ -4,8 +4,6 @@ using static ToolbarCommandMessage;
 
 public sealed class ComputerViewModel : Bindable<ComputerView>
 {
-    public const int MaxQubits = 10; // For now ~ 10 could be doable ? 
-
     private readonly QuanticsStudioModel quanticsStudioModel;
     private readonly IToaster toaster;
 
@@ -70,6 +68,44 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
         }
     }
 
+    private void AddEmptyStageOnUi()
+    {
+        // Create an empty stage for the very first qubit and each time we populate 
+        // the last stage so that we can drop new gates into it 
+        // We are always adding stages at the end of the circuit (for now) therefore
+        // the new stage index is the current count of stages 
+        int currentStageCount = this.Stages.Count;
+        this.Stages.Add(new StageViewModel(currentStageCount, this.quanticsStudioModel));
+    }
+
+    private void PackStagesOnUi()
+    {
+        // Remove all last stages that are beyond the current model stage count.
+        var computer = this.quanticsStudioModel.QuComputer;
+        var toRemove = new List<StageViewModel>(computer.Stages.Count);
+        int computerStageCount = computer.Stages.Count;
+        for (int i = this.Stages.Count - 1; i >= 0; --i)
+        {
+            if (i >= computerStageCount)
+            {
+                toRemove.Add(this.Stages[i]);
+            }
+        }
+
+        foreach (var stage in toRemove)
+        {
+            this.Stages.Remove(stage);
+        }
+
+        // All stages may need an update 
+        foreach (var stage in this.Stages)
+        {
+            stage.Update();
+        }
+
+        AddEmptyStageOnUi();
+    }
+
     private void OnModelStructureUpdateMessage(ModelStructureUpdateMessage message)
     {
         try
@@ -77,34 +113,28 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
             var computer = this.quanticsStudioModel.QuComputer;
             int qubitCount = computer.QuBitsCount;
 
-            void AddEmptyStage()
-            {
-                // Create an empty stage for the very first qubit and each time we populate 
-                // the last stage so that we can drop new gates into it 
-                // We are always adding stages at the end of the circuit (for now) therefore
-                // the new stage index is the current count of stages 
-                int currentStageCount = this.Stages.Count;
-                this.Stages.Add(new StageViewModel(currentStageCount, this.quanticsStudioModel));
-            }
-
             void AddEmptyStageIfNeeded()
             {
                 int currentStageCount = this.Stages.Count;
                 if (currentStageCount == 0)
                 {
-                    AddEmptyStage();
+                    AddEmptyStageOnUi();
                 }
                 else if (currentStageCount == computer.Stages.Count)
                 {
                     var lastStage = this.Stages[^1];
                     if (!lastStage.IsEmpty)
                     {
-                        AddEmptyStage();
+                        AddEmptyStageOnUi();
                     }
                 }
             }
 
-            if (message.QubitsChanged)
+            if (message.StagePacked)
+            {
+                this.PackStagesOnUi();
+            }
+            else if (message.QubitsChanged)
             {
                 if (this.Qubits.Count < qubitCount)
                 {
@@ -112,7 +142,7 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
                     // The first qubit cannot be deleted so we will do that only once
                     if (this.Qubits.Count == 0)
                     {
-                        AddEmptyStage();
+                        AddEmptyStageOnUi();
                     }
 
                     // Create one new Qubit View, stages are unchanged 
@@ -122,35 +152,10 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
                 }
                 else if (this.Qubits.Count > qubitCount)
                 {
-                    Debugger.Break();
-
                     // Remove last Qubit View 
                     int removedQubitIndex = qubitCount;
                     this.Qubits.RemoveAt(removedQubitIndex);
-
-                    // Remove all last stages that are beyond the current model stage count.
-                    var toRemove = new List<StageViewModel>(computer.Stages.Count);
-                    int computerStageCount = computer.Stages.Count;
-                    for (int i = this.Stages.Count -1 ; i >= 0; --i)
-                    {
-                        if (i >= computerStageCount)
-                        {
-                            toRemove.Add(this.Stages[i]);
-                        }
-                    }
-
-                    foreach (var stage in toRemove)
-                    {
-                        this.Stages.Remove(stage);
-                    }
-
-                    // All stages may need an update 
-                    foreach (var stage in this.Stages)
-                    {
-                        stage.Update();
-                    }
-
-                    AddEmptyStage();
+                    this.PackStagesOnUi();
                 }
                 else
                 {
@@ -201,6 +206,9 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
                 if (message.CommandParameter is bool hide)
                 this.HideProbabilities(hide); 
                 break;
+
+            case ToolbarCommand.PackStages: this.OnPackStages(); break;
+
             case ToolbarCommand.Reset: this.OnReset(); break;
 
             case ToolbarCommand.Step: this.OnRun(); break;
@@ -213,6 +221,23 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
                 break;
             default:
                 break;
+        }
+    }
+
+    private void OnPackStages()
+    {
+        try
+        {
+            if (!this.quanticsStudioModel.PackStages(out string message))
+            {
+                this.toaster.Show("Error!", "Failed to pack stages.", 4_000, InformationLevel.Success);
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            string uiMessage = "Reset: Exception thrown: " + ex.Message;
+            this.toaster.Show("Unexpected Error", uiMessage, 4_000, InformationLevel.Error);
         }
     }
 
@@ -263,7 +288,7 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
 
     private void UpdateQubit(int index, QuState newState)
     {
-        if ((index <= ComputerViewModel.MaxQubits) || (index < 0))
+        if ((index <= QuanticsStudioModel.MaxQubits) || (index < 0))
         {
             if (!this.quanticsStudioModel.UpdateQubit(index, newState, out string message))
             {
@@ -282,7 +307,7 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
 
     private void AddQubit(int count)
     {
-        if (count < ComputerViewModel.MaxQubits)
+        if (count < QuanticsStudioModel.MaxQubits)
         {
             if (!this.quanticsStudioModel.AddQubit(count, out string message))
             {
@@ -293,8 +318,8 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
         {
             // message 
             this.toaster.Show(
-                string.Format("Add Qubit: Max {0}!", MaxQubits),
-                string.Format("This Quantum Computer implementation is limited to {0} Qubits...", MaxQubits),
+                string.Format("Add Qubit: Max {0}!", QuanticsStudioModel.MaxQubits),
+                string.Format("This Quantum Computer implementation is limited to {0} Qubits...", QuanticsStudioModel.MaxQubits),
                 4_000, InformationLevel.Error);
         }
     }
@@ -319,7 +344,9 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
         }
     }
 
+#pragma warning disable CA1822 // Mark members as static
     public bool CanDrop(Point _, GateViewModel gateViewModel)
+#pragma warning restore CA1822 
     {
         if (gateViewModel.IsToolbox)
         {
@@ -331,7 +358,9 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
         }
     }
 
+#pragma warning disable CA1822 // Mark members as static
     public void OnDrop(Point _, GateViewModel gateViewModel)
+#pragma warning restore CA1822 
     {
         if (gateViewModel.IsToolbox)
         {

@@ -41,19 +41,7 @@ public sealed partial class QuComputer
             }
 
             // Remove all empty stages 
-            var toRemove = new List<QuStage>(this.Stages.Count);
-            foreach (var stage in this.Stages)
-            {
-                if (stage.IsEmpty())
-                {
-                    toRemove.Add(stage);
-                }
-            }
-
-            foreach (var stage in toRemove)
-            {
-                this.Stages.Remove(stage);
-            }
+            this.PackStages(out message); 
 
             this.IsValid = false;
             return this.Validate(out message);
@@ -178,6 +166,37 @@ public sealed partial class QuComputer
         {
             Debug.WriteLine(ex);
             message = "Remove Gate: Exception thrown: " + ex.Message;
+            return false;
+        }
+    }
+
+    public bool PackStages (out string message)
+    {
+        try
+        {
+            // Remove all empty stages 
+            var toRemove = new List<QuStage>(this.Stages.Count);
+            foreach (var stage in this.Stages)
+            {
+                if (stage.IsEmpty())
+                {
+                    toRemove.Add(stage);
+                }
+            }
+
+            foreach (var stage in toRemove)
+            {
+                this.Stages.Remove(stage);
+            }
+
+            this.IsValid = false;
+            return this.Validate(out message);
+
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            message = "Update Qubit: Exception thrown: " + ex.Message;
             return false;
         }
     }
