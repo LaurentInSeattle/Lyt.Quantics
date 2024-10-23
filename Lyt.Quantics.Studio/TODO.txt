@@ -16,5 +16,4 @@ Move a gate using Drag/drop
 "Frameworkization" of drag/drop
 Nicer app icon 
 Hide shell title bar when running the computer
-Amplitude toolbar : Show only above value ???? 
 

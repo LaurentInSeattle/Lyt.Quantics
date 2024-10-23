@@ -1,4 +1,4 @@
-﻿#define VERBOSE 
+﻿// #define VERBOSE 
 
 namespace Lyt.Quantics.Engine.Core;
 
@@ -82,9 +82,10 @@ public sealed class QuRegister
             {
                 if (MathUtilities.IsBitSet(k, quBit))
                 {
-                    // int i = stateCount - 1 - k;
+#if VERBOSE
                     Debug.WriteLine(
                         "Qubit: " + quBit + " at " + k + " adding: " + bitValuesProbabilities[k].Item2.ToString("F2"));
+#endif // VERBOSE
                     probability += bitValuesProbabilities[k].Item2;
                 }
             }

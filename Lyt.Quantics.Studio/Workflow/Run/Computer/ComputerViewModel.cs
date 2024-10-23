@@ -104,44 +104,53 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
                 }
             }
 
-            bool RemoveLastEmptyStageIfNeeded()
-            {
-                int stageCount = this.Stages.Count;
-                if (stageCount <= 1)
-                {
-                    return false;
-                }
-
-                int last = stageCount - 1;
-                if (this.Stages[last].IsEmpty && this.Stages[last - 1].IsEmpty)
-                {
-                    var stageToRemove = this.Stages[last];
-                    this.Stages.Remove(stageToRemove);
-                    return true;
-                }
-
-                return false;
-            }
-
             if (message.QubitsChanged)
             {
                 if (this.Qubits.Count < qubitCount)
                 {
+                    // Create the very first empty stage when the first qubit is created
+                    // The first qubit cannot be deleted so we will do that only once
+                    if (this.Qubits.Count == 0)
+                    {
+                        AddEmptyStage();
+                    }
+
                     // Create one new Qubit View, stages are unchanged 
                     int addedQubitIndex = qubitCount - 1;
                     this.Qubits.Add(new QubitViewModel(addedQubitIndex));
-                    if (addedQubitIndex == 0)
-                    {
-                        AddEmptyStageIfNeeded();
-                    }
+
                 }
                 else if (this.Qubits.Count > qubitCount)
                 {
+                    Debugger.Break();
+
                     // Remove last Qubit View 
                     int removedQubitIndex = qubitCount;
                     this.Qubits.RemoveAt(removedQubitIndex);
 
-                    // Update stages later: We can add / remove some 
+                    // Remove all last stages that are beyond the current model stage count.
+                    var toRemove = new List<StageViewModel>(computer.Stages.Count);
+                    int computerStageCount = computer.Stages.Count;
+                    for (int i = this.Stages.Count -1 ; i >= 0; --i)
+                    {
+                        if (i >= computerStageCount)
+                        {
+                            toRemove.Add(this.Stages[i]);
+                        }
+                    }
+
+                    foreach (var stage in toRemove)
+                    {
+                        this.Stages.Remove(stage);
+                    }
+
+                    // All stages may need an update 
+                    foreach (var stage in this.Stages)
+                    {
+                        stage.Update();
+                    }
+
+                    AddEmptyStage();
                 }
                 else
                 {
@@ -149,48 +158,24 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
                     this.toaster.Show("Unexpected Error", "Conflicting QuBits count", 4_000, InformationLevel.Error);
                 }
             }
-
-            // Check if we need to remove the last UI stage if gates have been removed
-            // We may need to remove more than one, typically when deleting qubits 
-            while (RemoveLastEmptyStageIfNeeded())
+            else if (message.StageChanged)
             {
-                if (this.Stages.Count == 1)
-                {
-                    break;
-                }
-            }
-
-            // Make sure to update only the stages that are still there,
-            // that have not been removed in the loop above 
-            if (message.StageChanged)
-            {
+                // Make sure to update only the stages that are still there,
+                // that have not been removed in the loop above 
                 if (message.IndexStageChanged < this.Stages.Count)
                 {
                     var stage = this.Stages[message.IndexStageChanged];
                     stage.Update();
                 }
-            }
 
-            if (message.QubitsChanged)
+                // Check if we need to create a new UI stage so that we can drop new gates 
+                AddEmptyStageIfNeeded();
+            }
+            else
             {
-                // All stages may need an update 
-                foreach (var stage in this.Stages)
-                {
-                    stage.Update();
-                }
+                string uiMessage = "Model Structure Update: Logic error ";
+                this.toaster.Show("Unexpected Error", uiMessage, 4_000, InformationLevel.Error);
             }
-
-            // We need to do it again... Especially when qubits are removed
-            while (RemoveLastEmptyStageIfNeeded())
-            {
-                if (this.Stages.Count == 1)
-                {
-                    break;
-                }
-            }
-
-            // Check if we need to create a new UI stage so that we can drop new gates 
-            AddEmptyStageIfNeeded();
         }
         catch (Exception ex)
         {
@@ -212,7 +197,9 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
 
             case ToolbarCommand.RemoveQubit: this.RemoveQubit(count); break;
 
-            case ToolbarCommand.HideProbabilities:
+            case ToolbarCommand.HideProbabilities: 
+                if (message.CommandParameter is bool hide)
+                this.HideProbabilities(hide); 
                 break;
             case ToolbarCommand.Reset: this.OnReset(); break;
 
@@ -227,6 +214,17 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
             default:
                 break;
         }
+    }
+
+    private void HideProbabilities(bool hideMinibars)
+    {
+        // All stages may need an update 
+        foreach (var stage in this.Stages)
+        {
+            this.quanticsStudioModel.HideMinibars = hideMinibars;
+            stage.UpdateUiMinibars();
+        }
+
     }
 
     private void OnReset()
@@ -321,7 +319,7 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
         }
     }
 
-    public bool CanDrop(Point point, GateViewModel gateViewModel)
+    public bool CanDrop(Point _, GateViewModel gateViewModel)
     {
         if (gateViewModel.IsToolbox)
         {
@@ -333,7 +331,7 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
         }
     }
 
-    public void OnDrop(Point point, GateViewModel gateViewModel)
+    public void OnDrop(Point _, GateViewModel gateViewModel)
     {
         if (gateViewModel.IsToolbox)
         {

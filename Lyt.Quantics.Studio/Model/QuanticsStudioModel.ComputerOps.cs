@@ -3,6 +3,9 @@
 public sealed partial class QuanticsStudioModel : ModelBase
 {
     [JsonIgnore]
+    public bool HideMinibars { get; set; }
+
+    [JsonIgnore]
     public QuComputer QuComputer { get; private set; }
 
     public bool AddQubit(int count, out string message)

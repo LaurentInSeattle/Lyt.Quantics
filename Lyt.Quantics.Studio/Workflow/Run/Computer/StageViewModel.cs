@@ -6,7 +6,7 @@ public sealed class StageViewModel : Bindable<StageView>
     public readonly QuanticsStudioModel quanticsStudioModel;
     public readonly IToaster toaster;
 
-    private int activeGates; 
+    private int activeGates;
 
     public StageViewModel(int stageIndex, QuanticsStudioModel quanticsStudioModel)
     {
@@ -16,6 +16,7 @@ public sealed class StageViewModel : Bindable<StageView>
         this.IsSelected = true;
         this.toaster = App.GetRequiredService<IToaster>();
     }
+
 
     public bool IsSelected { get; private set; }
 
@@ -37,7 +38,7 @@ public sealed class StageViewModel : Bindable<StageView>
         this.IsMarkerVisible = select;
     }
 
-    public bool IsEmpty => this.activeGates == 0; 
+    public bool IsEmpty => this.activeGates == 0;
 
     public bool CanDrop(Point point, GateViewModel gateViewModel)
     {
@@ -119,7 +120,7 @@ public sealed class StageViewModel : Bindable<StageView>
                     continue;
                 }
 
-                ++ this.activeGates; 
+                ++this.activeGates;
                 int firstIndex = stageOperator.QuBitIndices.Min();
                 var gate = GateFactory.Produce(stageOperator.GateKey);
                 int gateRows = gate.Dimension / 2;
@@ -140,10 +141,16 @@ public sealed class StageViewModel : Bindable<StageView>
         }
     }
 
-    private void UpdateUiMinibars()
+    public void UpdateUiMinibars()
     {
         try
         {
+            this.View.MinibarsGrid.Children.Clear();
+            if (this.quanticsStudioModel.HideMinibars)
+            {
+                return;
+            }
+
             var computer = this.quanticsStudioModel.QuComputer;
             if (!computer.IsComplete)
             {
@@ -151,16 +158,21 @@ public sealed class StageViewModel : Bindable<StageView>
                 return;
             }
 
-            if (this.stageIndex == computer.Stages.Count)
+            if (this.stageIndex >= computer.Stages.Count)
             {
+                // This should never happen 
+                if (this.stageIndex > computer.Stages.Count)
+                {
+                    if (Debugger.IsAttached) { Debugger.Break(); }
+                }
+
                 // This is the last empty stage used to drop gates: nothing to do 
                 return;
             }
 
-            this.View.MinibarsGrid.Children.Clear();
             var stage = computer.Stages[this.stageIndex];
             var probabilities = stage.QuBitProbabilities;
-            if (probabilities.Count != computer.QuBitsCount) 
+            if (probabilities.Count != computer.QuBitsCount)
             {
                 string uiMessage = "Mismatch between qubit probabilities count and Qubit count.";
                 this.toaster.Show("Error", uiMessage, 4_000, InformationLevel.Error);
