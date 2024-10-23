@@ -1,4 +1,5 @@
-﻿namespace Lyt.Quantics.Studio.Workflow.Run.Gates;
+﻿
+namespace Lyt.Quantics.Studio.Workflow.Run.Gates;
 
 public sealed class GateViewModel : Bindable<GateView> // : IDraggable
 {
@@ -117,6 +118,18 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
     }
 
     public bool BeginDrag() => true;  // For now 
+
+    public void OnGateEntered()
+    {
+        if (!this.IsToolbox)
+        {
+            return;
+        } 
+
+        this.Messenger.Publish(new GateHoverMessage(isEnter:true, this.Gate.CaptionKey));   
+    }
+
+    public void OnGateExited() => this.Messenger.Publish(new GateHoverMessage());
 
     public double GateHeight { get => this.Get<double>(); set => this.Set(value); }
 

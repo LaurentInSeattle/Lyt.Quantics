@@ -36,6 +36,8 @@ public partial class GateView : UserControl
         this.PointerPressed += this.OnPointerPressed;
         this.PointerReleased += this.OnPointerReleased;
         this.PointerMoved += this.OnPointerMoved;
+        this.PointerEntered += this.OnPointerEntered;
+        this.PointerExited += this.OnPointerExited;
     }
 
     private void UnhookPointerEvents()
@@ -43,6 +45,34 @@ public partial class GateView : UserControl
         this.PointerPressed -= this.OnPointerPressed;
         this.PointerReleased -= this.OnPointerReleased;
         this.PointerMoved -= this.OnPointerMoved;
+        this.PointerEntered -= this.OnPointerEntered;
+        this.PointerExited -= this.OnPointerExited;
+    }
+
+    private void OnPointerEntered(object? sender, PointerEventArgs pointerEventArgs)
+    {
+        if (this.isGhost)
+        {
+            return;
+        }
+
+        if (this.DataContext is GateViewModel gateViewModel)
+        {
+            gateViewModel.OnGateEntered();
+        }
+    }
+
+    private void OnPointerExited(object? sender, PointerEventArgs pointerEventArgs)
+    {
+        if (this.isGhost)
+        {
+            return;
+        }
+
+        if (this.DataContext is GateViewModel gateViewModel)
+        {
+            gateViewModel.OnGateExited();
+        }
     }
 
     private void OnPointerPressed(object? sender, PointerPressedEventArgs pointerPressedEventArgs)

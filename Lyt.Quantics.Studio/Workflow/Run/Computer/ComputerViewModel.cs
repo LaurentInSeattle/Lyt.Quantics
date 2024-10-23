@@ -228,9 +228,15 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
     {
         try
         {
+            if (this.quanticsStudioModel.QuComputer.Stages.Count <= 1 )
+            {
+                this.toaster.Show("Already done!", "No stages to pack.", 4_000, InformationLevel.Info);
+                return; 
+            }
+
             if (!this.quanticsStudioModel.PackStages(out string message))
             {
-                this.toaster.Show("Error!", "Failed to pack stages.", 4_000, InformationLevel.Success);
+                this.toaster.Show("Error!", "Failed to pack stages.", 4_000, InformationLevel.Warning);
             }
         }
         catch (Exception ex)

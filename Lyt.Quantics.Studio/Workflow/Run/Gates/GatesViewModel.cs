@@ -1,15 +1,17 @@
-﻿namespace Lyt.Quantics.Studio.Workflow.Run.Gates;
+﻿
+namespace Lyt.Quantics.Studio.Workflow.Run.Gates;
 
-public sealed class GatesViewModel : Bindable<GatesView> 
+public sealed class GatesViewModel : Bindable<GatesView>
 {
     private readonly QuanticsStudioModel quanticsStudioModel;
-    private readonly IToaster toaster;
 
     public GatesViewModel()
     {
+        this.DisablePropertyChangedLogging = true; 
+
         // Do not use Injection directly as this is loaded programmatically by the RunView 
         this.quanticsStudioModel = App.GetRequiredService<QuanticsStudioModel>();
-        this.toaster = App.GetRequiredService<IToaster>();
+        this.Messenger.Subscribe<GateHoverMessage>(this.OnGateHover);
     }
 
     protected override void OnViewLoaded()
@@ -18,9 +20,9 @@ public sealed class GatesViewModel : Bindable<GatesView>
 
         // Load the gates symbols in the 'toolbox' 
         // Sort and reorder by categories skipping the X special ones
-        var gates = 
-            (from gate in QuanticsStudioModel.Gates 
-             where (gate.Category != GateCategory.X_Special) && ( gate.CaptionKey != "I")
+        var gates =
+            (from gate in QuanticsStudioModel.Gates
+             where (gate.Category != GateCategory.X_Special) && (gate.CaptionKey != "I")
              orderby gate.Category.ToString() ascending,
              gate.CaptionKey ascending
              select gate);
@@ -33,9 +35,11 @@ public sealed class GatesViewModel : Bindable<GatesView>
         this.Gates = list;
     }
 
+#pragma warning disable CA1822 // Mark members as static
     public bool CanDrop(Point _, GateViewModel gateViewModel) => !gateViewModel.IsToolbox;
 
     public void OnDrop(Point _, GateViewModel gateViewModel)
+#pragma warning restore CA1822 
     {
         if (gateViewModel.IsToolbox)
         {
@@ -46,5 +50,23 @@ public sealed class GatesViewModel : Bindable<GatesView>
         gateViewModel.Remove();
     }
 
+    private void OnGateHover(GateHoverMessage message)
+    {
+        if (message.IsEnter)
+        {
+            this.GateTitle = message.GateCaptionKey;
+            this.GateDescription = "Yolo: List<GateViewModel>? Gates { get => this.Get<List<GateViewModel>?>(); set => this.Set(value); }";
+        }
+        else
+        {
+            this.GateTitle = string.Empty;
+            this.GateDescription = string.Empty;
+        }
+    }
+
     public List<GateViewModel>? Gates { get => this.Get<List<GateViewModel>?>(); set => this.Set(value); }
+
+    public string? GateTitle { get => this.Get<string?>(); set => this.Set(value); }
+
+    public string? GateDescription { get => this.Get<string?>(); set => this.Set(value); }
 }

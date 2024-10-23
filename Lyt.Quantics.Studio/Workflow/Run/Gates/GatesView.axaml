@@ -18,7 +18,8 @@
 		>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
-			<RowDefinition Height="80" />
+			<RowDefinition Height="30" />
+			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
 		<ItemsControl
 			x:Name="GatesItemsControl"
@@ -38,5 +39,25 @@
 				</DataTemplate>
 			</ItemsControl.ItemTemplate>
 		</ItemsControl>
+		<TextBlock
+			Text="{Binding GateTitle}"		
+			Width="220" 
+			Grid.Row="1"
+			FontSize="24"
+			VerticalAlignment="Center" HorizontalAlignment="Center"
+			TextAlignment="Center"
+			Foreground="{StaticResource LightAqua_0_080}"
+			/>
+		<TextBlock
+			Text="{Binding GateDescription}"
+			Width="200" 
+			Grid.Row="2"
+			FontSize="15"
+			Margin="8"
+			TextWrapping="WrapWithOverflow"
+			Foreground="{StaticResource LightAqua_0_080}"
+			VerticalAlignment="Stretch" HorizontalAlignment="Left"
+			TextAlignment="Left"
+			/>
 	</Grid>
 </UserControl>
