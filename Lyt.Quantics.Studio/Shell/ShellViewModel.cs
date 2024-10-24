@@ -37,6 +37,13 @@ public sealed class ShellViewModel : Bindable<ShellView>
         // Ready 
         this.OnShowTitleBar(new ShowTitleBarMessage());
         this.toaster.Host = this.View.ToasterHost;
+        if (this.toaster.View is Control control)
+        {
+            // Set the location of the toasts at top left at startup, will change later 
+            control.HorizontalAlignment = HorizontalAlignment.Left;
+            control.VerticalAlignment = VerticalAlignment.Top;
+        }
+
         this.toaster.Show(
             "Welcome to Quantics Studio!",
             "An interactive playground for Quantum Computing...",
@@ -85,16 +92,15 @@ public sealed class ShellViewModel : Bindable<ShellView>
                 break;
 
             case ActivatedView.Load:
-                this.Activate<RunViewModel, RunView>(isFirstActivation, null);
+                this.Activate<LoadViewModel, LoadView>(isFirstActivation, null);
                 break;
 
             case ActivatedView.Run:
-                this.Activate<RunViewModel, RunView>(isFirstActivation, null);
+                this.Activate<RunViewModel, RunView>(isFirstActivation, parameter);
                 break;
 
             case ActivatedView.Save:
                 break;
-
         }
     }
 
@@ -122,7 +128,6 @@ public sealed class ShellViewModel : Bindable<ShellView>
         var newViewModel = App.GetRequiredService<TViewModel>();
         newViewModel.Activate(activationParameters);
         this.View.ShellViewContent.Content = newViewModel.View;
-
         if (!isFirstActivation)
         {
             this.Profiler.MemorySnapshot(newViewModel.View.GetType().Name + ":  Activated");

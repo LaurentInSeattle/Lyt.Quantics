@@ -11,7 +11,7 @@
     xmlns:theme="clr-namespace:Lyt.Quantics.Studio"
 	>
 	<Grid
-		Margin="4"
+		Margin="2"
 		>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*" />

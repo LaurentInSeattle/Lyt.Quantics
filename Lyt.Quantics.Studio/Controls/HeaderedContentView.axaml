@@ -23,7 +23,7 @@
 			<Grid
 				>
 				<Grid.RowDefinitions>
-					<RowDefinition Height="6"/>
+					<RowDefinition Height="4"/>
 					<RowDefinition Height="56"/>
 					<RowDefinition Height="*"/>
 				</Grid.RowDefinitions>
@@ -41,7 +41,7 @@
 					Grid.Row="1"
 					Height="1"
 					VerticalAlignment="Bottom" HorizontalAlignment="Stretch"
-					Fill="#F0202060"
+					Fill="#F0302070"
 					/>
 				<glyphs:GlyphButton
 					IsVisible="{Binding IsCollapseVisible}"
@@ -94,7 +94,7 @@
 			<Grid
 				>
 				<Grid.RowDefinitions>
-					<RowDefinition Height="6"/>
+					<RowDefinition Height="4"/>
 					<RowDefinition Height="56"/>
 					<RowDefinition Height="*"/>
 				</Grid.RowDefinitions>
@@ -154,7 +154,7 @@
 			<Grid
 				>
 				<Grid.RowDefinitions>
-					<RowDefinition Height="6"/>
+					<RowDefinition Height="4"/>
 					<RowDefinition Height="56"/>
 				</Grid.RowDefinitions>
 				<Rectangle

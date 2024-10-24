@@ -2,6 +2,9 @@
 
 public static class SerializationUtilities
 {
+    private const string ResourcesPath = "Lyt.Quantics.Engine.Resources.Computers.";
+    private const string ResourcesExtension = ".json";
+
     private static readonly JsonSerializerOptions jsonSerializerOptions;
 
     static SerializationUtilities()
@@ -80,6 +83,45 @@ public static class SerializationUtilities
         {
             string msg = "Failed to deserialize " + typeof(T).FullName + "\n" + ex.ToString();
             throw new Exception(msg, ex);
+        }
+    }
+
+    public static List<string> GetEmbeddedComputerNames()
+    {
+        List<string> computers = [];
+        var assembly = Assembly.GetExecutingAssembly();
+        var list = assembly.GetManifestResourceNames().ToList();
+        foreach (var name in list)
+        {
+            if (name.Contains(ResourcesPath) && name.EndsWith(ResourcesExtension))
+            {
+                Debug.WriteLine(name);
+                computers.Add(name);
+            }
+        }
+
+        return computers;
+    }
+
+    public static QuComputer? LoadComputer(string name, out string message)
+    {
+        try
+        {
+            string resourceFileName = name + ResourcesExtension;
+            string serialized = SerializationUtilities.LoadEmbeddedTextResource(resourceFileName);
+            var computer = SerializationUtilities.Deserialize<QuComputer>(serialized);
+            bool isValid = computer.Validate(out message);
+            if (isValid)
+            {
+                return computer;
+            }
+
+            return null;
+        }
+        catch (Exception ex)
+        {
+            message = "Failed to load " + name + ": \n" + ex.ToString();
+            return null;
         }
     }
 }
