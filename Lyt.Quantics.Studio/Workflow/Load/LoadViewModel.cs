@@ -9,12 +9,11 @@ public sealed class LoadViewModel : Bindable<LoadView>
     public LoadViewModel()
     {
         SerializationUtilities.GetEmbeddedComputerNames(); 
-            
     }
 
     protected override void OnViewLoaded()
     {
-        this.Messenger.Publish(new ShowTitleBarMessage(show: false));
+        this.Messenger.Publish(new ShowTitleBarMessage(Show: false));
         this.Blank =
             CreateContent<LoadBlankViewModel, LoadBlankView, LoadBlankViewModel, LoadBlankView>(
                 "Start an Empty Blank New Project", canCollapse: false);
@@ -25,7 +24,7 @@ public sealed class LoadViewModel : Bindable<LoadView>
 
         this.Documents =
             CreateContent<LoadDocumentsViewModel, LoadDocumentsView, LoadDocumentsViewModel, LoadDocumentsView>(
-                "Your Previously Saved Projects", canCollapse: false, CollapseStyle.Bottom, createCollapsed: true);
+                "Your Previously Saved Projects", canCollapse: false);
     }
 
     #region Methods invoked by the Framework using reflection 

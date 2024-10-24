@@ -2,7 +2,7 @@
 
 public static class MessagingExtensions
 {
-    private static IMessenger messenger; 
+    private static readonly IMessenger messenger; 
 
     static MessagingExtensions()
         => MessagingExtensions.messenger = App.GetRequiredService<IMessenger>();

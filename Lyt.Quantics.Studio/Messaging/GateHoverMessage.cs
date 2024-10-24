@@ -1,8 +1,6 @@
 ﻿namespace Lyt.Quantics.Studio.Messaging;
 
-public sealed class GateHoverMessage(bool isEnter = false, string gateCaptionKey = "")
+public sealed record class GateHoverMessage(
+    bool IsEnter = false, string GateCaptionKey = "")
 {
-    public bool IsEnter { get; private set; } = isEnter;
-
-    public string GateCaptionKey { get; private set; } = gateCaptionKey;
 }

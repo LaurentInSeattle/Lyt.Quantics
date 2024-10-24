@@ -8,7 +8,7 @@ public sealed class RunViewModel : Bindable<RunView>
 
     protected override void OnViewLoaded()
     {
-        this.Messenger.Publish(new ShowTitleBarMessage(show: false));
+        this.Messenger.Publish(new ShowTitleBarMessage(Show: false));
         this.Gates =
             CreateContent<GatesViewModel, GatesView, GatesToolbarViewModel, GatesToolbarView>(
                 "Gates", canCollapse: true, CollapseStyle.Left);

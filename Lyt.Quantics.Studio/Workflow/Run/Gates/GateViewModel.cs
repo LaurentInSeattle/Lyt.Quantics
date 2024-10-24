@@ -126,7 +126,7 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
             return;
         } 
 
-        this.Messenger.Publish(new GateHoverMessage(isEnter:true, this.Gate.CaptionKey));   
+        this.Messenger.Publish(new GateHoverMessage(IsEnter:true, this.Gate.CaptionKey));   
     }
 
     public void OnGateExited() => this.Messenger.Publish(new GateHoverMessage());

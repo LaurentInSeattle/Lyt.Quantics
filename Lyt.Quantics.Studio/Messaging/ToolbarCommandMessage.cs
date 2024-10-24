@@ -1,7 +1,7 @@
 ﻿namespace Lyt.Quantics.Studio.Messaging;
 
-public sealed class ToolbarCommandMessage(
-    ToolbarCommandMessage.ToolbarCommand command, object? commandParameter = null)
+public sealed record class ToolbarCommandMessage(
+    ToolbarCommandMessage.ToolbarCommand Command, object? CommandParameter = null)
 {
     public enum ToolbarCommand
     {
@@ -23,9 +23,4 @@ public sealed class ToolbarCommandMessage(
         ShowAll, 
         ShowByBitOrder,
     }
-
-    public ToolbarCommand Command { get; private set; } = command;
-
-    public object? CommandParameter { get; private set; } = commandParameter;
-
 }

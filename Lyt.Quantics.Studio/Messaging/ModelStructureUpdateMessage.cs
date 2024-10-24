@@ -1,26 +1,17 @@
 ﻿namespace Lyt.Quantics.Studio.Messaging;
 
-public sealed class ModelStructureUpdateMessage(
-    bool qubitsChanged, 
-    bool stagePacked = false, 
-    bool stageChanged = false, 
-    int indexStageChanged = -1)
+public sealed record class ModelStructureUpdateMessage(
+    bool QubitsChanged, 
+    bool StagePacked = false, 
+    bool StageChanged = false, 
+    int IndexStageChanged = -1)
 {
-    public bool QubitsChanged { get; private set; } = qubitsChanged;
-
-    public bool StagePacked { get; private set; } = stagePacked;
-
-    public bool StageChanged { get; private set; } = stageChanged;
-
-    public int IndexStageChanged { get; private set; } = indexStageChanged;
-
     public static ModelStructureUpdateMessage MakeQubitsChanged()
-        => new(qubitsChanged: true);
+        => new(QubitsChanged: true);
 
     public static ModelStructureUpdateMessage MakeStagePacked() 
-        => new(qubitsChanged:false, stagePacked:true);
+        => new(QubitsChanged:false, StagePacked:true);
 
     public static ModelStructureUpdateMessage MakeStageChanged(int indexStageChanged)
-        => new(qubitsChanged: false, stagePacked: false, stageChanged: true, indexStageChanged);
-
+        => new(QubitsChanged: false, StagePacked: false, StageChanged: true, indexStageChanged);
 }
