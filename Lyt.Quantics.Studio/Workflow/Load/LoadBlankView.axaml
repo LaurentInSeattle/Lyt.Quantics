@@ -6,5 +6,19 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
 	>
-	
+	<Grid
+		Margin="16"
+		>
+		<TextBlock
+			Margin="130 0 0 0"
+			Text="Creates an empty quantum computer circuit with two qubits initialized at the ground state zero."
+			VerticalAlignment="Top" HorizontalAlignment="Left"
+			TextAlignment="Left"
+			FontSize="18"
+			FontStyle="Italic"
+			TextWrapping="WrapWithOverflow"
+			Foreground="{StaticResource ResourceKey= LightAqua_0_120}"
+			Opacity="0.95"
+			/>
+	</Grid>
 </UserControl>
