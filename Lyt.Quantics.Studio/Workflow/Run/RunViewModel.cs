@@ -32,6 +32,7 @@ public sealed class RunViewModel : Bindable<RunView>
             return headerVm.View;
         }
 
+        this.Messenger.Publish(new ShowTitleBarMessage(show: false));
         this.Gates =
             CreateContent<GatesViewModel, GatesView, GatesToolbarViewModel, GatesToolbarView>(
                 "Gates", canCollapse: true, CollapseStyle.Left);

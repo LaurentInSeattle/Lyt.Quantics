@@ -4,9 +4,83 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+    mc:Ignorable="d" d:DesignWidth="1080" d:DesignHeight="750"
+	xmlns:glyphs="clr-namespace:Lyt.Avalonia.Controls.Glyphs;assembly=Lyt.Avalonia.Controls"
+    xmlns:theme="clr-namespace:Lyt.Quantics.Studio"
     xmlns:vm="clr-namespace:Lyt.Quantics.Studio.Workflow.Intro"
     x:DataType="vm:IntroViewModel" 
-    xmlns:theme="clr-namespace:Lyt.Quantics.Studio"
 	>
+	<Grid
+		ShowGridLines="False"
+		>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="30" />
+			<ColumnDefinition Width="360" />
+			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="360" />
+			<ColumnDefinition Width="30" />
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="140" />
+			<RowDefinition Height="80" />
+			<RowDefinition Height="*" />
+			<RowDefinition Height="80" />
+			<RowDefinition Height="80" />
+			<RowDefinition Height="40" />
+		</Grid.RowDefinitions>
+		<TextBlock
+			Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="1"
+			Margin="80 0 0 0"
+			Text="Learn and experience Quantum Computing with"
+			TextWrapping="Wrap"
+			FontSize="32"
+			Opacity="0.7"
+			Foreground="{x:Static theme:ColorTheme.UiText}"
+			VerticalAlignment="Center"
+			/>
+		<TextBlock
+			Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3" Grid.RowSpan="1"
+			Margin="80 -220 0 0"
+			Text="Q&#x2009;u&#x2009;a&#x2009;n&#x2009;t&#x2009;i&#x2009;c&#x2009;s     S&#x2009;t&#x2009;u&#x2009;d&#x2009;i&#x2009;o"
+			TextWrapping="Wrap"
+			FontSize="96"
+			Opacity="0.7"
+			Foreground="{x:Static theme:ColorTheme.UiText}"
+			VerticalAlignment="Center" HorizontalAlignment="Center"
+			/>
+		<TextBlock
+			Grid.Column="3" Grid.Row="3" Grid.ColumnSpan="1" Grid.RowSpan="1"
+			Margin="20 0 0 0"
+			Text="Quantics Studio is provided to you under the terms of the MIT license, implying no warranty of any kind."
+			TextWrapping="Wrap"
+			FontSize="16"
+			Opacity="0.7"
+			Foreground="{x:Static theme:ColorTheme.UiText}"
+			VerticalAlignment="Center"
+			/>
+		<glyphs:GlyphButton
+			x:Name="exitButton"
+			Margin="0"
+			Style="{StaticResource ViewIconButton}"
+			Grid.Column="1" Grid.Row="4"
+			GlyphSource="dismiss"
+			Text="Close and Exit"
+			Width="340"
+			HorizontalAlignment="Left"
+			GlyphAngle="0"
+			Command="{Binding ExitCommand}"
+    		/>
+		<glyphs:GlyphButton
+			x:Name="nextButton"
+			Margin="0"
+			Style="{StaticResource ViewIconButton}"
+			Grid.Column="3" Grid.Row="4"
+			GlyphSource="next"
+			Text="Agree"
+			Width="340"
+			HorizontalAlignment="Right"
+			GlyphAngle="0"
+			Command="{Binding NextCommand}"
+    		/>
+	</Grid>
 </UserControl>

@@ -22,53 +22,46 @@
         Background="Transparent"
         >
 		<Grid.RowDefinitions>
-			<RowDefinition Height="32" MaxHeight="32" />
+			<RowDefinition Height="{Binding TitleBarHeight, FallbackValue=32}" MaxHeight="32" />
 			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
 		<Rectangle
 			Fill="#60000020"
-            Grid.RowSpan="1"
-			/>
-		<Rectangle
-			Fill="#60000020"
             Grid.RowSpan="999"
 			/>
-		<Image
-            Stretch="UniformToFill"
-            Source="\Assets\Images\ket.png"
-            Grid.Row="0" Margin="8 2 0 0"
-			VerticalAlignment="Center" HorizontalAlignment="Left"
-			Height="28" Width="28"
-            />
-		<TextBlock 
-			Grid.Row="0"
-			Text="Quantics Studio" 
-			HorizontalAlignment="Left" VerticalAlignment="Center"
-			Margin="56 2 0 0"
-			FontSize="26" 
-			Foreground="{StaticResource ResourceKey= LightAqua_1_120}"
-			TextWrapping="Wrap"
-			/>
-		<TextBlock
-			Grid.Row="0" 
-			Text="Version 0.0.7"
-			HorizontalAlignment="Left" VerticalAlignment="Center"
-			Margin="280 12 0 0"
-			FontSize="12"
-			FontStyle="Normal"
-			Foreground="{StaticResource ResourceKey= LightAqua_1_120}"
-			TextWrapping="Wrap"
-			/>
-		<TextBlock
-			Grid.Row="0" 
-			Text="Copyright 2024-2025 Laurent Yves Testud.    Provided to you under the terms of the MIT License. (No warranty of any kind.)"
-			HorizontalAlignment="Right" VerticalAlignment="Center"
-			Margin="0 8 16 0"
-			FontSize="12"
-			FontStyle="Normal"
-			Foreground="{StaticResource ResourceKey= LightAqua_1_120}"
-			TextWrapping="Wrap"
-			/>
+		<Grid
+			IsVisible="{Binding IsTitleBarVisible}"
+			> 			
+			<TextBlock 
+				Grid.Row="0"
+				Text="Quantics Studio" 
+				HorizontalAlignment="Left" VerticalAlignment="Center"
+				Margin="56 2 0 0"
+				FontSize="26" 
+				Foreground="{StaticResource ResourceKey= LightAqua_1_120}"
+				TextWrapping="Wrap"
+				/>
+			<TextBlock
+				Grid.Row="0" 
+				Text="Version 0.0.7"
+				HorizontalAlignment="Left" VerticalAlignment="Center"
+				Margin="280 12 0 0"
+				FontSize="12"
+				FontStyle="Normal"
+				Foreground="{StaticResource ResourceKey= LightAqua_1_120}"
+				TextWrapping="Wrap"
+				/>
+			<TextBlock
+				Grid.Row="0" 
+				Text="Copyright 2024-2025 Laurent Yves Testud.    Provided to you under the terms of the MIT License. (No warranty of any kind.)"
+				HorizontalAlignment="Right" VerticalAlignment="Center"
+				Margin="0 8 16 0"
+				FontSize="12"
+				FontStyle="Normal"
+				Foreground="{StaticResource ResourceKey= LightAqua_1_120}"
+				TextWrapping="Wrap"
+				/>
+		</Grid>
 		<!-- Do not add rows and/or columns to the toaster host-->
 		<Grid
 			x:Name="ToasterHost"

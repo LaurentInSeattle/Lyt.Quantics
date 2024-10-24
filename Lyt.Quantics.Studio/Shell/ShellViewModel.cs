@@ -10,6 +10,7 @@ public sealed class ShellViewModel : Bindable<ShellView>
     {
         this.toaster = toaster;
         this.Messenger.Subscribe<ViewActivationMessage>(this.OnViewActivation);
+        this.Messenger.Subscribe<ShowTitleBarMessage>(this.OnShowTitleBar);
     }
 
     protected override void OnViewLoaded()
@@ -30,10 +31,11 @@ public sealed class ShellViewModel : Bindable<ShellView>
 
         this.Logger.Debug("OnViewLoaded BindGroupIcons complete");
 
-        this.OnViewActivation(ActivatedView.Run, parameter: null, isFirstActivation: true);
+        this.OnViewActivation(ActivatedView.Intro, parameter: null, isFirstActivation: true);
         this.Logger.Debug("OnViewLoaded OnViewActivation complete");
 
         // Ready 
+        this.OnShowTitleBar(new ShowTitleBarMessage());
         this.toaster.Host = this.View.ToasterHost;
         this.toaster.Show(
             "Welcome to Quantics Studio!",
@@ -42,6 +44,11 @@ public sealed class ShellViewModel : Bindable<ShellView>
         this.Logger.Debug("OnViewLoaded complete");
     }
 
+    private void OnShowTitleBar(ShowTitleBarMessage message)
+    {
+        this.TitleBarHeight = new GridLength(message.Show ? 32.0 : 0.0);
+        this.IsTitleBarVisible = message.Show;
+    } 
 
     private void OnModelUpdated(ModelUpdateMessage message)
     {
@@ -74,11 +81,11 @@ public sealed class ShellViewModel : Bindable<ShellView>
         {
             default:
             case ActivatedView.Intro:
-                // this.Activate<IntroViewModel, IntroView>(isFirstActivation, null);
+                this.Activate<IntroViewModel, IntroView>(isFirstActivation, null);
                 break;
 
             case ActivatedView.Load:
-                // this.Activate<SetupViewModel, SetupView>(isFirstActivation, null);
+                this.Activate<RunViewModel, RunView>(isFirstActivation, null);
                 break;
 
             case ActivatedView.Run:
@@ -86,14 +93,6 @@ public sealed class ShellViewModel : Bindable<ShellView>
                 break;
 
             case ActivatedView.Save:
-                //if (parameter is GameViewModel.Parameters parametersGame)
-                //{
-                //    this.Activate<GameViewModel, GameView>(isFirstActivation, parametersGame);
-                //}
-                //else
-                //{
-                //    throw new Exception("No game parameters");
-                //}
                 break;
 
         }
@@ -145,4 +144,8 @@ public sealed class ShellViewModel : Bindable<ShellView>
         CreateAndBind<LoadViewModel, LoadView>();
         CreateAndBind<RunViewModel, RunView>();
     }
+
+    public GridLength TitleBarHeight { get => this.Get<GridLength>(); set => this.Set(value); }
+
+    public bool IsTitleBarVisible{ get => this.Get<bool>(); set => this.Set(value); }
 }

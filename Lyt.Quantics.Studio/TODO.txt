@@ -1,19 +1,18 @@
 ﻿
-TODO: 
+TODO: Engine: 
 
 Binary Gates with non consecutive qubits (Ex: swap 0 and 2)
 Ternary Gates with non consecutive qubits 
-Gate name and doc when hovering in gate view 
 Document gates, so that there's something to show when hovering 
+Stepping 
+
+TODO: Studio : 
+
 Ternary gates icons
-Intro page 
 Load from libray 
 Load from file 
 Save to file
 Name of 'computer' in title 
-Stepping 
 Move a gate using Drag/drop
 "Frameworkization" of drag/drop
 Nicer app icon 
-Hide shell title bar when running the computer
-
