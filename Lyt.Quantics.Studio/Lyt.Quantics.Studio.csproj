@@ -67,6 +67,12 @@
     <Compile Update="Controls\AmplitudeMinibarView.axaml.cs">
       <DependentUpon>AmplitudeMinibarView.axaml</DependentUpon>
     </Compile>
+    <Compile Update="Workflow\Load\LoadDocumentsView.axaml.cs">
+      <DependentUpon>LoadDocumentsView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Workflow\Load\LoadBuiltInView.axaml.cs">
+      <DependentUpon>LoadBuiltInView.axaml</DependentUpon>
+    </Compile>
     <Compile Update="Workflow\Run\Gates\Special\ACxGate.axaml.cs">
       <DependentUpon>ACxGate.axaml</DependentUpon>
     </Compile>

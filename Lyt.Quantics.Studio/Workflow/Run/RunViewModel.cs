@@ -8,30 +8,6 @@ public sealed class RunViewModel : Bindable<RunView>
 
     protected override void OnViewLoaded()
     {
-        static Control CreateContent<TViewModel, TControl, TToolbarViewModel, TToolbarControl>(
-            string title, bool canCollapse,
-            CollapseStyle collapseStyle = CollapseStyle.Left,
-            bool createCollapsed = false)
-            where TViewModel : Bindable<TControl>, new()
-            where TControl : Control, new()
-            where TToolbarViewModel : Bindable<TToolbarControl>, new()
-            where TToolbarControl : Control, new()
-        {
-            var baseVm = new TViewModel();
-            baseVm.CreateViewAndBind();
-            var toolbarVm = new TToolbarViewModel();
-            toolbarVm.CreateViewAndBind();
-            var headerVm =
-                new HeaderedContentViewModel(title, canCollapse, baseVm.View, toolbarVm.View, collapseStyle);
-            headerVm.CreateViewAndBind();
-            if (createCollapsed)
-            {
-                headerVm.Collapse(true);
-            }
-
-            return headerVm.View;
-        }
-
         this.Messenger.Publish(new ShowTitleBarMessage(show: false));
         this.Gates =
             CreateContent<GatesViewModel, GatesView, GatesToolbarViewModel, GatesToolbarView>(
