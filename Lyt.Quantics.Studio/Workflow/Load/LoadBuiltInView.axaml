@@ -5,6 +5,38 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+    xmlns:vm="clr-namespace:Lyt.Quantics.Studio.Workflow.Load"
+    x:DataType="vm:LoadBuiltInViewModel" 
+	xmlns:glyphs="clr-namespace:Lyt.Avalonia.Controls.Glyphs;assembly=Lyt.Avalonia.Controls"
+	xmlns:panels="clr-namespace:Lyt.Avalonia.Controls.Panels;assembly=Lyt.Avalonia.Controls"
+    xmlns:theme="clr-namespace:Lyt.Quantics.Studio"
+    xmlns:tiles="clr-namespace:Lyt.Quantics.Studio.Workflow.Load.Tiles"
 	>
-	
+	<Grid
+		x:Name="InnerGrid"
+		>
+		<ScrollViewer
+			Background="Transparent"
+			VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+			ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+			ScrollViewer.VerticalScrollBarVisibility="Auto"
+			>
+			<ItemsControl
+				x:Name="ElementsItemControl"
+				ItemsSource="{Binding BuiltInViews}"
+				Margin="8 0 28 0"
+					>
+				<ItemsControl.ItemsPanel>
+					<ItemsPanelTemplate>
+						<panels:MultiColumnStackPanel ColumnMaxWidth="380"/>
+					</ItemsPanelTemplate>
+				</ItemsControl.ItemsPanel>
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<tiles:BuiltInView Margin="4"/>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+		</ScrollViewer>
+	</Grid>
 </UserControl>

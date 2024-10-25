@@ -2,8 +2,9 @@
 
 public static class SerializationUtilities
 {
+    public const string ResourcesExtension = ".json";
+
     private const string ResourcesPath = "Lyt.Quantics.Engine.Resources.Computers.";
-    private const string ResourcesExtension = ".json";
 
     private static readonly JsonSerializerOptions jsonSerializerOptions;
 

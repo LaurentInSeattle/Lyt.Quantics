@@ -204,7 +204,10 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
 
             case ToolbarCommand.HideProbabilities: 
                 if (message.CommandParameter is bool hide)
-                this.HideProbabilities(hide); 
+                {
+                    this.HideProbabilities(hide);
+                }
+
                 break;
 
             case ToolbarCommand.PackStages: this.OnPackStages(); break;

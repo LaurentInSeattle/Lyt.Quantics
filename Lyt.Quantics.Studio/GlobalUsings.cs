@@ -97,6 +97,7 @@ global using Lyt.Quantics.Studio.Shell;
 //global using Lyt.Quantics.Studio.Utilities;
 global using Lyt.Quantics.Studio.Workflow.Intro;
 global using Lyt.Quantics.Studio.Workflow.Load;
+global using Lyt.Quantics.Studio.Workflow.Load.Tiles;
 global using Lyt.Quantics.Studio.Workflow.Run;
 global using Lyt.Quantics.Studio.Workflow.Run.Code;
 global using Lyt.Quantics.Studio.Workflow.Run.Computer;

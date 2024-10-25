@@ -1,0 +1,108 @@
+<UserControl 
+	x:Class="Lyt.Quantics.Studio.Workflow.Load.Tiles.BuiltInView"
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+    xmlns:vm="clr-namespace:Lyt.Quantics.Studio.Workflow.Load.Tiles"
+    x:DataType="vm:BuiltInViewModel" 
+	xmlns:glyphs="clr-namespace:Lyt.Avalonia.Controls.Glyphs;assembly=Lyt.Avalonia.Controls"
+    xmlns:theme="clr-namespace:Lyt.Quantics.Studio"
+	>
+	<Border
+        x:Name="outerBorder"
+        Height="92" MaxHeight="92"
+        Background="Transparent"
+        BorderBrush="{StaticResource LightAqua_1_040}"
+        BorderThickness="1"
+        CornerRadius="4"
+        >
+		<Grid
+            Background="Transparent"
+            Height="92" MaxHeight="92"
+            VerticalAlignment="Center"
+            >
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*" />
+				<RowDefinition Height="2*" />
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions >
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="2" />
+				<ColumnDefinition Width="2" />
+				<ColumnDefinition Width="72" />
+				<ColumnDefinition Width="36" />
+			</Grid.ColumnDefinitions>
+			<Rectangle
+                x:Name="SizingRectangle"
+                Grid.Column="0" Grid.Row="0"
+                VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                Fill="Transparent"
+                />
+			<Rectangle
+                Grid.Column="0" Grid.Row="0"
+                Grid.ColumnSpan="999" Grid.RowSpan="999"
+                Fill="#80101020"
+                Height="90" MaxHeight="90"
+                RadiusX="4" RadiusY="4"
+                />
+			<TextBlock
+                Grid.Column="0" Grid.Row="0"
+                VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                TextAlignment="Left"
+                Text="{Binding Name}"
+                FontStyle="Italic"
+                FontSize="18"
+				FontWeight="DemiBold"
+                Margin="6 0 0 0"
+                IsHitTestVisible="False"
+                />
+			<TextBlock
+                Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1"
+                VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                Width="{Binding Width, ElementName=SizingRectangle}"
+                TextAlignment="Left"
+                Text="{Binding Description}"
+                Foreground="{StaticResource LightAqua_0_080}"
+                FontSize="16"
+                Margin="12 0 0 0"
+                IsHitTestVisible="False"
+                TextWrapping="WrapWithOverflow"
+				TextTrimming="WordEllipsis"
+                />
+			<glyphs:GlyphButton
+                x:Name="openButton"
+                Grid.Column="3" Grid.Row="0" Grid.RowSpan="2"
+                Style="{StaticResource ToolbarIconButton}"
+                Layout="IconTextBelow"
+                Behaviour="Tap"
+                HorizontalAlignment="Center" VerticalAlignment="Center"
+                Width="64" Height="64"
+                Margin="0"
+                GlyphSource="window_new"
+                Text="Open"
+                ButtonBackground="BorderlessRectangle"
+                GlyphStrokeThickness="0"
+                GlyphAngle="0"
+                Command="{Binding OpenCommand}"
+                />
+			<glyphs:GlyphButton
+                x:Name="deleteButton"
+				IsVisible="False"
+                Grid.Column="4" Grid.Row="1" Grid.RowSpan="1"
+                Style="{StaticResource ToolbarIconButton}"
+                Layout="IconOnly"
+                Behaviour="Tap"
+                HorizontalAlignment="Center" VerticalAlignment="Center"
+                Width="32" Height="32"
+                Margin="0"
+                GlyphSource="delete"
+                ButtonBackground="BorderlessRectangle"
+                GlyphStrokeThickness="0"
+                GlyphAngle="0"
+                Command="{Binding DeleteCommand}"
+                />
+		</Grid>
+	</Border>
+</UserControl>

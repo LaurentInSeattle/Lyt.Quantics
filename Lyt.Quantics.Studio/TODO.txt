@@ -9,6 +9,7 @@ Stepping
 TODO: Studio : 
 
 Ternary gates icons
+Add Save and Close actions in Run View 
 Load from libray 
 Load from file 
 Save to file

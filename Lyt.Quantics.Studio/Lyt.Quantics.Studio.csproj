@@ -80,6 +80,9 @@
     <Compile Update="Workflow\Load\LoadBuiltInView.axaml.cs">
       <DependentUpon>LoadBuiltInView.axaml</DependentUpon>
     </Compile>
+    <Compile Update="Workflow\Load\Tiles\DocumentView.axaml.cs">
+      <DependentUpon>DocumentView.axaml</DependentUpon>
+    </Compile>
     <Compile Update="Workflow\Run\Gates\Special\ACxGate.axaml.cs">
       <DependentUpon>ACxGate.axaml</DependentUpon>
     </Compile>
