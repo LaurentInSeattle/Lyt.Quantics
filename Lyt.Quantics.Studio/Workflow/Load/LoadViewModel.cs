@@ -14,12 +14,12 @@ public sealed class LoadViewModel : Bindable<LoadView>
                 "Start an Empty Blank New Project", canCollapse: false);
 
         this.BuiltIn =
-            CreateContent<LoadBuiltInViewModel, LoadBuiltInView, LoadBlankToolbarViewModel, LoadBlankToolbarView>(
+            CreateContent<LoadBuiltInViewModel, LoadBuiltInView, LoadBuiltInToolbarViewModel, LoadBuiltInToolbarView>(
                 "Ready to Use Built-in Projects", canCollapse: false );
 
         this.Documents =
-            CreateContent<LoadDocumentsViewModel, LoadDocumentsView, LoadDocumentsViewModel, LoadDocumentsView>(
-                "Your Previously Saved Projects", canCollapse: true, CollapseStyle.Right, createCollapsed: true);
+            CreateContent<LoadDocumentsViewModel, LoadDocumentsView, LoadDocumentsToolbarViewModel, LoadDocumentsToolbarView>(
+                "Your Saved Projects", canCollapse: true, CollapseStyle.Right, createCollapsed: true);
     }
 
     public Control Blank { get => this.Get<Control>()!; set => this.Set(value); }

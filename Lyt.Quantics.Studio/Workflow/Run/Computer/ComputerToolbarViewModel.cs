@@ -16,6 +16,10 @@ public sealed class ComputerToolbarViewModel : Bindable<ComputerToolbarView>
 
     private void OnRun(object? _) => this.Publish(ToolbarCommand.Run);
 
+    private void OnSave(object? _) => this.Publish(ToolbarCommand.Save);
+
+    private void OnClose(object? _) => this.Publish(ToolbarCommand.Close);
+
     private void Publish(ToolbarCommand command, object? parameter = null)
         => this.Messenger.Publish(new ToolbarCommandMessage(command, parameter));
 
@@ -30,6 +34,10 @@ public sealed class ComputerToolbarViewModel : Bindable<ComputerToolbarView>
     public ICommand StepCommand { get => this.Get<ICommand>()!; set => this.Set(value); }
 
     public ICommand RunCommand { get => this.Get<ICommand>()!; set => this.Set(value); }
+
+    public ICommand SaveCommand { get => this.Get<ICommand>()!; set => this.Set(value); }
+
+    public ICommand CloseCommand { get => this.Get<ICommand>()!; set => this.Set(value); }
 
     public bool HideProbabilities
     {

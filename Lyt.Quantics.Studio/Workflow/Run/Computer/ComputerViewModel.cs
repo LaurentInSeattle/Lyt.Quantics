@@ -1,5 +1,7 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
 
+using static Lyt.Quantics.Studio.Messaging.ViewActivationMessage;
+using static Lyt.Quantics.Studio.Messaging.MessagingExtensions;
 using static ToolbarCommandMessage;
 
 public sealed class ComputerViewModel : Bindable<ComputerView>
@@ -38,9 +40,9 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
             }, DispatcherPriority.ApplicationIdle);
     }
 
-    public override void Activate (object? parameter)
+    public override void Activate(object? parameter)
     {
-        if ( parameter is not ComputerActivationParameter computerActivationParameter)
+        if (parameter is not ComputerActivationParameter computerActivationParameter)
         {
             throw new InvalidOperationException("Invalid parameter for ComputerViewModel");
         }
@@ -62,7 +64,7 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
         }
     }
 
-    private void CreateBlank ()
+    private void CreateBlank()
     {
         // Initialize, starting with two (empty) qubits 
         _ = this.quanticsStudioModel.AddQubit(0, out string _);
@@ -71,7 +73,7 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
 
     private void CreateFromResource(string path)
     {
-        this.toaster.Show("Not Implemented", "CreateFromResource" + path , 4_000, InformationLevel.Warning);
+        this.toaster.Show("Not Implemented", "CreateFromResource" + path, 4_000, InformationLevel.Warning);
     }
 
     private void CreateFromDocument(string path)
@@ -237,7 +239,7 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
 
             case ToolbarCommand.RemoveQubit: this.RemoveQubit(count); break;
 
-            case ToolbarCommand.HideProbabilities: 
+            case ToolbarCommand.HideProbabilities:
                 if (message.CommandParameter is bool hide)
                 {
                     this.HideProbabilities(hide);
@@ -253,6 +255,10 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
 
             case ToolbarCommand.Run: this.OnRun(); break;
 
+            case ToolbarCommand.Save: this.OnSave(); break;
+
+            case ToolbarCommand.Close: this.OnClose(); break;
+
             case ToolbarCommand.Loop:
                 break;
             case ToolbarCommand.Exit:
@@ -266,10 +272,10 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
     {
         try
         {
-            if (this.quanticsStudioModel.QuComputer.Stages.Count <= 1 )
+            if (this.quanticsStudioModel.QuComputer.Stages.Count <= 1)
             {
                 this.toaster.Show("Already done!", "No stages to pack.", 4_000, InformationLevel.Info);
-                return; 
+                return;
             }
 
             if (!this.quanticsStudioModel.PackStages(out string message))
@@ -329,6 +335,36 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
             this.toaster.Show("Unexpected Error", uiMessage, 4_000, InformationLevel.Error);
         }
     }
+
+    private void OnSave()
+    {
+        // TODO 
+        try
+        {
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            string uiMessage = "Save: Exception thrown: " + ex.Message;
+            this.toaster.Show("Unexpected Error", uiMessage, 4_000, InformationLevel.Error);
+        }
+    }
+
+    private void OnClose()
+    {
+        // TODO 
+        try
+        {
+            ActivateView(ActivatedView.Load); 
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            string uiMessage = "Close: Exception thrown: " + ex.Message;
+            this.toaster.Show("Unexpected Error", uiMessage, 4_000, InformationLevel.Error);
+        }
+    }
+
 
     private void UpdateQubit(int index, QuState newState)
     {

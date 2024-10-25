@@ -13,6 +13,10 @@ public sealed record class ToolbarCommandMessage(
         Reset,
         Step,
         Run,
+        Save, 
+        Close, 
+
+        // LAter
         Loop,
 
         // QuBit actions

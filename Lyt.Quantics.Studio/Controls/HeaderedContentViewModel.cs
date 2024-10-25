@@ -18,6 +18,9 @@ public sealed class HeaderedContentViewModel : Bindable<HeaderedContentView>
         Control contentView, Control? toolbar,
         CollapseStyle collapseStyle)
     {
+        base.DisablePropertyChangedLogging = true;
+        base.DisableAutomaticBindingsLogging = true;
+
         this.canCollapse = canCollapse;
         this.collapseStyle = collapseStyle;
         this.Title = title;

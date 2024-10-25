@@ -2,13 +2,7 @@
 
 public sealed class LoadBuiltInViewModel : Bindable<LoadBuiltInView>
 {
-    private readonly QuanticsStudioModel quanticsStudioModel;
-
-    public LoadBuiltInViewModel()  
-    {
-        // Do not use Injection directly as this is loaded programmatically by the LoadView 
-        this.quanticsStudioModel = App.GetRequiredService<QuanticsStudioModel>();
-    }
+    public LoadBuiltInViewModel() { }
 
     protected override void OnViewLoaded()
     {
@@ -21,13 +15,13 @@ public sealed class LoadBuiltInViewModel : Bindable<LoadBuiltInView>
             try
             {
                 var computer = builtInComputers[computerName];
-                builtInViews.Add(new BuiltInViewModel(computerName, computer )); 
+                builtInViews.Add(new BuiltInViewModel(computerName, computer));
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 Debug.WriteLine(ex);
-                this.Logger.Warning( "Failed to load " +  ex.ToString() );
-                continue ;
+                this.Logger.Warning("Failed to load " + ex.ToString());
+                continue;
             }
         }
 
@@ -36,7 +30,6 @@ public sealed class LoadBuiltInViewModel : Bindable<LoadBuiltInView>
 
     public List<BuiltInViewModel> BuiltInViews
     {
-        get => this.Get<List<BuiltInViewModel>>()!;
-        set => this.Set(value);
+        get => this.Get<List<BuiltInViewModel>>()!; set => this.Set(value);
     }
 }

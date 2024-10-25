@@ -4,7 +4,7 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="56"
+	mc:Ignorable="d" d:DesignWidth="890" d:DesignHeight="56"
     xmlns:vm="clr-namespace:Lyt.Quantics.Studio.Workflow.Run.Computer"
     x:DataType="vm:ComputerToolbarViewModel" 
     xmlns:theme="clr-namespace:Lyt.Quantics.Studio"
@@ -25,8 +25,10 @@
 			<ColumnDefinition Width="72" />
 			<ColumnDefinition Width="72" />
 			<ColumnDefinition Width="72" />
-			<!-- Loop Control -->
-			<ColumnDefinition Width="84" />
+			<!-- Spacer -->
+			<ColumnDefinition Width="24" />
+			<!-- Save and Close -->
+			<ColumnDefinition Width="72" />
 			<ColumnDefinition Width="72" />
 		</Grid.ColumnDefinitions>
 		<glyphs:GlyphButton
@@ -118,6 +120,32 @@
 			GlyphStrokeThickness="0"
 			Text="Run"
 			Command="{Binding RunCommand}"
+	    	/>
+		<glyphs:GlyphButton
+			Grid.Column="8"
+			Style="{StaticResource ToolbarIconButton}"
+			Behaviour="Tap"
+			HorizontalAlignment="Center" VerticalAlignment="Center"
+			Width="64" Height="48"
+			Margin="4"
+			GlyphSource="save"
+			ButtonBackground="BorderlessRectangle"
+			GlyphStrokeThickness="0"
+			Text="Save"
+			Command="{Binding SaveCommand}"
+	    	/>
+		<glyphs:GlyphButton
+			Grid.Column="9"
+			Style="{StaticResource ToolbarIconButton}"
+			Behaviour="Tap"
+			HorizontalAlignment="Center" VerticalAlignment="Center"
+			Width="64" Height="48"
+			Margin="4"
+			GlyphSource="dismiss"
+			ButtonBackground="BorderlessRectangle"
+			GlyphStrokeThickness="0"
+			Text="Close"
+			Command="{Binding CloseCommand}"
 	    	/>
 	</Grid>
 </UserControl>

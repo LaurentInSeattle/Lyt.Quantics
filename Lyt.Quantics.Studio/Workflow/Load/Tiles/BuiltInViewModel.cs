@@ -10,6 +10,7 @@ public sealed class BuiltInViewModel : Bindable<BuiltInView>
     public BuiltInViewModel(string pathName, QuComputer quComputer)
     {
         base.DisablePropertyChangedLogging = true;
+        base.DisableAutomaticBindingsLogging = true; 
 
         this.pathName = pathName;   
         this.Name = quComputer.Name;
