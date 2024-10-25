@@ -1,6 +1,5 @@
 ﻿namespace Lyt.Quantics.Studio.Model;
 
-using Lyt.Quantics.Engine.Core;
 using static FileManagerModel;
 
 public sealed partial class QuanticsStudioModel : ModelBase
@@ -47,7 +46,7 @@ public sealed partial class QuanticsStudioModel : ModelBase
         try
         {
             // FORNOW: Create a 'blank' computer at initialization time 
-            this.QuComputer = new ("Untitled", "New quantum computer project."); 
+            this.QuComputer = new("Untitled", "New quantum computer project.");
 
             //if (!this.fileManager.Exists(Area.User, Kind.Json, TemplatesModel.TemplatesModelFilename))
             //{
@@ -59,6 +58,14 @@ public sealed partial class QuanticsStudioModel : ModelBase
 
             //// Copy all properties with attribute [JsonRequired]
             //base.CopyJSonRequiredProperties<TemplatesModel>(model);
+
+            // Fire and forget 
+            Task.Run(() =>
+            {
+                LoadGates();
+                LoadBuiltInComputers(this.Logger);
+            } );
+
             return Task.CompletedTask;
         }
         catch (Exception /* ex */ )
@@ -66,7 +73,7 @@ public sealed partial class QuanticsStudioModel : ModelBase
             //string msg = "Failed to load TemplatesModel from " + TemplatesModel.TemplatesModelFilename;
             //this.Logger.Fatal(msg);
             //throw new Exception(msg, ex);
-            throw ;
+            throw;
         }
     }
 
@@ -84,19 +91,68 @@ public sealed partial class QuanticsStudioModel : ModelBase
         return Task.CompletedTask;
     }
 
-    public static List<Gate> Gates 
-    {  
-        get
-        {
-            var gateTypes = GateFactory.AvailableProducts;
-            var list = new List<Gate>(gateTypes.Count);
-            foreach (var gateType in gateTypes)
-            {
-                var gate = GateFactory.Produce(gateType.Key); 
-                list.Add(gate);
-            } 
+    public static Dictionary<string, QuComputer> BuiltInComputers { get; private set; } = [];
 
-            return list;
+    public static List<Gate> Gates { get; private set; } = [];
+
+    private static void LoadGates()
+    {
+        var gateTypes = GateFactory.AvailableProducts;
+        var list = new List<Gate>(gateTypes.Count);
+        foreach (var gateType in gateTypes)
+        {
+            var gate = GateFactory.Produce(gateType.Key);
+            list.Add(gate);
         }
+
+        Gates = list;
+    }
+
+
+    private static void LoadBuiltInComputers(ILogger logger)
+    {
+        var computerNames = SerializationUtilities.GetEmbeddedComputerNames();
+        Dictionary<string, QuComputer> dictionary = new(computerNames.Count);
+        foreach (string computerName in computerNames)
+        {
+            try
+            {
+                string resourceFileName = computerName;
+                if (!resourceFileName.EndsWith(SerializationUtilities.ResourcesExtension))
+                {
+                    resourceFileName = computerName + SerializationUtilities.ResourcesExtension;
+                }
+
+                string serialized = SerializationUtilities.LoadEmbeddedTextResource(resourceFileName);
+                var computer = SerializationUtilities.Deserialize<QuComputer>(serialized);
+                if (computer is null)
+                {
+                    throw new Exception("Failed to deserialize");
+                }
+
+                bool isValid = computer.Validate(out string message);
+                if (!isValid)
+                {
+                    throw new Exception(message);
+                }
+
+                bool isBuilt = computer.Build(out message);
+                if (!isBuilt)
+                {
+                    throw new Exception(message);
+                }
+
+                dictionary.Add(computerName, computer);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                logger.Warning("LoadBuiltInComputers: Failed to load " + ex.ToString());
+
+                continue;
+            }
+        }
+
+        BuiltInComputers = dictionary;
     }
 }

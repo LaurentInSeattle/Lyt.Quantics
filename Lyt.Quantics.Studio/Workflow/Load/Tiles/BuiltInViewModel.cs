@@ -9,10 +9,11 @@ public sealed class BuiltInViewModel : Bindable<BuiltInView>
 
     public BuiltInViewModel(string pathName, QuComputer quComputer)
     {
+        base.DisablePropertyChangedLogging = true;
+
         this.pathName = pathName;   
         this.Name = quComputer.Name;
         this.Description = quComputer.Description;
-        base.DisablePropertyChangedLogging = true;
     }
 
     #region Methods invoked by the Framework using reflection 

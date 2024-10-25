@@ -23,12 +23,6 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
 
     protected override void OnViewLoaded()
     {
-        // FOW NOW: This is only valid for starting from scratch,
-        // and will be different if starting from file
-        // Initialize, starting with two (empty) qubits 
-        _ = this.quanticsStudioModel.AddQubit(0, out string _);
-        _ = this.quanticsStudioModel.AddQubit(1, out string _);
-
         Schedule.OnUiThread(
             5_000, () =>
             {
@@ -42,6 +36,47 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
                     control.HorizontalAlignment = HorizontalAlignment.Right;
                 }
             }, DispatcherPriority.ApplicationIdle);
+    }
+
+    public override void Activate (object? parameter)
+    {
+        if ( parameter is not ComputerActivationParameter computerActivationParameter)
+        {
+            throw new InvalidOperationException("Invalid parameter for ComputerViewModel");
+        }
+
+        switch (computerActivationParameter.ActivationKind)
+        {
+            default:
+            case ComputerActivationParameter.Kind.New:
+                this.CreateBlank();
+                break;
+
+            case ComputerActivationParameter.Kind.Resource:
+                this.CreateFromResource(computerActivationParameter.Path);
+                break;
+
+            case ComputerActivationParameter.Kind.Document:
+                this.CreateFromDocument(computerActivationParameter.Path);
+                break;
+        }
+    }
+
+    private void CreateBlank ()
+    {
+        // Initialize, starting with two (empty) qubits 
+        _ = this.quanticsStudioModel.AddQubit(0, out string _);
+        _ = this.quanticsStudioModel.AddQubit(1, out string _);
+    }
+
+    private void CreateFromResource(string path)
+    {
+        this.toaster.Show("Not Implemented", "CreateFromResource" + path , 4_000, InformationLevel.Warning);
+    }
+
+    private void CreateFromDocument(string path)
+    {
+        this.toaster.Show("Not Implemented", "CreateFromDocument" + path, 4_000, InformationLevel.Warning);
     }
 
     private void OnModelUpdateErrorMessage(ModelUpdateErrorMessage message)

@@ -1,6 +1,4 @@
-﻿using static Lyt.Quantics.Studio.Controls.HeaderedContentViewModel;
-
-namespace Lyt.Quantics.Studio.Controls;
+﻿namespace Lyt.Quantics.Studio.Controls;
 
 public sealed class HeaderedContentViewModel : Bindable<HeaderedContentView>
 {
@@ -31,7 +29,7 @@ public sealed class HeaderedContentViewModel : Bindable<HeaderedContentView>
         this.Collapse(collapse: false);
     }
 
-    public static Control CreateContent<TViewModel, TControl, TToolbarViewModel, TToolbarControl>(
+    public static HeaderedContentView CreateContent<TViewModel, TControl, TToolbarViewModel, TToolbarControl>(
         string title, bool canCollapse,
         CollapseStyle collapseStyle = CollapseStyle.Left,
         bool createCollapsed = false)
