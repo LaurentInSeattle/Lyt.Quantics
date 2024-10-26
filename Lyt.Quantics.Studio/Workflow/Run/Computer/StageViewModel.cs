@@ -145,7 +145,8 @@ public sealed class StageViewModel : Bindable<StageView>
         try
         {
             this.View.MinibarsGrid.Children.Clear();
-            if (this.quanticsStudioModel.HideMinibars)
+            if (this.quanticsStudioModel.HideMinibarsUserOption || 
+                this.quanticsStudioModel.HideMinibarsComputerState)
             {
                 return;
             }

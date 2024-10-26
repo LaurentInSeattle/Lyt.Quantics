@@ -2,14 +2,20 @@
 
 public sealed class LoadBuiltInViewModel : Bindable<LoadBuiltInView>
 {
-    public LoadBuiltInViewModel() { }
+    private List<BuiltInViewModel> builtInViews = [] ; 
 
     protected override void OnViewLoaded()
     {
         base.OnViewLoaded();
+        this.BuiltInViews = builtInViews;
+    }
+
+    public override void Activate(object? activationParameters)
+    {
+        base.Activate(activationParameters);
 
         var builtInComputers = QuanticsStudioModel.BuiltInComputers;
-        List<BuiltInViewModel> builtInViews = new(builtInComputers.Count);
+        this.builtInViews = new(builtInComputers.Count);
         foreach (string computerName in builtInComputers.Keys)
         {
             try
@@ -24,8 +30,6 @@ public sealed class LoadBuiltInViewModel : Bindable<LoadBuiltInView>
                 continue;
             }
         }
-
-        this.BuiltInViews = builtInViews;
     }
 
     public List<BuiltInViewModel> BuiltInViews

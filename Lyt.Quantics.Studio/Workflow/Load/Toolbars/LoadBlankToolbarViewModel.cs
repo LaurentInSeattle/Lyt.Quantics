@@ -1,4 +1,4 @@
-﻿namespace Lyt.Quantics.Studio.Workflow.Load;
+﻿namespace Lyt.Quantics.Studio.Workflow.Load.Toolbars;
 
 using static Lyt.Quantics.Studio.Messaging.ViewActivationMessage;
 using static Lyt.Quantics.Studio.Messaging.MessagingExtensions;
@@ -18,5 +18,5 @@ public sealed class LoadBlankToolbarViewModel : Bindable<LoadBlankToolbarView>
 #pragma warning restore IDE0051
     #endregion Methods invoked by the Framework using reflection 
 
-    public ICommand CreateBlankCommand { get => this.Get<ICommand>()!; set => this.Set(value); }
+    public ICommand CreateBlankCommand { get => Get<ICommand>()!; set => Set(value); }
 }

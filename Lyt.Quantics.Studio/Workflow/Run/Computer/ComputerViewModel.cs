@@ -109,9 +109,23 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
         }
     }
 
-    private void CreateFromDocument(string path)
+    private void CreateFromDocument(string fileName)
     {
-        this.toaster.Show("Not Implemented", "CreateFromDocument" + path, 4_000, InformationLevel.Warning);
+        try
+        {
+            if (this.quanticsStudioModel.CreateFromDocument(fileName, out string message))
+            {
+                return;
+            }
+
+            throw new InvalidOperationException(message);
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            string uiMessage = "Load Document: Exception thrown: " + ex.Message;
+            this.toaster.Show("Load Document", uiMessage, 4_000, InformationLevel.Error);
+        }
     }
 
     private void OnModelUpdateErrorMessage(ModelUpdateErrorMessage message)
@@ -121,6 +135,7 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
     {
         try
         {
+            this.quanticsStudioModel.HideMinibarsComputerState = false;
             var computer = this.quanticsStudioModel.QuComputer;
             int qubitCount = computer.QuBitsCount;
 
@@ -186,6 +201,7 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
                 return;
             }
 
+            this.quanticsStudioModel.HideMinibarsComputerState = true;
             var computer = this.quanticsStudioModel.QuComputer;
             int qubitCount = computer.QuBitsCount;
 
@@ -379,7 +395,7 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
         // All stages may need an update 
         foreach (var stage in this.Stages)
         {
-            this.quanticsStudioModel.HideMinibars = hideMinibars;
+            this.quanticsStudioModel.HideMinibarsUserOption = hideMinibars;
             stage.UpdateUiMinibars();
         }
 

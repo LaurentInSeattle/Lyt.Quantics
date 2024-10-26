@@ -4,6 +4,10 @@ using static HeaderedContentViewModel;
 
 public sealed class LoadViewModel : Bindable<LoadView>
 {
+    private readonly LoadBuiltInViewModel loadBuiltInViewModel;
+
+    private readonly LoadDocumentsViewModel loadDocumentsViewModel;
+
     public LoadViewModel() 
     {
         this.Blank =
@@ -13,21 +17,25 @@ public sealed class LoadViewModel : Bindable<LoadView>
         this.BuiltIn =
             CreateContent<LoadBuiltInViewModel, LoadBuiltInView, LoadBuiltInToolbarViewModel, LoadBuiltInToolbarView>(
                 "Ready to Use Built-in Projects", canCollapse: false);
+        this.loadBuiltInViewModel = this.BuiltIn.ViewModel<LoadBuiltInViewModel>();
 
         this.Documents =
             CreateContent<LoadDocumentsViewModel, LoadDocumentsView, LoadDocumentsToolbarViewModel, LoadDocumentsToolbarView>(
                 "Your Saved Projects", canCollapse: true, CollapseStyle.Right, createCollapsed: true);
+        this.loadDocumentsViewModel = this.Documents.ViewModel<LoadDocumentsViewModel>();
     }
 
     public override void Activate(object? activationParameters)
     {
         base.Activate(activationParameters);
+        this.loadBuiltInViewModel.Activate(activationParameters);
+        this.loadDocumentsViewModel.Activate(activationParameters);
         this.Messenger.Publish(new ShowTitleBarMessage(Show: false));
     }
 
-    public Control Blank { get => this.Get<Control>()!; set => this.Set(value); }
+    public HeaderedContentView Blank { get => this.Get<HeaderedContentView>()!; set => this.Set(value); }
 
-    public Control BuiltIn { get => this.Get<Control>()!; set => this.Set(value); }
+    public HeaderedContentView BuiltIn { get => this.Get<HeaderedContentView>()!; set => this.Set(value); }
 
-    public Control Documents { get => this.Get<Control>()!; set => this.Set(value); }
+    public HeaderedContentView Documents { get => this.Get<HeaderedContentView>()!; set => this.Set(value); }
 }

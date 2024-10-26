@@ -1,9 +1,9 @@
-﻿namespace Lyt.Quantics.Studio.Workflow.Load;
+﻿namespace Lyt.Quantics.Studio.Workflow.Load.Toolbars;
 
 //using static Lyt.Quantics.Studio.Messaging.ViewActivationMessage;
 //using static Lyt.Quantics.Studio.Messaging.MessagingExtensions;
 
-public sealed class LoadBuiltInToolbarViewModel : Bindable<LoadBuiltInToolbarView>
+public sealed class LoadDocumentsToolbarViewModel : Bindable<LoadDocumentsToolbarView>
 {
     #region Methods invoked by the Framework using reflection 
 #pragma warning disable IDE0051 // Remove unused private members

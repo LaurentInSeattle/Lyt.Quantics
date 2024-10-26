@@ -98,6 +98,7 @@ global using Lyt.Quantics.Studio.Shell;
 global using Lyt.Quantics.Studio.Workflow.Intro;
 global using Lyt.Quantics.Studio.Workflow.Load;
 global using Lyt.Quantics.Studio.Workflow.Load.Tiles;
+global using Lyt.Quantics.Studio.Workflow.Load.Toolbars;
 global using Lyt.Quantics.Studio.Workflow.Run;
 global using Lyt.Quantics.Studio.Workflow.Run.Code;
 global using Lyt.Quantics.Studio.Workflow.Run.Computer;
@@ -105,4 +106,3 @@ global using Lyt.Quantics.Studio.Workflow.Run.Gates;
 global using Lyt.Quantics.Studio.Workflow.Run.Gates.Special;
 global using Lyt.Quantics.Studio.Workflow.Run.Amplitudes;
 global using Lyt.Quantics.Studio.Workflow.Save;
-

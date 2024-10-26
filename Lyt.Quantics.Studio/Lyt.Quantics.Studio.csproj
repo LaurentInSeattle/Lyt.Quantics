@@ -52,7 +52,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <AvaloniaXaml Update="Workflow\Load\LoadBlankToolbarView.axaml">
+    <AvaloniaXaml Update="Workflow\Load\Toolbars\LoadBlankToolbarView.axaml">
       <SubType>Designer</SubType>
     </AvaloniaXaml>
     <AvaloniaXaml Update="Workflow\Run\Gates\Special\CsGate.axaml">
@@ -70,13 +70,13 @@
     <Compile Update="Controls\AmplitudeMinibarView.axaml.cs">
       <DependentUpon>AmplitudeMinibarView.axaml</DependentUpon>
     </Compile>
-    <Compile Update="Workflow\Load\LoadDocumentsToolbarView.axaml.cs">
+    <Compile Update="Workflow\Load\Toolbars\LoadDocumentsToolbarView.axaml.cs">
       <DependentUpon>LoadDocumentsToolbarView.axaml</DependentUpon>
     </Compile>
-    <Compile Update="Workflow\Load\LoadBuiltInToolbarView.axaml.cs">
+    <Compile Update="Workflow\Load\Toolbars\LoadBuiltInToolbarView.axaml.cs">
       <DependentUpon>LoadBuiltInToolbarView.axaml</DependentUpon>
     </Compile>
-    <Compile Update="Workflow\Load\LoadBlankToolbarView.axaml.cs">
+    <Compile Update="Workflow\Load\Toolbars\LoadBlankToolbarView.axaml.cs">
       <SubType>Code</SubType>
       <DependentUpon>LoadBlankToolbarView.axaml</DependentUpon>
     </Compile>

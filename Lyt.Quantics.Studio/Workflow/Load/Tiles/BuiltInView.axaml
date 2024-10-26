@@ -52,6 +52,7 @@
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
                 TextAlignment="Left"
                 Text="{Binding Name}"
+                Foreground="{StaticResource LightAqua_0_120}"
                 FontStyle="Italic"
                 FontSize="18"
 				FontWeight="DemiBold"

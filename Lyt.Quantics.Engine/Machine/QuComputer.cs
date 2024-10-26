@@ -350,7 +350,7 @@ public sealed partial class QuComputer
         return true;
     }
 
-    public bool Run(out string message)
+    public bool Run(bool checkExpected, out string message)
     {
         if (this.IsRunning)
         {
@@ -387,7 +387,7 @@ public sealed partial class QuComputer
                 }
             }
 
-            if (!this.AsExpected(out message))
+            if (checkExpected && (!this.AsExpected(out message)))
             {
                 return false;
             }

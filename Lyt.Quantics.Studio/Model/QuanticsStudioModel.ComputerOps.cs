@@ -1,18 +1,20 @@
 ﻿namespace Lyt.Quantics.Studio.Model;
 
-using static ModelStructureUpdateMessage; 
+using static ModelStructureUpdateMessage;
 
 public sealed partial class QuanticsStudioModel : ModelBase
 {
     [JsonIgnore]
-    public bool HideMinibars { get; set; }
+    public bool HideMinibarsComputerState { get; set; }
+
+    [JsonIgnore]
+    public bool HideMinibarsUserOption { get; set; }
 
     [JsonIgnore]
     public QuComputer QuComputer { get; private set; }
 
     public bool CreateBlank(out string message)
     {
-        message = string.Empty;
         try
         {
             // Initialize a 'blank' computer , starting with two (empty) qubits 
@@ -25,7 +27,7 @@ public sealed partial class QuanticsStudioModel : ModelBase
                 {
                     this.Messenger.Publish(MakeModelLoaded());
                     return true;
-                } 
+                }
             }
 
             return false;
@@ -42,7 +44,6 @@ public sealed partial class QuanticsStudioModel : ModelBase
     {
         try
         {
-            Debugger.Break();
             message = string.Empty;
             var builtInComputers = QuanticsStudioModel.BuiltInComputers;
             this.QuComputer = builtInComputers[computerName];
@@ -54,6 +55,41 @@ public sealed partial class QuanticsStudioModel : ModelBase
             }
 
             return false;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            message = "Create New: Exception thrown: " + ex.Message;
+            return false;
+        }
+    }
+
+    public bool CreateFromDocument(string fileName, out string message)
+    {
+        try
+        {
+            var computer = 
+                this.fileManager.Load<QuComputer>(
+                    FileManagerModel.Area.User, FileManagerModel.Kind.Json, fileName);
+            if (computer is null)
+            {
+                throw new Exception("Failed to deserialize");
+            }
+
+            bool isValid = computer.Validate(out message);
+            if (!isValid)
+            {
+                throw new Exception(message);
+            }
+
+            bool isBuilt = computer.Build(out message);
+            if (!isBuilt)
+            {
+                throw new Exception(message);
+            }
+
+            this.Messenger.Publish(MakeModelLoaded());
+            return true;
         }
         catch (Exception ex)
         {
@@ -76,7 +112,7 @@ public sealed partial class QuanticsStudioModel : ModelBase
         }
 
         return status;
-    } 
+    }
 
     public bool RemoveQubit(int count, out string message)
     {
@@ -121,14 +157,14 @@ public sealed partial class QuanticsStudioModel : ModelBase
         }
 
         return status;
-    }    
+    }
 
     public bool AddGate(int stageIndex, int qubitIndex, Gate gate, out string message)
     {
         bool status = this.QuComputer.AddGate(stageIndex, qubitIndex, gate, out message);
         if (status)
         {
-            this.Messenger.Publish(MakeStageChanged(stageIndex)); 
+            this.Messenger.Publish(MakeStageChanged(stageIndex));
         }
         else
         {
@@ -153,7 +189,7 @@ public sealed partial class QuanticsStudioModel : ModelBase
         return status;
     }
 
-    public bool Reset ()
+    public bool Reset()
     {
         bool status = this.QuComputer.Validate(out string message);
         if (status)
@@ -166,7 +202,7 @@ public sealed partial class QuanticsStudioModel : ModelBase
                 {
                     this.Messenger.Publish(new ModelResultsUpdateMessage());
                     return true;
-                } 
+                }
             }
         }
 
@@ -174,29 +210,29 @@ public sealed partial class QuanticsStudioModel : ModelBase
         return false;
     }
 
-    public bool Run ()
+    public bool Run()
     {
-            bool status = this.QuComputer.Validate(out string message);
+        bool status = this.QuComputer.Validate(out string message);
+        if (status)
+        {
+            status = this.QuComputer.Build(out message);
             if (status)
             {
-                status = this.QuComputer.Build(out message);
+                status = this.QuComputer.Prepare(out message);
                 if (status)
                 {
-                    status = this.QuComputer.Prepare(out message);
+                    status = this.QuComputer.Run(checkExpected: false, out message);
                     if (status)
                     {
-                        status = this.QuComputer.Run(out message);
-                        if (status)
-                        {
-                            this.Messenger.Publish(new ModelResultsUpdateMessage());
-                            return true;
-                        }
+                        this.Messenger.Publish(new ModelResultsUpdateMessage());
+                        return true;
                     }
                 }
             }
+        }
 
-            this.PublishError(message);
-            return false;
+        this.PublishError(message);
+        return false;
     }
 
     private void PublishError(string message)

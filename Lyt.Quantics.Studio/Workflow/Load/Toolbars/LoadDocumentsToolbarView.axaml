@@ -1,11 +1,11 @@
 <UserControl 
-	x:Class="Lyt.Quantics.Studio.Workflow.Load.LoadDocumentsToolbarView"
+	x:Class="Lyt.Quantics.Studio.Workflow.Load.Toolbars.LoadDocumentsToolbarView"
 	xmlns="https://github.com/avaloniaui"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="56"
-    xmlns:vm="clr-namespace:Lyt.Quantics.Studio.Workflow.Load"
+    xmlns:vm="clr-namespace:Lyt.Quantics.Studio.Workflow.Load.Toolbars"
     x:DataType="vm:LoadDocumentsToolbarViewModel" 
     xmlns:theme="clr-namespace:Lyt.Quantics.Studio"
 	xmlns:glyphs="clr-namespace:Lyt.Avalonia.Controls.Glyphs;assembly=Lyt.Avalonia.Controls"

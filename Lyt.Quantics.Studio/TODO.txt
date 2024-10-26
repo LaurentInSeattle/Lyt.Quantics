@@ -6,11 +6,10 @@ Ternary Gates with non consecutive qubits
 Document gates, so that there's something to show when hovering 
 Review all circuits for names and descriptions 
 Improve Stepping 
-Expected probabilities error only for register in ground state (all Ket 0) 
 
 TODO: Studio : 
 
-Hide probalities after a structure change 
+Hide ALL probabilities after a structure change (Not fully working on change Stage)
 Ternary gates icons / shapes 
 Add Save actions in Run View 
 Load from file 
