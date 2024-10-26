@@ -5,14 +5,11 @@ using static Lyt.Quantics.Studio.Messaging.MessagingExtensions;
 
 public sealed class BuiltInViewModel : Bindable<BuiltInView>
 {
-    private readonly string pathName; 
-
-    public BuiltInViewModel(string pathName, QuComputer quComputer)
+    public BuiltInViewModel(QuComputer quComputer)
     {
         base.DisablePropertyChangedLogging = true;
         base.DisableAutomaticBindingsLogging = true; 
 
-        this.pathName = pathName;   
         this.Name = quComputer.Name;
         this.Description = quComputer.Description;
     }
@@ -25,7 +22,7 @@ public sealed class BuiltInViewModel : Bindable<BuiltInView>
         => ActivateView(
             ActivatedView.Run, 
             new ComputerActivationParameter(
-                ComputerActivationParameter.Kind.Resource, this.pathName));   
+                ComputerActivationParameter.Kind.Resource, this.Name));   
 
     private void OnDelete(object? _)
     {

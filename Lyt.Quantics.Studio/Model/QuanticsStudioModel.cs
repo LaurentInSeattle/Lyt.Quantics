@@ -139,7 +139,7 @@ public sealed partial class QuanticsStudioModel : ModelBase
                     throw new Exception(message);
                 }
 
-                dictionary.Add(computerName, computer);
+                dictionary.Add(computer.Name, computer);
             }
             catch (Exception ex)
             {

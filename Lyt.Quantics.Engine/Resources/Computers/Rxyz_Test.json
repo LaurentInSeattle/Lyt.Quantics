@@ -1,5 +1,5 @@
 {
-    "Name": "Test Pi/2 Rotation Gates",
+    "Name": "Test Rxyz",
     "Description": "All three followed by X on Q-2",
     "QuBitsCount": 3,
     "InitialStates": [ "Zero", "Zero", "Zero" ],

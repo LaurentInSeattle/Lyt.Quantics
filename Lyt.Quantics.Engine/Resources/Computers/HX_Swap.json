@@ -1,5 +1,5 @@
 {
-    "Name": "Swap",
+    "Name": "HX Swap",
     "Description": "Hadamard + Not followed by Swap",
     "QuBitsCount": 2,
     "InitialStates": [ "Zero", "Zero" ],

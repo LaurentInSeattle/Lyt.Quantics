@@ -15,7 +15,7 @@ public sealed class LoadBuiltInViewModel : Bindable<LoadBuiltInView>
             try
             {
                 var computer = builtInComputers[computerName];
-                builtInViews.Add(new BuiltInViewModel(computerName, computer));
+                builtInViews.Add(new BuiltInViewModel(computer));
             }
             catch (Exception ex)
             {

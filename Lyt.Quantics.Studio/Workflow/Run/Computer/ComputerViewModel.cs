@@ -64,7 +64,7 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
                 break;
 
             case ComputerActivationParameter.Kind.Resource:
-                this.CreateFromResource(computerActivationParameter.Path);
+                this.CreateFromResource(computerActivationParameter.Name);
                 break;
 
             case ComputerActivationParameter.Kind.Document:
@@ -90,9 +90,23 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
         }
     }
 
-    private void CreateFromResource(string path)
+    private void CreateFromResource(string computerName)
     {
-        this.toaster.Show("Not Implemented", "CreateFromResource" + path, 4_000, InformationLevel.Warning);
+        try
+        {
+            if (this.quanticsStudioModel.CreateFromResource(computerName, out string message))
+            {
+                return;
+            }
+
+            throw new InvalidOperationException(message);
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            string uiMessage = "Load Resource: Exception thrown: " + ex.Message;
+            this.toaster.Show("Load Resource", uiMessage, 4_000, InformationLevel.Error);
+        }
     }
 
     private void CreateFromDocument(string path)
@@ -290,10 +304,9 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
                     stageViewModel.Update();
                 }
 
-                this.NeedsToLoadModel = false;
+                this.AddEmptyStageOnUi();
 
-                //this.AddEmptyStageOnUi();
-                //this.PackStagesOnUi();
+                this.NeedsToLoadModel = false;
             }, DispatcherPriority.ApplicationIdle);
     }
 

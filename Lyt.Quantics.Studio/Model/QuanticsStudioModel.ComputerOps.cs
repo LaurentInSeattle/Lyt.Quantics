@@ -38,6 +38,31 @@ public sealed partial class QuanticsStudioModel : ModelBase
         }
     }
 
+    public bool CreateFromResource(string computerName, out string message)
+    {
+        try
+        {
+            Debugger.Break();
+            message = string.Empty;
+            var builtInComputers = QuanticsStudioModel.BuiltInComputers;
+            this.QuComputer = builtInComputers[computerName];
+            bool status = this.QuComputer.Validate(out message);
+            if (status)
+            {
+                this.Messenger.Publish(MakeModelLoaded());
+                return true;
+            }
+
+            return false;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            message = "Create New: Exception thrown: " + ex.Message;
+            return false;
+        }
+    }
+
     public bool AddQubit(int count, out string message)
     {
         bool status = this.QuComputer.AddQubit(count, out message);
