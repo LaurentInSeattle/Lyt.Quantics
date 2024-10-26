@@ -88,22 +88,6 @@
                 GlyphAngle="0"
                 Command="{Binding OpenCommand}"
                 />
-			<glyphs:GlyphButton
-                x:Name="deleteButton"
-				IsVisible="False"
-                Grid.Column="4" Grid.Row="1" Grid.RowSpan="1"
-                Style="{StaticResource ToolbarIconButton}"
-                Layout="IconOnly"
-                Behaviour="Tap"
-                HorizontalAlignment="Center" VerticalAlignment="Center"
-                Width="32" Height="32"
-                Margin="0"
-                GlyphSource="delete"
-                ButtonBackground="BorderlessRectangle"
-                GlyphStrokeThickness="0"
-                GlyphAngle="0"
-                Command="{Binding DeleteCommand}"
-                />
 		</Grid>
 	</Border>
 </UserControl>

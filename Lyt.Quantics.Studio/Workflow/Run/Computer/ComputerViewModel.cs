@@ -297,16 +297,19 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
         int qubitCount = computer.QuBitsCount;
         int stageCount = computer.Stages.Count;
 
-        this.Qubits = [];
-        this.Stages = [];
+        // Info fields
+        this.Name = computer.Name;
+        this.Description = computer.Description;
 
         // Create QuBits UI 'swim lanes'
+        this.Qubits = [];
         for (int qubitIndex = 0; qubitIndex < qubitCount; qubitIndex++)
         {
             this.Qubits.Add(new QubitViewModel(qubitIndex));
         }
 
         // Create Stage UI 
+        this.Stages = [];
         for (int stageIndex = 0; stageIndex < stageCount; stageIndex++)
         {
             var stageViewModel = new StageViewModel(stageIndex, this.quanticsStudioModel);
@@ -552,6 +555,12 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
         gateViewModel.Remove();
     }
 
+    public bool NeedsToLoadModel
+    {
+        get => this.needsToLoadModel;
+        set => this.needsToLoadModel = value;
+    }
+
     public ObservableCollection<QubitViewModel> Qubits
     {
         get => this.Get<ObservableCollection<QubitViewModel>>()!;
@@ -564,9 +573,7 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
         set => this.Set(value);
     }
 
-    public bool NeedsToLoadModel
-    {
-        get => this.needsToLoadModel;
-        set => this.needsToLoadModel = value;
-    }
+    public string Name { get => this.Get<string>()!; set => this.Set(value); }
+
+    public string Description { get => this.Get<string>()!; set => this.Set(value); }
 }

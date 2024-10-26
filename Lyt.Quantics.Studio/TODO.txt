@@ -12,9 +12,7 @@ TODO: Studio :
 Hide ALL probabilities after a structure change (Not fully working on change Stage)
 Ternary gates icons / shapes 
 Add Save actions in Run View 
-Load from file 
 Save to file
-Name and description of 'computer' in bottom of view 
 Move a gate using Drag/drop
 "Frameworkization" of drag/drop
 Nicer app icon 

@@ -15,18 +15,13 @@
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*" />
-			<RowDefinition Height="10" />
+			<RowDefinition Height="30" />
 		</Grid.RowDefinitions>
 		<!-- Panel should be on top -->
 		<Panel
 			x:Name="ToasterHost"
 			Background="Transparent"
 			Grid.RowSpan="2"
-			/>
-		<Rectangle
-			Grid.Row="1"
-			Fill="#20202040"
-			VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
 			/>
 		<ItemsControl
 			Grid.Row="0"
@@ -62,5 +57,36 @@
 				</DataTemplate>
 			</ItemsControl.ItemTemplate>
 		</ItemsControl>
+		<Rectangle
+			Grid.Row="1"
+			Fill="#80202040"
+			VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+			/>
+		<StackPanel
+			Grid.Row="1"
+			Orientation="Horizontal"
+			>
+			<TextBlock
+                VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                TextAlignment="Left"
+                Text="{Binding Name}"
+                Foreground="{StaticResource LightAqua_0_120}"
+                FontStyle="Italic"
+                FontSize="18"
+				FontWeight="DemiBold"
+                Margin="12 0 12 0"
+                IsHitTestVisible="False"
+                />
+			<TextBlock
+                Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1"
+                VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                TextAlignment="Left"
+                Text="{Binding Description}"
+                Foreground="{StaticResource LightAqua_0_080}"
+                FontSize="16"
+                Margin="12 0 0 0"
+                IsHitTestVisible="False"
+                />
+		</StackPanel>
 	</Grid>
 </UserControl>
