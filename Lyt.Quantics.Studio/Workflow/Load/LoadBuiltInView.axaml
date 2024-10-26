@@ -33,7 +33,7 @@
 				</ItemsControl.ItemsPanel>
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
-						<tiles:BuiltInView Margin="4"/>
+						<tiles:BuiltInView Margin="4" Height="92"/>
 					</DataTemplate>
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>

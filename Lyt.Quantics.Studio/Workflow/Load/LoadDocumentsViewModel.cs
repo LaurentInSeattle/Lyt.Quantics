@@ -9,13 +9,12 @@ public sealed class LoadDocumentsViewModel : Bindable<LoadDocumentsView>
     protected override void OnViewLoaded()
     {
         base.OnViewLoaded();
-        this.DocumentViews = documentViews;
+        this.DocumentViews = new (documentViews);
     }
 
     public override void Activate(object? activationParameters)
     {
         base.Activate(activationParameters);
-
         try
         {
             this.documentViews.Clear();
@@ -43,7 +42,7 @@ public sealed class LoadDocumentsViewModel : Bindable<LoadDocumentsView>
                         throw new Exception(message);
                     }
 
-                    var documentView = new DocumentViewModel();
+                    var documentView = new DocumentViewModel(computer);
                     documentViews.Add(documentView);
                 }
                 catch (Exception ex)
@@ -59,11 +58,11 @@ public sealed class LoadDocumentsViewModel : Bindable<LoadDocumentsView>
             Debug.WriteLine(ex);
             this.Logger.Warning("One or more files failed to load \n" + ex.ToString());
         }
-
     }
 
-    public List<DocumentViewModel> DocumentViews
+    public ObservableCollection<DocumentViewModel> DocumentViews
     {
-        get => this.Get<List<DocumentViewModel>>()!; set => this.Set(value);    
+        get => this.Get<ObservableCollection<DocumentViewModel>>()!; 
+        set => this.Set(value);    
     }
 }

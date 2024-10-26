@@ -59,21 +59,18 @@ public sealed partial class QuanticsStudioModel : ModelBase
         catch (Exception ex)
         {
             Debug.WriteLine(ex);
-            message = "Create New: Exception thrown: " + ex.Message;
+            message = "Create From Resource: Exception thrown: \n" + ex.Message;
             return false;
         }
     }
 
-    public bool CreateFromDocument(string fileName, out string message)
+    public bool CreateFromDocument(QuComputer? computer, out string message)
     {
         try
         {
-            var computer = 
-                this.fileManager.Load<QuComputer>(
-                    FileManagerModel.Area.User, FileManagerModel.Kind.Json, fileName);
             if (computer is null)
             {
-                throw new Exception("Failed to deserialize");
+                throw new Exception("Failed to provide a QuComputer object");
             }
 
             bool isValid = computer.Validate(out message);
@@ -88,13 +85,14 @@ public sealed partial class QuanticsStudioModel : ModelBase
                 throw new Exception(message);
             }
 
+            this.QuComputer = computer; 
             this.Messenger.Publish(MakeModelLoaded());
             return true;
         }
         catch (Exception ex)
         {
             Debug.WriteLine(ex);
-            message = "Create New: Exception thrown: " + ex.Message;
+            message = "Create from Document: Exception thrown: " + ex.Message;
             return false;
         }
     }

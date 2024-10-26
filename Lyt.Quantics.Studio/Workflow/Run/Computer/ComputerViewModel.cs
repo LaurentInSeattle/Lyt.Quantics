@@ -68,7 +68,10 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
                 break;
 
             case ComputerActivationParameter.Kind.Document:
-                this.CreateFromDocument(computerActivationParameter.Path);
+                if (computerActivationParameter.QuComputer is not null)
+                {
+                    this.CreateFromDocument(computerActivationParameter.QuComputer);
+                } 
                 break;
         }
     }
@@ -109,11 +112,11 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
         }
     }
 
-    private void CreateFromDocument(string fileName)
+    private void CreateFromDocument(QuComputer quComputer)
     {
         try
         {
-            if (this.quanticsStudioModel.CreateFromDocument(fileName, out string message))
+            if (this.quanticsStudioModel.CreateFromDocument(quComputer, out string message))
             {
                 return;
             }

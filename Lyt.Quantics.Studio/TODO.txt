@@ -14,8 +14,9 @@ Ternary gates icons / shapes
 Add Save actions in Run View 
 Load from file 
 Save to file
-Name of 'computer' in title 
+Name and description of 'computer' in bottom of view 
 Move a gate using Drag/drop
 "Frameworkization" of drag/drop
 Nicer app icon 
 Implement Stepping 
+Show amplitudes per stage (slider)
