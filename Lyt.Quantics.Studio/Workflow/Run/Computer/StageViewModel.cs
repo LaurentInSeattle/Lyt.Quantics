@@ -17,7 +17,6 @@ public sealed class StageViewModel : Bindable<StageView>
         this.toaster = App.GetRequiredService<IToaster>();
     }
 
-
     public bool IsSelected { get; private set; }
 
     public void Update()
@@ -82,7 +81,7 @@ public sealed class StageViewModel : Bindable<StageView>
         this.AddGateAt(qubitIndex, gateViewModel.Gate);
     }
 
-    private void AddGateAt(int qubitIndex, Gate gate)
+    public void AddGateAt(int qubitIndex, Gate gate)
     {
         if (!this.quanticsStudioModel.AddGate(this.stageIndex, qubitIndex, gate, out string message))
         {

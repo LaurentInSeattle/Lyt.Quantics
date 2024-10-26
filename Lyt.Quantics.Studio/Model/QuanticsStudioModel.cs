@@ -27,7 +27,7 @@ public sealed partial class QuanticsStudioModel : ModelBase
         this.fileManager = fileManager;
         this.ShouldAutoSave = true;
 
-        // Create a 'blank' computer at initialization time, and two qubits to it 
+        // Create a 'blank' computer at initialization time, and nothing in it 
         this.QuComputer = new("Untitled", "New quantum computer project.");
     }
 
@@ -45,9 +45,6 @@ public sealed partial class QuanticsStudioModel : ModelBase
     {
         try
         {
-            // FORNOW: Create a 'blank' computer at initialization time 
-            this.QuComputer = new("Untitled", "New quantum computer project.");
-
             //if (!this.fileManager.Exists(Area.User, Kind.Json, TemplatesModel.TemplatesModelFilename))
             //{
             //    this.fileManager.Save(Area.User, Kind.Json, TemplatesModel.TemplatesModelFilename, TemplatesModel.DefaultTemplate);

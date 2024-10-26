@@ -4,22 +4,25 @@ using static HeaderedContentViewModel;
 
 public sealed class LoadViewModel : Bindable<LoadView>
 {
-    public LoadViewModel() { }
-
-    protected override void OnViewLoaded()
+    public LoadViewModel() 
     {
-        this.Messenger.Publish(new ShowTitleBarMessage(Show: false));
         this.Blank =
             CreateContent<LoadBlankViewModel, LoadBlankView, LoadBlankToolbarViewModel, LoadBlankToolbarView>(
                 "Start an Empty Blank New Project", canCollapse: false);
 
         this.BuiltIn =
             CreateContent<LoadBuiltInViewModel, LoadBuiltInView, LoadBuiltInToolbarViewModel, LoadBuiltInToolbarView>(
-                "Ready to Use Built-in Projects", canCollapse: false );
+                "Ready to Use Built-in Projects", canCollapse: false);
 
         this.Documents =
             CreateContent<LoadDocumentsViewModel, LoadDocumentsView, LoadDocumentsToolbarViewModel, LoadDocumentsToolbarView>(
                 "Your Saved Projects", canCollapse: true, CollapseStyle.Right, createCollapsed: true);
+    }
+
+    public override void Activate(object? activationParameters)
+    {
+        base.Activate(activationParameters);
+        this.Messenger.Publish(new ShowTitleBarMessage(Show: false));
     }
 
     public Control Blank { get => this.Get<Control>()!; set => this.Set(value); }

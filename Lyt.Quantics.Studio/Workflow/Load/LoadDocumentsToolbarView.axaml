@@ -12,7 +12,7 @@
 	xmlns:toggle="clr-namespace:Lyt.Avalonia.Controls.Toggle;assembly=Lyt.Avalonia.Controls"
     >
     <Grid
-        Height="56" 
+        Height="56" MinWidth="40"
         >
 		<Grid.ColumnDefinitions>
 			<!-- ????  -->

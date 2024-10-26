@@ -10,6 +10,34 @@ public sealed partial class QuanticsStudioModel : ModelBase
     [JsonIgnore]
     public QuComputer QuComputer { get; private set; }
 
+    public bool CreateBlank(out string message)
+    {
+        message = string.Empty;
+        try
+        {
+            // Initialize a 'blank' computer , starting with two (empty) qubits 
+            this.QuComputer = new("Untitled", "New quantum computer project.");
+            bool status = this.QuComputer.AddQubit(0, out message);
+            if (status)
+            {
+                status = this.QuComputer.AddQubit(1, out message);
+                if (status)
+                {
+                    this.Messenger.Publish(MakeModelLoaded());
+                    return true;
+                } 
+            }
+
+            return false;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            message = "Create New: Exception thrown: " + ex.Message;
+            return false;
+        }
+    }
+
     public bool AddQubit(int count, out string message)
     {
         bool status = this.QuComputer.AddQubit(count, out message);

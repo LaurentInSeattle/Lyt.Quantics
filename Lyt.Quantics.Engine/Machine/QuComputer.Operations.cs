@@ -2,6 +2,30 @@
 
 public sealed partial class QuComputer
 {
+    public bool CreateNew (out string message)
+    {
+        try
+        {
+            this.InitialStates.Add(QuState.Zero);
+            this.QuBitsCount = this.InitialStates.Count;
+            if (this.Stages.Count == 0)
+            {
+                QuStage quStage = new();
+                this.Stages.Add(quStage);
+            }
+
+            // Stages: nothing to do (for now?)  
+            this.IsValid = false;
+            return this.Validate(out message);
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            message = "Add Qubit: Exception thrown: " + ex.Message;
+            return false;
+        }
+    }
+
     public bool AddQubit(int count, out string message)
     {
         try

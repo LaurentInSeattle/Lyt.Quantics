@@ -9,6 +9,9 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
     private readonly QuanticsStudioModel quanticsStudioModel;
     private readonly IToaster toaster;
 
+    private bool isLoaded;
+    private bool needsToLoadModel;
+
     public ComputerViewModel()
     {
         // Do not use Injection directly as this is loaded programmatically by the RunView 
@@ -38,6 +41,12 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
                     control.HorizontalAlignment = HorizontalAlignment.Right;
                 }
             }, DispatcherPriority.ApplicationIdle);
+
+        this.isLoaded = true;
+        if (this.NeedsToLoadModel)
+        {
+            this.InitializeModelOnUi();
+        }
     }
 
     public override void Activate(object? parameter)
@@ -66,9 +75,19 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
 
     private void CreateBlank()
     {
-        // Initialize, starting with two (empty) qubits 
-        _ = this.quanticsStudioModel.AddQubit(0, out string _);
-        _ = this.quanticsStudioModel.AddQubit(1, out string _);
+        try
+        {
+            if (this.quanticsStudioModel.CreateBlank(out string message))
+            {
+                return;
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            string uiMessage = "Reset: Exception thrown: " + ex.Message;
+            this.toaster.Show("Unexpected Error", uiMessage, 4_000, InformationLevel.Error);
+        }
     }
 
     private void CreateFromResource(string path)
@@ -147,6 +166,12 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
     {
         try
         {
+            if (message.ModelLoaded)
+            {
+                Dispatch.OnUiThread(() => this.InitializeModelOnUi(), DispatcherPriority.ApplicationIdle);
+                return;
+            }
+
             var computer = this.quanticsStudioModel.QuComputer;
             int qubitCount = computer.QuBitsCount;
 
@@ -225,6 +250,51 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
             string uiMessage = "Model Structure Update: Exception thrown: " + ex.Message;
             this.toaster.Show("Unexpected Error", uiMessage, 4_000, InformationLevel.Error);
         }
+    }
+
+    private void InitializeModelOnUi()
+    {
+        if (!this.isLoaded)
+        {
+            this.NeedsToLoadModel = true;
+            return;
+        }
+
+        var computer = this.quanticsStudioModel.QuComputer;
+        int qubitCount = computer.QuBitsCount;
+        int stageCount = computer.Stages.Count;
+
+        this.Qubits = [];
+        this.Stages = [];
+
+        // Create QuBits UI 'swim lanes'
+        for (int qubitIndex = 0; qubitIndex < qubitCount; qubitIndex++)
+        {
+            this.Qubits.Add(new QubitViewModel(qubitIndex));
+        }
+
+        // Create Stage UI 
+        for (int stageIndex = 0; stageIndex < stageCount; stageIndex++)
+        {
+            var stageViewModel = new StageViewModel(stageIndex, this.quanticsStudioModel);
+            this.Stages.Add(stageViewModel);
+        }
+
+        Schedule.OnUiThread(
+            100,
+            () =>
+            {
+                for (int stageIndex = 0; stageIndex < stageCount; stageIndex++)
+                {
+                    var stageViewModel = this.Stages[stageIndex];
+                    stageViewModel.Update();
+                }
+
+                this.NeedsToLoadModel = false;
+
+                //this.AddEmptyStageOnUi();
+                //this.PackStagesOnUi();
+            }, DispatcherPriority.ApplicationIdle);
     }
 
     private void OnQubitChangedMessage(QubitChangedMessage message)
@@ -355,7 +425,7 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
         // TODO 
         try
         {
-            ActivateView(ActivatedView.Load); 
+            ActivateView(ActivatedView.Load);
         }
         catch (Exception ex)
         {
@@ -364,7 +434,6 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
             this.toaster.Show("Unexpected Error", uiMessage, 4_000, InformationLevel.Error);
         }
     }
-
 
     private void UpdateQubit(int index, QuState newState)
     {
@@ -461,5 +530,11 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
     {
         get => this.Get<ObservableCollection<StageViewModel>>()!;
         set => this.Set(value);
+    }
+
+    public bool NeedsToLoadModel
+    {
+        get => this.needsToLoadModel;
+        set => this.needsToLoadModel = value;
     }
 }
