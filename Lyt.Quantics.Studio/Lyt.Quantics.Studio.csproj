@@ -58,6 +58,9 @@
     <AvaloniaXaml Update="Workflow\Run\Gates\Special\CsGate.axaml">
       <SubType>Designer</SubType>
     </AvaloniaXaml>
+    <AvaloniaXaml Update="Workflow\Run\Gates\Special\CCxGate.axaml">
+      <SubType>Designer</SubType>
+    </AvaloniaXaml>
     <AvaloniaXaml Update="Workflow\Run\Gates\Special\SwapGate.axaml">
       <SubType>Designer</SubType>
     </AvaloniaXaml>
@@ -92,9 +95,19 @@
     <Compile Update="Workflow\Run\Gates\Special\ACxGate.axaml.cs">
       <DependentUpon>ACxGate.axaml</DependentUpon>
     </Compile>
+    <Compile Update="Workflow\Run\Gates\Special\CCzGate.axaml.cs">
+      <DependentUpon>CCzGate.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Workflow\Run\Gates\Special\CSwapGate.axaml.cs">
+      <DependentUpon>CSwapGate.axaml</DependentUpon>
+    </Compile>
     <Compile Update="Workflow\Run\Gates\Special\CsGate.axaml.cs">
       <SubType>Code</SubType>
       <DependentUpon>CsGate.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Workflow\Run\Gates\Special\CCxGate.axaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>CCxGate.axaml</DependentUpon>
     </Compile>
     <Compile Update="Workflow\Run\Gates\Special\SwapGate.axaml.cs">
       <SubType>Code</SubType>

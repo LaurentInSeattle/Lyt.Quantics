@@ -122,7 +122,7 @@ public sealed class StageViewModel : Bindable<StageView>
                 ++this.activeGates;
                 int firstIndex = stageOperator.QuBitIndices.Min();
                 var gate = GateFactory.Produce(stageOperator.GateKey);
-                int gateRows = gate.Dimension / 2;
+                int gateRows = MathUtilities.IntegerLog2(gate.Dimension);
                 var gateViewModel =
                     new GateViewModel(
                         gate, isToolbox: false, stageIndex: this.stageIndex, qubitIndex: firstIndex);
@@ -145,7 +145,7 @@ public sealed class StageViewModel : Bindable<StageView>
         try
         {
             this.View.MinibarsGrid.Children.Clear();
-            if (this.quanticsStudioModel.HideMinibarsUserOption || 
+            if (this.quanticsStudioModel.HideMinibarsUserOption ||
                 this.quanticsStudioModel.HideMinibarsComputerState)
             {
                 return;

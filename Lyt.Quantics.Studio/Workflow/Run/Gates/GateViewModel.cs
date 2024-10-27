@@ -33,12 +33,13 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
         };
 
         this.IsBorderVisible = true;
-        this.GateMargin = new Thickness(this.IsToolbox ? 12 : 0);
+        this.GateMargin = new Thickness(this.IsToolbox ? 10 : 0);
         int gateRows = this.Gate.Dimension / 2;
         if (this.IsToolbox ||(gateRows == 1) )
         {
-            this.GateBackground = Brushes.Black; 
-            this.GateHeight = 48;
+            this.GateBackground = Brushes.Black;
+            int gateQubits = MathUtilities.IntegerLog2(this.Gate.Dimension);
+            this.GateHeight = 48 + 16 * (gateQubits-1);
         }
         else
         {
@@ -85,10 +86,13 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
         {
             "ACX" => new ACxGate(),
             "CX" => new CxGate(),
+            "CCX" => new CCxGate(),
             "FCX" => new FCxGate(),
             "CZ" => new CzGate(),
+            "CCZ" => new CCzGate(),
             "CS" => new CsGate(),
             "Swap" => new Special.SwapGate(),
+            "CSwap" => new Special.CSwapGate(),
             /* default */
             _ => null,
         };

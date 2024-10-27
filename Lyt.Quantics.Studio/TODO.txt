@@ -9,8 +9,8 @@ Improve Stepping
 
 TODO: Studio : 
 
+Check qubit count on Drop
 Hide ALL probabilities after a structure change (Not fully working on change Stage)
-Ternary gates icons / shapes 
 Add Save actions in Run View 
 Save to file
 Move a gate using Drag/drop
