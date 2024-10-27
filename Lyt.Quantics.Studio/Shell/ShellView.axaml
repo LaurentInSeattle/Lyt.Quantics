@@ -22,12 +22,24 @@
         Background="Transparent"
         >
 		<Grid.RowDefinitions>
-			<RowDefinition Height="{Binding TitleBarHeight, FallbackValue=32}" MaxHeight="32" />
+			<RowDefinition Height="{Binding TitleBarHeight, FallbackValue=42}" MaxHeight="42" />
 			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
 		<Rectangle
 			Fill="#60000020"
             Grid.RowSpan="999"
+			/>
+		<Rectangle
+			Grid.Row="0"
+			Height="4"
+			VerticalAlignment="Top" HorizontalAlignment="Stretch"
+			Fill="{StaticResource ResourceKey= OrangePeel_2_080}"
+			/>
+		<Rectangle
+			Grid.Row="0"
+			Height="1"
+			VerticalAlignment="Bottom" HorizontalAlignment="Stretch"
+			Fill="#F0302070"
 			/>
 		<Grid
 			IsVisible="{Binding IsTitleBarVisible}"
@@ -38,7 +50,7 @@
 				HorizontalAlignment="Left" VerticalAlignment="Center"
 				Margin="56 2 0 0"
 				FontSize="26" 
-				Foreground="{StaticResource ResourceKey= LightAqua_1_120}"
+				Foreground="{StaticResource ResourceKey= LightAqua_0_100}"
 				TextWrapping="Wrap"
 				/>
 			<TextBlock
@@ -48,7 +60,7 @@
 				Margin="280 12 0 0"
 				FontSize="12"
 				FontStyle="Normal"
-				Foreground="{StaticResource ResourceKey= LightAqua_1_120}"
+				Foreground="{StaticResource ResourceKey= LightAqua_0_100}"
 				TextWrapping="Wrap"
 				/>
 			<TextBlock
@@ -58,7 +70,7 @@
 				Margin="0 8 16 0"
 				FontSize="12"
 				FontStyle="Normal"
-				Foreground="{StaticResource ResourceKey= LightAqua_1_120}"
+				Foreground="{StaticResource ResourceKey= LightAqua_0_100}"
 				TextWrapping="Wrap"
 				/>
 		</Grid>

@@ -1,0 +1,56 @@
+<UserControl 
+	x:Class="Lyt.Quantics.Studio.Workflow.Intro.DoIntroView"
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+    xmlns:vm="clr-namespace:Lyt.Quantics.Studio.Workflow.Intro"
+    x:DataType="vm:DoIntroViewModel" 
+    xmlns:theme="clr-namespace:Lyt.Quantics.Studio"
+	>
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="30" />
+			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="30" />
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="30" />
+			<RowDefinition Height="*" />
+			<RowDefinition Height="*" />
+			<RowDefinition Height="*" />
+			<RowDefinition Height="30" />
+		</Grid.RowDefinitions>
+
+		<TextBlock
+			Grid.Column="1" Grid.Row="1" 
+			Margin="10 0 0 0"
+			Text="Discover, learn and experience Quantum Computing with Quantics Studio."
+			TextWrapping="Wrap"
+			FontSize="34"
+			Foreground="{StaticResource LightAqua_0_100}"
+			VerticalAlignment="Center"
+			/>
+		<TextBlock
+			Grid.Column="1" Grid.Row="2"
+			Margin="40 0 0 0"
+			Text="Load pre-built most canonical quantum circuits. Create and interactively edit your own. Analyse results and probalities. And more..."
+			TextWrapping="Wrap"
+			FontSize="24"
+			Foreground="{StaticResource LightAqua_0_100}"
+			Opacity="0.8"
+			VerticalAlignment="Center"
+			/>
+		<TextBlock
+			Grid.Column="1" Grid.Row="3" 
+			Margin="80 0 0 0"
+			Text="Quantics Studio is provided to you under the terms of the MIT license, implying no warranty of any kind. By using this software, you do accept the terms of the licence. "
+			TextWrapping="Wrap"
+			FontSize="16"
+			Foreground="{StaticResource LightAqua_0_100}"
+			Opacity="0.8"
+			VerticalAlignment="Center"
+			/>
+	</Grid>
+</UserControl>

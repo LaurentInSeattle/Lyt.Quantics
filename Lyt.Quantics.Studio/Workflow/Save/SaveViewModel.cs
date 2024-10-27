@@ -1,6 +1,6 @@
-﻿using static Lyt.Quantics.Studio.Controls.HeaderedContentViewModel;
+﻿namespace Lyt.Quantics.Studio.Workflow.Save;
 
-namespace Lyt.Quantics.Studio.Workflow.Save;
+using static HeaderedContentViewModel;
 
 public sealed class SaveViewModel : Bindable<SaveView>
 {
@@ -23,5 +23,4 @@ public sealed class SaveViewModel : Bindable<SaveView>
     }
 
     public HeaderedContentView DoSave { get => this.Get<HeaderedContentView>()!; set => this.Set(value); }
-
 }

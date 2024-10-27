@@ -31,7 +31,6 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
         Schedule.OnUiThread(
             5_000, () =>
             {
-
                 this.toaster.Dismiss();
                 this.toaster.Host = this.View.ToasterHost;
 
@@ -63,7 +62,11 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
                 // Coming back after save, there should be nothing to do 
                 // TODO: Need to understand why this fixes the issue of deleted display 
                 // Avalonia ? 
-                this.PackStagesOnUi();
+                Schedule.OnUiThread(
+                    100, () =>
+                    {
+                        this.PackStagesOnUi();
+                    }, DispatcherPriority.ApplicationIdle);
                 break;
 
             case ComputerActivationParameter.Kind.New:

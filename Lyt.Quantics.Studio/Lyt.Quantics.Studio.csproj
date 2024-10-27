@@ -52,6 +52,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <AvaloniaXaml Update="Workflow\Intro\DoIntroToolbarView.axaml">
+      <SubType>Designer</SubType>
+    </AvaloniaXaml>
+    <AvaloniaXaml Update="Workflow\Intro\DoIntroView.axaml">
+      <SubType>Designer</SubType>
+    </AvaloniaXaml>
     <AvaloniaXaml Update="Workflow\Load\Toolbars\LoadBlankToolbarView.axaml">
       <SubType>Designer</SubType>
     </AvaloniaXaml>
@@ -72,6 +78,14 @@
   <ItemGroup>
     <Compile Update="Controls\AmplitudeMinibarView.axaml.cs">
       <DependentUpon>AmplitudeMinibarView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Workflow\Intro\DoIntroToolbarView.axaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>DoIntroToolbarView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Workflow\Intro\DoIntroView.axaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>DoIntroView.axaml</DependentUpon>
     </Compile>
     <Compile Update="Workflow\Load\Toolbars\LoadDocumentsToolbarView.axaml.cs">
       <DependentUpon>LoadDocumentsToolbarView.axaml</DependentUpon>

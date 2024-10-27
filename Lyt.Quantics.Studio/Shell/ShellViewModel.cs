@@ -53,7 +53,7 @@ public sealed class ShellViewModel : Bindable<ShellView>
 
     private void OnShowTitleBar(ShowTitleBarMessage message)
     {
-        this.TitleBarHeight = new GridLength(message.Show ? 32.0 : 0.0);
+        this.TitleBarHeight = new GridLength(message.Show ? 42.0 : 0.0);
         this.IsTitleBarVisible = message.Show;
     } 
 
