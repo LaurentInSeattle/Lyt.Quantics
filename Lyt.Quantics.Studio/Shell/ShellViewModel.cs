@@ -100,6 +100,7 @@ public sealed class ShellViewModel : Bindable<ShellView>
                 break;
 
             case ActivatedView.Save:
+                this.Activate<SaveViewModel, SaveView>(isFirstActivation, null);
                 break;
         }
     }

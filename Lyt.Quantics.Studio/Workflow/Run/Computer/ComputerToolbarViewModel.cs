@@ -1,27 +1,25 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
 
 using static ToolbarCommandMessage;
+using static MessagingExtensions; 
 
 public sealed class ComputerToolbarViewModel : Bindable<ComputerToolbarView>
 {
-    private void OnAddQubit(object? _) => this.Publish(ToolbarCommand.AddQubit);
+    private void OnAddQubit(object? _) => Command(ToolbarCommand.AddQubit);
 
-    private void OnRemoveQubit(object? _) => this.Publish(ToolbarCommand.RemoveQubit);
+    private void OnRemoveQubit(object? _) => Command(ToolbarCommand.RemoveQubit);
 
-    private void OnPackStages(object? _) => this.Publish(ToolbarCommand.PackStages);
+    private void OnPackStages(object? _) => Command(ToolbarCommand.PackStages);
 
-    private void OnReset(object? _) => this.Publish(ToolbarCommand.Reset);
+    private void OnReset(object? _) => Command(ToolbarCommand.Reset);
 
-    private void OnStep(object? _) => this.Publish(ToolbarCommand.Step);
+    private void OnStep(object? _) => Command(ToolbarCommand.Step);
 
-    private void OnRun(object? _) => this.Publish(ToolbarCommand.Run);
+    private void OnRun(object? _) => Command(ToolbarCommand.Run);
 
-    private void OnSave(object? _) => this.Publish(ToolbarCommand.Save);
+    private void OnSave(object? _) => Command(ToolbarCommand.Save);
 
-    private void OnClose(object? _) => this.Publish(ToolbarCommand.Close);
-
-    private void Publish(ToolbarCommand command, object? parameter = null)
-        => this.Messenger.Publish(new ToolbarCommandMessage(command, parameter));
+    private void OnClose(object? _) => Command(ToolbarCommand.Close);
 
     public ICommand AddQubitCommand { get => this.Get<ICommand>()!; set => this.Set(value); }
 
@@ -45,7 +43,7 @@ public sealed class ComputerToolbarViewModel : Bindable<ComputerToolbarView>
         set
         {
             this.Set(value);
-            this.Publish(ToolbarCommand.HideProbabilities, value);
+            Command(ToolbarCommand.HideProbabilities, value);
         }
     }
 

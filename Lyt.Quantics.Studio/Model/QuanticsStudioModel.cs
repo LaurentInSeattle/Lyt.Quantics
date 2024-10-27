@@ -1,10 +1,15 @@
 ﻿namespace Lyt.Quantics.Studio.Model;
 
+using Lyt.Quantics.Studio.Workflow.Load.Tiles;
 using static FileManagerModel;
 
 public sealed partial class QuanticsStudioModel : ModelBase
 {
     public const int MaxQubits = 10; // For now ~ 10 could be doable ? 
+
+    public static Dictionary<string, QuComputer> BuiltInComputers { get; private set; } = [];
+
+    public static List<Gate> Gates { get; private set; } = [];
 
     private readonly FileManagerModel fileManager;
 
@@ -27,9 +32,13 @@ public sealed partial class QuanticsStudioModel : ModelBase
         this.fileManager = fileManager;
         this.ShouldAutoSave = true;
 
+        this.Projects = []; 
+
         // Create a 'blank' computer at initialization time, and nothing in it 
         this.QuComputer = new("Untitled", "New quantum computer project.");
     }
+
+    public Dictionary<string, QuComputer> Projects { get; private set; }
 
     public override async Task Initialize() => await this.Load();
 
@@ -55,6 +64,10 @@ public sealed partial class QuanticsStudioModel : ModelBase
 
             //// Copy all properties with attribute [JsonRequired]
             //base.CopyJSonRequiredProperties<TemplatesModel>(model);
+
+            // This needs to complete BEFORE we reach the Load page,
+            // so do NOT include in the "Fire and forget" thread below 
+            this.EnumerateProjects(); 
 
             // Fire and forget 
             Task.Run(() =>
@@ -88,10 +101,6 @@ public sealed partial class QuanticsStudioModel : ModelBase
         return Task.CompletedTask;
     }
 
-    public static Dictionary<string, QuComputer> BuiltInComputers { get; private set; } = [];
-
-    public static List<Gate> Gates { get; private set; } = [];
-
     private static void LoadGates()
     {
         var gateTypes = GateFactory.AvailableProducts;
@@ -104,7 +113,6 @@ public sealed partial class QuanticsStudioModel : ModelBase
 
         Gates = list;
     }
-
 
     private static void LoadBuiltInComputers(ILogger logger)
     {
@@ -151,5 +159,50 @@ public sealed partial class QuanticsStudioModel : ModelBase
         }
 
         BuiltInComputers = dictionary;
+    }
+
+    private void EnumerateProjects ()
+    {
+        try
+        {
+            this.Projects.Clear();
+            var files = this.fileManager.Enumerate(Area.User, Kind.Json);
+            foreach (string file in files)
+            {
+                try
+                {
+                    var computer = this.fileManager.Load<QuComputer>(Area.User, Kind.Json, file);
+                    if (computer is null)
+                    {
+                        throw new Exception("Failed to deserialize");
+                    }
+
+                    bool isValid = computer.Validate(out string message);
+                    if (!isValid)
+                    {
+                        throw new Exception(message);
+                    }
+
+                    bool isBuilt = computer.Build(out message);
+                    if (!isBuilt)
+                    {
+                        throw new Exception(message);
+                    }
+
+                    this.Projects.Add(file, computer);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                    this.Logger.Warning(file + " :  failed to load \n" + ex.ToString());
+                    continue;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            this.Logger.Warning("One or more files failed to load \n" + ex.ToString());
+        }
     }
 }

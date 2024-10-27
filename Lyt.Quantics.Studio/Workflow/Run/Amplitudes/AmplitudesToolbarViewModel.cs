@@ -1,6 +1,7 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Amplitudes;
 
-using static Lyt.Quantics.Studio.Messaging.ToolbarCommandMessage;
+using static ToolbarCommandMessage;
+using static MessagingExtensions;
 
 public sealed class AmplitudesToolbarViewModel : Bindable<AmplitudesToolbarView>
 {
@@ -16,7 +17,7 @@ public sealed class AmplitudesToolbarViewModel : Bindable<AmplitudesToolbarView>
         set
         {
             this.Set(value);
-            this.Publish(ToolbarCommand.ShowAll, value);
+            Command(ToolbarCommand.ShowAll, value);
         }
     }
 
@@ -26,10 +27,7 @@ public sealed class AmplitudesToolbarViewModel : Bindable<AmplitudesToolbarView>
         set
         {
             this.Set(value);
-            this.Publish(ToolbarCommand.ShowByBitOrder, value);
+            Command(ToolbarCommand.ShowByBitOrder, value);
         }
     }
-
-    private void Publish(ToolbarCommand command, object? parameter = null)
-        => this.Messenger.Publish(new ToolbarCommandMessage(command, parameter));
 }

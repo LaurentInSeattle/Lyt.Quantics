@@ -1,5 +1,7 @@
 ﻿namespace Lyt.Quantics.Studio.Messaging;
 
+using static ToolbarCommandMessage;
+
 public static class MessagingExtensions
 {
     private static readonly IMessenger messenger; 
@@ -11,4 +13,9 @@ public static class MessagingExtensions
         ViewActivationMessage.ActivatedView view, object? activationParameter = null)
         => MessagingExtensions.messenger.Publish(
             new ViewActivationMessage(view, activationParameter));
+
+    public static void Command(ToolbarCommand command, object? parameter = null)
+        => MessagingExtensions.messenger.Publish(
+            new ToolbarCommandMessage(command, parameter));
+
 }

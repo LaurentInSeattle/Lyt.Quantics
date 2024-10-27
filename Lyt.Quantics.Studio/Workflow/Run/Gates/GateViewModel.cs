@@ -38,7 +38,7 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
         if (this.IsToolbox ||(gateRows == 1) )
         {
             this.GateBackground = Brushes.Black;
-            int gateQubits = MathUtilities.IntegerLog2(this.Gate.Dimension);
+            int gateQubits = this.Gate.QuBits;
             this.GateHeight = 48 + 16 * (gateQubits-1);
         }
         else

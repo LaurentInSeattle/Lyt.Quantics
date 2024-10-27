@@ -59,6 +59,13 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
         switch (computerActivationParameter.ActivationKind)
         {
             default:
+            case ComputerActivationParameter.Kind.Back:
+                // Coming back after save, there should be nothing to do 
+                // TODO: Need to understand why this fixes the issue of deleted display 
+                // Avalonia ? 
+                this.PackStagesOnUi();
+                break;
+
             case ComputerActivationParameter.Kind.New:
                 this.CreateBlank();
                 break;
@@ -145,7 +152,7 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
             // All Stages need to update the qubits probabilities 
             foreach (var stage in this.Stages)
             {
-                stage.Update();
+                stage.UpdateGatesAndMinibars();
             }
         }
         catch (Exception ex)
@@ -188,7 +195,7 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
         // All stages may need an update 
         foreach (var stage in this.Stages)
         {
-            stage.Update();
+            stage.UpdateGatesAndMinibars();
         }
 
         AddEmptyStageOnUi();
@@ -265,7 +272,13 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
                 if (message.IndexStageChanged < this.Stages.Count)
                 {
                     var stage = this.Stages[message.IndexStageChanged];
-                    stage.Update();
+                    stage.UpdateGatesAndMinibars();
+                }
+
+                // All qubit states need to clear 
+                foreach (var stage in this.Stages)
+                {
+                    stage.UpdateUiMinibars();
                 }
 
                 // Check if we need to create a new UI stage so that we can drop new gates 
@@ -323,7 +336,7 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
                 for (int stageIndex = 0; stageIndex < stageCount; stageIndex++)
                 {
                     var stageViewModel = this.Stages[stageIndex];
-                    stageViewModel.Update();
+                    stageViewModel.UpdateGatesAndMinibars();
                 }
 
                 this.AddEmptyStageOnUi();
@@ -443,9 +456,9 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
 
     private void OnSave()
     {
-        // TODO 
         try
         {
+            ActivateView(ActivatedView.Save);
         }
         catch (Exception ex)
         {
@@ -457,7 +470,6 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
 
     private void OnClose()
     {
-        // TODO 
         try
         {
             ActivateView(ActivatedView.Load);

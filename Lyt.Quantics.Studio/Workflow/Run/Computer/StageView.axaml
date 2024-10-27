@@ -34,7 +34,7 @@
 			Stroke="{StaticResource ResourceKey= LightAqua_1_100}"
 			StrokeThickness="2"
 			StrokeDashArray="2,12"
-			Opacity="0.7"
+			Opacity="0.5"
 			VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
 			/>
 		<TextBlock

@@ -10,5 +10,6 @@ public sealed record class ComputerActivationParameter (
         New, 
         Resource, 
         Document,
+        Back, // From Save
     }
 }

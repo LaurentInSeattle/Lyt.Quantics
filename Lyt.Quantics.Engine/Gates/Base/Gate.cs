@@ -13,6 +13,8 @@ public abstract class Gate
     /// <summary> Matrix of the gate, can be dense or sparse, Math.Net handles that for us. </summary>
     public abstract Matrix<Complex> Matrix { get; }
 
+    public int QuBits => MathUtilities.IntegerLog2(this.Matrix.RowCount);
+
     public int Dimension => this.Matrix.RowCount;
 
     /// <summary> Convenience human readable info.</summary>

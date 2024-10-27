@@ -6,11 +6,14 @@ Ternary Gates with non consecutive qubits
 Document gates, so that there's something to show when hovering 
 Review all circuits for names and descriptions 
 Improve Stepping 
+Include Author and create date 
 
 TODO: Studio : 
 
-Check qubit count on Drop
-Hide ALL probabilities after a structure change (Not fully working on change Stage)
+Clear all qubits to |0> 
+Identify probabilities to known kets: |+> , etc (Doable ???)
+Filters for projects (Recent, etc) 
+Filters for built-in projects  (Unit tests, etc)
 Add Save actions in Run View 
 Save to file
 Move a gate using Drag/drop

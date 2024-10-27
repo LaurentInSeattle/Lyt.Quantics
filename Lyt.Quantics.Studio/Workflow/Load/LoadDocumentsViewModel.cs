@@ -1,15 +1,21 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Load;
 
-using static FileManagerModel; 
-
 public sealed class LoadDocumentsViewModel : Bindable<LoadDocumentsView>
 {
-    private readonly List<DocumentViewModel> documentViews = [];
+    private readonly QuanticsStudioModel quanticsStudioModel;
+    private readonly List<DocumentViewModel> documentViews;
+
+    public LoadDocumentsViewModel()
+    {
+        // Do not use Injection directly as this is loaded programmatically by the RunView 
+        this.quanticsStudioModel = App.GetRequiredService<QuanticsStudioModel>();
+        this.documentViews = [];
+    }
 
     protected override void OnViewLoaded()
     {
         base.OnViewLoaded();
-        this.DocumentViews = new (documentViews);
+        this.DocumentViews = new(documentViews);
     }
 
     public override void Activate(object? activationParameters)
@@ -18,37 +24,17 @@ public sealed class LoadDocumentsViewModel : Bindable<LoadDocumentsView>
         try
         {
             this.documentViews.Clear();
-            var fileManager = App.GetRequiredService<FileManagerModel>();
-            var files = fileManager.Enumerate(Area.User, Kind.Json);
-            foreach (string file in files)
+            foreach (var computer in this.quanticsStudioModel.Projects.Values)
             {
                 try
                 {
-                    var computer = fileManager.Load<QuComputer>(Area.User, Kind.Json, file);
-                    if (computer is null)
-                    {
-                        throw new Exception("Failed to deserialize");
-                    }
-
-                    bool isValid = computer.Validate(out string message);
-                    if (!isValid)
-                    {
-                        throw new Exception(message);
-                    }
-
-                    bool isBuilt = computer.Build(out message);
-                    if (!isBuilt)
-                    {
-                        throw new Exception(message);
-                    }
-
                     var documentView = new DocumentViewModel(computer);
                     documentViews.Add(documentView);
                 }
                 catch (Exception ex)
                 {
                     Debug.WriteLine(ex);
-                    this.Logger.Warning(file + " :  failed to load \n" + ex.ToString());
+                    this.Logger.Warning(computer.Name + " :  failed to load \n" + ex.ToString());
                     continue;
                 }
             }
@@ -62,7 +48,7 @@ public sealed class LoadDocumentsViewModel : Bindable<LoadDocumentsView>
 
     public ObservableCollection<DocumentViewModel> DocumentViews
     {
-        get => this.Get<ObservableCollection<DocumentViewModel>>()!; 
-        set => this.Set(value);    
+        get => this.Get<ObservableCollection<DocumentViewModel>>()!;
+        set => this.Set(value);
     }
 }

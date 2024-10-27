@@ -19,7 +19,7 @@ public sealed class StageViewModel : Bindable<StageView>
 
     public bool IsSelected { get; private set; }
 
-    public void Update()
+    public void UpdateGatesAndMinibars()
     {
         if (this.Control is null)
         {
@@ -83,6 +83,17 @@ public sealed class StageViewModel : Bindable<StageView>
 
     public void AddGateAt(int qubitIndex, Gate gate)
     {
+        var computer = this.quanticsStudioModel.QuComputer;
+        int gateQubits = gate.QuBits;
+        if (gateQubits + qubitIndex > computer.QuBitsCount)
+        {
+            this.toaster.Show(
+                "Can't Drop Here!", 
+                "Not enough qubits to drop the gate here.", 
+                4_000, InformationLevel.Warning);
+            return;
+        }
+
         if (!this.quanticsStudioModel.AddGate(this.stageIndex, qubitIndex, gate, out string message))
         {
             this.toaster.Show("Failed to Add Gate!", message, 4_000, InformationLevel.Error);
@@ -122,7 +133,7 @@ public sealed class StageViewModel : Bindable<StageView>
                 ++this.activeGates;
                 int firstIndex = stageOperator.QuBitIndices.Min();
                 var gate = GateFactory.Produce(stageOperator.GateKey);
-                int gateRows = MathUtilities.IntegerLog2(gate.Dimension);
+                int gateRows = gate.QuBits;
                 var gateViewModel =
                     new GateViewModel(
                         gate, isToolbox: false, stageIndex: this.stageIndex, qubitIndex: firstIndex);
