@@ -13,7 +13,8 @@ public sealed record class ToolbarCommandMessage(
         Reset,
         Step,
         Run,
-        Save, 
+        Save,
+        SaveToFile,
         Close, 
 
         // LAter

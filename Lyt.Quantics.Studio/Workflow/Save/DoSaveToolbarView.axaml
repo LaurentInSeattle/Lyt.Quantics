@@ -45,7 +45,7 @@
 			GlyphSource="dismiss"
 			ButtonBackground="BorderlessRectangle"
 			GlyphStrokeThickness="0"
-			Text="Close"
+			Text="Cancel"
 			Command="{Binding CloseCommand}"
 	    	/>
 	</Grid>

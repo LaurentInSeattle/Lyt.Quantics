@@ -20,6 +20,7 @@
 			<RowDefinition Height="*" />
 			<RowDefinition Height="*" />
 			<RowDefinition Height="*" />
+			<RowDefinition Height="*" />
 			<RowDefinition Height="30" />
 		</Grid.RowDefinitions>
 
@@ -43,7 +44,17 @@
 			VerticalAlignment="Center"
 			/>
 		<TextBlock
-			Grid.Column="1" Grid.Row="3" 
+			Grid.Column="1" Grid.Row="3"
+			Margin="80 0 0 0"
+			Text="Please note: This is a very early preview of Quantics Studio with currently many limitations, such as Qubit count, connectivity and calculation innefficiencies."
+			TextWrapping="Wrap"
+			FontSize="16"
+			Foreground="{StaticResource LightAqua_0_100}"
+			Opacity="0.8"
+			VerticalAlignment="Center"
+			/>
+		<TextBlock
+			Grid.Column="1" Grid.Row="4"
 			Margin="80 0 0 0"
 			Text="Quantics Studio is provided to you under the terms of the MIT license, thus implying no warranty of any kind. By using this software application, you do accept the terms of this licence and agree with its limitations. "
 			TextWrapping="Wrap"

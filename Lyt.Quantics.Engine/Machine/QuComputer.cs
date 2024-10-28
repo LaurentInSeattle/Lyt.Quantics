@@ -23,7 +23,13 @@ public sealed partial class QuComputer
         this.Description = description; 
     }
 
-    #region JSON Properties 
+    #region JSON Properties (serialized)
+
+    public DateTime Created = DateTime.Now;
+
+    public DateTime LastModified = DateTime.Now;
+
+    public bool IsUnitTest = false;
 
     public string Name { get; set; } = DefaultName;
 

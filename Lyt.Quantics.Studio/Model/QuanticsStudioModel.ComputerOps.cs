@@ -1,6 +1,8 @@
 ﻿namespace Lyt.Quantics.Studio.Model;
 
 using static ModelStructureUpdateMessage;
+using static FileManagerModel;
+using System.Xml.Linq;
 
 public sealed partial class QuanticsStudioModel : ModelBase
 {
@@ -85,7 +87,7 @@ public sealed partial class QuanticsStudioModel : ModelBase
                 throw new Exception(message);
             }
 
-            this.QuComputer = computer; 
+            this.QuComputer = computer;
             this.Messenger.Publish(MakeModelLoaded());
             return true;
         }
@@ -235,4 +237,108 @@ public sealed partial class QuanticsStudioModel : ModelBase
 
     private void PublishError(string message)
         => this.Messenger.Publish(new ModelUpdateErrorMessage(message));
+
+    public bool ValidateComputerMetadata(string name, string description, out string message)
+    {
+        if (!QuanticsStudioModel.ValidateStringInput(name, "Computer name", 4, 64, out message))
+        {
+            return false;
+        }
+
+        if (!QuanticsStudioModel.ValidateStringInput(description, "Computer description", 4, 2048, out message))
+        {
+            return false;
+        }
+
+        // Make sure that 'name' can be used as the data file 
+        string pathName = FileManagerModel.ValidPathName(name, out bool changed);
+        if (changed)
+        {
+            Debug.WriteLine("Save Path Adjusted: ");
+        }
+
+        Debug.WriteLine("Save Path: " + pathName);
+
+        // Check for duplicates 
+        if (this.fileManager.Exists(Area.User, Kind.Json, pathName))
+        {
+            message = "There is already a computer file with that name";
+            return false;
+        }
+
+        return true;
+    }
+
+    public bool SaveComputerMetadata(string name, string description, out string message)
+    {
+        if (!this.ValidateComputerMetadata(name, description, out message))
+        {
+            return false;
+        }
+
+        this.QuComputer.Name = name;
+        this.QuComputer.Description = description;
+        this.QuComputer.LastModified = DateTime.Now;
+
+        return true;
+    }
+
+    public string? SaveComputerToFile(out string message)
+    {
+        try
+        {
+            message = string.Empty;
+            string name = this.QuComputer.Name ;
+
+            // Make sure that 'name' can be used as the data file 
+            string pathName = FileManagerModel.ValidPathName(name, out bool changed);
+            if (changed)
+            {
+                Debug.WriteLine("Save Path Adjusted: ");
+            }
+
+            Debug.WriteLine("Save Path: " + pathName);
+
+            // Check for duplicates 
+            if (this.fileManager.Exists(Area.User, Kind.Json, pathName))
+            {
+                message = "There is already a computer file with that name";
+                return null ;
+            }
+
+            this.fileManager.Save<QuComputer>(Area.User, Kind.Json, pathName, this.QuComputer); 
+            return pathName;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            message = "Save Computer To File: Exception thrown: " + ex.Message;
+            return null;
+        }
+    }
+
+    private static bool ValidateStringInput(string input, string label, int min, int max, out string message)
+    {
+        message = string.Empty;
+        input = input.Trim();
+        if (string.IsNullOrEmpty(input))
+        {
+            message = label + " cannot be left empty.";
+            return false;
+        }
+
+        if (input.Length < min)
+        {
+            message = label + " is too short. (Min " + min.ToString() + " chars)";
+            return false;
+        }
+
+        if (input.Length > max)
+        {
+            message = label + " is too long. (Max " + max.ToString() + " chars)";
+            return false;
+        }
+
+        return true;
+    }
 }
