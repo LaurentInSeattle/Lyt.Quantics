@@ -8,9 +8,11 @@
     xmlns:vm="clr-namespace:Lyt.Quantics.Studio.Controls.Histogram"
     x:DataType="vm:HistogramBarViewModel" 
     xmlns:theme="clr-namespace:Lyt.Quantics.Studio"
+	ClipToBounds="False"
 	>
 	<Grid
 		ShowGridLines="False"
+		ClipToBounds="False"
 		>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="8" />
@@ -48,6 +50,8 @@
 			Grid.Row="2" Grid.Column="1" 
 			Margin="0"
 			Text="{Binding Label}"
+			TextWrapping="Wrap"
+			FontSize="{Binding FontSize}"
 			VerticalAlignment="Center" HorizontalAlignment="Center"
 			Foreground="{StaticResource ResourceKey= LightAqua_2_100}"
 			Opacity="1.0"

@@ -33,7 +33,7 @@
 			<RowDefinition Height="1" />
 			<RowDefinition Height="48" />
 			<RowDefinition Height="2" />
-			<RowDefinition Height="30" />
+			<RowDefinition Height="54" />
 			<RowDefinition Height="8" />
 		</Grid.RowDefinitions>
 		<Rectangle
@@ -105,11 +105,13 @@
 			Grid.Row="1" Grid.RowSpan="11" Grid.Column="5" Grid.ColumnSpan="1"
 			Padding="0" Margin="0"
 			Background="#40101040"
+			HorizontalScrollBarVisibility="Auto"
+			VerticalScrollBarVisibility="Disabled"
 			>			
 			<ItemsControl
 				x:Name="BarsItemsControl"
 				ItemsSource="{Binding HistogramBars}"
-				Margin="0" Padding="0"
+				Margin="0 0 0 24" Padding="0"
 				>
 				<ItemsControl.ItemsPanel>
 					<ItemsPanelTemplate>

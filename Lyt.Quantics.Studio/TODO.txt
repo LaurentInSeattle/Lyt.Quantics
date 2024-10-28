@@ -6,24 +6,24 @@ Ternary Gates with non consecutive qubits
 Document gates, so that there's something to show when hovering 
 Review all circuits for names and descriptions 
 Improve Stepping 
-Include Author and create date 
+Include Author in computer metadata
 
 TODO: Studio : 
 
-Clear all qubits to |0> 
-Identify probabilities to known kets: |+> , etc (Doable ???)
-Filters for projects (Recent, etc) 
-Filters for built-in projects  (Unit tests, etc)
-Add Save actions in Run View 
-Save to file
+Dont rebuilt the computer when only changing qubits initial values
+Spinner for 9 or 10 qubits 
+Toolbar: Clear all qubits to |0> 
+Toolbar: Filters for projects (Recent, etc) 
+Toolbar: Filters for built-in projects  (Unit tests, etc)
 Move a gate using Drag/drop
 "Frameworkization" of drag/drop
 Nicer app icon 
+Measure icon 
 Implement Stepping 
-Show amplitudes per stage (slider)
-Amplitude QuBit label truncated at 6 quBits or more
-Scroll amplitudes at 6 quBits or more
-Scroll computer view at 16+ stages
-Introduce one more level for amplitudes
-Warning for slow computations at 9 or 10 qubits
-Smaller width of minibars
+Toolbar: Show amplitudes per stage (slider)
+Introduce one more lower level for amplitudes
+Warning for slow computations at 9 and 10 qubits
+Monospaced font for labels in the Amplitudes view
+Warning for unsaved changes ? Run the save panel ? LOng Press ?
+Clone before editing a built-in 
+

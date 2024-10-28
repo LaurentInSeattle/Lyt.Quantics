@@ -16,7 +16,7 @@
 		x:Name="MainGrid"
 		IsVisible="{Binding Visible}"
 		VerticalAlignment="Center" HorizontalAlignment="Center"
-		Width="10" Height="48"
+		Width="8" Height="48"
 		ShowGridLines="False"
 		>
 		<Rectangle
