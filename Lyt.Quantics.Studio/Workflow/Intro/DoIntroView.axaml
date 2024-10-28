@@ -35,7 +35,7 @@
 		<TextBlock
 			Grid.Column="1" Grid.Row="2"
 			Margin="40 0 0 0"
-			Text="Load pre-built most canonical quantum circuits. Create and interactively edit your own. Analyse results and probalities. And more..."
+			Text="Load and study pre-built most canonical quantum circuits. Create and interactively edit your own. Analyse results and probabilities. And more..."
 			TextWrapping="Wrap"
 			FontSize="24"
 			Foreground="{StaticResource LightAqua_0_100}"
@@ -45,7 +45,7 @@
 		<TextBlock
 			Grid.Column="1" Grid.Row="3" 
 			Margin="80 0 0 0"
-			Text="Quantics Studio is provided to you under the terms of the MIT license, implying no warranty of any kind. By using this software, you do accept the terms of the licence. "
+			Text="Quantics Studio is provided to you under the terms of the MIT license, thus implying no warranty of any kind. By using this software application, you do accept the terms of this licence and agree with its limitations. "
 			TextWrapping="Wrap"
 			FontSize="16"
 			Foreground="{StaticResource LightAqua_0_100}"

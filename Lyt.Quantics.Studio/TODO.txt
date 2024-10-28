@@ -21,3 +21,9 @@ Move a gate using Drag/drop
 Nicer app icon 
 Implement Stepping 
 Show amplitudes per stage (slider)
+Amplitude QuBit label truncated at 6 quBits or more
+Scroll amplitudes at 6 quBits or more
+Scroll computer view at 16+ stages
+Introduce one more level for amplitudes
+Warning for slow computations at 9 or 10 qubits
+Smaller width of minibars
