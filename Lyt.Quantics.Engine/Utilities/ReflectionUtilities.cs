@@ -1,34 +1,39 @@
-﻿namespace Lyt.Quantics.Engine.Utilities; 
+﻿namespace Lyt.Quantics.Engine.Utilities;
 
 public static class ReflectionUtilities
 {
-    public static List<Type> DerivedFrom<TType>  ( ) where TType : class
+    public static List<Type> DerivedFrom<TType>() where TType : class
     {
-        var allTypes = Assembly.GetExecutingAssembly ().GetTypes();
+        var allTypes = Assembly.GetExecutingAssembly().GetTypes();
         var types =
             (from t in allTypes
              where t.IsClass && !t.IsAbstract && t.IsSubclassOf(typeof(TType))
-             select t); 
+             select t);
         return types.ToList();
     }
 
     public static T CreateAndCopyPropertiesFrom<T>(T source) where T : class, new()
     {
-        T clone = new T();
-        var allProperties = source.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
-        List<PropertyInfo> copyProperties = new(allProperties.Length);
-        for (int i = 0; i < allProperties.Length; ++i)
+        T clone = new();
+        var allProperties =
+            source.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
+        foreach (PropertyInfo property in allProperties)
         {
-            var property = allProperties[i];
-            object[] attributes = property.GetCustomAttributes(typeof(JsonRequiredAttribute), true);
-            if (attributes.Length > 0)
+            // Need Both Read and write 
+            if (!(property.CanRead || property.CanWrite))
             {
-                copyProperties.Add(property);
+                continue;
             }
-        }
 
-        foreach (PropertyInfo property in copyProperties)
-        {
+            // Need Value or string 
+            var type = property.PropertyType;
+            bool isString = type == typeof(string);
+            bool isValue = type.IsValueType;
+            if (!(isString || isValue))
+            {
+                continue;
+            }
+
             object? value = property.GetValue(source, null);
             property.SetValue(clone, value, null);
         }

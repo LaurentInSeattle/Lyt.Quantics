@@ -48,7 +48,9 @@ public sealed partial class QuanticsStudioModel : ModelBase
         {
             message = string.Empty;
             var builtInComputers = QuanticsStudioModel.BuiltInComputers;
-            this.QuComputer = builtInComputers[computerName];
+            var sourceComputer = builtInComputers[computerName];
+            var computer = sourceComputer.DeepClone();
+            this.QuComputer = computer;
             bool status = this.QuComputer.Validate(out message);
             if (status)
             {

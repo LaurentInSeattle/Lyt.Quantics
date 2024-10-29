@@ -20,8 +20,7 @@ public sealed class LoadBuiltInViewModel : Bindable<LoadBuiltInView>
         {
             try
             {
-                var sourceComputer = builtInComputers[computerName];
-                var computer = sourceComputer.DeepClone();
+                var computer = builtInComputers[computerName];
                 builtInViews.Add(new BuiltInViewModel(computer));
             }
             catch (Exception ex)
