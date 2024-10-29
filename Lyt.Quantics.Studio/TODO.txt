@@ -25,5 +25,3 @@ Introduce one more lower level for amplitudes
 Warning for slow computations at 9 and 10 qubits
 Monospaced font for labels in the Amplitudes view
 Warning for unsaved changes ? Run the save panel ? LOng Press ?
-Clone before editing a built-in 
-

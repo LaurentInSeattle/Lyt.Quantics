@@ -11,4 +11,28 @@ public static class ReflectionUtilities
              select t); 
         return types.ToList();
     }
+
+    public static T CreateAndCopyPropertiesFrom<T>(T source) where T : class, new()
+    {
+        T clone = new T();
+        var allProperties = source.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
+        List<PropertyInfo> copyProperties = new(allProperties.Length);
+        for (int i = 0; i < allProperties.Length; ++i)
+        {
+            var property = allProperties[i];
+            object[] attributes = property.GetCustomAttributes(typeof(JsonRequiredAttribute), true);
+            if (attributes.Length > 0)
+            {
+                copyProperties.Add(property);
+            }
+        }
+
+        foreach (PropertyInfo property in copyProperties)
+        {
+            object? value = property.GetValue(source, null);
+            property.SetValue(clone, value, null);
+        }
+
+        return clone;
+    }
 }

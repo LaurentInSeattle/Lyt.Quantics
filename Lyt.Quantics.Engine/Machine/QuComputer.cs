@@ -25,11 +25,11 @@ public sealed partial class QuComputer
 
     #region JSON Properties (serialized)
 
-    public DateTime Created = DateTime.Now;
+    public DateTime Created { get; set; } = DateTime.Now;
 
-    public DateTime LastModified = DateTime.Now;
+    public DateTime LastModified { get; set; } = DateTime.Now;
 
-    public bool IsUnitTest = false;
+    public bool IsUnitTest { get; set; } = false;
 
     public string Name { get; set; } = DefaultName;
 
@@ -135,6 +135,22 @@ public sealed partial class QuComputer
     public int StepIndex { get; private set; }
 
     #endregion Runtime Properties not serialized
+
+    public QuComputer DeepClone ()
+    {
+        var clone = ReflectionUtilities.CreateAndCopyPropertiesFrom(this);
+        foreach (var state in this.InitialStates)
+        {
+            clone.InitialStates.Add(state);
+        }
+
+        foreach (var stage in this.Stages)
+        {
+            clone.Stages.Add(stage);
+        }
+
+        return clone;
+    }
 
     public bool Validate(out string message)
     {

@@ -1,14 +1,1 @@
-﻿    // TODO: Core
-    //
-    // Validate Teleportation 
-    // Finish Dense Coding 
-    // Random State ?? 
-    // Need for classical bits ? 
-    // Partial measurement operator and collapsed states ?? 
-
-    // TODO: UI 
-    //
-    // Assign Colors to gates 
-    // Gate Icons (SVG) :
-    // https://commons.wikimedia.org/w/index.php?title=Special:ListFiles&user=Geek3
-
+﻿See TODO in Studio project 
