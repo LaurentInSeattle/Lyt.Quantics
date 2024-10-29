@@ -10,7 +10,7 @@ Include Author in computer metadata
 
 TODO: Studio : 
 
-Dont rebuilt the computer when only changing qubits initial values
+Dont rebuild the computer when only changing qubits initial values
 Spinner for 9 or 10 qubits 
 Toolbar: Clear all qubits to |0> 
 Toolbar: Filters for projects (Recent, etc) 

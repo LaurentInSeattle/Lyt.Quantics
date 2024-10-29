@@ -90,6 +90,13 @@ public sealed partial class QuComputer
             }
 
             this.InitialStates[qubitIndex] = newState;
+            if (this.IsBuilt)
+            {
+                // This 'shortcut' becomes important at 6 qubits and above 
+                message = string.Empty;
+                return true;
+            } 
+
             this.IsValid = false;
             return this.Validate(out message);
 
