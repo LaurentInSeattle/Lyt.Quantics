@@ -11,21 +11,59 @@
 	xmlns:glyphs="clr-namespace:Lyt.Avalonia.Controls.Glyphs;assembly=Lyt.Avalonia.Controls"
 	xmlns:toggle="clr-namespace:Lyt.Avalonia.Controls.Toggle;assembly=Lyt.Avalonia.Controls"
     >
+	<UserControl.Resources>
+		<ControlTheme x:Key="CustomThumb" TargetType="Thumb" >
+			<Setter Property="Background" Value="Aquamarine" />
+		</ControlTheme>
+	</UserControl.Resources>
     <Grid
         Height="56" 
         >
 		<Grid.ColumnDefinitions>
-			<!-- Stage Control (Later)-->
-			<ColumnDefinition Width="72" />
-			<ColumnDefinition Width="72" />
-			<ColumnDefinition Width="72" />
-			<!-- Prob. Toggle -->
-			<ColumnDefinition Width="250" />
-			<ColumnDefinition Width="250" />
+			<!-- Stage Slider -->
+			<ColumnDefinition Width="90" />
+			<ColumnDefinition Width="180" />
 			<!-- Spacer -->
-			<ColumnDefinition Width="84" />
+			<ColumnDefinition Width="12" />
+			<!-- Prob. Toggle -->
+			<ColumnDefinition Width="240" />
+			<ColumnDefinition Width="240" />
+			<!-- Spacer -->
 			<ColumnDefinition Width="72" />
 		</Grid.ColumnDefinitions>
+		<TextBlock
+			Text="{Binding StageRankText}"
+			Grid.Column="0"
+			VerticalAlignment="Center" HorizontalAlignment="Center"
+			FontSize="14"
+			Foreground="{StaticResource ResourceKey= LightAqua_1_100}"
+			Opacity="1.0"
+			Margin="0 -4 0 0"
+			/>
+		<Slider
+			Grid.Column="1" Grid.ColumnSpan="1"
+			Minimum="1" Maximum="{Binding StageCount}"
+			Value="{Binding StageRank}"
+			IsSnapToTickEnabled="True"
+			TickFrequency="1" TickPlacement="BottomRight"
+			SmallChange="1" LargeChange="2"
+			Foreground="{StaticResource LightAqua_1_100}"
+			>
+			<Slider.Styles>
+				<Style Selector="Slider:horizontal /template/ Thumb">
+					<Setter Property="Width" Value="14"/>
+					<Setter Property="Height" Value="14"/>
+					<Setter Property="Template">
+						<ControlTemplate>
+							<Border 
+								Background="{StaticResource LightAqua_1_100}"
+								CornerRadius="7"
+								/>
+						</ControlTemplate>
+					</Setter>
+				</Style>			
+			</Slider.Styles>
+		</Slider>
 		<toggle:ToggleSwitch
 			x:Name="NonZeroSwitch"
 			Grid.Column="3"

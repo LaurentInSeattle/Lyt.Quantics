@@ -27,5 +27,6 @@ public sealed record class ToolbarCommandMessage(
         // Amplitudes toolbar 
         ShowAll, 
         ShowByBitOrder,
+        ShowStage,
     }
 }

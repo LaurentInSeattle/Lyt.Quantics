@@ -5,6 +5,25 @@ using static MessagingExtensions;
 
 public sealed class AmplitudesToolbarViewModel : Bindable<AmplitudesToolbarView>
 {
+    private readonly QuanticsStudioModel quanticsStudioModel;
+
+    private bool isInitializing ;
+
+    public AmplitudesToolbarViewModel()
+    {
+        this.quanticsStudioModel = App.GetRequiredService<QuanticsStudioModel>();
+        this.Messenger.Subscribe<ModelStructureUpdateMessage>(this.OnModelStructureUpdateMessage);
+    }
+
+    private void OnModelStructureUpdateMessage(ModelStructureUpdateMessage message)
+    {
+        this.isInitializing = true; 
+        var computer = this.quanticsStudioModel.QuComputer;
+        this.StageCount = computer.Stages.Count;
+        this.StageRank = computer.Stages.Count;
+        this.isInitializing = false;
+    }
+
     protected override void OnViewLoaded()
     {
         this.ShowAll = true;
@@ -30,4 +49,23 @@ public sealed class AmplitudesToolbarViewModel : Bindable<AmplitudesToolbarView>
             Command(ToolbarCommand.ShowByBitOrder, value);
         }
     }
+
+    public double StageCount { get => this.Get<double>(); set => this.Set(value); }
+
+    public double StageRank 
+    { 
+        get => this.Get<double>();
+        set
+        {
+            this.Set(value);
+            int stageRank = (int)Math.Round(this.StageRank);
+            this.StageRankText = string.Format("Stage {0:D}", stageRank);
+            if (!this.isInitializing)
+            {
+                Command(ToolbarCommand.ShowStage, stageRank);
+            } 
+        }
+    }
+
+    public string StageRankText { get => this.Get<string>()!; set => this.Set(value); }
 }

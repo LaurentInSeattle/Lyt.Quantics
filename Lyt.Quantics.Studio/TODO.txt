@@ -10,7 +10,6 @@ Include Author in computer metadata
 
 TODO: Studio : 
 
-Dont rebuild the computer when only changing qubits initial values
 Spinner for 9 or 10 qubits 
 Toolbar: Clear all qubits to |0> 
 Toolbar: Filters for projects (Recent, etc) 
@@ -20,7 +19,6 @@ Move a gate using Drag/drop
 Nicer app icon 
 Measure icon 
 Implement Stepping 
-Toolbar: Show amplitudes per stage (slider)
 Introduce one more lower level for amplitudes
 Warning for slow computations at 9 and 10 qubits
 Monospaced font for labels in the Amplitudes view

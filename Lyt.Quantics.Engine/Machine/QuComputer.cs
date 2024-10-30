@@ -138,8 +138,6 @@ public sealed partial class QuComputer
 
     public QuComputer DeepClone ()
     {
-        if(Debugger.IsAttached) { Debugger.Break();  }
-
         var clone = ReflectionUtilities.CreateAndCopyPropertiesFrom(this);
         foreach (var state in this.InitialStates)
         {

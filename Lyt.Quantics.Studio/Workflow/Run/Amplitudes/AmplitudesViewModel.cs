@@ -1,7 +1,7 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Amplitudes;
 
-using static Lyt.Avalonia.Controls.Utilities;
-using static Lyt.Quantics.Studio.Messaging.ToolbarCommandMessage;
+using static Utilities;
+using static ToolbarCommandMessage;
 
 public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
 {
@@ -51,7 +51,14 @@ public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
                     break;
             }
         }
-    }
+        else if (message.CommandParameter is int rank)
+        {
+            if (message.Command == ToolbarCommand.ShowStage)
+            {
+                this.UpdateProbabilities(rank);
+            }
+        }
+    } 
 
     private void ShowByBitOrder(bool value)
     {
@@ -102,26 +109,7 @@ public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
     private void OnModelResultsUpdateMessage(ModelResultsUpdateMessage _)
     {
         Debug.WriteLine("Amplitudes: OnModelResultsUpdateMessage");
-
-        // Update probabilities 
-        this.View.AmplitudesGrid.Children.Clear();
-        var computer = this.quanticsStudioModel.QuComputer;
-        if (computer.IsComplete)
-        {
-            QuRegister lastRegister = computer.Stages[^1].StageRegister;
-            List<Tuple<string, double>> bitValuesProbabilities = lastRegister.BitValuesProbabilities();
-            var vm = new HistogramViewModel();
-            this.View.AmplitudesGrid.Children.Add(vm.CreateViewAndBind());
-            this.histogramEntries = new List<HistogramEntry>(bitValuesProbabilities.Count);
-            foreach (var bitValue in bitValuesProbabilities)
-            {
-                var entry = new HistogramEntry(bitValue.Item2, bitValue.Item1);
-                this.histogramEntries.Add(entry);
-            }
-
-            this.histogramViewModel = vm;
-            this.FilterAndUpdate();
-        }
+        this.UpdateProbabilities(this.quanticsStudioModel.QuComputer.Stages.Count);
     }
 
     private void OnModelStructureUpdateMessage(ModelStructureUpdateMessage _)
@@ -149,5 +137,28 @@ public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
         };
 
         this.View.AmplitudesGrid.Children.Add(textBlock);
+    }
+
+    private void UpdateProbabilities (int rank )
+    {
+        // Update probabilities 
+        this.View.AmplitudesGrid.Children.Clear();
+        var computer = this.quanticsStudioModel.QuComputer;
+        if (computer.IsComplete)
+        {
+            QuRegister lastRegister = computer.Stages[rank-1].StageRegister;
+            List<Tuple<string, double>> bitValuesProbabilities = lastRegister.BitValuesProbabilities();
+            var vm = new HistogramViewModel();
+            this.View.AmplitudesGrid.Children.Add(vm.CreateViewAndBind());
+            this.histogramEntries = new List<HistogramEntry>(bitValuesProbabilities.Count);
+            foreach (var bitValue in bitValuesProbabilities)
+            {
+                var entry = new HistogramEntry(bitValue.Item2, bitValue.Item1);
+                this.histogramEntries.Add(entry);
+            }
+
+            this.histogramViewModel = vm;
+            this.FilterAndUpdate();
+        }
     }
 }
