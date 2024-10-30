@@ -2,7 +2,6 @@
 
 using static ModelStructureUpdateMessage;
 using static FileManagerModel;
-using System.Xml.Linq;
 
 public sealed partial class QuanticsStudioModel : ModelBase
 {
@@ -27,6 +26,7 @@ public sealed partial class QuanticsStudioModel : ModelBase
                 status = this.QuComputer.AddQubit(1, out message);
                 if (status)
                 {
+                    this.IsDirty = false;
                     this.Messenger.Publish(MakeModelLoaded());
                     return true;
                 }
@@ -54,6 +54,7 @@ public sealed partial class QuanticsStudioModel : ModelBase
             bool status = this.QuComputer.Validate(out message);
             if (status)
             {
+                this.IsDirty = false;
                 this.Messenger.Publish(MakeModelLoaded());
                 return true;
             }
@@ -90,6 +91,7 @@ public sealed partial class QuanticsStudioModel : ModelBase
             }
 
             this.QuComputer = computer;
+            this.IsDirty = false;
             this.Messenger.Publish(MakeModelLoaded());
             return true;
         }
@@ -106,6 +108,7 @@ public sealed partial class QuanticsStudioModel : ModelBase
         bool status = this.QuComputer.AddQubit(count, out message);
         if (status)
         {
+            this.IsDirty = true;
             this.Messenger.Publish(MakeQubitsChanged());
         }
         else
@@ -121,6 +124,7 @@ public sealed partial class QuanticsStudioModel : ModelBase
         bool status = this.QuComputer.RemoveQubit(count, out message);
         if (status)
         {
+            this.IsDirty = true;
             this.Messenger.Publish(MakeQubitsChanged());
         }
         else
@@ -136,6 +140,7 @@ public sealed partial class QuanticsStudioModel : ModelBase
         bool status = this.QuComputer.PackStages(out message);
         if (status)
         {
+            this.IsDirty = true;
             this.Messenger.Publish(MakeStagePacked());
         }
         else
@@ -166,6 +171,7 @@ public sealed partial class QuanticsStudioModel : ModelBase
         bool status = this.QuComputer.AddGate(stageIndex, qubitIndex, gate, out message);
         if (status)
         {
+            this.IsDirty = true;
             this.Messenger.Publish(MakeStageChanged(stageIndex));
         }
         else
@@ -181,6 +187,7 @@ public sealed partial class QuanticsStudioModel : ModelBase
         bool status = this.QuComputer.RemoveGate(stageIndex, qubitIndex, gate, out message);
         if (status)
         {
+            this.IsDirty = true;
             this.Messenger.Publish(MakeStageChanged(stageIndex));
         }
         else
@@ -281,6 +288,7 @@ public sealed partial class QuanticsStudioModel : ModelBase
         this.QuComputer.Name = name;
         this.QuComputer.Description = description;
         this.QuComputer.LastModified = DateTime.Now;
+        this.IsDirty = true;
 
         return true;
     }
@@ -308,7 +316,8 @@ public sealed partial class QuanticsStudioModel : ModelBase
                 return null ;
             }
 
-            this.fileManager.Save<QuComputer>(Area.User, Kind.Json, pathName, this.QuComputer); 
+            this.fileManager.Save<QuComputer>(Area.User, Kind.Json, pathName, this.QuComputer);
+            this.IsDirty = false;
             return pathName;
         }
         catch (Exception ex)

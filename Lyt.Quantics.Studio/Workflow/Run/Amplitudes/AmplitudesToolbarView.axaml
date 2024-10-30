@@ -88,3 +88,42 @@
 			/>
 	</Grid>
 </UserControl>
+<!--
+<Style Selector="^:pointerover">
+      <Style Selector="^ /template/ Grid#SliderContainer">
+        <Setter Property="Background" Value="{DynamicResource SliderContainerBackgroundDisabled}" />
+      </Style>
+      <Style Selector="^ /template/ RepeatButton#PART_IncreaseButton">
+        <Setter Property="Background" Value="{DynamicResource SliderTrackFillPointerOver}" />
+      </Style>
+
+      <Style Selector="^ /template/ Thumb">
+        <Setter Property="Background" Value="{DynamicResource SliderThumbBackgroundPointerOver}" />
+      </Style>
+
+      <Style Selector="^ /template/ Grid#SliderContainer">
+        <Setter Property="Background" Value="{DynamicResource SliderContainerBackgroundPointerOver}" />
+      </Style>
+
+      <Style Selector="^ /template/ RepeatButton#PART_DecreaseButton">
+        <Setter Property="Background" Value="{DynamicResource SliderTrackValueFillPointerOver}" />
+      </Style>
+</Style>
+
+<Style Selector="^:pressed">
+	<Style Selector="^ /template/ Grid#SliderContainer">
+		<Setter Property="Background" Value="{DynamicResource SliderContainerBackgroundPressed}" />
+	</Style>
+	<Style Selector="^ /template/ RepeatButton#PART_DecreaseButton">
+		<Setter Property="Background" Value="{DynamicResource SliderTrackValueFillPressed}" />
+	</Style>
+	<Style Selector="^ /template/ RepeatButton#PART_IncreaseButton">
+		<Setter Property="Background" Value="{DynamicResource SliderTrackFillPressed}" />
+	</Style>
+
+	<Style Selector="^ /template/ Thumb">
+		<Setter Property="Background" Value="{DynamicResource SliderThumbBackgroundPressed}" />
+	</Style>
+</Style>
+
+-->

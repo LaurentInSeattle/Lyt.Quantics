@@ -14,7 +14,7 @@
 	<Grid
 		x:Name="InnerGrid"
 		Grid.Row="1"
-		ShowGridLines="True"
+		ShowGridLines="False"
 		>
 		<Grid.RowDefinitions>
 			<!-- Fields -->

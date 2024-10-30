@@ -17,12 +17,6 @@
 			<RowDefinition Height="*" />
 			<RowDefinition Height="30" />
 		</Grid.RowDefinitions>
-		<!-- Panel should be on top -->
-		<Panel
-			x:Name="ToasterHost"
-			Background="Transparent"
-			Grid.RowSpan="2"
-			/>
 		<ItemsControl
 			Grid.Row="0"
 			ItemsSource="{Binding Qubits}"
@@ -97,5 +91,12 @@
                 IsHitTestVisible="False"
                 />
 		</StackPanel>
+		<!-- Panel should be on top -->
+		<Panel
+			x:Name="ToasterHost"
+			Background="Transparent"
+			Grid.RowSpan="2"
+			IsHitTestVisible="False"
+			/>
 	</Grid>
 </UserControl>

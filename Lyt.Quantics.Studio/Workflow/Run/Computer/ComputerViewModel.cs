@@ -1,13 +1,14 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
 
-using static Lyt.Quantics.Studio.Messaging.ViewActivationMessage;
-using static Lyt.Quantics.Studio.Messaging.MessagingExtensions;
+using static ViewActivationMessage;
+using static MessagingExtensions;
 using static ToolbarCommandMessage;
 
 public sealed class ComputerViewModel : Bindable<ComputerView>
 {
     private readonly QuanticsStudioModel quanticsStudioModel;
     private readonly IToaster toaster;
+    private readonly IDialogService dialogService;
 
     private bool isLoaded;
     private bool needsToLoadModel;
@@ -17,6 +18,7 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
         // Do not use Injection directly as this is loaded programmatically by the RunView 
         this.quanticsStudioModel = App.GetRequiredService<QuanticsStudioModel>();
         this.toaster = App.GetRequiredService<IToaster>();
+        this.dialogService = App.GetRequiredService<IDialogService>();
         this.Qubits = [];
         this.Stages = [];
         this.Messenger.Subscribe<ToolbarCommandMessage>(this.OnToolbarCommandMessage);
@@ -475,7 +477,24 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
     {
         try
         {
-            ActivateView(ActivatedView.Load);
+            if (this.quanticsStudioModel.IsDirty)
+            {
+                var confirmActionParameters = new ConfirmActionParameters
+                {
+                    Title = "Unsaved Changes!",
+                    Message = "This quantum computer has been modified and your latest changes have not been saved.",
+                    ActionVerb = "Discard Changes",
+                    OnConfirm = this.OnDiscardChangesConfirmed,
+                    InformationLevel = InformationLevel.Warning,
+                };
+
+                this.dialogService.Confirm(this.View.ToasterHost, confirmActionParameters);
+            }
+            else
+            {
+                // No UI confirmation needed if no changes made
+                ActivateView(ActivatedView.Load);
+            }
         }
         catch (Exception ex)
         {
@@ -483,6 +502,19 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
             string uiMessage = "Close: Exception thrown: " + ex.Message;
             this.toaster.Show("Unexpected Error", uiMessage, 4_000, InformationLevel.Error);
         }
+    }
+
+    private void OnDiscardChangesConfirmed(bool confirmed)
+    {
+        if (!confirmed)
+        {
+            // Move to save view 
+            ActivateView(ActivatedView.Save);
+            return;
+        }
+
+        // changes will be lost
+        ActivateView(ActivatedView.Load);
     }
 
     private void UpdateQubit(int index, QuState newState)

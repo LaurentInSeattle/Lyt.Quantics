@@ -1,4 +1,6 @@
-﻿namespace Lyt.Quantics.Studio.Controls;
+﻿using Lyt.Quantics.Studio.Behaviors;
+
+namespace Lyt.Quantics.Studio.Controls;
 
 public sealed class HeaderedContentViewModel : Bindable<HeaderedContentView>
 {
@@ -45,13 +47,18 @@ public sealed class HeaderedContentViewModel : Bindable<HeaderedContentView>
         baseVm.CreateViewAndBind();
         var toolbarVm = new TToolbarViewModel();
         toolbarVm.CreateViewAndBind();
+        var toolbarView = toolbarVm.View;
         var headerVm =
-            new HeaderedContentViewModel(title, canCollapse, baseVm.View, toolbarVm.View, collapseStyle);
+            new HeaderedContentViewModel(title, canCollapse, baseVm.View, toolbarView, collapseStyle);
         headerVm.CreateViewAndBind();
         if (createCollapsed)
         {
             headerVm.Collapse(true);
         }
+
+        // Attach the behavior on the toolbar view model
+        var behavior = new DisabledOnModal();
+        behavior.Attach(toolbarVm); 
 
         return headerVm.View;
     }

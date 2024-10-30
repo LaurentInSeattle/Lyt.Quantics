@@ -38,8 +38,6 @@ public sealed class DoSaveViewModel : Bindable<DoSaveView>
 
     private void TrySave()
     {
-        Debugger.Break();
-
         if (!this.Validate(out string message))
         {
             this.ValidationMessage = message;
