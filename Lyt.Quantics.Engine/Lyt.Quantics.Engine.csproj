@@ -19,6 +19,7 @@
     <None Remove="Resources\Computers\HX_PhaseFlip.json" />
     <None Remove="Resources\Computers\HX_Swap.json" />
     <None Remove="Resources\Computers\OR_Gate.json" />
+    <None Remove="Resources\Computers\QFT 2 Qubits.json" />
     <None Remove="Resources\Computers\RxyzCnot_Test.json" />
     <None Remove="Resources\Computers\Rxyz_Test.json" />
     <None Remove="Resources\Computers\Swap using CNOT.json" />
@@ -29,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Resources\Computers\QFT 2 Qubits.json" />
     <EmbeddedResource Include="Resources\Computers\DenseCoding.json" />
     <EmbeddedResource Include="Resources\Computers\Swap using CNOT.json" />
     <EmbeddedResource Include="Resources\Computers\Double Superposition.json" />

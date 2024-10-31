@@ -1,6 +1,7 @@
 ﻿
 TODO: Engine: 
 
+Parametrized gates (Phase / Rotation / Controlled Gate )
 Binary Gates with non consecutive qubits (Ex: swap 0 and 2)
 Ternary Gates with non consecutive qubits 
 Document gates, so that there's something to show when hovering 
@@ -10,7 +11,7 @@ Improve Stepping
 
 TODO: Studio : 
 
-Delete file
+Multiple successive saves 
 Spinner for 9 or 10 qubits 
 Toolbar: Filters for projects (Recent, etc) 
 Toolbar: Filters for built-in projects  (Unit tests, etc)

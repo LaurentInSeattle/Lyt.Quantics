@@ -1,0 +1,50 @@
+{
+    "IsUnitTest": false,
+    "Name": "QFT 2 Qubits",
+    "Description": "Quantum Fourier Transform on two qubits: transforms the state of the qubits from the computational basis to the Hadamard  basis.",
+    "Comment": "No comments",
+    "QuBitsCount": 2,
+    "InitialStates": [ "Zero", "Zero" ],
+    "Stages": [
+        {
+            "Operators": [
+                {
+                    "QuBitIndices": [ 0 ],
+                    "GateKey": "H"
+                },
+                {
+                    "QuBitIndices": [ 1 ],
+                    "GateKey": "I"
+                }
+            ]
+        },
+        {
+            "Operators": [
+                {
+                    "QuBitIndices": [ 0, 1 ],
+                    "GateKey": "CS"
+                }
+            ]
+        },
+        {
+            "Operators": [
+                {
+                    "QuBitIndices": [ 0 ],
+                    "GateKey": "I"
+                },
+                {
+                    "QuBitIndices": [ 1 ],
+                    "GateKey": "H"
+                }
+            ]
+        },
+        {
+            "Operators": [
+                {
+                    "QuBitIndices": [ 0, 1 ],
+                    "GateKey": "Swap"
+                }
+            ]
+        }
+    ]
+}
