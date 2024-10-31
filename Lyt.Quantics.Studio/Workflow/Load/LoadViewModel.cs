@@ -21,7 +21,7 @@ public sealed class LoadViewModel : Bindable<LoadView>
 
         this.Documents =
             CreateContent<LoadDocumentsViewModel, LoadDocumentsView, LoadDocumentsToolbarViewModel, LoadDocumentsToolbarView>(
-                "Your Saved Projects", canCollapse: true, CollapseStyle.Right, createCollapsed: true);
+                "Your Saved Projects", canCollapse: true, CollapseStyle.Right, createCollapsed: false);
         this.loadDocumentsViewModel = this.Documents.ViewModel<LoadDocumentsViewModel>();
     }
 

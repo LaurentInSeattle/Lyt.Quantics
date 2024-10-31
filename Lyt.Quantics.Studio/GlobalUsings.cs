@@ -90,6 +90,7 @@ global using Lyt.Quantics.Engine.Machine;
 global using Lyt.Quantics.Engine.Utilities;
 
 global using Lyt.Quantics.Studio;
+global using Lyt.Quantics.Studio.Behaviors;
 global using Lyt.Quantics.Studio.Controls;
 global using Lyt.Quantics.Studio.Controls.Histogram;
 global using Lyt.Quantics.Studio.Messaging;

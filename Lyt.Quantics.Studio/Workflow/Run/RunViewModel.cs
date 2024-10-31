@@ -11,16 +11,13 @@ public sealed class RunViewModel : Bindable<RunView>
         this.Gates =
             CreateContent<GatesViewModel, GatesView, GatesToolbarViewModel, GatesToolbarView>(
                 "Gates", canCollapse: true, CollapseStyle.Left);
-
         this.Computer =
             CreateContent<ComputerViewModel, ComputerView, ComputerToolbarViewModel, ComputerToolbarView>(
                 "Quantum Computer", canCollapse: false);
         this.computerViewModel = this.Computer.ViewModel<ComputerViewModel>();
-
         this.Amplitudes =
             CreateContent<AmplitudesViewModel, AmplitudesView, AmplitudesToolbarViewModel, AmplitudesToolbarView>(
                 "Amplitudes Histogram", canCollapse: true, CollapseStyle.Bottom, createCollapsed: true);
-
     }
 
     public override void Activate(object? activationParameters)

@@ -1,5 +1,4 @@
-﻿namespace Lyt.Quantics.Studio.Workflow.Intro; 
+﻿namespace Lyt.Quantics.Studio.Workflow.Intro;
 
-public sealed class DoIntroViewModel : Bindable<DoIntroView>
-{
-}
+// Nothing for now 
+public sealed class DoIntroViewModel : Bindable<DoIntroView> { }

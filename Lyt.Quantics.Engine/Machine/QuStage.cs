@@ -14,20 +14,15 @@ public sealed class QuStage
     [JsonIgnore]
     public Matrix<Complex> StageMatrix { get; private set; } = Matrix<Complex>.Build.Dense(1, 1);
 
-    /// <returns> True is the only operators are Identity. </returns>
-    public bool IsEmpty ()
-    {
-        foreach (var op in this.Operators)
-        {
-            if (op.GateKey != IdentityGate.Key)
-            {
-                return false; 
-            }
-        }
+    [JsonIgnore]
+    public Vector<double> KetProbabilities =>
+        Vector<double>.Build.Dense([.. this.StageRegister.KetProbabilities()]);
 
-        return true;
-    }
+    [JsonIgnore]
+    public Vector<double> QuBitProbabilities =>
+        Vector<double>.Build.Dense([.. this.StageRegister.QuBitProbabilities()]);
 
+    [JsonIgnore]
     public string Operations
     {
         get
@@ -41,6 +36,20 @@ public sealed class QuStage
 
             return sb.ToString();
         }
+    }
+
+    /// <returns> True is the only operators are Identity. </returns>
+    public bool IsEmpty()
+    {
+        foreach (var op in this.Operators)
+        {
+            if (op.GateKey != IdentityGate.Key)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public QuStage DeepClone ()
@@ -229,10 +238,4 @@ public sealed class QuStage
 
         return true;
     }
-
-    public Vector<double> KetProbabilities =>
-        Vector<double>.Build.Dense(this.StageRegister.KetProbabilities().ToArray());
-
-    public Vector<double> QuBitProbabilities =>
-        Vector<double>.Build.Dense(this.StageRegister.QuBitProbabilities().ToArray());
 }

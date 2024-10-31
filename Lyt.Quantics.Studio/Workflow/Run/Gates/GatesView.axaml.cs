@@ -19,7 +19,7 @@ public partial class GatesView : UserControl
     private void OnDrop(object? sender, DragEventArgs dragEventArgs)
     {
         var data = dragEventArgs.Data.Get(GateViewModel.CustomDragAndDropFormat);
-        if ((data is GateViewModel gateViewModel) && (!gateViewModel.IsToolbox)) 
+        if ((data is GateViewModel gateViewModel) && (!gateViewModel.IsToolbox))
         {
             if (this.DataContext is GatesViewModel gatesViewModel)
             {
@@ -34,12 +34,12 @@ public partial class GatesView : UserControl
         if (data.Get(GateViewModel.CustomDragAndDropFormat) is GateViewModel gateViewModel)
         {
             gateViewModel.View.OnParentDragOver(dragEventArgs);
-            dragEventArgs.DragEffects = 
-                gateViewModel.IsToolbox ? DragDropEffects.None: DragDropEffects.Move;
+            dragEventArgs.DragEffects =
+                gateViewModel.IsToolbox ? DragDropEffects.None : DragDropEffects.Move;
         }
         else
         {
             dragEventArgs.DragEffects = DragDropEffects.None;
-        } 
+        }
     }
 }

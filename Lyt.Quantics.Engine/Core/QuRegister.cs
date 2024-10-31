@@ -118,7 +118,7 @@ public sealed class QuRegister
         }
 
         bitValuesProbabilities =
-            (from bvp in bitValuesProbabilities orderby bvp.Item1 select bvp).ToList();
+            [.. (from bvp in bitValuesProbabilities orderby bvp.Item1 select bvp)];
 #if VERBOSE
         Debug.WriteLine("");
         for (int i = 0; i < length; ++i)

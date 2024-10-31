@@ -292,7 +292,7 @@ public sealed partial class QuComputer
             Debug.WriteLine(
                 string.Format(
                     "Initial State Probabilities: {0}",
-                    Vector<double>.Build.Dense(this.InitialRegister.KetProbabilities().ToArray())));
+                    Vector<double>.Build.Dense([.. this.InitialRegister.KetProbabilities()])));
         }
         catch (Exception ex)
         {

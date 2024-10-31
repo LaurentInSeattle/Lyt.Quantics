@@ -2,34 +2,7 @@
 
 public sealed class HistogramViewModel : Bindable<HistogramView>
 {
-    public HistogramViewModel()
-    {
-        this.DisablePropertyChangedLogging = true;
-        //    this.entries =
-        //    [
-        //        new HistogramEntry(0.20, "000"),
-        //        new HistogramEntry(0.15, "001"),
-        //        new HistogramEntry(0.05, "010"),
-        //        new HistogramEntry(0.10, "011"),
-        //        new HistogramEntry(0.20, "100"),
-        //        new HistogramEntry(0.15, "101"),
-        //        new HistogramEntry(0.05, "110"),
-        //        new HistogramEntry(0.10, "111"),
-        //    ];
-
-        //    this.entries =
-        //    [
-        //        new HistogramEntry(0.55, "00"),
-        //        new HistogramEntry(0.15, "01"),
-        //        new HistogramEntry(0.05, "10"),
-        //        new HistogramEntry(0.25, "11"),
-        //    ];
-    }
-
-    //protected override void OnViewLoaded()
-    //{
-    //    this.Update(this.entries);
-    //}
+    public HistogramViewModel() => this.DisablePropertyChangedLogging = true;
 
     public void Update(List<HistogramEntry> entries)
     {

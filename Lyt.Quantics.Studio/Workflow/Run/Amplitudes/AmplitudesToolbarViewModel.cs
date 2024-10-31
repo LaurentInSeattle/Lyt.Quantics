@@ -7,7 +7,7 @@ public sealed class AmplitudesToolbarViewModel : Bindable<AmplitudesToolbarView>
 {
     private readonly QuanticsStudioModel quanticsStudioModel;
 
-    private bool isInitializing ;
+    private bool isInitializing;
 
     public AmplitudesToolbarViewModel()
     {
@@ -17,7 +17,7 @@ public sealed class AmplitudesToolbarViewModel : Bindable<AmplitudesToolbarView>
 
     private void OnModelStructureUpdateMessage(ModelStructureUpdateMessage message)
     {
-        this.isInitializing = true; 
+        this.isInitializing = true;
         var computer = this.quanticsStudioModel.QuComputer;
         this.StageCount = computer.Stages.Count;
         this.StageRank = computer.Stages.Count;
@@ -52,8 +52,8 @@ public sealed class AmplitudesToolbarViewModel : Bindable<AmplitudesToolbarView>
 
     public double StageCount { get => this.Get<double>(); set => this.Set(value); }
 
-    public double StageRank 
-    { 
+    public double StageRank
+    {
         get => this.Get<double>();
         set
         {
@@ -63,7 +63,7 @@ public sealed class AmplitudesToolbarViewModel : Bindable<AmplitudesToolbarView>
             if (!this.isInitializing)
             {
                 Command(ToolbarCommand.ShowStage, stageRank);
-            } 
+            }
         }
     }
 

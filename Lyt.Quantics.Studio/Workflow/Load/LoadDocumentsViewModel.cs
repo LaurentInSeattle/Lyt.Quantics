@@ -117,7 +117,8 @@ public sealed class LoadDocumentsViewModel : Bindable<LoadDocumentsView>
         else
         {
             // TODO: Toast message 
-        } 
+            Debug.WriteLine(message);
+        }
     }
 
     public ObservableCollection<DocumentViewModel> DocumentViews

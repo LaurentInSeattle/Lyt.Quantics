@@ -14,7 +14,6 @@ public sealed class SaveViewModel : Bindable<SaveView>
         this.doSaveViewModel = this.DoSave.ViewModel<DoSaveViewModel>();
     }
 
-
     public override void Activate(object? activationParameters)
     {
         base.Activate(activationParameters);
@@ -22,5 +21,9 @@ public sealed class SaveViewModel : Bindable<SaveView>
         this.Messenger.Publish(new ShowTitleBarMessage(Show: false));
     }
 
-    public HeaderedContentView DoSave { get => this.Get<HeaderedContentView>()!; set => this.Set(value); }
+    public HeaderedContentView DoSave
+    {
+        get => this.Get<HeaderedContentView>()!;
+        set => this.Set(value);
+    }
 }

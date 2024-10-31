@@ -2,6 +2,8 @@
 
 public sealed class AmplitudeMinibarViewModel : Bindable<AmplitudeMinibarView>
 {
+    // TODO: Fix the 48.0 Magic !
+
     public AmplitudeMinibarViewModel(double value, bool visible = true)
     {
         this.DisablePropertyChangedLogging = true;

@@ -2,9 +2,11 @@
 
 public static class RandomUtility
 {
-    private static Random random = new Random(Guid.NewGuid().GetHashCode());
+    private static readonly Random random = new(Guid.NewGuid().GetHashCode());
 
     public static double NextDouble() => random.NextDouble();
+
+    // TODO: Improve 
 
     // USE : https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.randomnumbergenerator?view=net-8.0 
     /*

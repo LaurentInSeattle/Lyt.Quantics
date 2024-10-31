@@ -32,7 +32,7 @@ public class RotationGate : Gate
         double  cosReal = Math.Cos(half);
         Complex cosComplex = cosReal;
         Complex sinComplex = sinReal;
-        Complex iotaSin = new Complex(0 , sinReal) ;
+        Complex iotaSin = new(0 , sinReal) ;
 
         this.matrix = Matrix<Complex>.Build.Sparse(2, 2, Complex.Zero);
 
@@ -59,7 +59,7 @@ public class RotationGate : Gate
                 var complex = new Complex(cosReal, sinReal);
                 var conjugate = new Complex(cosReal, -sinReal);
                 this.matrix.At(0, 0, conjugate);
-                this.matrix.At(1, 1, conjugate);
+                this.matrix.At(1, 1, complex);
                 this.captionKey = "Rz";
                 break;
         }

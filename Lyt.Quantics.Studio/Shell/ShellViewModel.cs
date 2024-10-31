@@ -1,6 +1,6 @@
 ﻿namespace Lyt.Quantics.Studio.Shell;
 
-using static Lyt.Quantics.Studio.Messaging.ToolbarCommandMessage;
+using static ToolbarCommandMessage;
 using static ViewActivationMessage;
 
 public sealed class ShellViewModel : Bindable<ShellView>
@@ -78,16 +78,16 @@ public sealed class ShellViewModel : Bindable<ShellView>
         this.IsTitleBarVisible = message.Show;
     } 
 
-    private void OnModelUpdated(ModelUpdateMessage message)
-    {
-        string msgProp = string.IsNullOrWhiteSpace(message.PropertyName) ? "<unknown>" : message.PropertyName;
-        string msgMethod = string.IsNullOrWhiteSpace(message.MethodName) ? "<unknown>" : message.MethodName;
-        this.Logger.Debug("Model update, property: " + msgProp + " method: " + msgMethod);
+    //private void OnModelUpdated(ModelUpdateMessage message)
+    //{
+    //    string msgProp = string.IsNullOrWhiteSpace(message.PropertyName) ? "<unknown>" : message.PropertyName;
+    //    string msgMethod = string.IsNullOrWhiteSpace(message.MethodName) ? "<unknown>" : message.MethodName;
+    //    this.Logger.Debug("Model update, property: " + msgProp + " method: " + msgMethod);
 
-        //if (message.PropertyName != nameof( < some model property > ))
-        //{
-        //}
-    }
+    //    //if (message.PropertyName != nameof( < some model property > ))
+    //    //{
+    //    //}
+    //}
 
     private void OnViewActivation(ViewActivationMessage message)
         => this.OnViewActivation(message.View, message.ActivationParameter, false);
@@ -96,7 +96,7 @@ public sealed class ShellViewModel : Bindable<ShellView>
     {
         if (activatedView == ActivatedView.Exit)
         {
-            this.OnExit(null);
+            this.OnExit();
         }
 
         if (activatedView == ActivatedView.GoBack)
@@ -126,7 +126,8 @@ public sealed class ShellViewModel : Bindable<ShellView>
         }
     }
 
-    private async void OnExit(object? _)
+    // TODO: 
+    private async void OnExit()
     {
         var application = App.GetRequiredService<IApplicationBase>();
         await application.Shutdown();

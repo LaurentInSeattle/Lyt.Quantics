@@ -22,7 +22,6 @@ public sealed class DocumentViewModel : Bindable<DocumentView>
 
     #region Methods invoked by the Framework using reflection 
 #pragma warning disable IDE0051 // Remove unused private members
-#pragma warning disable CA1822 // Mark members as static
 
     private void OnOpen(object? _)
         => ActivateView(
@@ -35,7 +34,6 @@ public sealed class DocumentViewModel : Bindable<DocumentView>
 
     #endregion Methods invoked by the Framework using reflection 
 #pragma warning restore IDE0051 // Remove unused private members
-#pragma warning restore CA1822 // Mark members as static
 
     public ICommand OpenCommand { get => this.Get<ICommand>()!; set => this.Set(value); }
 

@@ -61,9 +61,11 @@ public static class GateFactory
 
 #pragma warning disable CA2211 // Non-constant fields should not be visible
     public static Dictionary<string, Type> AvailableProducts = new(32);
-#pragma warning restore CA2211 
+#pragma warning restore CA2211
 
+#pragma warning disable IDE0060 // Remove unused parameter
     public static Gate Produce(string caption, Axis axis = Axis.X, double angle = Math.PI / 2.0)
+#pragma warning restore IDE0060 
     {
         if (AvailableProducts.TryGetValue(caption, out Type? gateType) && gateType is not null)
         {
@@ -79,15 +81,13 @@ public static class GateFactory
             {
                 if (gateType.FullName == typeof(RotationGate).FullName)
                 {
-                    switch (caption)
+                    return caption switch
                     {
-                        case "Rx": return new RotationGate(Axis.X, Math.PI / 2.0);
-                        case "Ry": return new RotationGate(Axis.Y, Math.PI / 2.0);
-                        case "Rz": return new RotationGate(Axis.Z, Math.PI / 2.0);
-                        default:
-                            throw new NotSupportedException("Unsupported gate type: " + gateType.FullName);
-                    }
-
+                        "Rx" => new RotationGate(Axis.X, Math.PI / 2.0),
+                        "Ry" => new RotationGate(Axis.Y, Math.PI / 2.0),
+                        "Rz" => new RotationGate(Axis.Z, Math.PI / 2.0),
+                        _ => throw new NotSupportedException("Unsupported gate type: " + gateType.FullName),
+                    };
                 }
 
                 throw new NotSupportedException("Unsupported gate type: " + gateType.FullName); 

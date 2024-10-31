@@ -1,16 +1,10 @@
-﻿
-namespace Lyt.Quantics.Studio.Workflow.Run.Gates;
+﻿namespace Lyt.Quantics.Studio.Workflow.Run.Gates;
 
 public sealed class GatesViewModel : Bindable<GatesView>
 {
-    private readonly QuanticsStudioModel quanticsStudioModel;
-
     public GatesViewModel()
     {
         this.DisablePropertyChangedLogging = true; 
-
-        // Do not use Injection directly as this is loaded programmatically by the RunView 
-        this.quanticsStudioModel = App.GetRequiredService<QuanticsStudioModel>();
         this.Messenger.Subscribe<GateHoverMessage>(this.OnGateHover);
     }
 

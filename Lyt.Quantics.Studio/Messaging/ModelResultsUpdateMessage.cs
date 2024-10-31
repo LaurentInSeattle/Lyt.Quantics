@@ -1,6 +1,4 @@
 ﻿namespace Lyt.Quantics.Studio.Messaging;
 
-public sealed class ModelResultsUpdateMessage
-{
-    // No data for now
-}
+// No data for now
+public sealed record class ModelResultsUpdateMessage; 

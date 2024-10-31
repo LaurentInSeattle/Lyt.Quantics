@@ -29,7 +29,7 @@ public sealed class PhaseGate : Gate
         
         double sinReal = Math.Sin(lambda);
         double cosReal = Math.Cos(lambda);
-        Complex eIotaLambda = new Complex(cosReal, sinReal);
+        Complex eIotaLambda = new(cosReal, sinReal);
         this.matrix = Matrix<Complex>.Build.Sparse(2, 2, Complex.Zero);
         this.matrix.At(0, 0, Complex.One);
         this.matrix.At(1, 1, eIotaLambda);

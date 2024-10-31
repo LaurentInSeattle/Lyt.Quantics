@@ -3,14 +3,9 @@
 public static class ReflectionUtilities
 {
     public static List<Type> DerivedFrom<TType>() where TType : class
-    {
-        var allTypes = Assembly.GetExecutingAssembly().GetTypes();
-        var types =
-            (from t in allTypes
+        => (from t in Assembly.GetExecutingAssembly().GetTypes()
              where t.IsClass && !t.IsAbstract && t.IsSubclassOf(typeof(TType))
-             select t);
-        return types.ToList();
-    }
+             select t).ToList();
 
     public static T CreateAndCopyPropertiesFrom<T>(T source) where T : class, new()
     {

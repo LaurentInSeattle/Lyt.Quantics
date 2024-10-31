@@ -58,7 +58,7 @@ public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
                 this.UpdateProbabilities(rank);
             }
         }
-    } 
+    }
 
     private void ShowByBitOrder(bool value)
     {
@@ -139,14 +139,14 @@ public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
         this.View.AmplitudesGrid.Children.Add(textBlock);
     }
 
-    private void UpdateProbabilities (int rank )
+    private void UpdateProbabilities(int rank)
     {
         // Update probabilities 
         this.View.AmplitudesGrid.Children.Clear();
         var computer = this.quanticsStudioModel.QuComputer;
         if (computer.IsComplete)
         {
-            QuRegister lastRegister = computer.Stages[rank-1].StageRegister;
+            QuRegister lastRegister = computer.Stages[rank - 1].StageRegister;
             List<Tuple<string, double>> bitValuesProbabilities = lastRegister.BitValuesProbabilities();
             var vm = new HistogramViewModel();
             this.View.AmplitudesGrid.Children.Add(vm.CreateViewAndBind());

@@ -4,7 +4,9 @@ using static MathUtilities;
 
 using MathNet.Numerics.LinearAlgebra;
 
+#pragma warning disable IDE1006 // Naming Styles
 public sealed class T_Gate : Gate
+#pragma warning restore IDE1006 
 {
     // Single qubit T gate (Z**0.25).
     // Equivalent to a π/4 radian rotation about the Z axis.

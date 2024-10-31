@@ -1,8 +1,4 @@
-﻿//  T_DaggerGate
-
-namespace Lyt.Quantics.Engine.Gates.Unary;
-
-using static MathUtilities;
+﻿namespace Lyt.Quantics.Engine.Gates.Unary;
 
 using MathNet.Numerics.LinearAlgebra;
 

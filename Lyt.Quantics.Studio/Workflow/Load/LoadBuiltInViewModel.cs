@@ -2,7 +2,7 @@
 
 public sealed class LoadBuiltInViewModel : Bindable<LoadBuiltInView>
 {
-    private List<BuiltInViewModel> builtInViews = [] ; 
+    private List<BuiltInViewModel> builtInViews = [];
 
     protected override void OnViewLoaded()
     {
@@ -34,6 +34,7 @@ public sealed class LoadBuiltInViewModel : Bindable<LoadBuiltInView>
 
     public List<BuiltInViewModel> BuiltInViews
     {
-        get => this.Get<List<BuiltInViewModel>>()!; set => this.Set(value);
+        get => this.Get<List<BuiltInViewModel>>()!;
+        set => this.Set(value);
     }
 }

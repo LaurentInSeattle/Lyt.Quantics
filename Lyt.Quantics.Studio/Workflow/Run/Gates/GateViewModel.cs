@@ -1,7 +1,4 @@
-﻿
-using Lyt.Quantics.Studio.Behaviors;
-
-namespace Lyt.Quantics.Studio.Workflow.Run.Gates;
+﻿namespace Lyt.Quantics.Studio.Workflow.Run.Gates;
 
 public sealed class GateViewModel : Bindable<GateView> // : IDraggable
 {
@@ -37,11 +34,11 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
         this.IsBorderVisible = true;
         this.GateMargin = new Thickness(this.IsToolbox ? 10 : 0);
         int gateRows = this.Gate.Dimension / 2;
-        if (this.IsToolbox ||(gateRows == 1) )
+        if (this.IsToolbox || (gateRows == 1))
         {
             this.GateBackground = Brushes.Black;
             int gateQubits = this.Gate.QuBits;
-            this.GateHeight = 48 + 16 * (gateQubits-1);
+            this.GateHeight = 48 + 16 * (gateQubits - 1);
         }
         else
         {
@@ -49,11 +46,11 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
             this.GateBackground = Brushes.Transparent;
             int rowMargin = 8 + 4;
             this.GateHeight = 48 * gateRows + rowMargin * (gateRows - 1);
-            Debug.WriteLine("GateHeight: " + this.GateHeight); 
+            Debug.WriteLine("GateHeight: " + this.GateHeight);
         }
 
         this.GateCategoryBrush = GateViewModel.GateCategoryToBrush(gate.Category);
-        var gateControl = SpecialGateToControl(gate.CaptionKey);
+        var gateControl = GateViewModel.SpecialGateToControl(gate.CaptionKey);
         if (gateControl is Control control)
         {
             this.SpecialGate = control;
@@ -66,7 +63,7 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
             this.IsSpecialVisible = false;
         }
 
-        var disableOnModal = new DisabledOnModal(); 
+        var disableOnModal = new DisabledOnModal();
         disableOnModal.Attach(this);
     }
 
@@ -85,7 +82,7 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
         };
     }
 
-    public Control? SpecialGateToControl(string gateCaptionKey)
+    public static Control? SpecialGateToControl(string gateCaptionKey)
     {
         return gateCaptionKey switch
         {
@@ -126,16 +123,18 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
         }
     }
 
+#pragma warning disable CA1822 // Mark members as static
     public bool BeginDrag() => true;  // For now 
+#pragma warning restore CA1822 
 
     public void OnGateEntered()
     {
         if (!this.IsToolbox)
         {
             return;
-        } 
+        }
 
-        this.Messenger.Publish(new GateHoverMessage(IsEnter:true, this.Gate.CaptionKey));   
+        this.Messenger.Publish(new GateHoverMessage(IsEnter: true, this.Gate.CaptionKey));
     }
 
     public void OnGateExited() => this.Messenger.Publish(new GateHoverMessage());
@@ -154,14 +153,14 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
 
     public bool IsTextVisible { get => this.Get<bool>(); set => this.Set(value); }
 
-    public bool IsBorderVisible 
-    { 
+    public bool IsBorderVisible
+    {
         get => this.Get<bool>();
         set
         {
             this.Set(value);
             this.GateBorderThickness = new Thickness(value ? 1.0 : 0.0);
-        } 
+        }
     }
 
     public Thickness GateBorderThickness { get => this.Get<Thickness>(); set => this.Set(value); }

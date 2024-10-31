@@ -71,7 +71,7 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
 
                         // Needed: Computer name and description might have been changed 
                         // in the save dialog. 
-                        this.RefreshInfoFields(); 
+                        this.RefreshInfoFields();
                     }, DispatcherPriority.ApplicationIdle);
                 break;
 
@@ -87,7 +87,7 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
                 if (computerActivationParameter.QuComputer is not null)
                 {
                     this.CreateFromDocument(computerActivationParameter.QuComputer);
-                } 
+                }
                 break;
         }
     }
@@ -182,7 +182,7 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
         this.Stages.Add(new StageViewModel(currentStageCount, this.quanticsStudioModel));
     }
 
-    private void RefreshInfoFields ()
+    private void RefreshInfoFields()
     {
         // Refresh Info fields
         var computer = this.quanticsStudioModel.QuComputer;
@@ -328,7 +328,7 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
         int stageCount = computer.Stages.Count;
 
         // Info fields
-        this.RefreshInfoFields(); 
+        this.RefreshInfoFields();
 
         // Create QuBits UI 'swim lanes'
         this.Qubits = [];

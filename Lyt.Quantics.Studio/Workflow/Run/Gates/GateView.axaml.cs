@@ -155,7 +155,7 @@ public partial class GateView : UserControl
         };
 
         // Create the special graphics if needed 
-        if (gateViewModel.SpecialGateToControl(gateViewModel.Gate.CaptionKey) is Control control)
+        if (GateViewModel.SpecialGateToControl(gateViewModel.Gate.CaptionKey) is Control control)
         {
             this.ghostView.GateIconContent.Content = control;
         }

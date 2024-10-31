@@ -13,7 +13,6 @@ public partial class ComputerView : UserControl
 
     private void OnDragOver(object? sender, DragEventArgs dragEventArgs)
     {
-        // Debug.WriteLine("On Drag Over Gate Computer View");
         dragEventArgs.DragEffects = DragDropEffects.None;
         var data = dragEventArgs.Data;
         if (data.Get(GateViewModel.CustomDragAndDropFormat) is GateViewModel gateViewModel)

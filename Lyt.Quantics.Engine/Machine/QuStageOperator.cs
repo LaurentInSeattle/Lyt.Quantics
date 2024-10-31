@@ -11,8 +11,7 @@ public sealed class QuStageOperator
 
     public QuStageOperator DeepClone()
     {
-        var clone = new QuStageOperator();
-        clone.GateKey = this.GateKey;
+        var clone = new QuStageOperator { GateKey = this.GateKey };
         foreach (int index in QuBitIndices)
         {
             clone.QuBitIndices.Add(index);

@@ -9,17 +9,16 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         this.InitializeComponent();
-
         this.Closing += this.OnMainWindowClosing;
-        this.Loaded += (s, e) => { Dispatch.OnUiThread(this.OnLoadedOnUi); }; 
+        this.Loaded += (s, e) => { Dispatch.OnUiThread(this.OnLoadedOnUi); };
     }
 
     private void OnLoadedOnUi()
     {
-        var vm = App.GetRequiredService<ShellViewModel>();        
-        this.MainWindowGrid.Children.Add (vm.CreateViewAndBind());
+        var vm = App.GetRequiredService<ShellViewModel>();
+        this.MainWindowGrid.Children.Add(vm.CreateViewAndBind());
     }
-    
+
     private void OnMainWindowClosing(object? sender, CancelEventArgs e)
     {
         if (!this.isShutdownComplete)

@@ -17,6 +17,8 @@ public sealed class StageViewModel : Bindable<StageView>
         this.toaster = App.GetRequiredService<IToaster>();
     }
 
+    public bool IsEmpty => this.activeGates == 0;
+
     public bool IsSelected { get; private set; }
 
     public void UpdateGatesAndMinibars()
@@ -36,8 +38,6 @@ public sealed class StageViewModel : Bindable<StageView>
         this.IsSelected = select;
         this.IsMarkerVisible = select;
     }
-
-    public bool IsEmpty => this.activeGates == 0;
 
     public bool CanDrop(Point point, GateViewModel gateViewModel)
     {

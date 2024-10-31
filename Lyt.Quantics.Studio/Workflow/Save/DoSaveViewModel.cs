@@ -1,6 +1,5 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Save;
 
-using Tmds.DBus.Protocol;
 using static MessagingExtensions;
 using static ToolbarCommandMessage;
 using static ViewActivationMessage;
@@ -61,7 +60,7 @@ public sealed class DoSaveViewModel : Bindable<DoSaveView>
 
             // Success: Toast Happy 
             var toaster = App.GetRequiredService<IToaster>();
-            toaster.Show("Saved", "Saved as " +pathName , 4_000, InformationLevel.Success);
+            toaster.Show("Saved", "Saved as " + pathName, 4_000, InformationLevel.Success);
 
             // Go back to run the model 
             ActivateView(

@@ -6,14 +6,20 @@ using static ViewActivationMessage;
 
 public sealed class DoSaveToolbarViewModel: Bindable<DoSaveToolbarView>
 {
-    private void OnSave(object? _) 
-        => Command(ToolbarCommand.SaveToFile);
+#pragma warning disable CA1822 // Mark members as static
+#pragma warning disable IDE0051 // Remove unused private members
+
+    // Autogenearted bindings
+    private void OnSave(object? _) => Command(ToolbarCommand.SaveToFile);
 
     private void OnClose(object? _)
         => ActivateView(
-            ActivatedView.Run, 
-            new ComputerActivationParameter(ComputerActivationParameter.Kind.Back)); 
-    
+            ActivatedView.Run,
+            new ComputerActivationParameter(ComputerActivationParameter.Kind.Back));
+
+#pragma warning restore IDE0051 // Remove unused private members
+#pragma warning restore CA1822 // Mark members as static
+
     public ICommand SaveCommand { get => this.Get<ICommand>()!; set => this.Set(value); }
 
     public ICommand CloseCommand { get => this.Get<ICommand>()!; set => this.Set(value); }

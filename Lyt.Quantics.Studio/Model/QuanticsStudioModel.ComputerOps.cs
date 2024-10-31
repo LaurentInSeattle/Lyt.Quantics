@@ -298,7 +298,7 @@ public sealed partial class QuanticsStudioModel : ModelBase
         try
         {
             message = string.Empty;
-            string name = this.QuComputer.Name ;
+            string name = this.QuComputer.Name;
 
             // Make sure that 'name' can be used as the data file 
             string pathName = FileManagerModel.ValidPathName(name, out bool changed);
@@ -313,7 +313,7 @@ public sealed partial class QuanticsStudioModel : ModelBase
             if (this.fileManager.Exists(Area.User, Kind.Json, pathName))
             {
                 message = "There is already a computer file with that name";
-                return null ;
+                return null;
             }
 
             this.fileManager.Save<QuComputer>(Area.User, Kind.Json, pathName, this.QuComputer);
@@ -322,7 +322,7 @@ public sealed partial class QuanticsStudioModel : ModelBase
             var clone = this.QuComputer.DeepClone();
             if (!this.Projects.TryAdd(name, clone))
             {
-                this.Projects[name]= clone;
+                this.Projects[name] = clone;
             }
 
             this.IsDirty = false;
@@ -333,6 +333,44 @@ public sealed partial class QuanticsStudioModel : ModelBase
             Debug.WriteLine(ex);
             message = "Save Computer To File: Exception thrown: " + ex.Message;
             return null;
+        }
+    }
+
+    public bool DeleteDocument(QuComputer quComputer, out string message)
+    {
+        message = string.Empty;
+        try
+        {
+            string name = quComputer.Name;
+
+            // Make sure that 'name' can be used as the data file 
+            string pathName = FileManagerModel.ValidPathName(name, out bool changed);
+            if (changed)
+            {
+                Debug.WriteLine("Save Path Adjusted: ");
+            }
+
+            Debug.WriteLine("Save Path: " + pathName);
+
+            if (this.fileManager.Exists(Area.User, Kind.Json, pathName))
+            {
+                // Delete File 
+                this.fileManager.Delete(Area.User, Kind.Json, pathName);
+
+                // Remove from Projects 
+                this.Projects.Remove(name);
+
+                return true;
+            }
+
+            message = "No computer file with that name was found.";
+            return false;
+        }
+        catch (Exception ex)
+        {
+            this.Logger.Error(ex.ToString());
+            message = "Exception thrown: " + ex.Message;
+            return false;
         }
     }
 
@@ -359,43 +397,5 @@ public sealed partial class QuanticsStudioModel : ModelBase
         }
 
         return true;
-    }
-
-    public bool DeleteDocument(QuComputer quComputer, out string message)
-    {
-        message = string.Empty;
-        try
-        {
-            string name = quComputer.Name;
-
-            // Make sure that 'name' can be used as the data file 
-            string pathName = FileManagerModel.ValidPathName(name, out bool changed);
-            if (changed)
-            {
-                Debug.WriteLine("Save Path Adjusted: ");
-            }
-
-            Debug.WriteLine("Save Path: " + pathName);
-
-            if (this.fileManager.Exists(Area.User, Kind.Json, pathName))
-            {
-                // Delete File 
-                this.fileManager.Delete(Area.User, Kind.Json, pathName);
-                
-                // Remove from Projects 
-                this.Projects.Remove(name);
-
-                return true;
-            }
-
-            message = "No computer file with that name was found.";
-            return false;
-        }
-        catch (Exception ex)
-        {
-            this.Logger.Error(ex.ToString());
-            message = "Exception thrown: " + ex.Message;
-            return false;
-        }
     }
 }

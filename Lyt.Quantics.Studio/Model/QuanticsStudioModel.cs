@@ -1,6 +1,5 @@
 ﻿namespace Lyt.Quantics.Studio.Model;
 
-using Lyt.Quantics.Studio.Workflow.Load.Tiles;
 using static FileManagerModel;
 
 public sealed partial class QuanticsStudioModel : ModelBase
@@ -87,19 +86,15 @@ public sealed partial class QuanticsStudioModel : ModelBase
         }
     }
 
-    public override Task Save()
-    {
-        // Null check is needed !
-        // If the File Manager is null we are currently loading the model and activating properties on a second instance 
-        // causing dirtyness, and in such case we must avoid the null crash and anyway there is no need to save anything.
-        //if (this.fileManager is not null)
-        //{
-        //    this.fileManager.Save(Area.User, Kind.Json, TemplatesModel.TemplatesModelFilename, this);
-        //    base.Save();
-        //}
-
-        return Task.CompletedTask;
-    }
+    public override Task Save() => Task.CompletedTask;
+    // Null check is needed !
+    // If the File Manager is null we are currently loading the model and activating properties on a second instance 
+    // causing dirtyness, and in such case we must avoid the null crash and anyway there is no need to save anything.
+    //if (this.fileManager is not null)
+    //{
+    //    this.fileManager.Save(Area.User, Kind.Json, TemplatesModel.TemplatesModelFilename, this);
+    //    base.Save();
+    //}        
 
     private static void LoadGates()
     {
@@ -129,12 +124,7 @@ public sealed partial class QuanticsStudioModel : ModelBase
                 }
 
                 string serialized = SerializationUtilities.LoadEmbeddedTextResource(resourceFileName);
-                var computer = SerializationUtilities.Deserialize<QuComputer>(serialized);
-                if (computer is null)
-                {
-                    throw new Exception("Failed to deserialize");
-                }
-
+                var computer = SerializationUtilities.Deserialize<QuComputer>(serialized) ?? throw new Exception("Failed to deserialize");
                 bool isValid = computer.Validate(out string message);
                 if (!isValid)
                 {
@@ -171,12 +161,7 @@ public sealed partial class QuanticsStudioModel : ModelBase
             {
                 try
                 {
-                    var computer = this.fileManager.Load<QuComputer>(Area.User, Kind.Json, file);
-                    if (computer is null)
-                    {
-                        throw new Exception("Failed to deserialize");
-                    }
-
+                    var computer = this.fileManager.Load<QuComputer>(Area.User, Kind.Json, file) ?? throw new Exception("Failed to deserialize");
                     bool isValid = computer.Validate(out string message);
                     if (!isValid)
                     {

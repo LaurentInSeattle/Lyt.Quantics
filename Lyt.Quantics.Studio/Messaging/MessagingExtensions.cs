@@ -20,8 +20,8 @@ public static class MessagingExtensions
 
     public static void Command(ToolbarCommand command, object? parameter = null)
     {
-        // All toolbar messaging is disabled 
-        // TODO: Visual State of toolbars
+        // All toolbar messaging is disabled, visual state of the toolbar is handled with
+        // another type of message, provided by the Modal Dialog management in the framework
         if (MessagingExtensions.dialogService.IsModal)
         {
             return; 

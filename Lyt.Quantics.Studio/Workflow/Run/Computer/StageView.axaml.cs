@@ -36,7 +36,7 @@ public partial class StageView : UserControl
         }
 
         // Must do this below so that the computer view is not corrupting the effect
-        dragEventArgs.Handled =true;
+        dragEventArgs.Handled = true;
     }
 
     private void OnDrop(object? sender, DragEventArgs dragEventArgs)
