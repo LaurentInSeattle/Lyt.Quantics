@@ -146,7 +146,7 @@ public sealed partial class QuComputer
 
         foreach (var stage in this.Stages)
         {
-            clone.Stages.Add(stage);
+            clone.Stages.Add(stage.DeepClone());
         }
 
         return clone;

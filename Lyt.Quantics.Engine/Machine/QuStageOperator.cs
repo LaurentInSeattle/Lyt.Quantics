@@ -9,6 +9,18 @@ public sealed class QuStageOperator
     [JsonIgnore]
     public Matrix<Complex> StageOperatorMatrix { get; private set; } = Matrix<Complex>.Build.Dense(1, 1);
 
+    public QuStageOperator DeepClone()
+    {
+        var clone = new QuStageOperator();
+        clone.GateKey = this.GateKey;
+        foreach (int index in QuBitIndices)
+        {
+            clone.QuBitIndices.Add(index);
+        }
+
+        return clone;
+    }
+
     public bool Validate(QuComputer computer, out string message)
     {
         message = string.Empty;

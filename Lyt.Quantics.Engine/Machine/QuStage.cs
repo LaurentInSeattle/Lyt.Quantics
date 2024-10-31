@@ -43,6 +43,17 @@ public sealed class QuStage
         }
     }
 
+    public QuStage DeepClone ()
+    {
+        var clone = new QuStage();
+        foreach (var stageOperator in this.Operators)
+        {            
+            clone.Operators.Add(stageOperator.DeepClone());
+        } 
+
+        return clone;
+    }
+
     public int ClearAtQubit(int qubitIndex)
     {
         var listToRemove = new List<QuStageOperator>();
