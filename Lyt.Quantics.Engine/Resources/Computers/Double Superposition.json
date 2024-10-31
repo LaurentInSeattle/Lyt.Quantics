@@ -1,0 +1,26 @@
+{
+    "Name": "Double Superposition",
+    "Description": "Two Hadamard gates in serie",
+    "Comment": "Unflipping the coin",
+    "QuBitsCount": 1,
+    "InitialStates": [ "Zero" ],
+    "ExpectedFinalProbabilities": [ 1.0, 0.0 ],
+    "Stages": [
+        {
+            "Operators": [
+                {
+                    "QuBitIndices": [ 0 ],
+                    "GateKey": "H"
+                }
+            ]
+        },
+        {
+            "Operators": [
+                {
+                    "QuBitIndices": [ 0 ],
+                    "GateKey": "H"
+                }
+            ]
+        }
+    ]
+}

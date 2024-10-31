@@ -1,0 +1,32 @@
+{
+    "Name": "Swap using CNOT",
+    "Description": "Swap using three CNOT gates",
+    "QuBitsCount": 2,
+    "InitialStates": [ "Zero", "Zero" ],
+    "Stages": [
+        {
+            "Operators": [
+                {
+                    "QuBitIndices": [ 0, 1 ],
+                    "GateKey": "CX"
+                }
+            ]
+        },
+        {
+            "Operators": [
+                {
+                    "QuBitIndices": [ 0, 1 ],
+                    "GateKey": "FCX"
+                }
+            ]
+        },
+        {
+            "Operators": [
+                {
+                    "QuBitIndices": [ 0, 1 ],
+                    "GateKey": "CX"
+                }
+            ]
+        }
+    ]
+}

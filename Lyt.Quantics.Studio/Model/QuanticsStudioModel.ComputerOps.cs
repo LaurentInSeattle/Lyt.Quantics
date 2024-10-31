@@ -200,7 +200,8 @@ public sealed partial class QuanticsStudioModel : ModelBase
 
     public bool Reset()
     {
-        bool status = this.QuComputer.Validate(out string message);
+        this.QuComputer.Reset(out string message); 
+        bool status = this.QuComputer.Validate(out message);
         if (status)
         {
             status = this.QuComputer.Build(out message);
@@ -209,6 +210,7 @@ public sealed partial class QuanticsStudioModel : ModelBase
                 status = this.QuComputer.Prepare(out message);
                 if (status)
                 {
+                    this.Messenger.Publish(new ModelResetMessage());
                     this.Messenger.Publish(new ModelResultsUpdateMessage());
                     return true;
                 }

@@ -12,7 +12,6 @@ TODO: Studio :
 
 Delete file
 Spinner for 9 or 10 qubits 
-Toolbar: Clear all qubits to |0> 
 Toolbar: Filters for projects (Recent, etc) 
 Toolbar: Filters for built-in projects  (Unit tests, etc)
 Move a gate using Drag/drop

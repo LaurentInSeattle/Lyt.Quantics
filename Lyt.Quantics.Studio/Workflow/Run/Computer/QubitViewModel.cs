@@ -1,6 +1,6 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
 
-public sealed class QubitViewModel(int qubitIndex) : Bindable<QubitView>
+public sealed class QubitViewModel : Bindable<QubitView>
 {
     // See: https://en.wikipedia.org/wiki/Unicode_subscripts_and_superscripts
     // And: https://www.unicode.org/Public/UNIDATA/ 
@@ -16,14 +16,26 @@ public sealed class QubitViewModel(int qubitIndex) : Bindable<QubitView>
     // private const string bra = "\u276C";
     private const string ket = "\u276D";
 
-    private readonly int qubitIndex = qubitIndex;
+    private readonly int qubitIndex;
+    private QuState quState;
 
-    private QuState quState = QuState.Zero;
+    public QubitViewModel(int qubitIndex)
+    {
+        this.qubitIndex = qubitIndex;
+        this.quState = QuState.Zero;
+        this.Messenger.Subscribe<ModelResetMessage>(this.OnModelResetMessage);
+    }
+
+    private void OnModelResetMessage(ModelResetMessage _)
+    {
+        this.quState = QuState.Zero;
+        this.RefreshKet();
+    } 
 
     protected override void OnViewLoaded()
     {
         this.Name = string.Concat("q", verySmallSpace, subscripts[this.qubitIndex]);
-        this.Ket = string.Concat(bar, smallSpace, this.quState.ToUiString(), smallSpace, ket);
+        this.RefreshKet() ;
     }
 
 #pragma warning disable IDE0051 // Remove unused private members
@@ -39,9 +51,13 @@ public sealed class QubitViewModel(int qubitIndex) : Bindable<QubitView>
         }
 
         this.quState = (QuState)index;
-        this.Ket = string.Concat(bar, smallSpace, this.quState.ToUiString(), smallSpace, ket);
+        this.RefreshKet();
         this.Messenger.Publish(new QubitChangedMessage(this.qubitIndex, this.quState));
     }
+
+    private void RefreshKet()
+        => this.Ket = 
+            string.Concat(bar, smallSpace, this.quState.ToUiString(), smallSpace, ket);
 
     public ICommand KetCommand { get => this.Get<ICommand>()!; set => this.Set(value); }
 

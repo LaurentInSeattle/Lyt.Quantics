@@ -304,6 +304,17 @@ public sealed partial class QuComputer
         return true;
     }
 
+    public bool Reset (out string message)
+    {
+        this.IsValid = false;
+        for ( int qubitIndex = 0; qubitIndex < this.QuBitsCount; ++ qubitIndex)
+        {
+            this.InitialStates[qubitIndex] = QuState.Zero; 
+        }
+
+        return this.Validate(out message); 
+    }
+
     public bool Step(out string message)
     {
         if (this.IsRunning)

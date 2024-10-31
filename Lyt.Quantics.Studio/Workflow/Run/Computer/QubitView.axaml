@@ -25,7 +25,7 @@
 			Text="{Binding Name}"			
 			Grid.Column="0"
 			VerticalAlignment="Center" HorizontalAlignment="Center"
-			FontSize="24"
+			FontSize="26"
 			Foreground="{StaticResource ResourceKey= LightAqua_0_120}"
 			Opacity="1.0"
 			Margin="0 -8 0 0"
