@@ -1,7 +1,8 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Load.Tiles;
 
-using static Lyt.Quantics.Studio.Messaging.ViewActivationMessage;
-using static Lyt.Quantics.Studio.Messaging.MessagingExtensions;
+using static ViewActivationMessage;
+using static ToolbarCommandMessage; 
+using static MessagingExtensions;
 
 public sealed class DocumentViewModel : Bindable<DocumentView>
 {
@@ -17,6 +18,8 @@ public sealed class DocumentViewModel : Bindable<DocumentView>
         this.Description = quComputer.Description;
     }
 
+    public QuComputer QuComputer => this.quComputer;
+
     #region Methods invoked by the Framework using reflection 
 #pragma warning disable IDE0051 // Remove unused private members
 #pragma warning disable CA1822 // Mark members as static
@@ -25,12 +28,10 @@ public sealed class DocumentViewModel : Bindable<DocumentView>
         => ActivateView(
             ActivatedView.Run,
             new ComputerActivationParameter(
-                ComputerActivationParameter.Kind.Document, string.Empty, this.quComputer));
+                ComputerActivationParameter.Kind.Document, string.Empty, this.QuComputer));
 
     private void OnDelete(object? _)
-    {
-        this.Logger.Info("Clicked on Delete!");
-    }
+        => Command(ToolbarCommand.DeleteDocument, this);
 
     #endregion Methods invoked by the Framework using reflection 
 #pragma warning restore IDE0051 // Remove unused private members
@@ -43,4 +44,5 @@ public sealed class DocumentViewModel : Bindable<DocumentView>
     public string Name { get => this.Get<string>()!; set => this.Set(value); }
 
     public string Description { get => this.Get<string>()!; set => this.Set(value); }
+
 }

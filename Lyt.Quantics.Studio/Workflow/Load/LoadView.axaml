@@ -33,5 +33,12 @@
 			Grid.Row="0" Grid.RowSpan="2" Grid.Column="1"
 			Content="{Binding Documents}"
 			/>
+		<!-- Panel should be on top -->
+		<Panel
+			x:Name="ModalHost"
+			Background="Transparent"
+		 	Grid.ColumnSpan="999" Grid.RowSpan="999"
+			IsHitTestVisible="False"
+			/>
 	</Grid>
 </UserControl>

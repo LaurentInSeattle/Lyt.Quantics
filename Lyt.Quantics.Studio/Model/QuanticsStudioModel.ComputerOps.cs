@@ -309,7 +309,7 @@ public sealed partial class QuanticsStudioModel : ModelBase
 
             Debug.WriteLine("Save Path: " + pathName);
 
-            // Check for duplicates 
+            // Check for duplicate files 
             if (this.fileManager.Exists(Area.User, Kind.Json, pathName))
             {
                 message = "There is already a computer file with that name";
@@ -317,6 +317,14 @@ public sealed partial class QuanticsStudioModel : ModelBase
             }
 
             this.fileManager.Save<QuComputer>(Area.User, Kind.Json, pathName, this.QuComputer);
+
+            // Update or Add to Projects 
+            var clone = this.QuComputer.DeepClone();
+            if (!this.Projects.TryAdd(name, clone))
+            {
+                this.Projects[name]= clone;
+            }
+
             this.IsDirty = false;
             return pathName;
         }
@@ -351,5 +359,43 @@ public sealed partial class QuanticsStudioModel : ModelBase
         }
 
         return true;
+    }
+
+    public bool DeleteDocument(QuComputer quComputer, out string message)
+    {
+        message = string.Empty;
+        try
+        {
+            string name = quComputer.Name;
+
+            // Make sure that 'name' can be used as the data file 
+            string pathName = FileManagerModel.ValidPathName(name, out bool changed);
+            if (changed)
+            {
+                Debug.WriteLine("Save Path Adjusted: ");
+            }
+
+            Debug.WriteLine("Save Path: " + pathName);
+
+            if (this.fileManager.Exists(Area.User, Kind.Json, pathName))
+            {
+                // Delete File 
+                this.fileManager.Delete(Area.User, Kind.Json, pathName);
+                
+                // Remove from Projects 
+                this.Projects.Remove(name);
+
+                return true;
+            }
+
+            message = "No computer file with that name was found.";
+            return false;
+        }
+        catch (Exception ex)
+        {
+            this.Logger.Error(ex.ToString());
+            message = "Exception thrown: " + ex.Message;
+            return false;
+        }
     }
 }

@@ -17,6 +17,9 @@ public sealed record class ToolbarCommandMessage(
         SaveToFile,
         Close, 
 
+        // Documents 
+        DeleteDocument, 
+
         // LAter
         Loop,
 

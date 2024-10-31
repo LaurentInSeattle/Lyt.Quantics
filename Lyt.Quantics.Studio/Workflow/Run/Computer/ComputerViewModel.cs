@@ -61,13 +61,17 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
         {
             default:
             case ComputerActivationParameter.Kind.Back:
-                // Coming back after save, there should be nothing to do 
-                // TODO: Need to understand why this fixes the issue of deleted display 
-                // Avalonia ? 
                 Schedule.OnUiThread(
                     100, () =>
                     {
+                        // Coming back after save, there should be nothing to do 
+                        // TODO: Need to understand why this fixes the issue of deleted display 
+                        // Avalonia ? 
                         this.PackStagesOnUi();
+
+                        // Needed: Computer name and description might have been changed 
+                        // in the save dialog. 
+                        this.RefreshInfoFields(); 
                     }, DispatcherPriority.ApplicationIdle);
                 break;
 
@@ -176,6 +180,14 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
         // the new stage index is the current count of stages 
         int currentStageCount = this.Stages.Count;
         this.Stages.Add(new StageViewModel(currentStageCount, this.quanticsStudioModel));
+    }
+
+    private void RefreshInfoFields ()
+    {
+        // Refresh Info fields
+        var computer = this.quanticsStudioModel.QuComputer;
+        this.Name = computer.Name;
+        this.Description = computer.Description;
     }
 
     private void PackStagesOnUi()
@@ -316,8 +328,7 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
         int stageCount = computer.Stages.Count;
 
         // Info fields
-        this.Name = computer.Name;
-        this.Description = computer.Description;
+        this.RefreshInfoFields(); 
 
         // Create QuBits UI 'swim lanes'
         this.Qubits = [];
