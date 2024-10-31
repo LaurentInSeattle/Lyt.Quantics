@@ -1,4 +1,6 @@
 ﻿
+using Lyt.Quantics.Studio.Behaviors;
+
 namespace Lyt.Quantics.Studio.Workflow.Run.Gates;
 
 public sealed class GateViewModel : Bindable<GateView> // : IDraggable
@@ -63,6 +65,9 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
             this.IsTextVisible = true;
             this.IsSpecialVisible = false;
         }
+
+        var disableOnModal = new DisabledOnModal(); 
+        disableOnModal.Attach(this);
     }
 
     private static IBrush GateCategoryToBrush(GateCategory gateCategory)

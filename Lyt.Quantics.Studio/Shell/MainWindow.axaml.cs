@@ -29,8 +29,12 @@ public partial class MainWindow : Window
 
         if (!this.isShutdownRequested)
         {
-            this.isShutdownRequested = true;
-            Schedule.OnUiThread(50,
+            var vm = App.GetRequiredService<ShellViewModel>();
+            bool canClose = vm.CanClose();
+            if (canClose)
+            {
+                this.isShutdownRequested = true;
+                Schedule.OnUiThread(50,
                 async () =>
                 {
                     var application = App.GetRequiredService<IApplicationBase>();
@@ -38,6 +42,7 @@ public partial class MainWindow : Window
                     this.isShutdownComplete = true;
                     this.Close();
                 }, DispatcherPriority.Normal);
+            }
         }
     }
 }

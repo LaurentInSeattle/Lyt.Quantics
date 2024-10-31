@@ -1,14 +1,17 @@
 ﻿namespace Lyt.Quantics.Studio.Shell;
 
-using static Lyt.Quantics.Studio.Messaging.ViewActivationMessage;
+using static Lyt.Quantics.Studio.Messaging.ToolbarCommandMessage;
+using static ViewActivationMessage;
 
 public sealed class ShellViewModel : Bindable<ShellView>
 {
     private readonly IToaster toaster;
+    private readonly QuanticsStudioModel quanticsStudioModel; 
 
-    public ShellViewModel(IToaster toaster)
+    public ShellViewModel(IToaster toaster, QuanticsStudioModel quanticsStudioModel)
     {
         this.toaster = toaster;
+        this.quanticsStudioModel = quanticsStudioModel;
         this.Messenger.Subscribe<ViewActivationMessage>(this.OnViewActivation);
         this.Messenger.Subscribe<ShowTitleBarMessage>(this.OnShowTitleBar);
     }
@@ -49,6 +52,24 @@ public sealed class ShellViewModel : Bindable<ShellView>
             "An interactive playground for Quantum Computing...",
             4_000, InformationLevel.Info);
         this.Logger.Debug("OnViewLoaded complete");
+    }
+
+    public bool CanClose ()
+    {
+        if (this.quanticsStudioModel.IsDirty)
+        {
+            Schedule.OnUiThread(50,
+                () =>
+                {
+                    OnViewActivation(
+                        ActivatedView.Run,
+                        new ComputerActivationParameter(ComputerActivationParameter.Kind.Back));
+                    MessagingExtensions.Command(ToolbarCommand.Close);
+                }, DispatcherPriority.Normal);
+            return false;
+        }
+
+        return true;
     }
 
     private void OnShowTitleBar(ShowTitleBarMessage message)

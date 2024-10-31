@@ -10,6 +10,7 @@ Include Author in computer metadata
 
 TODO: Studio : 
 
+Save on App Close if Dirty 
 Spinner for 9 or 10 qubits 
 Toolbar: Clear all qubits to |0> 
 Toolbar: Filters for projects (Recent, etc) 
