@@ -29,17 +29,20 @@ public sealed class LoadDocumentsViewModel : Bindable<LoadDocumentsView>
         try
         {
             this.documentViews.Clear();
-            foreach (var computer in this.quanticsStudioModel.Projects.Values)
+            var projects = this.quanticsStudioModel.Projects;
+            var computerNames = from key in projects.Keys orderby key select key;
+            foreach (var computerName in computerNames)
             {
                 try
                 {
+                    var computer = projects[computerName];
                     var documentView = new DocumentViewModel(computer);
                     documentViews.Add(documentView);
                 }
                 catch (Exception ex)
                 {
                     Debug.WriteLine(ex);
-                    this.Logger.Warning(computer.Name + " :  failed to load \n" + ex.ToString());
+                    this.Logger.Warning(computerName + " :  failed to load \n" + ex.ToString());
                     continue;
                 }
             }

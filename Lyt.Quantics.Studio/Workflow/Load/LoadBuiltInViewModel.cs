@@ -16,7 +16,8 @@ public sealed class LoadBuiltInViewModel : Bindable<LoadBuiltInView>
 
         var builtInComputers = QuanticsStudioModel.BuiltInComputers;
         this.builtInViews = new(builtInComputers.Count);
-        foreach (string computerName in builtInComputers.Keys)
+        var computerNames = from key in builtInComputers.Keys orderby key select key;
+        foreach (string computerName in computerNames)
         {
             try
             {

@@ -154,8 +154,8 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
             return;
         }
 
-        Debug.WriteLine("Editing gate: " + this.Gate.CaptionKey);
         // Launch edit gate dialog 
+        this.Messenger.Publish(new GateEditMessage(this));
     }
 
     public double GateHeight { get => this.Get<double>(); set => this.Set(value); }

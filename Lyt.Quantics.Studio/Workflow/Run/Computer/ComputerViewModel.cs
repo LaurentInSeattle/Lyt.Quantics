@@ -19,13 +19,50 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
         this.quanticsStudioModel = App.GetRequiredService<QuanticsStudioModel>();
         this.toaster = App.GetRequiredService<IToaster>();
         this.dialogService = App.GetRequiredService<IDialogService>();
+
+        // Collections of Qubits and stages view models 
         this.Qubits = [];
         this.Stages = [];
+
+        // Subscribtion processed locally 
         this.Messenger.Subscribe<ToolbarCommandMessage>(this.OnToolbarCommandMessage);
         this.Messenger.Subscribe<QubitChangedMessage>(this.OnQubitChangedMessage);
         this.Messenger.Subscribe<ModelStructureUpdateMessage>(this.OnModelStructureUpdateMessage);
         this.Messenger.Subscribe<ModelResultsUpdateMessage>(this.OnModelResultsUpdateMessage);
         this.Messenger.Subscribe<ModelUpdateErrorMessage>(this.OnModelUpdateErrorMessage);
+        this.Messenger.Subscribe<GateEditMessage>(this.OnGateEditMessage);
+    }
+
+    private void OnGateEditMessage(GateEditMessage message)
+    {
+        if (message.GateViewModel is null)
+        {
+            return;
+        }
+
+        // Run modal dialog 
+        if (this.dialogService is DialogService modalService)
+        {
+            GateEditDialogModel gateEditDialogModel = new();
+            modalService.RunModal<GateEditDialog, GateViewModel>(
+                this.View.ToasterHost,
+                gateEditDialogModel,
+                this.OnGateEditClose,
+                message.GateViewModel);
+        }
+    }
+
+    private void OnGateEditClose(object sender, bool close)
+    {
+        if (sender is not GateEditDialogModel gateEditDialogModel)
+        {
+            return;
+        }
+
+        // Grab the data 
+
+        // Do the stuff 
+        Debug.WriteLine("OnGateEditClose");
     }
 
     protected override void OnViewLoaded()
@@ -631,7 +668,9 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
         set => this.Set(value);
     }
 
+    /// <summary> The name of the computer currently edited.</summary>
     public string Name { get => this.Get<string>()!; set => this.Set(value); }
 
+    /// <summary> The description of the computer currently edited.</summary>
     public string Description { get => this.Get<string>()!; set => this.Set(value); }
 }
