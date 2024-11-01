@@ -8,11 +8,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2BB989A8-0887-441E-8648-912042EE4F8D}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lyt.Quantics.Engine.Tests", "Lyt.Quantics.Engine.Tests\Lyt.Quantics.Engine.Tests.csproj", "{A3689409-5E54-4EA0-8AF5-39E71A9A43DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lyt.Quantics.Studio", "Lyt.Quantics.Studio\Lyt.Quantics.Studio.csproj", "{AB33E364-1A73-434A-9433-553B25DE8DE7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lyt.Quantics.Studio", "Lyt.Quantics.Studio\Lyt.Quantics.Studio.csproj", "{AB33E364-1A73-434A-9433-553B25DE8DE7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lyt.Avalonia.Controls", "..\Lyt.Avalonia.Framework\Lyt.Avalonia.Controls\Lyt.Avalonia.Controls.csproj", "{A72A154A-D7A3-4900-BC56-893187AAF678}"
 EndProject

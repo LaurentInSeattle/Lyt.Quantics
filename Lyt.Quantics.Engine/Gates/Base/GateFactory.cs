@@ -45,12 +45,14 @@ public static class GateFactory
                 }
             }
 
-            // Add all three Pi / 2 rotation gates 
+            // Add all three rotation gates with a Pi / 2 angle 
             foreach (Axis axis in new Axis[] { Axis.X, Axis.Y, Axis.Z })
             {
-                var gate = new RotationGate(axis, Math.PI / 2.0);
-                AddGate(gate);
+                AddGate(new RotationGate(axis, 2, isPositive:true));
             }
+
+            // Add the phase gate with a Pi / 2 angle 
+            AddGate(new PhaseGate(2, isPositive: true));
         }
         catch ( Exception ex)
         {
@@ -83,9 +85,18 @@ public static class GateFactory
                 {
                     return caption switch
                     {
-                        "Rx" => new RotationGate(Axis.X, Math.PI / 2.0),
-                        "Ry" => new RotationGate(Axis.Y, Math.PI / 2.0),
-                        "Rz" => new RotationGate(Axis.Z, Math.PI / 2.0),
+                        "Rx" => new RotationGate(Axis.X, 2, isPositive: true),
+                        "Ry" => new RotationGate(Axis.Y, 2, isPositive: true),
+                        "Rz" => new RotationGate(Axis.Z, 2, isPositive: true),
+                        _ => throw new NotSupportedException("Unsupported gate type: " + gateType.FullName),
+                    };
+                }
+
+                if (gateType.FullName == typeof(PhaseGate).FullName)
+                {
+                    return caption switch
+                    {
+                        "Ph" => new PhaseGate(2, isPositive: true),
                         _ => throw new NotSupportedException("Unsupported gate type: " + gateType.FullName),
                     };
                 }

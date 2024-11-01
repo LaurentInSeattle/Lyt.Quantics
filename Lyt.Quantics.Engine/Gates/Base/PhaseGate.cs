@@ -21,22 +21,26 @@ public sealed class PhaseGate : Gate
     // P ( λ = π / 4 ) = T
 
     private readonly Matrix<Complex> matrix;
-    private readonly string captionKey;
 
-    public PhaseGate(double lambda = Math.PI / 2.0)
+    public PhaseGate(double theta)
+        : this(theta, isPiDivisor: false)
+        => this.ParameterCaption = theta.ToString("F2");
+
+    public PhaseGate(int piDivisor, bool isPositive)
+        : this((isPositive ? 1.0 : -1.0) * Math.PI / piDivisor, isPiDivisor: true)
+        => this.ParameterCaption = string.Format("{0}π/{1}", (isPositive ? "+" : "-"), piDivisor);
+
+    private PhaseGate(double lambda, bool isPiDivisor)
     {
         this.Lambda = lambda;
-        
+        this.IsPiDivisor = isPiDivisor;
+
         double sinReal = Math.Sin(lambda);
         double cosReal = Math.Cos(lambda);
         Complex eIotaLambda = new(cosReal, sinReal);
         this.matrix = Matrix<Complex>.Build.Sparse(2, 2, Complex.Zero);
         this.matrix.At(0, 0, Complex.One);
         this.matrix.At(1, 1, eIotaLambda);
-
-        string captionAngle = lambda.ToString("F2");
-        captionAngle = captionAngle.Replace(".", "_");
-        this.captionKey = string.Concat("P_", captionAngle);
     }
 
     public double Lambda { get; private set; }
@@ -47,7 +51,17 @@ public sealed class PhaseGate : Gate
 
     public override string AlternateName => "Phase Gate";
 
-    public override string CaptionKey => this.captionKey;
+    public override string CaptionKey => "Ph";
 
-    public override GateCategory Category => GateCategory.X_Special;
+    public bool IsPiDivisor { get; private set; } = true;
+
+    public int PiDivisor { get; private set; } = 2;
+
+    public bool IsPositive { get; private set; } = true;
+
+    public override string ParameterCaption { get; set; } = string.Empty;
+
+    public override bool IsParametrized => true;
+
+    public override GateCategory Category => GateCategory.H_Phase;
 }

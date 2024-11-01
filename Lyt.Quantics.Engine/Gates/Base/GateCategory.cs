@@ -12,11 +12,15 @@ public enum GateCategory
 
     C_Phase, // Sqrt X (== SX) , Sqrt Z (== S)  S dagger
 
-    D_BinaryControlled, // CX, Swap, CZ , FCX, CS
+    D_Rotation, // Rx Ry Rz 
 
-    E_Other, // I , 
+    E_BinaryControlled, // CX, Swap, CZ , FCX, CS
 
-    F_TernaryControlled,   // CCX,  CSwap , CCZ 
+    F_Other, // I , 
 
-    X_Special, // Barrier (needed?) // Rx Ry Rz  // P , CP , CCP 
+    G_TernaryControlled,   // CCX,  CSwap , CCZ 
+
+    H_Phase,   // Phase , Later CP CPP ? 
+
+    X_Special, // Barrier (needed?) // P , CP , CCP 
 }

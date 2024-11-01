@@ -31,15 +31,27 @@
 				IsVisible="{Binding IsBorderVisible}"
 				Fill="{Binding GateCategoryBrush}"
 				/>
-			<TextBlock
+			<StackPanel
 				Grid.Row="1"
-				VerticalAlignment="Center" HorizontalAlignment="Center"
-				IsVisible="{Binding IsTextVisible}"
-				Text="{Binding Name}"
-				FontSize="{Binding FontSize}"
-				FontWeight="DemiBold"
-				Foreground="{StaticResource ResourceKey= OrangePeel_0_100}"
-				/>
+				>				
+				<TextBlock
+					VerticalAlignment="Center" HorizontalAlignment="Center"
+					IsVisible="{Binding IsTextVisible}"
+					Text="{Binding Name}"
+					FontSize="{Binding FontSize}"
+					FontWeight="DemiBold"
+					Foreground="{StaticResource ResourceKey= OrangePeel_0_100}"
+					/>
+				<TextBlock
+					VerticalAlignment="Center" HorizontalAlignment="Center"
+					Margin="0 -2 0 0"
+					IsVisible="{Binding IsTextVisible}"
+					Text="{Binding Parameter}"
+					FontSize="{Binding ParameterFontSize}"
+					FontWeight="DemiBold"
+					Foreground="{StaticResource ResourceKey= OrangePeel_0_100}"
+					/>
+			</StackPanel>
 			<Viewbox
 				IsVisible="{Binding IsSpecialVisible}"
 				Grid.Row="0" Grid.RowSpan="2"

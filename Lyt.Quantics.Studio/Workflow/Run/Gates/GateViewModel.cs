@@ -31,6 +31,16 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
             _ => 13.0,
         };
 
+        this.Parameter = string.Empty;
+        this.ParameterFontSize = 1.0;
+        if ( gate.IsParametrized)
+        {
+            this.FontSize -= 6; 
+            this.Parameter = gate.ParameterCaption;
+            this.ParameterFontSize = 12.0;
+        }
+
+
         this.IsBorderVisible = true;
         this.GateMargin = new Thickness(this.IsToolbox ? 10 : 0);
         int gateRows = this.Gate.Dimension / 2;
@@ -68,23 +78,21 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
     }
 
     private static IBrush GateCategoryToBrush(GateCategory gateCategory)
-    {
-        return gateCategory switch
+        => gateCategory switch
         {
             GateCategory.A_HadamardAndT => Brushes.DarkOrange,
             GateCategory.B_Pauli => Brushes.DodgerBlue,
             GateCategory.C_Phase => Brushes.MediumAquamarine,
-            GateCategory.D_BinaryControlled => Brushes.DarkGreen,
-            GateCategory.E_Other => Brushes.DarkGray,
-            GateCategory.F_TernaryControlled => Brushes.MediumPurple,
+            GateCategory.D_Rotation => Brushes.DarkOrchid,
+            GateCategory.E_BinaryControlled => Brushes.DarkGreen,
+            GateCategory.F_Other => Brushes.DarkGray,
+            GateCategory.G_TernaryControlled => Brushes.MediumPurple,
             /* default */
             _ => Brushes.DarkRed,
         };
-    }
 
     public static Control? SpecialGateToControl(string gateCaptionKey)
-    {
-        return gateCaptionKey switch
+        =>  gateCaptionKey switch
         {
             "ACX" => new ACxGate(),
             "CX" => new CxGate(),
@@ -98,7 +106,6 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
             /* default */
             _ => null,
         };
-    }
 
     /// <summary> True when this is a toolbox gate view model. </summary>
     public bool IsToolbox { get; private set; }
@@ -146,6 +153,10 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
     public string? Name { get => this.Get<string?>(); set => this.Set(value); }
 
     public double FontSize { get => this.Get<double>(); set => this.Set(value); }
+
+    public string? Parameter { get => this.Get<string?>(); set => this.Set(value); }
+
+    public double ParameterFontSize { get => this.Get<double>(); set => this.Set(value); }
 
     public IBrush? GateCategoryBrush { get => this.Get<IBrush?>(); set => this.Set(value); }
 

@@ -30,5 +30,5 @@ public sealed class ControlledNotGate : Gate
 
     public override string CaptionKey => "CX";
 
-    public override GateCategory Category => GateCategory.D_BinaryControlled;
+    public override GateCategory Category => GateCategory.E_BinaryControlled;
 }

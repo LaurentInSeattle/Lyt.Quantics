@@ -29,21 +29,19 @@
 			Fill="#60000020"
             Grid.RowSpan="999"
 			/>
-		<Rectangle
-			Grid.Row="0"
-			Height="4"
-			VerticalAlignment="Top" HorizontalAlignment="Stretch"
-			Fill="{StaticResource ResourceKey= OrangePeel_2_080}"
-			/>
-		<Rectangle
-			Grid.Row="0"
-			Height="1"
-			VerticalAlignment="Bottom" HorizontalAlignment="Stretch"
-			Fill="#F0302070"
-			/>
 		<Grid
 			IsVisible="{Binding IsTitleBarVisible}"
-			> 			
+			>
+			<Rectangle
+				Height="4"
+				VerticalAlignment="Top" HorizontalAlignment="Stretch"
+				Fill="{StaticResource ResourceKey= OrangePeel_2_080}"
+				/>
+			<Rectangle
+				Height="1"
+				VerticalAlignment="Bottom" HorizontalAlignment="Stretch"
+				Fill="#F0302070"
+				/>
 			<TextBlock 
 				Grid.Row="0"
 				Text="Quantics Studio" 

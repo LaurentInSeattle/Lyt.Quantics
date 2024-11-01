@@ -1,4 +1,6 @@
-﻿namespace Lyt.Quantics.Engine.Gates.Base;
+﻿using MathNet.Numerics.Distributions;
+
+namespace Lyt.Quantics.Engine.Gates.Base;
 
 public class RotationGate : Gate
 {
@@ -19,20 +21,29 @@ public class RotationGate : Gate
     //  exp(iAx)=cos⁡(x)I+isin⁡(x)A exp(iAx)=cos(x)I+isin(x)A  where A is one of the three
     //  Pauli Matrices.
 
-    private readonly Matrix<Complex> matrix ;
-    private readonly string captionKey ;
+    private readonly Matrix<Complex> matrix;
+    private readonly string captionKey;
 
-    public RotationGate(Axis axis, double theta = Math.PI / 2.0 )
+    public RotationGate(Axis axis, double theta) 
+        : this(axis, theta, isPiDivisor: false) 
+        => this.ParameterCaption = theta.ToString("F2");
+
+    public RotationGate(Axis axis, int piDivisor, bool isPositive)
+        : this(axis, (isPositive ? 1.0 : -1.0) * Math.PI / piDivisor, isPiDivisor: true) 
+        => this.ParameterCaption = string.Format("{0}π/{1}", (isPositive ? "+" : "-"), piDivisor);
+
+    private RotationGate(Axis axis, double theta, bool isPiDivisor)
     {
-        this.Theta = theta; 
-        this.RotationAxis = axis ;
+        this.RotationAxis = axis;
+        this.Theta = theta;
+        this.IsPiDivisor = isPiDivisor;
 
         double half = theta / 2.0;
-        double  sinReal = Math.Sin(half);
-        double  cosReal = Math.Cos(half);
+        double sinReal = Math.Sin(half);
+        double cosReal = Math.Cos(half);
         Complex cosComplex = cosReal;
         Complex sinComplex = sinReal;
-        Complex iotaSin = new(0 , sinReal) ;
+        Complex iotaSin = new(0, sinReal);
 
         this.matrix = Matrix<Complex>.Build.Sparse(2, 2, Complex.Zero);
 
@@ -44,7 +55,7 @@ public class RotationGate : Gate
                 this.matrix.At(0, 1, -iotaSin);
                 this.matrix.At(1, 0, -iotaSin);
                 this.matrix.At(1, 1, cosComplex);
-                this.captionKey = "Rx"; 
+                this.captionKey = "Rx";
                 break;
 
             case Axis.Y:
@@ -69,6 +80,16 @@ public class RotationGate : Gate
 
     public double Theta { get; private set; }
 
+    public bool IsPiDivisor { get; private set; } = true;
+
+    public int PiDivisor { get; private set; } = 2;
+
+    public bool IsPositive { get; private set; } = true;
+
+    public override string ParameterCaption { get; set; } = string.Empty;
+
+    public override bool IsParametrized => true;
+
     public override Matrix<Complex> Matrix => this.matrix;
 
     public override string Name => "Rotation Gate";
@@ -77,5 +98,5 @@ public class RotationGate : Gate
 
     public override string CaptionKey => this.captionKey;
 
-    public override GateCategory Category => GateCategory.X_Special;
+    public override GateCategory Category => GateCategory.D_Rotation;
 }
