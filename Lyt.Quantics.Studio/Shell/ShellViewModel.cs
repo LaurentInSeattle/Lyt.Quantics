@@ -1,16 +1,19 @@
 ﻿namespace Lyt.Quantics.Studio.Shell;
 
-using static ToolbarCommandMessage;
+using static MessagingExtensions;
 using static ViewActivationMessage;
 
 public sealed class ShellViewModel : Bindable<ShellView>
 {
     private readonly IToaster toaster;
+    private readonly IDialogService dialogService; 
     private readonly QuanticsStudioModel quanticsStudioModel; 
 
-    public ShellViewModel(IToaster toaster, QuanticsStudioModel quanticsStudioModel)
+    public ShellViewModel(
+        IDialogService dialogService, IToaster toaster, QuanticsStudioModel quanticsStudioModel)
     {
         this.toaster = toaster;
+        this.dialogService = dialogService;
         this.quanticsStudioModel = quanticsStudioModel;
         this.Messenger.Subscribe<ViewActivationMessage>(this.OnViewActivation);
         this.Messenger.Subscribe<ShowTitleBarMessage>(this.OnShowTitleBar);
@@ -54,6 +57,8 @@ public sealed class ShellViewModel : Bindable<ShellView>
         this.Logger.Debug("OnViewLoaded complete");
     }
 
+    /// <summary> Invoked when closing from the application Close X button </summary>
+    /// <returns> True to close immediately </returns>
     public bool CanClose ()
     {
         if (this.quanticsStudioModel.IsDirty)
@@ -61,15 +66,34 @@ public sealed class ShellViewModel : Bindable<ShellView>
             Schedule.OnUiThread(50,
                 () =>
                 {
-                    OnViewActivation(
-                        ActivatedView.Run,
-                        new ComputerActivationParameter(ComputerActivationParameter.Kind.Back));
-                    MessagingExtensions.Command(ToolbarCommand.Close);
+                    var confirmActionParameters = new ConfirmActionParameters
+                    {
+                        Title = "Unsaved Changes!",
+                        Message = "This quantum computer has been modified and your latest changes have not been saved.",
+                        ActionVerb = "Discard Changes",
+                        OnConfirm = this.OnDiscardChangesConfirmed,
+                        InformationLevel = InformationLevel.Warning,
+                    };
+
+                    this.dialogService.Confirm(this.View.ToasterHost, confirmActionParameters);
                 }, DispatcherPriority.Normal);
             return false;
         }
 
         return true;
+    }
+
+    private void OnDiscardChangesConfirmed(bool confirmed)
+    {
+        if (!confirmed)
+        {
+            // Move to save view 
+            ActivateView(ActivatedView.Save);
+            return;
+        }
+
+        // changes will be lost
+        ActivateView(ActivatedView.Exit);
     }
 
     private void OnShowTitleBar(ShowTitleBarMessage message)
@@ -78,17 +102,6 @@ public sealed class ShellViewModel : Bindable<ShellView>
         this.IsTitleBarVisible = message.Show;
     } 
 
-    //private void OnModelUpdated(ModelUpdateMessage message)
-    //{
-    //    string msgProp = string.IsNullOrWhiteSpace(message.PropertyName) ? "<unknown>" : message.PropertyName;
-    //    string msgMethod = string.IsNullOrWhiteSpace(message.MethodName) ? "<unknown>" : message.MethodName;
-    //    this.Logger.Debug("Model update, property: " + msgProp + " method: " + msgMethod);
-
-    //    //if (message.PropertyName != nameof( < some model property > ))
-    //    //{
-    //    //}
-    //}
-
     private void OnViewActivation(ViewActivationMessage message)
         => this.OnViewActivation(message.View, message.ActivationParameter, false);
 
@@ -96,7 +109,7 @@ public sealed class ShellViewModel : Bindable<ShellView>
     {
         if (activatedView == ActivatedView.Exit)
         {
-            this.OnExit();
+            ShellViewModel.OnExit();
         }
 
         if (activatedView == ActivatedView.GoBack)
@@ -126,8 +139,7 @@ public sealed class ShellViewModel : Bindable<ShellView>
         }
     }
 
-    // TODO: 
-    private async void OnExit()
+    private async static void OnExit()
     {
         var application = App.GetRequiredService<IApplicationBase>();
         await application.Shutdown();
@@ -177,3 +189,22 @@ public sealed class ShellViewModel : Bindable<ShellView>
 
     public bool IsTitleBarVisible{ get => this.Get<bool>(); set => this.Set(value); }
 }
+
+/*
+ *
+
+ Could be useful later... For now: Do not delete  
+
+    //private void OnModelUpdated(ModelUpdateMessage message)
+    //{
+    //    string msgProp = string.IsNullOrWhiteSpace(message.PropertyName) ? "<unknown>" : message.PropertyName;
+    //    string msgMethod = string.IsNullOrWhiteSpace(message.MethodName) ? "<unknown>" : message.MethodName;
+    //    this.Logger.Debug("Model update, property: " + msgProp + " method: " + msgMethod);
+
+    //    //if (message.PropertyName != nameof( < some model property > ))
+    //    //{
+    //    //}
+    //}
+
+ * 
+ */

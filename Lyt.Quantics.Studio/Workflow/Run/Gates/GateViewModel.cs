@@ -1,4 +1,5 @@
-﻿namespace Lyt.Quantics.Studio.Workflow.Run.Gates;
+﻿
+namespace Lyt.Quantics.Studio.Workflow.Run.Gates;
 
 public sealed class GateViewModel : Bindable<GateView> // : IDraggable
 {
@@ -145,6 +146,17 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
     }
 
     public void OnGateExited() => this.Messenger.Publish(new GateHoverMessage());
+
+    public void OnGateClicked()
+    {
+        if (this.IsToolbox || !this.Gate.IsParametrized)
+        {
+            return;
+        }
+
+        Debug.WriteLine("Editing gate: " + this.Gate.CaptionKey);
+        // Launch edit gate dialog 
+    }
 
     public double GateHeight { get => this.Get<double>(); set => this.Set(value); }
 

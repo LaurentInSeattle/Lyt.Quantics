@@ -18,7 +18,11 @@
 			<!-- Spacer -->
 			<ColumnDefinition Width="24" />
 			<!-- Save and Close -->
-			<ColumnDefinition Width="72" />
+			<ColumnDefinition Width="100" />
+			<!-- Spacer -->
+			<ColumnDefinition Width="4" />
+			<ColumnDefinition Width="100" />
+			<ColumnDefinition Width="4" />
 			<ColumnDefinition Width="72" />
 		</Grid.ColumnDefinitions>
 
@@ -27,16 +31,29 @@
 			Style="{StaticResource ToolbarIconButton}"
 			Behaviour="Tap"
 			HorizontalAlignment="Center" VerticalAlignment="Center"
-			Width="64" Height="48"
+			Width="92" Height="48"
 			Margin="4"
 			GlyphSource="save"
 			ButtonBackground="BorderlessRectangle"
 			GlyphStrokeThickness="0"
-			Text="Save"
+			Text="Overwrite Save"
+			Command="{Binding OverwriteCommand}"
+	    	/>
+		<glyphs:GlyphButton
+			Grid.Column="3"
+			Style="{StaticResource ToolbarIconButton}"
+			Behaviour="Tap"
+			HorizontalAlignment="Center" VerticalAlignment="Center"
+			Width="92" Height="48"
+			Margin="4"
+			GlyphSource="save_copy"
+			ButtonBackground="BorderlessRectangle"
+			GlyphStrokeThickness="0"
+			Text="Save As"
 			Command="{Binding SaveCommand}"
 	    	/>
 		<glyphs:GlyphButton
-			Grid.Column="2"
+			Grid.Column="5"
 			Style="{StaticResource ToolbarIconButton}"
 			Behaviour="Tap"
 			HorizontalAlignment="Center" VerticalAlignment="Center"

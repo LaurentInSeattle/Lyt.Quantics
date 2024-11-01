@@ -10,7 +10,9 @@ public sealed class DoSaveToolbarViewModel: Bindable<DoSaveToolbarView>
 #pragma warning disable IDE0051 // Remove unused private members
 
     // Autogenearted bindings
-    private void OnSave(object? _) => Command(ToolbarCommand.SaveToFile);
+    private void OnSave(object? _) => Command(ToolbarCommand.SaveToFile, false);
+
+    private void OnOverwrite(object? _) => Command(ToolbarCommand.SaveToFile, true);
 
     private void OnClose(object? _)
         => ActivateView(
@@ -19,6 +21,8 @@ public sealed class DoSaveToolbarViewModel: Bindable<DoSaveToolbarView>
 
 #pragma warning restore IDE0051 // Remove unused private members
 #pragma warning restore CA1822 // Mark members as static
+
+    public ICommand OverwriteCommand { get => this.Get<ICommand>()!; set => this.Set(value); }
 
     public ICommand SaveCommand { get => this.Get<ICommand>()!; set => this.Set(value); }
 

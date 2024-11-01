@@ -1,4 +1,5 @@
-﻿#region System + MSFT 
+﻿
+#region System + MSFT 
 
 global using System;
 global using System.Collections;
@@ -79,6 +80,8 @@ global using Lyt.Avalonia.Persistence;
 
 #endregion Framework 
 
+#region Engine 
+
 global using Lyt.Quantics.Engine;
 global using Lyt.Quantics.Engine.Core;
 global using Lyt.Quantics.Engine.Gates;
@@ -88,6 +91,10 @@ global using Lyt.Quantics.Engine.Gates.Binary;
 global using Lyt.Quantics.Engine.Gates.Ternary;
 global using Lyt.Quantics.Engine.Machine;
 global using Lyt.Quantics.Engine.Utilities;
+
+#endregion Engine 
+
+#region Studio
 
 global using Lyt.Quantics.Studio;
 global using Lyt.Quantics.Studio.Behaviors;
@@ -108,3 +115,5 @@ global using Lyt.Quantics.Studio.Workflow.Run.Gates;
 global using Lyt.Quantics.Studio.Workflow.Run.Gates.Special;
 global using Lyt.Quantics.Studio.Workflow.Run.Amplitudes;
 global using Lyt.Quantics.Studio.Workflow.Save;
+
+#endregion Studio

@@ -114,7 +114,20 @@ public partial class GateView : UserControl
     private void OnPointerReleased(object? sender, PointerReleasedEventArgs _)
     {
         Debug.WriteLine("Released");
+        if( this.isGhost || this.isDragging || !this.isPointerPressed)
+        {
+            return;
+        }
+
         this.isPointerPressed = false;
+
+        // It's a Click 
+        if (this.DataContext is GateViewModel gateViewModel)
+        {
+            // The view model will decide whether or not the gate is editable
+            // Check if toolbox, parameters, etc...
+            gateViewModel.OnGateClicked();
+        }
     }
 
     private void BeginDrag(PointerEventArgs pointerEventArgs)

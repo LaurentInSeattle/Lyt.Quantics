@@ -218,7 +218,7 @@ public sealed partial class QuanticsStudioModel : ModelBase
                     }
                 }
             }
-        } 
+        }
 
         this.PublishError(message);
         return false;
@@ -252,7 +252,8 @@ public sealed partial class QuanticsStudioModel : ModelBase
     private void PublishError(string message)
         => this.Messenger.Publish(new ModelUpdateErrorMessage(message));
 
-    public bool ValidateComputerMetadata(string name, string description, out string message)
+    public bool ValidateComputerMetadata(
+        string name, string description, bool withOverwrite, out string message)
     {
         if (!QuanticsStudioModel.ValidateStringInput(name, "Computer name", 4, 64, out message))
         {
@@ -273,19 +274,22 @@ public sealed partial class QuanticsStudioModel : ModelBase
 
         Debug.WriteLine("Save Path: " + pathName);
 
-        // Check for duplicates 
-        if (this.fileManager.Exists(Area.User, Kind.Json, pathName))
+        if ( ! withOverwrite)
         {
-            message = "There is already a computer file with that name";
-            return false;
+            // Check for duplicates 
+            if (this.fileManager.Exists(Area.User, Kind.Json, pathName))
+            {
+                message = "There is already a computer file with that name";
+                return false;
+            }
         }
 
         return true;
     }
 
-    public bool SaveComputerMetadata(string name, string description, out string message)
+    public bool SaveComputerMetadata(string name, string description, bool withOverwrite, out string message)
     {
-        if (!this.ValidateComputerMetadata(name, description, out message))
+        if (!this.ValidateComputerMetadata(name, description, withOverwrite, out message))
         {
             return false;
         }
@@ -298,7 +302,7 @@ public sealed partial class QuanticsStudioModel : ModelBase
         return true;
     }
 
-    public string? SaveComputerToFile(out string message)
+    public string? SaveComputerToFile(bool withOverwrite, out string message)
     {
         try
         {
@@ -314,11 +318,14 @@ public sealed partial class QuanticsStudioModel : ModelBase
 
             Debug.WriteLine("Save Path: " + pathName);
 
-            // Check for duplicate files 
-            if (this.fileManager.Exists(Area.User, Kind.Json, pathName))
+            if (!withOverwrite)
             {
-                message = "There is already a computer file with that name";
-                return null;
+                // Check for duplicate files 
+                if (this.fileManager.Exists(Area.User, Kind.Json, pathName))
+                {
+                    message = "There is already a computer file with that name";
+                    return null;
+                }
             }
 
             this.fileManager.Save<QuComputer>(Area.User, Kind.Json, pathName, this.QuComputer);

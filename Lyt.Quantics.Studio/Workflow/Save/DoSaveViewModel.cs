@@ -16,9 +16,10 @@ public sealed class DoSaveViewModel : Bindable<DoSaveView>
 
     private void OnToolbarCommandMessage(ToolbarCommandMessage message)
     {
-        if (message.Command == ToolbarCommand.SaveToFile)
+        if ((message.Command == ToolbarCommand.SaveToFile) &&
+            (message.CommandParameter is bool withOverwrite))
         {
-            this.TrySave();
+            this.TrySave(withOverwrite);
         }
     }
 
@@ -31,13 +32,13 @@ public sealed class DoSaveViewModel : Bindable<DoSaveView>
         this.Description = computer.Description;
     }
 
-    private bool Validate(out string message)
+    private bool Validate(bool withOverwrite, out string message)
         => this.quanticsStudioModel.ValidateComputerMetadata(
-            this.Name, this.Description, out message);
+            this.Name, this.Description, withOverwrite, out message);
 
-    private void TrySave()
+    private void TrySave(bool withOverwrite)
     {
-        if (!this.Validate(out string message))
+        if (!this.Validate(withOverwrite, out string message))
         {
             this.ValidationMessage = message;
             return;
@@ -47,10 +48,11 @@ public sealed class DoSaveViewModel : Bindable<DoSaveView>
         this.ValidationMessage = string.Empty;
         string newName = this.Name.Trim();
         string description = this.Description.Trim();
-        if (this.quanticsStudioModel.SaveComputerMetadata(newName, description, out message))
+        if (this.quanticsStudioModel.SaveComputerMetadata(
+            newName, description, withOverwrite, out message))
         {
             // Save to file 
-            string? pathName = this.quanticsStudioModel.SaveComputerToFile(out message);
+            string? pathName = this.quanticsStudioModel.SaveComputerToFile(withOverwrite, out message);
             if (string.IsNullOrWhiteSpace(pathName))
             {
                 // Fail: 
