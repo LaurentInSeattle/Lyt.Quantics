@@ -1,16 +1,16 @@
 ﻿
 TODO: Engine: 
 
-Parametrized gates (Phase / Rotation / Controlled Gate)
 Binary Gates with non consecutive qubits (Ex: swap 0 and 2)
 Ternary Gates with non consecutive qubits 
-Document gates, so that there's something to show when hovering 
+Document gates, so that there's always something to show when hovering 
 Review all circuits for names and descriptions to display when hovering the toolbox
 Improve Stepping 
 ??? Include Author in computer metadata
 
 TODO: Studio : 
 
+UI for Parametrized gates (Phase / Rotation / Controlled Gate)
 Spinner for 9 or 10 qubits 
 Toolbar: Filters for projects (Recent, etc) 
 Toolbar: Filters for built-in projects  (Unit tests, etc)
