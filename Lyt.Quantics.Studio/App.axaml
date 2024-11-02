@@ -9,6 +9,7 @@
     <Application.Styles>
         <FluentTheme />
 		<StyleInclude Source="avares://Lyt.Quantics.Studio/Assets/Palette/DeepBluePalette.axaml" />
+		<StyleInclude Source="/Assets/Theme/Sliders.axaml"/>
 	</Application.Styles>
 	<Application.Resources>
 		<ResourceDictionary>
