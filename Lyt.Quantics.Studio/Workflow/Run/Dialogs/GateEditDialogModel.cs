@@ -1,11 +1,29 @@
-﻿using static Lyt.Quantics.Studio.Messaging.ToolbarCommandMessage;
-
-namespace Lyt.Quantics.Studio.Workflow.Run.Dialogs;
+﻿namespace Lyt.Quantics.Studio.Workflow.Run.Dialogs;
 
 public sealed class GateEditDialogModel : DialogBindable<GateEditDialog, GateViewModel> 
 {
+    private const int DefaultPredefinedValue = 8; 
+
+    private static readonly Dictionary<int, AnglePredefinedValue> PredefinedValues =
+        new()
+        {
+            { 0,  new AnglePredefinedValue( 1, false ) },
+            { 1,  new AnglePredefinedValue( 2, false ) },
+            { 2,  new AnglePredefinedValue( 4, false ) },
+            { 3,  new AnglePredefinedValue( 8, false ) },
+            { 4,  new AnglePredefinedValue( 16, false ) },
+
+            { 5,  new AnglePredefinedValue( 16,true ) },
+            { 6,  new AnglePredefinedValue( 8, true ) },
+            { 7,  new AnglePredefinedValue( 4, true ) },
+            { 8,  new AnglePredefinedValue( 2, true ) },
+            { 9,  new AnglePredefinedValue( 1, true ) },
+        }; 
+
     public GateEditDialogModel()
     {
+        this.IsPredefinedValue = true;
+        this.PredefinedValue = GateEditDialogModel.PredefinedValues[DefaultPredefinedValue]; 
     }
 
     private GateViewModel GateViewModel 
@@ -13,15 +31,23 @@ public sealed class GateEditDialogModel : DialogBindable<GateEditDialog, GateVie
                 gVm : 
                 throw new ArgumentNullException("No parameters"); 
 
+    public bool IsPredefinedValue {  get; private set; }
+
+    public AnglePredefinedValue PredefinedValue { get; private set; }
+
+    public double AngleValue { get; private set; }
+
     protected override void OnViewLoaded()
     {
         base.OnViewLoaded();
-        this.ValuesCount = 10;
+
         this.Title =
             this.GateViewModel.Gate.CaptionKey.StartsWith('R') ?
                 "Gate Rotation Angle" :
-                "Gate Phase Value"; 
-    } 
+                "Gate Phase Value";
+        this.ValuesCount = GateEditDialogModel.PredefinedValues.Count-1;
+        this.SliderValue = GateEditDialogModel.DefaultPredefinedValue;
+    }
 
     private void OnSave(object? _)
     {
@@ -50,7 +76,17 @@ public sealed class GateEditDialogModel : DialogBindable<GateEditDialog, GateVie
         {
             this.Set(value);
             int sliderValue = (int)Math.Round(this.SliderValue);
-            this.AngleValueText = string.Format("Angle: {0:D}", sliderValue);
+            
+            if (GateEditDialogModel.PredefinedValues.TryGetValue(sliderValue, out var angleValue))
+            {
+                if (angleValue is AnglePredefinedValue predefinedValue)
+                {
+                    this.IsPredefinedValue = true;
+                    this.PredefinedValue = predefinedValue;
+                    this.AngleValue = predefinedValue.Value;
+                    this.AngleValueText = string.Concat( this.Title , ": " , predefinedValue.Caption);
+                } 
+            }
         }
     }
 

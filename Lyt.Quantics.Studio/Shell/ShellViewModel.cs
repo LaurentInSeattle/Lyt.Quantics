@@ -63,6 +63,11 @@ public sealed class ShellViewModel : Bindable<ShellView>
     {
         if (this.quanticsStudioModel.IsDirty)
         {
+            if (this.dialogService.IsModal)
+            {
+                this.dialogService.Dismiss();
+            }
+
             Schedule.OnUiThread(50,
                 () =>
                 {

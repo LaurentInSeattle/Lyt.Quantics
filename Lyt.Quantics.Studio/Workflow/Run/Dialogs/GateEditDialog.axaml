@@ -12,7 +12,7 @@
     xmlns:theme="clr-namespace:Lyt.Quantics.Studio"
 	>
 	<Grid
-		Width="800" Height="450"
+		Width="600" Height="300"
 		Background="Transparent"
 		>
 		<Rectangle
@@ -108,7 +108,7 @@
 					>
 					<Grid.RowDefinitions>
 						<RowDefinition Height="4"/>
-						<RowDefinition Height="40"/>
+						<RowDefinition Height="50"/>
 						<RowDefinition Height="60"/>
 						<RowDefinition Height="*"/>
 					</Grid.RowDefinitions>
@@ -116,14 +116,14 @@
 						Text="{Binding AngleValueText}"
 						Grid.Row="1"
 						VerticalAlignment="Center" HorizontalAlignment="Left"
-						FontSize="16"
+						FontSize="20"
 						Foreground="{StaticResource ResourceKey= LightAqua_1_100}"
 						Opacity="1.0"
 						Margin="20 12 0 0"
 						/>
 					<Slider
 						Grid.Row="2"
-						Margin="40 0 0 0"
+						Margin="40 0 40 0"
 						Height="60"
 						Minimum="0" Maximum="{Binding ValuesCount}"
 						Value="{Binding SliderValue}"

@@ -1,6 +1,4 @@
-﻿using MathNet.Numerics.Distributions;
-
-namespace Lyt.Quantics.Engine.Gates.Base;
+﻿namespace Lyt.Quantics.Engine.Gates.Base;
 
 public class RotationGate : Gate
 {
