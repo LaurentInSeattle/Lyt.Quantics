@@ -34,9 +34,9 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
 
         this.Parameter = string.Empty;
         this.ParameterFontSize = 1.0;
-        if ( gate.IsParametrized)
+        if (gate.IsParametrized)
         {
-            this.FontSize -= 6; 
+            this.FontSize -= 6;
             this.Parameter = gate.ParameterCaption;
             this.ParameterFontSize = 12.0;
         }
@@ -93,7 +93,7 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
         };
 
     public static Control? SpecialGateToControl(string gateCaptionKey)
-        =>  gateCaptionKey switch
+        => gateCaptionKey switch
         {
             "ACX" => new ACxGate(),
             "CX" => new CxGate(),

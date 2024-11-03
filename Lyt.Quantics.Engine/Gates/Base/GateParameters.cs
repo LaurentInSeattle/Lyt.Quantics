@@ -10,6 +10,7 @@ public sealed class GateParameters
         {
             this.Axis = rotationGate.Axis;
 
+            this.Angle = rotationGate.Angle;
             this.IsPiDivisor = rotationGate.IsPiDivisor;
             this.PiDivisor = rotationGate.PiDivisor;
             this.IsPositive = rotationGate.IsPositive;
@@ -35,6 +36,4 @@ public sealed class GateParameters
     public int PiDivisor { get; set; } = 2;
 
     public bool IsPositive { get; set; } = true;
-
-
 }

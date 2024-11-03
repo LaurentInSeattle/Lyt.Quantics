@@ -21,6 +21,7 @@ public sealed class GateEditDialogModel : DialogBindable<GateEditDialog, GateVie
         };
 
     private bool isChangedFromSlider;
+    private bool isInitializing;
 
     public GateEditDialogModel()
     {
@@ -71,13 +72,20 @@ public sealed class GateEditDialogModel : DialogBindable<GateEditDialog, GateVie
         }
         else
         {
+            this.isInitializing = true;
             this.SliderValue = GateEditDialogModel.DefaultPredefinedValue;
             this.AngleValue = this.GateParameters.Angle;
             this.AngleValueText =
                 string.Concat(this.Title, ": ", this.AngleValue.ToString("F3"), " radians.");
             this.CustomValue = this.AngleValue.ToString("F3");
         }
+
+        this.ValidationMessage = string.Empty;
+        this.SaveButtonIsEnabled = true;
+        this.isInitializing = false;
     }
+
+#pragma warning disable IDE0051 // Remove unused private members
 
     private void OnSave(object? _)
     {
@@ -85,12 +93,14 @@ public sealed class GateEditDialogModel : DialogBindable<GateEditDialog, GateVie
         this.dialogService.Dismiss();
     }
 
-    public void OnCancel(object? _)
+    private void OnCancel(object? _)
     {
         this.onClose?.Invoke(this, false);
         this.dialogService.Dismiss();
     }
+#pragma warning restore IDE0051 // Remove unused private members
 
+    /// <summary> Called from the view whenever the content of a text box is changed.</summary>
     public void OnEditing()
     {
         if (this.isChangedFromSlider)
@@ -137,10 +147,46 @@ public sealed class GateEditDialogModel : DialogBindable<GateEditDialog, GateVie
         return false;
     }
 
+    private void OnSliderChanged(int sliderValue)
+    {
+        if (this.isInitializing)
+        {
+            return;
+        }
+
+        if (GateEditDialogModel.PredefinedValues.TryGetValue(sliderValue, out var angleValue))
+        {
+            if (angleValue is AnglePredefinedValue predefinedValue)
+            {
+                this.isChangedFromSlider = true;
+                this.IsPredefinedValue = true;
+                this.PredefinedValue = predefinedValue;
+                this.AngleValue = predefinedValue.Value;
+                this.AngleValueText = string.Concat(this.Title, ": ", predefinedValue.Caption);
+                this.CustomValue = this.AngleValue.ToString("F3");
+
+                this.GateParameters.IsPiDivisor = true;
+                this.GateParameters.Angle = this.AngleValue;
+                this.GateParameters.PiDivisor = predefinedValue.PiDivisor;
+                this.GateParameters.IsPositive = predefinedValue.IsPositive;
+
+                this.ValidationMessage = string.Empty;
+                this.SaveButtonIsEnabled = true;
+
+                // Need to delay a bit for clearing the flag or else the text changed event handler
+                // will not 'see' that the isChangedFromSlider flag is set 
+                Schedule.OnUiThread(
+                    66,
+                    () => { this.isChangedFromSlider = false; },
+                    DispatcherPriority.Background);
+            }
+        }
+    }
+
     private static int SliderValueFromParameters(GateParameters gateParameters)
     {
         int piDivisor = gateParameters.PiDivisor;
-        bool isPositive = gateParameters.IsPositive; 
+        bool isPositive = gateParameters.IsPositive;
         foreach (int key in PredefinedValues.Keys)
         {
             var preDefinedValue = PredefinedValues[key];
@@ -172,35 +218,7 @@ public sealed class GateEditDialogModel : DialogBindable<GateEditDialog, GateVie
         set
         {
             this.Set(value);
-            int sliderValue = (int)Math.Round(this.SliderValue);
-
-            if (GateEditDialogModel.PredefinedValues.TryGetValue(sliderValue, out var angleValue))
-            {
-                if (angleValue is AnglePredefinedValue predefinedValue)
-                {
-                    this.isChangedFromSlider = true;
-                    this.IsPredefinedValue = true;
-                    this.PredefinedValue = predefinedValue;
-                    this.AngleValue = predefinedValue.Value;
-                    this.AngleValueText = string.Concat(this.Title, ": ", predefinedValue.Caption);
-                    this.CustomValue = this.AngleValue.ToString("F3");
-
-                    this.GateParameters.IsPiDivisor = true;
-                    this.GateParameters.Angle = this.AngleValue;
-                    this.GateParameters.PiDivisor = predefinedValue.PiDivisor;
-                    this.GateParameters.IsPositive = predefinedValue.IsPositive;
-
-                    this.ValidationMessage = string.Empty;
-                    this.SaveButtonIsEnabled = true;
-
-                    // Need to delay a bit for clearing the flag or else the text changed event handler
-                    // will not 'see' that the isChangedFromSlider flag is set 
-                    Schedule.OnUiThread(
-                        66,
-                        () => { this.isChangedFromSlider = false; },
-                        DispatcherPriority.Background);
-                }
-            }
+            this.OnSliderChanged((int)Math.Round(this.SliderValue));
         }
     }
 
