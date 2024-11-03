@@ -3,6 +3,7 @@
 using static ViewActivationMessage;
 using static MessagingExtensions;
 using static ToolbarCommandMessage;
+using Lyt.Quantics.Engine.Gates.Base;
 
 public sealed class ComputerViewModel : Bindable<ComputerView>
 {
@@ -43,26 +44,75 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
         // Run modal dialog 
         if (this.dialogService is DialogService modalService)
         {
-            GateEditDialogModel gateEditDialogModel = new();
             modalService.RunModal<GateEditDialog, GateViewModel>(
-                this.View.ToasterHost,
-                gateEditDialogModel,
-                this.OnGateEditClose,
-                message.GateViewModel);
+                this.View.ToasterHost, new GateEditDialogModel(),
+                this.OnGateEditClose, message.GateViewModel);
         }
     }
 
-    private void OnGateEditClose(object sender, bool close)
+    private void OnGateEditClose(object sender, bool save)
     {
-        if (sender is not GateEditDialogModel gateEditDialogModel)
+        if ((!save) || (sender is not GateEditDialogModel gateEditDialogModel))
         {
+            // Dismissed or problem...
             return;
         }
 
-        // Grab the data 
+        try
+        {
 
-        // Do the stuff 
-        Debug.WriteLine("OnGateEditClose");
+            // Grab the data 
+            GateViewModel gateViewModel = gateEditDialogModel.GateViewModel;
+
+            Gate oldGate = gateViewModel.Gate;
+            if ((oldGate is not RotationGate) && (oldGate is not PhaseGate))
+            {
+                throw new Exception("Incorrect gate type.");
+            }
+
+            Gate? newGate = null;
+            if (gateEditDialogModel.IsPredefinedValue)
+            {
+                var predefinedValue = gateEditDialogModel.PredefinedValue;
+                if (oldGate is RotationGate rotationGate)
+                {
+
+                    newGate =
+                        new RotationGate(rotationGate.Axis, predefinedValue.PiDivisor, predefinedValue.IsPositive);
+                }
+                else // (oldGate is PhaseGate)
+                {
+                    newGate = new PhaseGate(predefinedValue.PiDivisor, predefinedValue.IsPositive);
+                }
+            }
+            else
+            {
+                double value = gateEditDialogModel.AngleValue;
+                if (oldGate is RotationGate rotationGate)
+                {
+                    newGate = new RotationGate(rotationGate.Axis, value);
+                }
+                else // (oldGate is PhaseGate)
+                {
+                    newGate = new PhaseGate(value);
+                }
+            }
+
+            if (newGate is null)
+            {
+                throw new Exception("Failed to create a new gate.");
+            }
+
+            int stageIndex = gateViewModel.StageIndex;
+            var stage = this.Stages[stageIndex];
+            stage.AddGateAt(gateViewModel.QubitIndex, newGate); 
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            string uiMessage = "Gate Edit: Exception thrown: " + ex.Message;
+            this.toaster.Show("Unexpected Error", uiMessage, 4_000, InformationLevel.Error);
+        }
     }
 
     protected override void OnViewLoaded()

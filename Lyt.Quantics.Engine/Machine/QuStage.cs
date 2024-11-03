@@ -84,7 +84,7 @@ public sealed class QuStage
 
     public void AddAtQubit(QuComputer computer, int qubitIndex, Gate gate)
     {
-        var stageOperator = new QuStageOperator() { GateKey = gate.CaptionKey };
+        var stageOperator = new QuStageOperator(gate);
         stageOperator.QuBitIndices.Add(qubitIndex);
         if (gate.Dimension >= 4)
         {
@@ -158,7 +158,7 @@ public sealed class QuStage
             foreach (int index in emptyIndices)
             {
                 var quStageOperator =
-                    new QuStageOperator() { GateKey = IdentityGate.Key, QuBitIndices = [index] };
+                    new QuStageOperator(IdentityGate.Key) { QuBitIndices = [index] };
                 this.Operators.Add(quStageOperator);
             }
 

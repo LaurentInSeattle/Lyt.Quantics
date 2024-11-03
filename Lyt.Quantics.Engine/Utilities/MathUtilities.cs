@@ -34,7 +34,11 @@ public static class MathUtilities
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool AreAlmostEqual(double x, double y)
-        => Math.Abs(x - y) <= MathUtilities.Epsilon; 
+        => Math.Abs(x - y) <= MathUtilities.Epsilon;
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool IsAlmostEqual(this double x, double y)
+        => Math.Abs(x - y) <= MathUtilities.Epsilon;
 
     public static double SquaredMagnitude(this Complex[] tensor)
     {

@@ -2,16 +2,30 @@
 
 public sealed class QuStageOperator
 {
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
+    public QuStageOperator() { /* Required for serialization */ }
+#pragma warning restore CS8618 
+
+    public QuStageOperator(string gateKey)
+        => this.Gate = GateFactory.Produce(gateKey);
+
+    public QuStageOperator(Gate gate)
+        => this.Gate = QuStageOperator.ProduceGate(gate);
+
     public List<int> QuBitIndices { get; set; } = [];
 
-    public string GateKey { get; set; } = IdentityGate.Key;
+    public Gate Gate { get; private set; }
+
+    [JsonIgnore]
+    public string GateKey => this.Gate is null ? "I" : this.Gate.CaptionKey;
 
     [JsonIgnore]
     public Matrix<Complex> StageOperatorMatrix { get; private set; } = Matrix<Complex>.Build.Dense(1, 1);
 
     public QuStageOperator DeepClone()
     {
-        var clone = new QuStageOperator { GateKey = this.GateKey };
+        // Need to clone the gate
+        var clone = new QuStageOperator(QuStageOperator.ProduceGate(this.Gate));
         foreach (int index in QuBitIndices)
         {
             clone.QuBitIndices.Add(index);
@@ -65,7 +79,7 @@ public sealed class QuStageOperator
 
         try
         {
-            this.StageOperatorMatrix = GateFactory.Produce( this.GateKey).Matrix;
+            this.StageOperatorMatrix = GateFactory.Produce(this.GateKey).Matrix;
         }
         catch (Exception ex)
         {
@@ -75,4 +89,20 @@ public sealed class QuStageOperator
 
         return true;
     }
-} 
+
+    private static Gate ProduceGate(Gate gate)
+    {
+        if (gate is PhaseGate phaseGate)
+        {
+            return GateFactory.Produce(gate.CaptionKey, axis: Axis.X, phaseGate.Angle);
+        }
+        else if (gate is RotationGate rotationGate)
+        {
+            return GateFactory.Produce(gate.CaptionKey, rotationGate.Axis, rotationGate.Angle);
+        }
+        else
+        {
+            return GateFactory.Produce(gate.CaptionKey);
+        }
+    }
+}

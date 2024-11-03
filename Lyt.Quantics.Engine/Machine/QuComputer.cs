@@ -17,10 +17,10 @@ public sealed partial class QuComputer
 
     public QuComputer() { /* Required for deserialization */ }
 
-    public QuComputer(string name, string description) 
+    public QuComputer(string name, string description)
     {
         this.Name = name;
-        this.Description = description; 
+        this.Description = description;
     }
 
     #region JSON Properties (serialized)
@@ -63,7 +63,7 @@ public sealed partial class QuComputer
     // TODO:
     // Use a finite state machine instead of all those potentially overlapping
     // and potentially inconsistent states.
-    
+
     [JsonIgnore]
     public bool IsValid
     {
@@ -71,17 +71,17 @@ public sealed partial class QuComputer
         private set
         {
             this.isValid = value;
-            if ( ! value )
+            if (!value)
             {
-                this.IsBuilt = false; 
+                this.IsBuilt = false;
             }
-        } 
+        }
     }
 
     [JsonIgnore]
-    public bool IsBuilt 
-    { 
-        get => this.isBuilt; 
+    public bool IsBuilt
+    {
+        get => this.isBuilt;
         private set
         {
             this.isBuilt = value;
@@ -93,9 +93,9 @@ public sealed partial class QuComputer
     }
 
     [JsonIgnore]
-    public bool IsPrepared 
-    { 
-        get => this.isPrepared; 
+    public bool IsPrepared
+    {
+        get => this.isPrepared;
         private set
         {
             this.isPrepared = value;
@@ -109,24 +109,24 @@ public sealed partial class QuComputer
     }
 
     [JsonIgnore]
-    public bool IsStepping 
-    { 
-        get => this.isStepping; 
-        private set => this.isStepping = value; 
+    public bool IsStepping
+    {
+        get => this.isStepping;
+        private set => this.isStepping = value;
     }
 
     [JsonIgnore]
-    public bool IsRunning 
-    { 
-        get => this.isRunning; 
-        private set => this.isRunning = value; 
+    public bool IsRunning
+    {
+        get => this.isRunning;
+        private set => this.isRunning = value;
     }
 
     [JsonIgnore]
-    public bool IsComplete 
-    { 
-        get => this.isComplete; 
-        private set => this.isComplete = value; 
+    public bool IsComplete
+    {
+        get => this.isComplete;
+        private set => this.isComplete = value;
     }
 
     // TODO: END 
@@ -136,7 +136,7 @@ public sealed partial class QuComputer
 
     #endregion Runtime Properties not serialized
 
-    public QuComputer DeepClone ()
+    public QuComputer DeepClone()
     {
         var clone = ReflectionUtilities.CreateAndCopyPropertiesFrom(this);
         foreach (var state in this.InitialStates)
@@ -304,15 +304,15 @@ public sealed partial class QuComputer
         return true;
     }
 
-    public bool Reset (out string message)
+    public bool Reset(out string message)
     {
         this.IsValid = false;
-        for ( int qubitIndex = 0; qubitIndex < this.QuBitsCount; ++ qubitIndex)
+        for (int qubitIndex = 0; qubitIndex < this.QuBitsCount; ++qubitIndex)
         {
-            this.InitialStates[qubitIndex] = QuState.Zero; 
+            this.InitialStates[qubitIndex] = QuState.Zero;
         }
 
-        return this.Validate(out message); 
+        return this.Validate(out message);
     }
 
     public bool Step(out string message)
@@ -503,11 +503,11 @@ public sealed partial class QuComputer
             [
                 new QuStage()
                 {
-                   Operators =  [ new QuStageOperator { GateKey = "H" , QuBitIndices = [0]  }, ] ,
+                   Operators =  [ new QuStageOperator( "H") { QuBitIndices = [0]  }, ] ,
                 },
                 new QuStage()
                 {
-                   Operators = [ new QuStageOperator { GateKey = "CX" , QuBitIndices = [0,1]}, ] ,
+                   Operators = [ new QuStageOperator ("CX" ) { QuBitIndices = [0,1]}, ] ,
                 },
             ],
         };

@@ -16,6 +16,8 @@ public static class SerializationUtilities
                 AllowTrailingCommas = true,
                 WriteIndented = true,
                 ReadCommentHandling = JsonCommentHandling.Skip,
+                IgnoreReadOnlyFields = true,
+                IgnoreReadOnlyProperties = true,
                 // .Net 9 properties 
                 //
                 // AllowOutOfOrderMetadataProperties = true,

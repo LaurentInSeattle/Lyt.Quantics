@@ -32,7 +32,7 @@ public sealed class PhaseGate : Gate
 
     private PhaseGate(double lambda, bool isPiDivisor)
     {
-        this.Lambda = lambda;
+        this.Angle = lambda;
         this.IsPiDivisor = isPiDivisor;
 
         double sinReal = Math.Sin(lambda);
@@ -43,7 +43,7 @@ public sealed class PhaseGate : Gate
         this.matrix.At(1, 1, eIotaLambda);
     }
 
-    public double Lambda { get; private set; }
+    public override double Angle { get; set; }
 
     public override Matrix<Complex> Matrix => this.matrix;
 
@@ -51,7 +51,7 @@ public sealed class PhaseGate : Gate
 
     public override string AlternateName => "Phase Gate";
 
-    public override string CaptionKey => "Ph";
+    public override string CaptionKey { get; set; } = "Ph";
 
     public bool IsPiDivisor { get; private set; } = true;
 

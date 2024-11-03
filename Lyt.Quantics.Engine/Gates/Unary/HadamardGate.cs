@@ -1,7 +1,7 @@
 ﻿namespace Lyt.Quantics.Engine.Gates.Unary;
 
-using static MathUtilities;
 using MathNet.Numerics.LinearAlgebra;
+using static MathUtilities;
 
 public sealed class HadamardGate : Gate
 {
@@ -29,7 +29,7 @@ public sealed class HadamardGate : Gate
 
     public override string AlternateName => "Hadamard";
 
-    public override string CaptionKey => "H";
+    public override string CaptionKey { get; set; } = "H";
 
     public override GateCategory Category => GateCategory.A_HadamardAndT;
 }

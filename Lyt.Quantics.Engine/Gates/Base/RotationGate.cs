@@ -32,8 +32,8 @@ public class RotationGate : Gate
 
     private RotationGate(Axis axis, double theta, bool isPiDivisor)
     {
-        this.RotationAxis = axis;
-        this.Theta = theta;
+        this.Axis = axis;
+        this.Angle = theta;
         this.IsPiDivisor = isPiDivisor;
 
         double half = theta / 2.0;
@@ -74,9 +74,9 @@ public class RotationGate : Gate
         }
     }
 
-    public Axis RotationAxis { get; private set; }
+    public override Axis Axis { get; set; }
 
-    public double Theta { get; private set; }
+    public override double Angle { get; set; }
 
     public bool IsPiDivisor { get; private set; } = true;
 
