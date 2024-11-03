@@ -52,6 +52,19 @@ public sealed class QuStage
         return true;
     }
 
+    public QuStageOperator StageOperatorAt ( int qubitIndex )
+    {
+        foreach (var stageOperator in Operators)
+        {
+            if (stageOperator.QuBitIndices[0] == qubitIndex)
+            {
+                return stageOperator;
+            } 
+        }
+
+        throw new Exception("Failed to retrieve Stage Operator");
+    }
+
     public QuStage DeepClone ()
     {
         var clone = new QuStage();

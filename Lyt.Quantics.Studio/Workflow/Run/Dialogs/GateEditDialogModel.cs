@@ -47,16 +47,36 @@ public sealed class GateEditDialogModel : DialogBindable<GateEditDialog, GateVie
     {
         base.OnViewLoaded();
 
-        this.GateParameters = new();
+        // Retrieve GateParameters for the existing gate
+        var quanticsStudioModel = App.GetRequiredService<QuanticsStudioModel>();
+        var gate = this.GateViewModel.Gate;
+        int stageIndex = this.GateViewModel.StageIndex;
+        var stage = quanticsStudioModel.QuComputer.Stages[stageIndex];
+        var stageOperator = stage.StageOperatorAt(this.GateViewModel.QubitIndex);
+        this.GateParameters = stageOperator.GateParameters;
+
         bool isRotation = false;
-        if (this.GateViewModel.Gate is RotationGate rotationGate)
+        if (gate is RotationGate rotationGate)
         {
             isRotation = true;
             this.GateParameters.Axis = rotationGate.Axis;
         }
 
-        this.Title = isRotation ?  "Gate Rotation Angle" : "Gate Phase Value";
-        this.SliderValue = GateEditDialogModel.DefaultPredefinedValue;
+        this.Title = isRotation ? "Gate Rotation Angle" : "Gate Phase Value";
+
+        if (this.GateParameters.IsPiDivisor)
+        {
+            // retrieve the slider value from gate parameters
+            this.SliderValue = SliderValueFromParameters(this.GateParameters);
+        }
+        else
+        {
+            this.SliderValue = GateEditDialogModel.DefaultPredefinedValue;
+            this.AngleValue = this.GateParameters.Angle;
+            this.AngleValueText =
+                string.Concat(this.Title, ": ", this.AngleValue.ToString("F3"), " radians.");
+            this.CustomValue = this.AngleValue.ToString("F3");
+        }
     }
 
     private void OnSave(object? _)
@@ -115,6 +135,23 @@ public sealed class GateEditDialogModel : DialogBindable<GateEditDialog, GateVie
         }
 
         return false;
+    }
+
+    private static int SliderValueFromParameters(GateParameters gateParameters)
+    {
+        int piDivisor = gateParameters.PiDivisor;
+        bool isPositive = gateParameters.IsPositive; 
+        foreach (int key in PredefinedValues.Keys)
+        {
+            var preDefinedValue = PredefinedValues[key];
+            if ((preDefinedValue.PiDivisor == piDivisor) &&
+                (preDefinedValue.IsPositive == isPositive))
+            {
+                return key;
+            }
+        }
+
+        throw new Exception("Failed to setup slider.");
     }
 
     public string CustomValue { get => this.Get<string>()!; set => this.Set(value); }

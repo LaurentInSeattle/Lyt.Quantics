@@ -132,7 +132,7 @@ public sealed class StageViewModel : Bindable<StageView>
 
                 ++this.activeGates;
                 int firstIndex = stageOperator.QuBitIndices.Min();
-                var gate = GateFactory.Produce(stageOperator.GateKey);
+                var gate = GateFactory.Produce(stageOperator.GateKey, stageOperator.GateParameters);
                 int gateRows = gate.QuBits;
                 var gateViewModel =
                     new GateViewModel(

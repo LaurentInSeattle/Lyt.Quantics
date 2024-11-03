@@ -19,7 +19,7 @@ public sealed class QuStageOperator
     /// <summary> Gate Identifier </summary>
     public string GateKey { get; set; } = "I";
 
-    GateParameters GateParameters { get; set; } = new();
+    public GateParameters GateParameters { get; set; } = new();
 
     public List<int> QuBitIndices { get; set; } = [];
 
