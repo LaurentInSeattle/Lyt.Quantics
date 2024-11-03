@@ -24,7 +24,9 @@ public sealed class GateEditDialogModel : DialogBindable<GateEditDialog, GateVie
 
     public GateEditDialogModel()
     {
+        this.GateParameters = new();
         this.IsPredefinedValue = true;
+        this.ValuesCount = GateEditDialogModel.PredefinedValues.Count - 1;
         this.PredefinedValue = GateEditDialogModel.PredefinedValues[DefaultPredefinedValue];
     }
 
@@ -32,6 +34,8 @@ public sealed class GateEditDialogModel : DialogBindable<GateEditDialog, GateVie
         => base.parameters is GateViewModel gVm ?
                 gVm :
                 throw new ArgumentNullException("No parameters");
+
+    public GateParameters GateParameters { get; private set; }
 
     public bool IsPredefinedValue { get; private set; }
 
@@ -43,11 +47,15 @@ public sealed class GateEditDialogModel : DialogBindable<GateEditDialog, GateVie
     {
         base.OnViewLoaded();
 
-        this.Title =
-            this.GateViewModel.Gate.CaptionKey.StartsWith('R') ?
-                "Gate Rotation Angle" :
-                "Gate Phase Value";
-        this.ValuesCount = GateEditDialogModel.PredefinedValues.Count - 1;
+        this.GateParameters = new();
+        bool isRotation = false;
+        if (this.GateViewModel.Gate is RotationGate rotationGate)
+        {
+            isRotation = true;
+            this.GateParameters.Axis = rotationGate.Axis;
+        }
+
+        this.Title = isRotation ?  "Gate Rotation Angle" : "Gate Phase Value";
         this.SliderValue = GateEditDialogModel.DefaultPredefinedValue;
     }
 
@@ -94,6 +102,10 @@ public sealed class GateEditDialogModel : DialogBindable<GateEditDialog, GateVie
                 this.AngleValue = value;
                 this.AngleValueText =
                     string.Concat(this.Title, ": ", value.ToString("F3"), " radians.");
+
+                this.GateParameters.IsPiDivisor = false;
+                this.GateParameters.Angle = value;
+
                 return true;
             }
         }
@@ -135,6 +147,12 @@ public sealed class GateEditDialogModel : DialogBindable<GateEditDialog, GateVie
                     this.AngleValue = predefinedValue.Value;
                     this.AngleValueText = string.Concat(this.Title, ": ", predefinedValue.Caption);
                     this.CustomValue = this.AngleValue.ToString("F3");
+
+                    this.GateParameters.IsPiDivisor = true;
+                    this.GateParameters.Angle = this.AngleValue;
+                    this.GateParameters.PiDivisor = predefinedValue.PiDivisor;
+                    this.GateParameters.IsPositive = predefinedValue.IsPositive;
+
                     this.ValidationMessage = string.Empty;
                     this.SaveButtonIsEnabled = true;
 

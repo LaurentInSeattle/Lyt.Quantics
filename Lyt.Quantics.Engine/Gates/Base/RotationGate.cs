@@ -19,24 +19,22 @@ public class RotationGate : Gate
     //  exp(iAx)=cos⁡(x)I+isin⁡(x)A exp(iAx)=cos(x)I+isin(x)A  where A is one of the three
     //  Pauli Matrices.
 
-    private readonly Matrix<Complex> matrix;
-    private readonly string captionKey;
+    private readonly Matrix<Complex> matrix = Matrix<Complex>.Build.Dense(1,1);
+    private readonly string captionKey = string.Empty;
 
-    public RotationGate(Axis axis, double theta) 
-        : this(axis, theta, isPiDivisor: false) 
-        => this.ParameterCaption = theta.ToString("F2");
-
-    public RotationGate(Axis axis, int piDivisor, bool isPositive)
-        : this(axis, (isPositive ? 1.0 : -1.0) * Math.PI / piDivisor, isPiDivisor: true) 
-        => this.ParameterCaption = string.Format("{0}π/{1}", (isPositive ? "+" : "-"), piDivisor);
-
-    private RotationGate(Axis axis, double theta, bool isPiDivisor)
+    public RotationGate(GateParameters parameters)
     {
-        this.Axis = axis;
-        this.Angle = theta;
-        this.IsPiDivisor = isPiDivisor;
+        this.Axis = parameters.Axis;
+        this.Angle = parameters.Angle;
+        this.IsPiDivisor = parameters.IsPiDivisor;
+        this.PiDivisor = parameters.PiDivisor;
+        this.IsPositive = parameters.IsPositive;
+        if (this.IsPiDivisor)
+        {
+            this.Angle = (this.IsPositive ? 1.0 : -1.0) * Math.PI / this.PiDivisor; 
+        }
 
-        double half = theta / 2.0;
+        double half = this.Angle / 2.0;
         double sinReal = Math.Sin(half);
         double cosReal = Math.Cos(half);
         Complex cosComplex = cosReal;
@@ -45,7 +43,7 @@ public class RotationGate : Gate
 
         this.matrix = Matrix<Complex>.Build.Sparse(2, 2, Complex.Zero);
 
-        switch (axis)
+        switch (this.Axis)
         {
             default:
             case Axis.X:

@@ -60,10 +60,8 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
 
         try
         {
-
             // Grab the data 
             GateViewModel gateViewModel = gateEditDialogModel.GateViewModel;
-
             Gate oldGate = gateViewModel.Gate;
             if ((oldGate is not RotationGate) && (oldGate is not PhaseGate))
             {
@@ -71,31 +69,15 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
             }
 
             Gate? newGate = null;
-            if (gateEditDialogModel.IsPredefinedValue)
+            var gateParameters = gateEditDialogModel.GateParameters;
+            if (oldGate is RotationGate rotationGate)
             {
-                var predefinedValue = gateEditDialogModel.PredefinedValue;
-                if (oldGate is RotationGate rotationGate)
-                {
 
-                    newGate =
-                        new RotationGate(rotationGate.Axis, predefinedValue.PiDivisor, predefinedValue.IsPositive);
-                }
-                else // (oldGate is PhaseGate)
-                {
-                    newGate = new PhaseGate(predefinedValue.PiDivisor, predefinedValue.IsPositive);
-                }
+                newGate = new RotationGate(gateParameters);
             }
-            else
+            else // (oldGate is PhaseGate)
             {
-                double value = gateEditDialogModel.AngleValue;
-                if (oldGate is RotationGate rotationGate)
-                {
-                    newGate = new RotationGate(rotationGate.Axis, value);
-                }
-                else // (oldGate is PhaseGate)
-                {
-                    newGate = new PhaseGate(value);
-                }
+                newGate = new PhaseGate(gateParameters);
             }
 
             if (newGate is null)
@@ -103,9 +85,13 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
                 throw new Exception("Failed to create a new gate.");
             }
 
+            // Gate view likely needs an update 
+            // gateViewModel.Update(gate); 
+
+            // Update the model 
             int stageIndex = gateViewModel.StageIndex;
             var stage = this.Stages[stageIndex];
-            stage.AddGateAt(gateViewModel.QubitIndex, newGate); 
+            stage.AddGateAt(gateViewModel.QubitIndex, newGate);
         }
         catch (Exception ex)
         {

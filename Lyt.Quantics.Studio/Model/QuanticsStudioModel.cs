@@ -102,7 +102,8 @@ public sealed partial class QuanticsStudioModel : ModelBase
         var list = new List<Gate>(gateTypes.Count);
         foreach (var gateType in gateTypes)
         {
-            var gate = GateFactory.Produce(gateType.Key);
+            // Rotation and phase gates will be created with defaults in the tool box
+            var gate = GateFactory.Produce(gateType.Key, new GateParameters());
             list.Add(gate);
         }
 

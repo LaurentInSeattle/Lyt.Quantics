@@ -45,14 +45,16 @@ public static class GateFactory
                 }
             }
 
+            GateParameters defaultGateParameters = new();
             // Add all three rotation gates with a Pi / 2 angle 
             foreach (Axis axis in new Axis[] { Axis.X, Axis.Y, Axis.Z })
             {
-                AddGate(new RotationGate(axis, 2, isPositive:true));
+                defaultGateParameters.Axis = axis;
+                AddGate(new RotationGate(defaultGateParameters));
             }
 
             // Add the phase gate with a Pi / 2 angle 
-            AddGate(new PhaseGate(2, isPositive: true));
+            AddGate(new PhaseGate(defaultGateParameters));
         }
         catch ( Exception ex)
         {
@@ -65,9 +67,7 @@ public static class GateFactory
     public static Dictionary<string, Type> AvailableProducts = new(32);
 #pragma warning restore CA2211
 
-#pragma warning disable IDE0060 // Remove unused parameter
-    public static Gate Produce(string caption, Axis axis = Axis.X, double angle = Math.PI / 2.0)
-#pragma warning restore IDE0060 
+    public static Gate Produce(string caption, GateParameters? gateParameters = null)
     {
         if (AvailableProducts.TryGetValue(caption, out Type? gateType) && gateType is not null)
         {
@@ -81,24 +81,16 @@ public static class GateFactory
             }
             catch (MissingMethodException)
             {
+                ArgumentNullException.ThrowIfNull(gateParameters);
+
                 if (gateType.FullName == typeof(RotationGate).FullName)
                 {
-                    return caption switch
-                    {
-                        "Rx" => new RotationGate(Axis.X, 2, isPositive: true),
-                        "Ry" => new RotationGate(Axis.Y, 2, isPositive: true),
-                        "Rz" => new RotationGate(Axis.Z, 2, isPositive: true),
-                        _ => throw new NotSupportedException("Unsupported gate type: " + gateType.FullName),
-                    };
+                    return new RotationGate(gateParameters);
                 }
 
                 if (gateType.FullName == typeof(PhaseGate).FullName)
                 {
-                    return caption switch
-                    {
-                        "Ph" => new PhaseGate(2, isPositive: true),
-                        _ => throw new NotSupportedException("Unsupported gate type: " + gateType.FullName),
-                    };
+                    return new PhaseGate(gateParameters); 
                 }
 
                 throw new NotSupportedException("Unsupported gate type: " + gateType.FullName); 

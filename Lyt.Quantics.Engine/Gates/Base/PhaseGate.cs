@@ -22,21 +22,19 @@ public sealed class PhaseGate : Gate
 
     private readonly Matrix<Complex> matrix;
 
-    public PhaseGate(double theta)
-        : this(theta, isPiDivisor: false)
-        => this.ParameterCaption = theta.ToString("F2");
-
-    public PhaseGate(int piDivisor, bool isPositive)
-        : this((isPositive ? 1.0 : -1.0) * Math.PI / piDivisor, isPiDivisor: true)
-        => this.ParameterCaption = string.Format("{0}π/{1}", (isPositive ? "+" : "-"), piDivisor);
-
-    private PhaseGate(double lambda, bool isPiDivisor)
+    public PhaseGate(GateParameters parameters)
     {
-        this.Angle = lambda;
-        this.IsPiDivisor = isPiDivisor;
+        this.Angle = parameters.Angle;
+        this.IsPiDivisor = parameters.IsPiDivisor;
+        this.PiDivisor = parameters.PiDivisor;
+        this.IsPositive = parameters.IsPositive;
+        if (this.IsPiDivisor)
+        {
+            this.Angle = (this.IsPositive ? 1.0 : -1.0) * Math.PI / this.PiDivisor;
+        }
 
-        double sinReal = Math.Sin(lambda);
-        double cosReal = Math.Cos(lambda);
+        double sinReal = Math.Sin(this.Angle);
+        double cosReal = Math.Cos(this.Angle);
         Complex eIotaLambda = new(cosReal, sinReal);
         this.matrix = Matrix<Complex>.Build.Sparse(2, 2, Complex.Zero);
         this.matrix.At(0, 0, Complex.One);
