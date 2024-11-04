@@ -67,10 +67,6 @@
 					>
 					<Grid.ColumnDefinitions>
 						<!-- Spacer -->
-						<ColumnDefinition Width="24" />
-						<!-- Make Controlled -->
-						<ColumnDefinition Width="100" />
-						<!-- Spacer -->
 						<ColumnDefinition Width="4" />
 						<!-- Save and Close -->
 						<ColumnDefinition Width="100" />
@@ -79,25 +75,9 @@
 						<!-- Dismiss -->
 						<ColumnDefinition Width="72" />
 					</Grid.ColumnDefinitions>
-					<!-- swipe_down -->
-					<glyphs:GlyphButton
-						x:Name="MakeControlledButton"
-						Grid.Column="1"
-						Style="{StaticResource ToolbarIconButton}"
-						Behaviour="Tap"
-						HorizontalAlignment="Center" VerticalAlignment="Center"
-						Width="92" Height="48"
-						Margin="4"
-						GlyphSource="swipe_down"
-						ButtonBackground="BorderlessRectangle"
-						GlyphStrokeThickness="0"
-						Text="To Controlled"
-						Command="{Binding MakeControlledCommand}"
-	    				/>
-
 					<glyphs:GlyphButton
 						x:Name="SaveButton"
-						Grid.Column="3"
+						Grid.Column="1"
 						Style="{StaticResource ToolbarIconButton}"
 						Behaviour="Tap"
 						HorizontalAlignment="Center" VerticalAlignment="Center"
@@ -110,7 +90,7 @@
 						Command="{Binding SaveCommand}"
 	    				/>
 					<glyphs:GlyphButton
-						Grid.Column="5"
+						Grid.Column="3"
 						Style="{StaticResource ToolbarIconButton}"
 						Behaviour="Tap"
 						HorizontalAlignment="Center" VerticalAlignment="Center"

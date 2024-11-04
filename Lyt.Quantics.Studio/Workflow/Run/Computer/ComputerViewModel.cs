@@ -3,14 +3,11 @@
 using static ViewActivationMessage;
 using static MessagingExtensions;
 using static ToolbarCommandMessage;
-using Lyt.Quantics.Engine.Gates.Base;
 
-public sealed class ComputerViewModel : Bindable<ComputerView>
+public sealed partial class ComputerViewModel : Bindable<ComputerView>
 {
     private readonly QuanticsStudioModel quanticsStudioModel;
     private readonly IToaster toaster;
-    private readonly IDialogService dialogService;
-
     private bool isLoaded;
     private bool needsToLoadModel;
 
@@ -32,73 +29,6 @@ public sealed class ComputerViewModel : Bindable<ComputerView>
         this.Messenger.Subscribe<ModelResultsUpdateMessage>(this.OnModelResultsUpdateMessage);
         this.Messenger.Subscribe<ModelUpdateErrorMessage>(this.OnModelUpdateErrorMessage);
         this.Messenger.Subscribe<GateEditMessage>(this.OnGateEditMessage);
-    }
-
-    private void OnGateEditMessage(GateEditMessage message)
-    {
-        if (message.GateViewModel is null)
-        {
-            return;
-        }
-
-        // Run modal dialog 
-        if (this.dialogService is DialogService modalService)
-        {
-            modalService.RunModal<GateEditDialog, GateViewModel>(
-                this.View.ToasterHost, new GateEditDialogModel(),
-                this.OnGateEditClose, message.GateViewModel);
-        }
-    }
-
-    private void OnGateEditClose(object sender, bool save)
-    {
-        if ((!save) || (sender is not GateEditDialogModel gateEditDialogModel))
-        {
-            // Dismissed or problem...
-            return;
-        }
-
-        try
-        {
-            // Grab the data 
-            GateViewModel gateViewModel = gateEditDialogModel.GateViewModel;
-            Gate oldGate = gateViewModel.Gate;
-            if ((oldGate is not RotationGate) && (oldGate is not PhaseGate))
-            {
-                throw new Exception("Incorrect gate type.");
-            }
-
-            Gate? newGate = null;
-            var gateParameters = gateEditDialogModel.GateParameters;
-            if (oldGate is RotationGate rotationGate)
-            {
-
-                newGate = new RotationGate(gateParameters);
-            }
-            else // (oldGate is PhaseGate)
-            {
-                newGate = new PhaseGate(gateParameters);
-            }
-
-            if (newGate is null)
-            {
-                throw new Exception("Failed to create a new gate.");
-            }
-
-            // Gate view likely needs an update 
-            // gateViewModel.Update(gate); 
-
-            // Update the model 
-            int stageIndex = gateViewModel.StageIndex;
-            var stage = this.Stages[stageIndex];
-            stage.AddGateAt(gateViewModel.QubitIndex, newGate);
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(ex);
-            string uiMessage = "Gate Edit: Exception thrown: " + ex.Message;
-            this.toaster.Show("Unexpected Error", uiMessage, 4_000, InformationLevel.Error);
-        }
     }
 
     protected override void OnViewLoaded()

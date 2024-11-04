@@ -31,12 +31,12 @@ public sealed class PhaseGate : Gate
         if (this.IsPiDivisor)
         {
             this.Angle = (this.IsPositive ? 1.0 : -1.0) * Math.PI / this.PiDivisor;
-            this.ParameterCaption =
+            this.AngleParameterCaption =
                 string.Format("{0}π/{1}", (this.IsPositive ? "+" : "-"), this.PiDivisor);
         }
         else
         {
-            this.ParameterCaption = this.Angle.ToString("F2");
+            this.AngleParameterCaption = this.Angle.ToString("F2");
         }
 
         double sinReal = Math.Sin(this.Angle);
@@ -63,9 +63,9 @@ public sealed class PhaseGate : Gate
 
     public bool IsPositive { get; private set; } = true;
 
-    public override string ParameterCaption { get; set; } = string.Empty;
+    public override string AngleParameterCaption { get; set; } = string.Empty;
 
-    public override bool IsParametrized => true;
+    public override bool HasAngleParameter => true;
 
     public override GateCategory Category => GateCategory.H_Phase;
 }

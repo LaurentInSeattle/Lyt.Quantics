@@ -26,7 +26,7 @@ public sealed class GateEditDialogModel : DialogBindable<GateEditDialog, GateVie
     public GateEditDialogModel()
     {
         this.GateParameters = new();
-        this.IsPredefinedValue = true;
+        this.IsMakeControlled = false;
         this.ValuesCount = GateEditDialogModel.PredefinedValues.Count - 1;
         this.PredefinedValue = GateEditDialogModel.PredefinedValues[DefaultPredefinedValue];
     }
@@ -38,7 +38,7 @@ public sealed class GateEditDialogModel : DialogBindable<GateEditDialog, GateVie
 
     public GateParameters GateParameters { get; private set; }
 
-    public bool IsPredefinedValue { get; private set; }
+    public bool IsMakeControlled { get; set; }
 
     public AnglePredefinedValue PredefinedValue { get; private set; }
 
@@ -63,7 +63,7 @@ public sealed class GateEditDialogModel : DialogBindable<GateEditDialog, GateVie
             this.GateParameters.Axis = rotationGate.Axis;
         }
 
-        this.Title = isRotation ? "Gate Rotation Angle" : "Gate Phase Value";
+        this.Title = isRotation ? "Rotation Angle" : "Phase Value";
 
         if (this.GateParameters.IsPiDivisor)
         {
@@ -89,6 +89,7 @@ public sealed class GateEditDialogModel : DialogBindable<GateEditDialog, GateVie
 
     private void OnMakeControlled(object? _)
     {
+        this.IsMakeControlled = true;
         this.onClose?.Invoke(this, true);
         this.dialogService.Dismiss();
     }
@@ -134,7 +135,6 @@ public sealed class GateEditDialogModel : DialogBindable<GateEditDialog, GateVie
             }
             else
             {
-                this.IsPredefinedValue = false;
                 this.AngleValue = value;
                 this.AngleValueText =
                     string.Concat(this.Title, ": ", value.ToString("F3"), " radians.");
@@ -165,7 +165,6 @@ public sealed class GateEditDialogModel : DialogBindable<GateEditDialog, GateVie
             if (angleValue is AnglePredefinedValue predefinedValue)
             {
                 this.isChangedFromSlider = true;
-                this.IsPredefinedValue = true;
                 this.PredefinedValue = predefinedValue;
                 this.AngleValue = predefinedValue.Value;
                 this.AngleValueText = string.Concat(this.Title, ": ", predefinedValue.Caption);

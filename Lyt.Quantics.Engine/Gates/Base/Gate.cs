@@ -42,10 +42,10 @@ public class Gate
     public virtual GateCategory Category { get; set; }
 
     /// <summary> True if the gate is constructed with an angle parameter </summary>
-    public virtual bool IsParametrized => false;
+    public virtual bool HasAngleParameter => false;
 
     /// <summary> Parameter string for the gate.</summary>
-    public virtual string ParameterCaption { get; set; } = string.Empty;
+    public virtual string AngleParameterCaption { get; set; } = string.Empty;
 
     /// <summary> True if the gate is a Controlled gate</summary>
     public virtual bool IsControlled => false;

@@ -34,10 +34,10 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
 
         this.Parameter = string.Empty;
         this.ParameterFontSize = 1.0;
-        if (gate.IsParametrized)
+        if (gate.HasAngleParameter)
         {
             this.FontSize -= 6;
-            this.Parameter = gate.ParameterCaption;
+            this.Parameter = gate.AngleParameterCaption;
             this.ParameterFontSize = 12.0;
         }
 
@@ -149,13 +149,19 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
 
     public void OnGateClicked()
     {
-        if (this.IsToolbox || !this.Gate.IsParametrized)
+        if (this.IsToolbox)
         {
             return;
         }
 
-        // Launch edit gate dialog 
-        this.Messenger.Publish(new GateEditMessage(this));
+        bool isUnary = this.Gate.QuBitsTransformed == 1;
+        bool isNotControlled = !this.Gate.IsControlled;
+        bool canLaunchEditor = this.Gate.HasAngleParameter || (isUnary && isNotControlled);
+        if (canLaunchEditor)
+        {
+            // Launch edit gate dialog 
+            this.Messenger.Publish(new GateEditMessage(this));
+        }
     }
 
     public double GateHeight { get => this.Get<double>(); set => this.Set(value); }

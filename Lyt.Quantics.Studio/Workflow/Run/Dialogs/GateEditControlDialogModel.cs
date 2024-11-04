@@ -2,14 +2,11 @@
 
 public sealed class GateEditControlDialogModel : DialogBindable<GateEditControlDialog, GateViewModel>
 {
-
-    private bool isChangedFromSlider;
     private bool isInitializing;
 
     public GateEditControlDialogModel()
     {
         this.GateParameters = new();
-        this.IsPredefinedValue = true;
     }
 
     public GateViewModel GateViewModel
@@ -18,12 +15,6 @@ public sealed class GateEditControlDialogModel : DialogBindable<GateEditControlD
                 throw new ArgumentNullException("No parameters");
 
     public GateParameters GateParameters { get; private set; }
-
-    public bool IsPredefinedValue { get; private set; }
-
-    public AnglePredefinedValue PredefinedValue { get; private set; }
-
-    public double AngleValue { get; private set; }
 
     protected override void OnViewLoaded()
     {
@@ -37,26 +28,7 @@ public sealed class GateEditControlDialogModel : DialogBindable<GateEditControlD
         var stageOperator = stage.StageOperatorAt(this.GateViewModel.QubitIndex);
         this.GateParameters = stageOperator.GateParameters;
 
-        bool isRotation = false;
-        if (gate is RotationGate rotationGate)
-        {
-            isRotation = true;
-            this.GateParameters.Axis = rotationGate.Axis;
-        }
-
-        this.Title = isRotation ? "Gate Rotation Angle" : "Gate Phase Value";
-
-        if (this.GateParameters.IsPiDivisor)
-        {
-        }
-        else
-        {
-            this.isInitializing = true;
-            this.AngleValue = this.GateParameters.Angle;
-            this.AngleValueText =
-                string.Concat(this.Title, ": ", this.AngleValue.ToString("F3"), " radians.");
-            this.CustomValue = this.AngleValue.ToString("F3");
-        }
+        this.Title = "Controlled Gate" ;
 
         this.ValidationMessage = string.Empty;
         this.SaveButtonIsEnabled = true;
@@ -64,12 +36,6 @@ public sealed class GateEditControlDialogModel : DialogBindable<GateEditControlD
     }
 
 #pragma warning disable IDE0051 // Remove unused private members
-
-    private void OnMakeControlled(object? _)
-    {
-        this.onClose?.Invoke(this, true);
-        this.dialogService.Dismiss();
-    }
 
     private void OnSave(object? _)
     {
@@ -87,11 +53,6 @@ public sealed class GateEditControlDialogModel : DialogBindable<GateEditControlD
     /// <summary> Called from the view whenever the content of a text box is changed.</summary>
     public void OnEditing()
     {
-        if (this.isChangedFromSlider)
-        {
-            return;
-        }
-
         bool validated = this.Validate(out string message);
         this.ValidationMessage = validated ? string.Empty : message;
         this.SaveButtonIsEnabled = validated;
@@ -112,14 +73,6 @@ public sealed class GateEditControlDialogModel : DialogBindable<GateEditControlD
             }
             else
             {
-                this.IsPredefinedValue = false;
-                this.AngleValue = value;
-                this.AngleValueText =
-                    string.Concat(this.Title, ": ", value.ToString("F3"), " radians.");
-
-                this.GateParameters.IsPiDivisor = false;
-                this.GateParameters.Angle = value;
-
                 return true;
             }
         }
@@ -145,8 +98,6 @@ public sealed class GateEditControlDialogModel : DialogBindable<GateEditControlD
     public string ValidationMessage { get => this.Get<string>()!; set => this.Set(value); }
 
     public string? Title { get => this.Get<string?>(); set => this.Set(value); }
-
-    public ICommand MakeControlledCommand { get => this.Get<ICommand>()!; set => this.Set(value); }
 
     public ICommand SaveCommand { get => this.Get<ICommand>()!; set => this.Set(value); }
 
