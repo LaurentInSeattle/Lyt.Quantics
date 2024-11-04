@@ -56,7 +56,7 @@ public sealed class StageViewModel : Bindable<StageView>
         }
 
         // Can't drop a binary or ternary gate on last qubit 
-        if (gateViewModel.Gate.Dimension > 2)
+        if (gateViewModel.Gate.MatrixDimension > 2)
         {
             var computer = this.quanticsStudioModel.QuComputer;
             int qubitIndex = (int)Math.Floor(offset);
@@ -84,7 +84,7 @@ public sealed class StageViewModel : Bindable<StageView>
     public void AddGateAt(int qubitIndex, Gate gate)
     {
         var computer = this.quanticsStudioModel.QuComputer;
-        int gateQubits = gate.QuBits;
+        int gateQubits = gate.QuBitsTransformed;
         if (gateQubits + qubitIndex > computer.QuBitsCount)
         {
             this.toaster.Show(
@@ -133,7 +133,7 @@ public sealed class StageViewModel : Bindable<StageView>
                 ++this.activeGates;
                 int firstIndex = stageOperator.QuBitIndices.Min();
                 var gate = GateFactory.Produce(stageOperator.GateKey, stageOperator.GateParameters);
-                int gateRows = gate.QuBits;
+                int gateRows = gate.QuBitsTransformed;
                 var gateViewModel =
                     new GateViewModel(
                         gate, isToolbox: false, stageIndex: this.stageIndex, qubitIndex: firstIndex);

@@ -44,11 +44,11 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
 
         this.IsBorderVisible = true;
         this.GateMargin = new Thickness(this.IsToolbox ? 10 : 0);
-        int gateRows = this.Gate.Dimension / 2;
+        int gateRows = this.Gate.MatrixDimension / 2;
         if (this.IsToolbox || (gateRows == 1))
         {
             this.GateBackground = Brushes.Black;
-            int gateQubits = this.Gate.QuBits;
+            int gateQubits = this.Gate.QuBitsTransformed;
             this.GateHeight = 48 + 16 * (gateQubits - 1);
         }
         else

@@ -99,13 +99,13 @@ public sealed class QuStage
     {
         var stageOperator = new QuStageOperator(gate);
         stageOperator.QuBitIndices.Add(qubitIndex);
-        if (gate.Dimension >= 4)
+        if (gate.MatrixDimension >= 4)
         {
             // Binary or ternary gate 
             stageOperator.QuBitIndices.Add(qubitIndex+1);
         }
 
-        if (gate.Dimension == 8)
+        if (gate.MatrixDimension == 8)
         {
             // Ternary gate 
             stageOperator.QuBitIndices.Add(qubitIndex + 2);

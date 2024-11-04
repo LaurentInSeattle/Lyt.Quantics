@@ -29,5 +29,6 @@ public sealed class SwapGate : Gate
 
     public override string CaptionKey => "Swap";
 
+    /// <summary> In this category for UI layout but is NOT controlled </summary>
     public override GateCategory Category => GateCategory.E_BinaryControlled;
 }

@@ -1,34 +1,15 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Dialogs;
 
-public sealed class GateEditDialogModel : DialogBindable<GateEditDialog, GateViewModel>
+public sealed class GateEditControlDialogModel : DialogBindable<GateEditControlDialog, GateViewModel>
 {
-    private const int DefaultPredefinedValue = 8;
-
-    private static readonly Dictionary<int, AnglePredefinedValue> PredefinedValues =
-        new()
-        {
-            { 0,  new AnglePredefinedValue( 1, false ) },
-            { 1,  new AnglePredefinedValue( 2, false ) },
-            { 2,  new AnglePredefinedValue( 4, false ) },
-            { 3,  new AnglePredefinedValue( 8, false ) },
-            { 4,  new AnglePredefinedValue( 16, false ) },
-
-            { 5,  new AnglePredefinedValue( 16,true ) },
-            { 6,  new AnglePredefinedValue( 8, true ) },
-            { 7,  new AnglePredefinedValue( 4, true ) },
-            { 8,  new AnglePredefinedValue( 2, true ) },
-            { 9,  new AnglePredefinedValue( 1, true ) },
-        };
 
     private bool isChangedFromSlider;
     private bool isInitializing;
 
-    public GateEditDialogModel()
+    public GateEditControlDialogModel()
     {
         this.GateParameters = new();
         this.IsPredefinedValue = true;
-        this.ValuesCount = GateEditDialogModel.PredefinedValues.Count - 1;
-        this.PredefinedValue = GateEditDialogModel.PredefinedValues[DefaultPredefinedValue];
     }
 
     public GateViewModel GateViewModel
@@ -67,13 +48,10 @@ public sealed class GateEditDialogModel : DialogBindable<GateEditDialog, GateVie
 
         if (this.GateParameters.IsPiDivisor)
         {
-            // retrieve the slider value from gate parameters
-            this.SliderValue = SliderValueFromParameters(this.GateParameters);
         }
         else
         {
             this.isInitializing = true;
-            this.SliderValue = GateEditDialogModel.DefaultPredefinedValue;
             this.AngleValue = this.GateParameters.Angle;
             this.AngleValueText =
                 string.Concat(this.Title, ": ", this.AngleValue.ToString("F3"), " radians.");
@@ -160,50 +138,6 @@ public sealed class GateEditDialogModel : DialogBindable<GateEditDialog, GateVie
             return;
         }
 
-        if (GateEditDialogModel.PredefinedValues.TryGetValue(sliderValue, out var angleValue))
-        {
-            if (angleValue is AnglePredefinedValue predefinedValue)
-            {
-                this.isChangedFromSlider = true;
-                this.IsPredefinedValue = true;
-                this.PredefinedValue = predefinedValue;
-                this.AngleValue = predefinedValue.Value;
-                this.AngleValueText = string.Concat(this.Title, ": ", predefinedValue.Caption);
-                this.CustomValue = this.AngleValue.ToString("F3");
-
-                this.GateParameters.IsPiDivisor = true;
-                this.GateParameters.Angle = this.AngleValue;
-                this.GateParameters.PiDivisor = predefinedValue.PiDivisor;
-                this.GateParameters.IsPositive = predefinedValue.IsPositive;
-
-                this.ValidationMessage = string.Empty;
-                this.SaveButtonIsEnabled = true;
-
-                // Need to delay a bit for clearing the flag or else the text changed event handler
-                // will not 'see' that the isChangedFromSlider flag is set 
-                Schedule.OnUiThread(
-                    66,
-                    () => { this.isChangedFromSlider = false; },
-                    DispatcherPriority.Background);
-            }
-        }
-    }
-
-    private static int SliderValueFromParameters(GateParameters gateParameters)
-    {
-        int piDivisor = gateParameters.PiDivisor;
-        bool isPositive = gateParameters.IsPositive;
-        foreach (int key in PredefinedValues.Keys)
-        {
-            var preDefinedValue = PredefinedValues[key];
-            if ((preDefinedValue.PiDivisor == piDivisor) &&
-                (preDefinedValue.IsPositive == isPositive))
-            {
-                return key;
-            }
-        }
-
-        throw new Exception("Failed to setup slider.");
     }
 
     public string CustomValue { get => this.Get<string>()!; set => this.Set(value); }

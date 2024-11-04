@@ -331,6 +331,7 @@ public sealed partial class QuanticsStudioModel : ModelBase
             this.fileManager.Save<QuComputer>(Area.User, Kind.Json, pathName, this.QuComputer);
 
             // Update or Add to Projects 
+            Debugger.Break();
             var clone = this.QuComputer.DeepClone();
             if (!this.Projects.TryAdd(name, clone))
             {

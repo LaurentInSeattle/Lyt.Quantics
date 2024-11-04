@@ -11,8 +11,12 @@ TODO: Engine:
 
 TODO: Studio : 
 
-	=> BUG: Overwrite save creates new entries in the Load view 
-	=> BUG: Delete does not remove the entry in the Load view 
+	Turn off measure on some qubit like QRyd is doing, use in amplitude histogram 
+	Support creation of controlled gate 	
+
+	Hard to Repro: 
+		=> BUG: Overwrite save creates new entries in the Load view 
+		=> BUG: Delete does not remove the entry in the Load view 
 
 	Spinner for 9 or 10 qubits 
 	Warning for slow computations at 9 and 10 qubits

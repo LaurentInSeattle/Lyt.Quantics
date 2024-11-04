@@ -138,13 +138,13 @@ public sealed partial class QuComputer
             // Remove operators at qubitIndex if any, then add the provided gate
             // Dont care how many removed 
             _ = stage.ClearAtQubit(qubitIndex);
-            if (gate.Dimension >= 4)
+            if (gate.MatrixDimension >= 4)
             {
                 // Binary or ternary gate: Clear next spot 
                 _ = stage.ClearAtQubit(qubitIndex+1);
             }
 
-            if (gate.Dimension == 8)
+            if (gate.MatrixDimension == 8)
             {
                 // Ternary gate: Clear next spot 
                 _ = stage.ClearAtQubit(qubitIndex + 2);

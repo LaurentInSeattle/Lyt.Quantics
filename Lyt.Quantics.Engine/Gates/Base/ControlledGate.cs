@@ -33,7 +33,7 @@ public class ControlledGate : Gate
     public ControlledGate(Gate baseGate)
     {
         this.baseCaptionKey = baseGate.CaptionKey;
-        int baseDimension = baseGate.Dimension;
+        int baseDimension = baseGate.MatrixDimension;
         int dimension = 2 * baseDimension;
         int delta = dimension - baseDimension;
         this.matrix = Matrix<Complex>.Build.Sparse(dimension, dimension, Complex.Zero);

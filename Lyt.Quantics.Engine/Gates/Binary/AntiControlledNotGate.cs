@@ -31,4 +31,6 @@ public sealed class AntiControlledNotGate : Gate
     public override string CaptionKey => "ACX";
 
     public override GateCategory Category => GateCategory.E_BinaryControlled;
+
+    public override bool IsControlled => true;
 }

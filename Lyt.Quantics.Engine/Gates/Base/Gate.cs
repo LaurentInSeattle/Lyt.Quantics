@@ -21,36 +21,33 @@ public class Gate
     public virtual bool IsControlling => false;
 
     /// <summary> The matrix dimension. </summary>
-    public int Dimension => this.Matrix.RowCount;
+    public int MatrixDimension => this.Matrix.RowCount;
 
     /// <summary> How qubits this gate will transform. </summary>
-    public int QuBits => MathUtilities.IntegerLog2(this.Matrix.RowCount);
+    public int QuBitsTransformed => MathUtilities.IntegerLog2(this.Matrix.RowCount);
 
     /// <summary> Matrix of the gate, can be dense or sparse, Math.Net handles that for us. </summary>
-    [JsonIgnore]
     public virtual Matrix<Complex> Matrix { get; set; } = Matrix<Complex>.Build.Dense(1, 1);
 
     /// <summary> Convenience human readable info.</summary>
-    [JsonIgnore]
     public virtual string Name { get; set; } = string.Empty;
 
     /// <summary> Convenience human readable info.</summary>
-    [JsonIgnore]
     public virtual string AlternateName { get; set; } = string.Empty;
 
     /// <summary> Documentation about the gate </summary>
-    [JsonIgnore]
     public virtual string Documentation { get; set; } = string.Empty;
 
     /// <summary> Gate category </summary>
-    [JsonIgnore]
     public virtual GateCategory Category { get; set; }
 
     /// <summary> True if the gate is constructed with an angle parameter </summary>
-    [JsonIgnore]
     public virtual bool IsParametrized => false;
 
     /// <summary> Parameter string for the gate.</summary>
-    [JsonIgnore]
     public virtual string ParameterCaption { get; set; } = string.Empty;
+
+    /// <summary> True if the gate is a Controlled gate</summary>
+    public virtual bool IsControlled => false;
+
 }

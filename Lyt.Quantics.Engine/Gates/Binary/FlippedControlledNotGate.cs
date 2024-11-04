@@ -28,4 +28,6 @@ public sealed class FlippedControlledNotGate : Gate
     public override string CaptionKey => "FCX";
 
     public override GateCategory Category => GateCategory.E_BinaryControlled;
+
+    public override bool IsControlled => true;
 }

@@ -55,7 +55,7 @@ public sealed class Tests_Gates
                 var gate = GateFactory.Produce(gateKey);
                 Assert.IsTrue(gate is not null);
                 Assert.IsTrue(gate.Name is not null);
-                int dimension = gate.Dimension;
+                int dimension = gate.MatrixDimension;
                 Debug.WriteLine(gate.CaptionKey + ":  " + gate.Name + "  Dim: " + dimension.ToString());
                 var dagger = gate.Matrix.ConjugateTranspose();
                 var shouldBeIdentity = gate.Matrix.Multiply(dagger);
@@ -92,7 +92,7 @@ public sealed class Tests_Gates
                         Axis = axis,
                     };
                     var gate = new RotationGate(parameters);
-                    int dimension = gate.Dimension;
+                    int dimension = gate.MatrixDimension;
                     var dagger = gate.Matrix.ConjugateTranspose();
                     var shouldBeIdentity = gate.Matrix.Multiply(dagger);
                     var trueIdentity = Matrix<Complex>.Build.DenseIdentity(dimension, dimension);
@@ -143,7 +143,7 @@ public sealed class Tests_Gates
                     Angle = lambda,
                 };
                 var gate = new PhaseGate(parameters);
-                int dimension = gate.Dimension;
+                int dimension = gate.MatrixDimension;
                 var dagger = gate.Matrix.ConjugateTranspose();
                 var shouldBeIdentity = gate.Matrix.Multiply(dagger);
                 var trueIdentity = Matrix<Complex>.Build.DenseIdentity(dimension, dimension);
@@ -169,7 +169,7 @@ public sealed class Tests_Gates
                     Angle = lambda,
                 };
                 var gate = new PhaseGate(parameters);
-                int dimension = gate.Dimension;
+                int dimension = gate.MatrixDimension;
                 var checkGate = GateFactory.Produce(captionKey);
                 double tolerance = MathUtilities.Epsilon;
                 if (!gate.Matrix.AlmostEqual(checkGate.Matrix, tolerance))
@@ -233,7 +233,7 @@ public sealed class Tests_Gates
                 new string[] { "I", "X", "Y", "Z", "H", "T", "S", "SX", "Swap", "CX", "CZ" })
             {
                 var gate = new ControlledGate(baseGateCaptionKey);
-                int dimension = gate.Dimension;
+                int dimension = gate.MatrixDimension;
                 var dagger = gate.Matrix.ConjugateTranspose();
                 var shouldBeIdentity = gate.Matrix.Multiply(dagger);
                 var trueIdentity = Matrix<Complex>.Build.DenseIdentity(dimension, dimension);
@@ -257,7 +257,7 @@ public sealed class Tests_Gates
             static void Verify(string srcCaptionKey, string dstCaptionKey)
             {
                 var gate = new ControlledGate(srcCaptionKey);
-                int dimension = gate.Dimension;
+                int dimension = gate.MatrixDimension;
                 var checkGate = GateFactory.Produce(dstCaptionKey);
                 double tolerance = MathUtilities.Epsilon;
                 if (!gate.Matrix.AlmostEqual(checkGate.Matrix, tolerance))
