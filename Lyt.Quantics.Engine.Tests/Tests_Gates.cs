@@ -50,9 +50,10 @@ public sealed class Tests_Gates
         {
             var gates = GateFactory.AvailableProducts;
             Assert.IsTrue(gates is not null);
+            var defaultGateParameters = new GateParameters();
             foreach (string gateKey in gates.Keys)
             {
-                var gate = GateFactory.Produce(gateKey);
+                var gate = GateFactory.Produce(gateKey, defaultGateParameters);
                 Assert.IsTrue(gate is not null);
                 Assert.IsTrue(gate.Name is not null);
                 int dimension = gate.MatrixDimension;
@@ -90,6 +91,7 @@ public sealed class Tests_Gates
                     {
                         Angle = theta,
                         Axis = axis,
+                        IsPiDivisor = false, 
                     };
                     var gate = new RotationGate(parameters);
                     int dimension = gate.MatrixDimension;
@@ -110,6 +112,7 @@ public sealed class Tests_Gates
                     {
                         Angle = Math.Tau - theta,
                         Axis = axis,
+                        IsPiDivisor = false,
                     };
                     var rotatedGate = new RotationGate(parameters);
                     shouldBeIdentity = gate.Matrix.Multiply(rotatedGate.Matrix);
@@ -141,6 +144,7 @@ public sealed class Tests_Gates
                 var parameters = new GateParameters()
                 {
                     Angle = lambda,
+                    IsPiDivisor = false,
                 };
                 var gate = new PhaseGate(parameters);
                 int dimension = gate.MatrixDimension;
@@ -167,6 +171,7 @@ public sealed class Tests_Gates
                 var parameters = new GateParameters()
                 {
                     Angle = lambda,
+                    IsPiDivisor = false,
                 };
                 var gate = new PhaseGate(parameters);
                 int dimension = gate.MatrixDimension;
