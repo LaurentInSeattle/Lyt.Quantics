@@ -98,13 +98,28 @@ public sealed partial class QuanticsStudioModel : ModelBase
 
     private static void LoadGates()
     {
-        var gateTypes = GateFactory.AvailableProducts;
-        var list = new List<Gate>(gateTypes.Count);
-        foreach (var gateType in gateTypes)
+        var gateTypesDictionary = GateFactory.AvailableProducts;
+        var list = new List<Gate>(gateTypesDictionary.Count);
+        foreach (var gateType in gateTypesDictionary)
         {
-            // Rotation and phase gates will be created with defaults in the tool box
+            // Because of missing axis in default gate parameters, we need to create these 
+            // outside this loop 
+            if ( gateType.Value == typeof(RotationGate))
+            {
+                continue ;
+            }
+
+            // Phase gate (no axis) will also be created with defaults in the tool box
             var gate = GateFactory.Produce(gateType.Key, new GateParameters());
             list.Add(gate);
+        }
+
+        // Add all three rotation gates with a Pi / 2 angle 
+        GateParameters defaultGateParameters = new();
+        foreach (Axis axis in new Axis[] { Axis.X, Axis.Y, Axis.Z })
+        {
+            defaultGateParameters.Axis = axis;
+            list.Add(new RotationGate(defaultGateParameters));
         }
 
         Gates = list;

@@ -10,6 +10,8 @@ Improve Stepping
 
 TODO: Studio : 
 
+=> BUG: Overwrite save creates new entries in the Load view 
+
 UI for Parametrized gates (Phase / Rotation / Controlled Gate)
 Spinner for 9 or 10 qubits 
 Toolbar: Filters for projects (Recent, etc) 
