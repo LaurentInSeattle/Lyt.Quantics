@@ -11,6 +11,7 @@ Improve Stepping
 TODO: Studio : 
 
 => BUG: Overwrite save creates new entries in the Load view 
+=> BUG: Delete does not remove the entry in the Load view 
 
 UI for Parametrized gates (Phase / Rotation / Controlled Gate)
 Spinner for 9 or 10 qubits 

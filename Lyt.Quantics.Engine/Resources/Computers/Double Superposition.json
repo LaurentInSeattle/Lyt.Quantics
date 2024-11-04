@@ -2,6 +2,7 @@
     "Name": "Double Superposition",
     "Description": "Two Hadamard gates in serie",
     "Comment": "Unflipping the coin",
+    "IsUnitTest": true,
     "QuBitsCount": 1,
     "InitialStates": [ "Zero" ],
     "ExpectedFinalProbabilities": [ 1.0, 0.0 ],

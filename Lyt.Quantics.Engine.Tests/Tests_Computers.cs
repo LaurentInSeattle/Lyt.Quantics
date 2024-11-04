@@ -89,11 +89,12 @@ public sealed class Tests_Computers
                 Debug.WriteLine(computer.Name + " - Final result: " + computer.Result);
             }
 
+            ValidateBuildAndRun("Rxyz_Test");
+            ValidateBuildAndRun("RxyzCnot_Test");
+
             ValidateBuildAndRun("FullAdder");
             ValidateBuildAndRun("Deutsch_Balanced");
             ValidateBuildAndRun("Deutsch_Constant");
-            ValidateBuildAndRun("RxyzCnot_Test");
-            ValidateBuildAndRun("Rxyz_Test");
             ValidateBuildAndRun("SX_Test");
             ValidateBuildAndRun("Toffoli_Basic");
             ValidateBuildAndRun("HX_PhaseFlip");

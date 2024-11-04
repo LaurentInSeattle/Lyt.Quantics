@@ -2,6 +2,7 @@
     "Name": "Toffoli Basic",
     "Description": "Toffoli",
     "QuBitsCount": 3,
+    "IsUnitTest": true,
     "InitialStates": [ "Zero", "Zero", "Zero" ],
     "ExpectedFinalProbabilities": [ 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ],
     "Stages": [

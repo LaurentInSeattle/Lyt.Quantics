@@ -1,24 +1,55 @@
 {
-    "Name": "Test Rxyz",
-    "Description": "All three followed by X on Q-2",
-    "QuBitsCount": 3,
-    "InitialStates": [ "Zero", "Zero", "Zero" ],
-
-    "ExpectedFinalProbabilities": [ 0.0, 0.0, 0.0, 0.0, 0.25, 0.25, 0.25, 0.25 ],
+    "Name": "Serialization Test Rxyz",
+    "Description": "All three followed by X on Q-2, testing parameters serialization",
+    "QuBitsCount": 4,
+    "IsUnitTest": true,
+    "InitialStates": [ "Zero", "Zero", "Zero", "Zero" ],
     "Stages": [
         {
             "Operators": [
                 {
                     "QuBitIndices": [ 0 ],
-                    "GateKey": "Rx"
+                    "GateKey": "Rx",
+                    "GateParameters": {
+                        "Axis": "X",
+                        "Angle": 0,
+                        "IsPiDivisor": true,
+                        "PiDivisor": 2,
+                        "IsPositive": true
+                    }
                 },
                 {
                     "QuBitIndices": [ 1 ],
-                    "GateKey": "Ry"
+                    "GateKey": "Ry",
+                    "GateParameters": {
+                        "Axis": "Y",
+                        "Angle": 0,
+                        "IsPiDivisor": true,
+                        "PiDivisor": 4,
+                        "IsPositive": true
+                    }
                 },
                 {
                     "QuBitIndices": [ 2 ],
-                    "GateKey": "Rz"
+                    "GateKey": "Rz",
+                    "GateParameters": {
+                        "Axis": "Z",
+                        "Angle": 0,
+                        "IsPiDivisor": true,
+                        "PiDivisor": 8,
+                        "IsPositive": false
+                    }
+                },
+                {
+                    "QuBitIndices": [ 3 ],
+                    "GateKey": "Rz",
+                    "GateParameters": {
+                        "Axis": "Z",
+                        "Angle": 0.702,
+                        "IsPiDivisor": false,
+                        "PiDivisor": 8,
+                        "IsPositive": false
+                    }
                 }
             ]
         },

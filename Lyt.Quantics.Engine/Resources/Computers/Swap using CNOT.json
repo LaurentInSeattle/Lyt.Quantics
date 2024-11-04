@@ -2,6 +2,7 @@
     "Name": "Swap using CNOT",
     "Description": "Swap using three CNOT gates",
     "QuBitsCount": 2,
+    "IsUnitTest": true,
     "InitialStates": [ "Zero", "Zero" ],
     "Stages": [
         {

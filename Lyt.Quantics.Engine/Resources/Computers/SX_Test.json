@@ -2,6 +2,7 @@
     "Name": "Test SX Gate",
     "Description": "Two SX followed by X should cancel each other",
     "QuBitsCount": 2,
+    "IsUnitTest": true,
     "InitialStates": [ "Zero", "Zero" ],
     "ExpectedFinalProbabilities": [ 0.0, 0.0, 1.0, 0.0 ],
     "Stages": [

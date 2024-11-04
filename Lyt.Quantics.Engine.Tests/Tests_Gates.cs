@@ -86,7 +86,12 @@ public sealed class Tests_Gates
             {
                 for (double theta = 0; theta <= Math.Tau; theta += Math.PI / 6)
                 {
-                    var gate = new RotationGate(axis, theta);
+                    var parameters = new GateParameters()
+                    {
+                        Angle = theta,
+                        Axis = axis,
+                    };
+                    var gate = new RotationGate(parameters);
                     int dimension = gate.Dimension;
                     var dagger = gate.Matrix.ConjugateTranspose();
                     var shouldBeIdentity = gate.Matrix.Multiply(dagger);
@@ -101,7 +106,12 @@ public sealed class Tests_Gates
                         Assert.Fail();
                     }
 
-                    var rotatedGate = new RotationGate(axis, Math.Tau - theta);
+                    parameters = new GateParameters()
+                    {
+                        Angle = Math.Tau - theta,
+                        Axis = axis,
+                    };
+                    var rotatedGate = new RotationGate(parameters);
                     shouldBeIdentity = gate.Matrix.Multiply(rotatedGate.Matrix);
                     shouldBeIdentity = shouldBeIdentity.Multiply(-1);
                     if (!shouldBeIdentity.AlmostEqual(trueIdentity, tolerance))
@@ -128,7 +138,11 @@ public sealed class Tests_Gates
         {
             for (double lambda = 0; lambda <= Math.Tau; lambda += Math.PI / 6)
             {
-                var gate = new PhaseGate(lambda);
+                var parameters = new GateParameters()
+                {
+                    Angle = lambda,
+                };
+                var gate = new PhaseGate(parameters);
                 int dimension = gate.Dimension;
                 var dagger = gate.Matrix.ConjugateTranspose();
                 var shouldBeIdentity = gate.Matrix.Multiply(dagger);
@@ -150,7 +164,11 @@ public sealed class Tests_Gates
             // P ( λ = π / 4 ) = T
             static void Verify(double lambda, string captionKey)
             {
-                var gate = new PhaseGate(lambda);
+                var parameters = new GateParameters()
+                {
+                    Angle = lambda,
+                };
+                var gate = new PhaseGate(parameters);
                 int dimension = gate.Dimension;
                 var checkGate = GateFactory.Produce(captionKey);
                 double tolerance = MathUtilities.Epsilon;
