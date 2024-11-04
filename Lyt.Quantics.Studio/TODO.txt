@@ -1,27 +1,29 @@
 ﻿
 TODO: Engine: 
 
-Binary Gates with non consecutive qubits (Ex: swap 0 and 2)
-Ternary Gates with non consecutive qubits 
-Document gates, so that there's always something to show when hovering 
-Review all circuits for names and descriptions to display when hovering the toolbox
-Improve Stepping 
-??? Include Author in computer metadata
+	Binary Gates with non consecutive qubits (Ex: swap 0 and 2)
+	Ternary Gates with non consecutive qubits 
+	Document gates, so that there's always something to show when hovering 
+	Review all circuits for names and descriptions to display when hovering the toolbox
+	Improve Stepping 
+
+	??? Include Author in computer metadata
 
 TODO: Studio : 
 
-=> BUG: Overwrite save creates new entries in the Load view 
-=> BUG: Delete does not remove the entry in the Load view 
+	=> BUG: Overwrite save creates new entries in the Load view 
+	=> BUG: Delete does not remove the entry in the Load view 
 
-UI for Parametrized gates (Phase / Rotation / Controlled Gate)
-Spinner for 9 or 10 qubits 
-Toolbar: Filters for projects (Recent, etc) 
-Toolbar: Filters for built-in projects  (Unit tests, etc)
-Move a gate using Drag/drop
-"Frameworkization" of drag/drop
-Nicer app icon 
-Measure icon 
-Implement Stepping 
-Introduce one more lower level for amplitudes
-Warning for slow computations at 9 and 10 qubits
-Monospaced font for labels in the Amplitudes view
+	Spinner for 9 or 10 qubits 
+	Warning for slow computations at 9 and 10 qubits
+
+	Toolbar: Filters for projects (Recent, etc) 
+	Toolbar: Filters for built-in projects  (Unit tests, etc)
+	Move a gate using Drag/drop
+	"Frameworkization" of drag/drop
+	Nicer app icon 
+	Measure icon 
+	Implement Stepping 
+	Monospaced font for labels in the Amplitudes view
+
+	??? Introduce one more lower level for amplitudes
