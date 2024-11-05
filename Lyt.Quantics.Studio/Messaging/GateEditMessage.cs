@@ -1,3 +1,3 @@
 ﻿namespace Lyt.Quantics.Studio.Messaging;
 
-public sealed record class GateEditMessage(GateViewModel GateViewModel);
+public sealed record class GateEditMessage(GateViewModel GateViewModel, bool WithModifier);

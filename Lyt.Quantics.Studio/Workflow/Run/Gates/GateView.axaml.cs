@@ -111,7 +111,7 @@ public partial class GateView : UserControl
         }
     }
 
-    private void OnPointerReleased(object? sender, PointerReleasedEventArgs _)
+    private void OnPointerReleased(object? sender, PointerReleasedEventArgs args)
     {
         Debug.WriteLine("Released");
         if( this.isGhost || this.isDragging || !this.isPointerPressed)
@@ -120,13 +120,13 @@ public partial class GateView : UserControl
         }
 
         this.isPointerPressed = false;
-
         // It's a Click 
         if (this.DataContext is GateViewModel gateViewModel)
         {
             // The view model will decide whether or not the gate is editable
             // Check if toolbox, parameters, etc...
-            gateViewModel.OnGateClicked();
+            bool isRightClick = args.InitialPressMouseButton == MouseButton.Right;
+            gateViewModel.OnGateClicked(isRightClick);
         }
     }
 

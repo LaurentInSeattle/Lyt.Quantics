@@ -1,6 +1,4 @@
-﻿using Lyt.Quantics.Studio.Workflow.Run.Dialogs;
-
-namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
+﻿namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
 
 public sealed partial class ComputerViewModel : Bindable<ComputerView>
 {
@@ -22,9 +20,17 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
             bool isNotControlled = !gate.IsControlled;
             if (gate.HasAngleParameter)
             {
-                modalService.RunModal<GateEditDialog, GateViewModel>(
-                    this.View.ToasterHost, new GateEditDialogModel(),
-                    this.OnGateEditClose, gateViewModel);
+                // Special click: Go direct to the controlled gate dialog, if possible 
+                if (message.WithModifier && isUnary && isNotControlled)
+                {
+                    this.LaunchGateEditControlDialog(gateViewModel);
+                }
+                else
+                {
+                    modalService.RunModal<GateEditDialog, GateViewModel>(
+                        this.View.ToasterHost, new GateEditDialogModel(),
+                        this.OnGateEditClose, gateViewModel);
+                } 
             } 
             else if (isUnary && isNotControlled) 
             {

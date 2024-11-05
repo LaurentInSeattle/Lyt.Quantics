@@ -147,7 +147,7 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
 
     public void OnGateExited() => this.Messenger.Publish(new GateHoverMessage());
 
-    public void OnGateClicked()
+    public void OnGateClicked(bool isRightClick)
     {
         if (this.IsToolbox)
         {
@@ -160,7 +160,7 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
         if (canLaunchEditor)
         {
             // Launch edit gate dialog 
-            this.Messenger.Publish(new GateEditMessage(this));
+            this.Messenger.Publish(new GateEditMessage(this, isRightClick));
         }
     }
 

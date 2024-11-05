@@ -22,6 +22,8 @@ TODO: Studio :
 
 	==> UpdateUiGates : broken 
 
+	BUG: Can't dismiss toats in Computer view 
+
 	Turn off measure on some qubit like QRyd is doing, use in amplitude histogram 
 	
 	Support creation of controlled gate 	
