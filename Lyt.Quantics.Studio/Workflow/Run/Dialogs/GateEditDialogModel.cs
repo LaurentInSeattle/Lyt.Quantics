@@ -94,18 +94,21 @@ public sealed class GateEditDialogModel : DialogBindable<GateEditDialog, GateVie
         this.dialogService.Dismiss();
     }
 
-    private void OnSave(object? _)
-    {
-        this.onClose?.Invoke(this, true);
-        this.dialogService.Dismiss();
-    }
+    public void OnSave(object? _) => base.TrySaveAndClose();
 
-    private void OnCancel(object? _)
-    {
-        this.onClose?.Invoke(this, false);
-        this.dialogService.Dismiss();
-    }
+    public void OnCancel(object? _) => base.Cancel();
+
 #pragma warning restore IDE0051 // Remove unused private members
+
+    public override bool Validate()
+    {
+        if (this.GateParameters.IsPiDivisor)
+        {
+            return true ;
+        }
+
+        return this.Validate(out string _); 
+    }
 
     /// <summary> Called from the view whenever the content of a text box is changed.</summary>
     public void OnEditing()
@@ -123,6 +126,11 @@ public sealed class GateEditDialogModel : DialogBindable<GateEditDialog, GateVie
     private bool Validate(out string message)
     {
         message = string.Empty;
+        if (this.IsMakeControlled)
+        {
+            return true;
+        } 
+
         if (double.TryParse(this.CustomValue, out double value))
         {
             if (value.IsAlmostEqual(0.0))

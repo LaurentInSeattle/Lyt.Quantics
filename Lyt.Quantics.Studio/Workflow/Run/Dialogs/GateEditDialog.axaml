@@ -94,7 +94,6 @@
 						Text="To Controlled"
 						Command="{Binding MakeControlledCommand}"
 	    				/>
-
 					<glyphs:GlyphButton
 						x:Name="SaveButton"
 						Grid.Column="3"
