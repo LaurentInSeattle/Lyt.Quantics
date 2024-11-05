@@ -9,11 +9,11 @@
         {
             "Operators": [
                 {
-                    "QuBitIndices": [ 0 ],
+                    "TargetQuBitIndices": [ 0 ],
                     "GateKey": "X"
                 },
                 {
-                    "QuBitIndices": [ 1 ],
+                    "TargetQuBitIndices": [ 1 ],
                     "GateKey": "X"
                 }
             ]
@@ -21,7 +21,8 @@
         {
             "Operators": [
                 {
-                    "QuBitIndices": [ 0, 1, 2 ],
+                    "ControlQuBitIndices": [ 0, 1 ],
+                    "TargetQuBitIndices": [ 2 ],
                     "GateKey": "CCX"
                 }
             ]
@@ -29,7 +30,7 @@
         {
             "Operators": [
                 {
-                    "QuBitIndices": [ 2 ],
+                    "TargetQuBitIndices": [ 2 ],
                     "GateKey": "X"
                 }
             ]

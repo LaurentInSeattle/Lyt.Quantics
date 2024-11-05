@@ -28,7 +28,7 @@
         {
             "Operators": [
                 {
-                    "QuBitIndices": [ 2, 3 ],
+                    "TargetQuBitIndices": [ 2, 3 ],
                     "GateKey": "Swap"
                 }
             ]
@@ -36,7 +36,8 @@
         {
             "Operators": [
                 {
-                    "QuBitIndices": [ 0, 1, 2 ],
+                    "ControlQuBitIndices": [ 0, 1  ],
+                    "TargetQuBitIndices": [ 2 ],
                     "GateKey": "CCX"
                 }
             ]
@@ -44,7 +45,7 @@
         {
             "Operators": [
                 {
-                    "QuBitIndices": [ 2, 3 ],
+                    "TargetQuBitIndices": [ 2, 3 ],
                     "GateKey": "Swap"
                 }
             ]
@@ -52,7 +53,8 @@
         {
             "Operators": [
                 {
-                    "QuBitIndices": [ 0, 1 ],
+                    "ControlQuBitIndices": [ 0 ],
+                    "TargetQuBitIndices": [ 1 ],
                     "GateKey": "CX"
                 }
             ]
@@ -60,7 +62,8 @@
         {
             "Operators": [
                 {
-                    "QuBitIndices": [ 1, 2, 3 ],
+                    "ControlQuBitIndices": [ 1 , 2 ],
+                    "TargetQuBitIndices": [ 3 ],
                     "GateKey": "CCX"
                 }
             ]
@@ -68,7 +71,8 @@
         {
             "Operators": [
                 {
-                    "QuBitIndices": [ 1, 2 ],
+                    "ControlQuBitIndices": [ 1 ],
+                    "TargetQuBitIndices": [ 2 ],
                     "GateKey": "CX"
                 }
             ]
@@ -76,7 +80,8 @@
         {
             "Operators": [
                 {
-                    "QuBitIndices": [ 0, 1 ],
+                    "ControlQuBitIndices": [ 0 ],
+                    "TargetQuBitIndices": [ 1 ],
                     "GateKey": "CX"
                 }
             ]

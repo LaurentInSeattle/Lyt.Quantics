@@ -52,26 +52,37 @@ public sealed class QuStage
         return true;
     }
 
-    public QuStageOperator StageOperatorAt ( int qubitIndex )
+    public QuStageOperator StageOperatorAt(int qubitIndex)
     {
         foreach (var stageOperator in Operators)
         {
-            if (stageOperator.QuBitIndices[0] == qubitIndex)
+            if (stageOperator.TargetQuBitIndices.Count > 0)
             {
-                return stageOperator;
-            } 
+                if (stageOperator.TargetQuBitIndices[0] == qubitIndex)
+                {
+                    return stageOperator;
+                }
+            }
+
+            if (stageOperator.ControlQuBitIndices.Count > 0)
+            {
+                if (stageOperator.ControlQuBitIndices[0] == qubitIndex)
+                {
+                    return stageOperator;
+                }
+            }
         }
 
         throw new Exception("Failed to retrieve Stage Operator");
     }
 
-    public QuStage DeepClone ()
+    public QuStage DeepClone()
     {
         var clone = new QuStage();
         foreach (var stageOperator in this.Operators)
-        {            
+        {
             clone.Operators.Add(stageOperator.DeepClone());
-        } 
+        }
 
         return clone;
     }
@@ -81,7 +92,8 @@ public sealed class QuStage
         var listToRemove = new List<QuStageOperator>();
         foreach (var stageOperator in this.Operators)
         {
-            if (stageOperator.QuBitIndices.Contains(qubitIndex))
+            if ((stageOperator.TargetQuBitIndices.Contains(qubitIndex)) ||
+                (stageOperator.ControlQuBitIndices.Contains(qubitIndex)))
             {
                 listToRemove.Add(stageOperator);
             }
@@ -97,23 +109,10 @@ public sealed class QuStage
 
     public void AddAtQubit(QuComputer computer, int qubitIndex, Gate gate)
     {
-        var stageOperator = new QuStageOperator(gate);
-        stageOperator.QuBitIndices.Add(qubitIndex);
-        if (gate.MatrixDimension >= 4)
-        {
-            // Binary or ternary gate 
-            stageOperator.QuBitIndices.Add(qubitIndex+1);
-        }
-
-        if (gate.MatrixDimension == 8)
-        {
-            // Ternary gate 
-            stageOperator.QuBitIndices.Add(qubitIndex + 2);
-        }
-
+        var stageOperator = new QuStageOperator(gate, qubitIndex);
         if (!stageOperator.Validate(computer, out string message))
         {
-            throw new Exception(message) ;
+            throw new Exception(message);
         }
 
         this.Operators.Add(stageOperator);
@@ -152,7 +151,7 @@ public sealed class QuStage
 
             foreach (var stageOperator in this.Operators)
             {
-                foreach (int index in stageOperator.QuBitIndices)
+                foreach (int index in stageOperator.AllQuBitIndicesSorted)
                 {
                     _ = emptyIndices.Remove(index);
                     if (!usedIndices.Add(index))
@@ -171,13 +170,13 @@ public sealed class QuStage
             foreach (int index in emptyIndices)
             {
                 var quStageOperator =
-                    new QuStageOperator(IdentityGate.Key) { QuBitIndices = [index] };
+                    new QuStageOperator(IdentityGate.Key) { TargetQuBitIndices = [index] };
                 this.Operators.Add(quStageOperator);
             }
 
             // Reorder the operators by increasing value of their first qubit index 
             var sorted =
-                (from op in this.Operators orderby op.QuBitIndices[0] ascending select op)
+                (from op in this.Operators orderby op.SmallestQubitIndex ascending select op)
                 .ToList();
             this.Operators = sorted;
 

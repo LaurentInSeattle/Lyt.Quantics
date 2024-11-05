@@ -9,11 +9,11 @@
         {
             "Operators": [
                 {
-                    "QuBitIndices": [ 0 ],
+                    "TargetQuBitIndices": [ 0 ],
                     "GateKey": "SX"
                 },
                 {
-                    "QuBitIndices": [ 1 ],
+                    "TargetQuBitIndices": [ 1 ],
                     "GateKey": "X"
                 }
             ]
@@ -21,7 +21,7 @@
         {
             "Operators": [
                 {
-                    "QuBitIndices": [ 0 ],
+                    "TargetQuBitIndices": [ 0 ],
                     "GateKey": "SX"
                 }
             ]
@@ -29,7 +29,7 @@
         {
             "Operators": [
                 {
-                    "QuBitIndices": [ 0 ],
+                    "TargetQuBitIndices": [ 0 ],
                     "GateKey": "X"
                 }
             ]

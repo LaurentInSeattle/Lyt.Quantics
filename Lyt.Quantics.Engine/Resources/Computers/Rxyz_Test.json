@@ -8,7 +8,7 @@
         {
             "Operators": [
                 {
-                    "QuBitIndices": [ 0 ],
+                    "TargetQuBitIndices": [ 0 ],
                     "GateKey": "Rx",
                     "GateParameters": {
                         "Axis": "X",
@@ -19,7 +19,7 @@
                     }
                 },
                 {
-                    "QuBitIndices": [ 1 ],
+                    "TargetQuBitIndices": [ 1 ],
                     "GateKey": "Ry",
                     "GateParameters": {
                         "Axis": "Y",
@@ -30,7 +30,7 @@
                     }
                 },
                 {
-                    "QuBitIndices": [ 2 ],
+                    "TargetQuBitIndices": [ 2 ],
                     "GateKey": "Rz",
                     "GateParameters": {
                         "Axis": "Z",
@@ -41,7 +41,7 @@
                     }
                 },
                 {
-                    "QuBitIndices": [ 3 ],
+                    "TargetQuBitIndices": [ 3 ],
                     "GateKey": "Rz",
                     "GateParameters": {
                         "Axis": "Z",
@@ -56,7 +56,7 @@
         {
             "Operators": [
                 {
-                    "QuBitIndices": [ 2 ],
+                    "TargetQuBitIndices": [ 2 ],
                     "GateKey": "X"
                 }
             ]

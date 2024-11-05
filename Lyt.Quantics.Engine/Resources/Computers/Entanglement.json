@@ -9,7 +9,7 @@
         {
             "Operators": [
                 {
-                    "QuBitIndices": [ 0 ],
+                    "TargetQuBitIndices": [ 0 ],
                     "GateKey": "H"
                 }
             ]
@@ -17,7 +17,8 @@
         {
             "Operators": [
                 {
-                    "QuBitIndices": [ 0, 1 ],
+                    "ControlQuBitIndices": [ 0 ],
+                    "TargetQuBitIndices": [ 1 ],
                     "GateKey": "CX"
                 }
             ]

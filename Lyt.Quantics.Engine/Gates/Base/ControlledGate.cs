@@ -32,6 +32,7 @@ public class ControlledGate : Gate
     /// <param name="captionKey"></param>
     public ControlledGate(Gate baseGate)
     {
+        this.BaseGate = baseGate;
         this.baseCaptionKey = baseGate.CaptionKey;
         int baseDimension = baseGate.MatrixDimension;
         int dimension = 2 * baseDimension;
@@ -58,13 +59,15 @@ public class ControlledGate : Gate
         }
     }
 
+    public Gate BaseGate { get; private set; }
+
     public override Matrix<Complex> Matrix => this.matrix;
 
     public override string Name => "Controlled " + this.baseCaptionKey;
 
     public override string AlternateName => this.Name;
 
-    public override string CaptionKey => "C" + this.baseCaptionKey;
+    public override string CaptionKey => "C_" + this.baseCaptionKey;
 
     public override GateCategory Category => GateCategory.X_Special;
 }

@@ -131,7 +131,10 @@ public sealed class StageViewModel : Bindable<StageView>
                 }
 
                 ++this.activeGates;
-                int firstIndex = stageOperator.QuBitIndices.Min();
+
+                // TODO ~ TODO : Take care of Control and Targets 
+
+                int firstIndex = stageOperator.SmallestQubitIndex;
                 var gate = GateFactory.Produce(stageOperator.GateKey, stageOperator.GateParameters);
                 int gateRows = gate.QuBitsTransformed;
                 var gateViewModel =
@@ -141,6 +144,8 @@ public sealed class StageViewModel : Bindable<StageView>
                 view.SetValue(Grid.RowProperty, firstIndex);
                 view.SetValue(Grid.RowSpanProperty, gateRows);
                 this.View.GatesGrid.Children.Add(view);
+
+                // TODO ~ TODO : Take care of Control and Targets 
             }
         }
         catch (Exception ex)

@@ -1,33 +1,34 @@
 {
-  "Name": "Entanglement Not",
-  "Description": "Hadamard followed by CNot",
-  "QuBitsCount": 2,
-  "InitialStates": [ "Zero", "Zero" ],
-  "ExpectedFinalProbabilities": [ 0.0, 0.5, 0.5, 0.0 ],
-  "Stages": [
-    {
-      "Operators": [
+    "Name": "Entanglement Not",
+    "Description": "Hadamard followed by CNot",
+    "QuBitsCount": 2,
+    "InitialStates": [ "Zero", "Zero" ],
+    "ExpectedFinalProbabilities": [ 0.0, 0.5, 0.5, 0.0 ],
+    "Stages": [
         {
-          "QuBitIndices": [ 0 ],
-          "GateKey": "H"
-        }
-      ]
-    },
-    {
-      "Operators": [
+            "Operators": [
+                {
+                    "TargetQuBitIndices": [ 0 ],
+                    "GateKey": "H"
+                }
+            ]
+        },
         {
-          "QuBitIndices": [ 0, 1 ],
-          "GateKey": "CX"
-        }
-      ]
-    },
-    {
-      "Operators": [
+            "Operators": [
+                {
+                    "ControlQuBitIndices": [ 0 ],
+                    "TargetQuBitIndices": [ 1 ],
+                    "GateKey": "CX"
+                }
+            ]
+        },
         {
-          "QuBitIndices": [ 1 ],
-          "GateKey": "X"
+            "Operators": [
+                {
+                    "TargetQuBitIndices": [ 1 ],
+                    "GateKey": "X"
+                }
+            ]
         }
-      ]
-    }
-  ]
+    ]
 }

@@ -503,11 +503,14 @@ public sealed partial class QuComputer
             [
                 new QuStage()
                 {
-                   Operators =  [ new QuStageOperator( "H") { QuBitIndices = [0]  }, ] ,
+                   Operators =  [ new QuStageOperator( "H") { TargetQuBitIndices = [0]  }, ] ,
                 },
                 new QuStage()
                 {
-                   Operators = [ new QuStageOperator ("CX" ) { QuBitIndices = [0,1]}, ] ,
+                   Operators =
+                   [
+                       new QuStageOperator ("CX" ) { ControlQuBitIndices = [0], TargetQuBitIndices = [1]},
+                   ] ,
                 },
             ],
         };

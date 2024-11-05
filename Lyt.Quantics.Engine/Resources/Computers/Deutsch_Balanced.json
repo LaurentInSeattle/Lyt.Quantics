@@ -9,11 +9,11 @@
         {
             "Operators": [
                 {
-                    "QuBitIndices": [ 0 ],
+                    "TargetQuBitIndices": [ 0 ],
                     "GateKey": "H"
                 },
                 {
-                    "QuBitIndices": [ 1 ],
+                    "TargetQuBitIndices": [ 1 ],
                     "GateKey": "X"
                 }
             ]
@@ -21,7 +21,7 @@
         {
             "Operators": [
                 {
-                    "QuBitIndices": [ 1 ],
+                    "TargetQuBitIndices": [ 1 ],
                     "GateKey": "H"
                 }
             ]
@@ -29,7 +29,8 @@
         {
             "Operators": [
                 {
-                    "QuBitIndices": [ 0, 1 ],
+                    "ControlQuBitIndices": [ 0 ],
+                    "TargetQuBitIndices": [ 1 ],
                     "GateKey": "CX"
                 }
             ]
@@ -37,7 +38,7 @@
         {
             "Operators": [
                 {
-                    "QuBitIndices": [ 1 ],
+                    "TargetQuBitIndices": [ 1 ],
                     "GateKey": "X"
                 }
             ]
@@ -45,7 +46,7 @@
         {
             "Operators": [
                 {
-                    "QuBitIndices": [ 0 ],
+                    "TargetQuBitIndices": [ 0 ],
                     "GateKey": "H"
                 }
             ]
