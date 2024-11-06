@@ -26,6 +26,10 @@ public sealed class ControlledSGate : Gate
 
     public override Matrix<Complex> Matrix => ControlledSGate.ControlledSMatrix;
 
+    public override int ControlQuBits => 1;
+
+    public override int TargetQuBits => 1;
+
     public override string Name => "Controlled S";
 
     public override string AlternateName => "Controlled Phase S";
@@ -33,6 +37,4 @@ public sealed class ControlledSGate : Gate
     public override string CaptionKey => "CS";
 
     public override GateCategory Category => GateCategory.E_BinaryControlled;
-
-    public override bool IsControlled => true;
 }

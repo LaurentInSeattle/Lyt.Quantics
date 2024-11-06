@@ -24,6 +24,10 @@ public sealed class AntiControlledNotGate : Gate
 
     public override Matrix<Complex> Matrix => AntiControlledNotGate.AntiControlledNotMatrix;
 
+    public override int ControlQuBits => 1;
+
+    public override int TargetQuBits => 1;
+
     public override string Name => "Anti-Controlled Not";
 
     public override string AlternateName => "ACNOT";
@@ -31,6 +35,4 @@ public sealed class AntiControlledNotGate : Gate
     public override string CaptionKey => "ACX";
 
     public override GateCategory Category => GateCategory.E_BinaryControlled;
-
-    public override bool IsControlled => true;
 }

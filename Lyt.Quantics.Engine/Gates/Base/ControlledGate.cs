@@ -61,6 +61,10 @@ public class ControlledGate : Gate
 
     public Gate BaseGate { get; private set; }
 
+    public override int ControlQuBits => 1;
+
+    public override int TargetQuBits => 1;
+
     public override Matrix<Complex> Matrix => this.matrix;
 
     public override string Name => "Controlled " + this.baseCaptionKey;

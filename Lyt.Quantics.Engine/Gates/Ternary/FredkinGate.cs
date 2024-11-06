@@ -32,6 +32,10 @@ public sealed class FredkinGate : Gate
         FredkinMatrix.At(7, 7, Complex.One);
     }
 
+    public override int ControlQuBits => 1;
+
+    public override int TargetQuBits => 2;
+
     public override Matrix<Complex> Matrix => FredkinGate.FredkinMatrix;
 
     public override string Name => "Fredkin";
@@ -41,6 +45,4 @@ public sealed class FredkinGate : Gate
     public override string CaptionKey => "CSwap";
 
     public override GateCategory Category => GateCategory.G_TernaryControlled;
-
-    public override bool IsControlled => true;
 }

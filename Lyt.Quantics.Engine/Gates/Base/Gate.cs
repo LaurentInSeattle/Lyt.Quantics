@@ -16,6 +16,10 @@ public class Gate
     /// <summary> Parameter for Phase Gate and Rotation Gates </summary>
     public virtual double Angle { get; set; } = 0.0;
 
+    public virtual int ControlQuBits => 0;
+
+    public virtual int TargetQuBits => 1;
+
     /// <summary> True if the gate is controlling, if control and target qubit indices can be edited </summary>
     /// <remarks> Always false for now. </remarks>
     public virtual bool IsControlling => false;
@@ -48,6 +52,5 @@ public class Gate
     public virtual string AngleParameterCaption { get; set; } = string.Empty;
 
     /// <summary> True if the gate is a Controlled gate</summary>
-    public virtual bool IsControlled => false;
-
+    public bool IsControlled => this.ControlQuBits >= 1 ;
 }

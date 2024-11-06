@@ -12,6 +12,10 @@ public sealed class ControlledControlledZ : Gate
 
     public override Matrix<Complex> Matrix => ControlledControlledZ.CCzMatrix;
 
+    public override int ControlQuBits => 2;
+
+    public override int TargetQuBits => 1;
+
     public override string Name => "Controlled Controlled Z";
 
     public override string AlternateName => "CCZ";
@@ -19,6 +23,4 @@ public sealed class ControlledControlledZ : Gate
     public override string CaptionKey => "CCZ";
 
     public override GateCategory Category => GateCategory.G_TernaryControlled;
-
-    public override bool IsControlled => true;
 }

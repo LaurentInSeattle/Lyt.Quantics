@@ -26,6 +26,10 @@ public sealed class ControlledZGate : Gate
 
     public override Matrix<Complex> Matrix => ControlledZGate.ControlledZMatrix;
 
+    public override int ControlQuBits => 1;
+
+    public override int TargetQuBits => 1;
+
     public override string Name => "Controlled Z";
 
     public override string AlternateName => "Controlled Phase Flip";
@@ -33,6 +37,4 @@ public sealed class ControlledZGate : Gate
     public override string CaptionKey => "CZ";
 
     public override GateCategory Category => GateCategory.E_BinaryControlled;
-
-    public override bool IsControlled => true;
 }

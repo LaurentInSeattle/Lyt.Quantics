@@ -124,6 +124,19 @@ public sealed class QuStageOperator
             return false;
         }
 
+        var gate = GateFactory.Produce(this.GateKey, this.GateParameters); 
+        if (this.TargetQuBitIndices.Count != gate.TargetQuBits)
+        {
+            message = "Target qubits indices count not matching gate: " + this.GateKey;
+            return false;
+        }
+
+        if (this.ControlQuBitIndices.Count != gate.ControlQuBits)
+        {
+            message = "Control qubits indices count not matching gate: " + this.GateKey;
+            return false;
+        }
+
         // Verify that the provided indices are all within range 
         bool Verify(List<int> indices, out string message )
         {

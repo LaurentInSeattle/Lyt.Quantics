@@ -58,6 +58,7 @@ public sealed class Tests_Gates
                 Assert.IsTrue(gate.Name is not null);
                 int dimension = gate.MatrixDimension;
                 Debug.WriteLine(gate.CaptionKey + ":  " + gate.Name + "  Dim: " + dimension.ToString());
+                Assert.IsTrue(gate.QuBitsTransformed == gate.ControlQuBits + gate.TargetQuBits);
                 var dagger = gate.Matrix.ConjugateTranspose();
                 var shouldBeIdentity = gate.Matrix.Multiply(dagger);
                 var trueIdentity = Matrix<Complex>.Build.DenseIdentity(dimension, dimension);

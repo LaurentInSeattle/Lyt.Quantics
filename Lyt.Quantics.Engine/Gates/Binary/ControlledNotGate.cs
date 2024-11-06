@@ -24,6 +24,10 @@ public sealed class ControlledNotGate : Gate
 
     public override Matrix<Complex> Matrix => ControlledNotGate.ControlledNotMatrix;
 
+    public override int ControlQuBits => 1;
+
+    public override int TargetQuBits => 1;
+
     public override string Name => "Controlled Not";
 
     public override string AlternateName => "CNOT";
@@ -31,6 +35,4 @@ public sealed class ControlledNotGate : Gate
     public override string CaptionKey { get; set; } = "CX";
 
     public override GateCategory Category => GateCategory.E_BinaryControlled;
-
-    public override bool IsControlled => true;
 }

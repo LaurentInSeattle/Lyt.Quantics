@@ -23,6 +23,10 @@ public sealed class SwapGate : Gate
 
     public override Matrix<Complex> Matrix => SwapGate.SwapMatrix;
 
+    public override int ControlQuBits => 0;
+
+    public override int TargetQuBits => 2;
+
     public override string Name => "Swap";
 
     public override string AlternateName => "Swap";

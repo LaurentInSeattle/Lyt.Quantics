@@ -21,6 +21,10 @@ public sealed class FlippedControlledNotGate : Gate
 
     public override Matrix<Complex> Matrix => FlippedControlledNotGate.FlippedControlledNotMatrix;
 
+    public override int ControlQuBits => 1;
+
+    public override int TargetQuBits => 1;
+
     public override string Name => "Flipped Controlled Not";
 
     public override string AlternateName => "FCNOT";
@@ -28,6 +32,4 @@ public sealed class FlippedControlledNotGate : Gate
     public override string CaptionKey => "FCX";
 
     public override GateCategory Category => GateCategory.E_BinaryControlled;
-
-    public override bool IsControlled => true;
 }

@@ -37,6 +37,10 @@ public sealed class ToffoliGate : Gate
 
     public override Matrix<Complex> Matrix => ToffoliGate.ToffoliMatrix;
 
+    public override int ControlQuBits => 2;
+
+    public override int TargetQuBits => 1;
+
     public override string Name => "Toffoli";
 
     public override string AlternateName => "CCNOT";
@@ -44,6 +48,4 @@ public sealed class ToffoliGate : Gate
     public override string CaptionKey => "CCX";
 
     public override GateCategory Category => GateCategory.G_TernaryControlled;
-
-    public override bool IsControlled => true;
 }
