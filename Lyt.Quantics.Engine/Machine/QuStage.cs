@@ -130,6 +130,31 @@ public sealed class QuStage
             }
         }
 
+        // There should not be any overlapping qubit indices in the operators of the stage 
+        HashSet<int> set = new(computer.QuBitsCount);
+        foreach (QuStageOperator stageOperator in this.Operators)
+        {
+            foreach (int qubitIndex in stageOperator.ControlQuBitIndices)
+            {
+                bool added = set.Add(qubitIndex); 
+                if ( !added )
+                {
+                    message = stageOperator.GateKey + ": Overlapping Control qubit indices"; 
+                    return false;
+                }
+            }
+
+            foreach (int qubitIndex in stageOperator.TargetQuBitIndices)
+            {
+                bool added = set.Add(qubitIndex);
+                if (!added)
+                {
+                    message = stageOperator.GateKey + ": Overlapping Target qubit index: " + qubitIndex.ToString();
+                    return false;
+                }
+            }
+        }
+
         return true;
     }
 
