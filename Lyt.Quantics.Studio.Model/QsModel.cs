@@ -2,7 +2,7 @@
 
 using static FileManagerModel;
 
-public sealed partial class QuanticsStudioModel : ModelBase
+public sealed partial class QsModel : ModelBase
 {
     public const int MaxQubits = 10; // For now ~ 10 could be doable ? 
 
@@ -15,7 +15,7 @@ public sealed partial class QuanticsStudioModel : ModelBase
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 #pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
 #pragma warning disable IDE0021 // Use expression body for constructor 
-    public QuanticsStudioModel() : base(null, null)
+    public QsModel() : base(null, null)
     {
         // Do not inject the FileManagerModel instance: a parameter-less ctor is required for Deserialization 
         // Empty CTOR required for deserialization 
@@ -26,7 +26,7 @@ public sealed partial class QuanticsStudioModel : ModelBase
 #pragma warning restore CS8625 
 #pragma warning restore CS8618
 
-    public QuanticsStudioModel(FileManagerModel fileManager, IMessenger messenger, ILogger logger) : base(messenger, logger)
+    public QsModel(FileManagerModel fileManager, IMessenger messenger, ILogger logger) : base(messenger, logger)
     {
         this.fileManager = fileManager;
         this.ShouldAutoSave = true;

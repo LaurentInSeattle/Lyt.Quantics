@@ -5,7 +5,7 @@ using static ToolbarCommandMessage;
 
 public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
 {
-    private readonly QuanticsStudioModel quanticsStudioModel;
+    private readonly QsModel quanticsStudioModel;
 
     private HistogramViewModel? histogramViewModel;
     private List<HistogramEntry> histogramEntries;
@@ -15,7 +15,7 @@ public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
     public AmplitudesViewModel()
     {
         // Do not use Injection directly as this is loaded programmatically by the RunView 
-        this.quanticsStudioModel = App.GetRequiredService<QuanticsStudioModel>();
+        this.quanticsStudioModel = App.GetRequiredService<QsModel>();
         this.histogramEntries = [];
         this.Messenger.Subscribe<ToolbarCommandMessage>(this.OnToolbarCommandMessage);
         this.Messenger.Subscribe<ModelResultsUpdateMessage>(this.OnModelResultsUpdateMessage);

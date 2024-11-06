@@ -6,7 +6,7 @@ using static ToolbarCommandMessage;
 
 public sealed partial class ComputerViewModel : Bindable<ComputerView>
 {
-    private readonly QuanticsStudioModel quanticsStudioModel;
+    private readonly QsModel quanticsStudioModel;
     private readonly IToaster toaster;
     private bool isLoaded;
     private bool needsToLoadModel;
@@ -14,7 +14,7 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
     public ComputerViewModel()
     {
         // Do not use Injection directly as this is loaded programmatically by the RunView 
-        this.quanticsStudioModel = App.GetRequiredService<QuanticsStudioModel>();
+        this.quanticsStudioModel = App.GetRequiredService<QsModel>();
         this.toaster = App.GetRequiredService<IToaster>();
         this.dialogService = App.GetRequiredService<IDialogService>();
 
@@ -533,7 +533,7 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
 
     private void UpdateQubit(int index, QuState newState)
     {
-        if ((index <= QuanticsStudioModel.MaxQubits) || (index < 0))
+        if ((index <= QsModel.MaxQubits) || (index < 0))
         {
             if (!this.quanticsStudioModel.UpdateQubit(index, newState, out string message))
             {
@@ -552,7 +552,7 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
 
     private void AddQubit(int count)
     {
-        if (count < QuanticsStudioModel.MaxQubits)
+        if (count < QsModel.MaxQubits)
         {
             if (!this.quanticsStudioModel.AddQubit(count, out string message))
             {
@@ -563,8 +563,8 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
         {
             // message 
             this.toaster.Show(
-                string.Format("Add Qubit: Max {0}!", QuanticsStudioModel.MaxQubits),
-                string.Format("This Quantum Computer implementation is limited to {0} Qubits...", QuanticsStudioModel.MaxQubits),
+                string.Format("Add Qubit: Max {0}!", QsModel.MaxQubits),
+                string.Format("This Quantum Computer implementation is limited to {0} Qubits...", QsModel.MaxQubits),
                 4_000, InformationLevel.Error);
         }
     }

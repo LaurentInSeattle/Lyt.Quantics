@@ -5,13 +5,13 @@ using static MessagingExtensions;
 
 public sealed class AmplitudesToolbarViewModel : Bindable<AmplitudesToolbarView>
 {
-    private readonly QuanticsStudioModel quanticsStudioModel;
+    private readonly QsModel quanticsStudioModel;
 
     private bool isInitializing;
 
     public AmplitudesToolbarViewModel()
     {
-        this.quanticsStudioModel = App.GetRequiredService<QuanticsStudioModel>();
+        this.quanticsStudioModel = App.GetRequiredService<QsModel>();
         this.Messenger.Subscribe<ModelStructureUpdateMessage>(this.OnModelStructureUpdateMessage);
     }
 

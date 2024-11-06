@@ -5,7 +5,7 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
 {
     public const string CustomDragAndDropFormat = "GateViewModel";
 
-    private readonly QuanticsStudioModel quanticsStudioModel;
+    private readonly QsModel quanticsStudioModel;
     private readonly IToaster toaster;
 
     public GateViewModel(
@@ -15,7 +15,7 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
         this.DisablePropertyChangedLogging = true;
 
         // Do not use Injection directly as this is loaded programmatically by the RunView 
-        this.quanticsStudioModel = App.GetRequiredService<QuanticsStudioModel>();
+        this.quanticsStudioModel = App.GetRequiredService<QsModel>();
         this.toaster = App.GetRequiredService<IToaster>();
 
         this.Gate = gate;

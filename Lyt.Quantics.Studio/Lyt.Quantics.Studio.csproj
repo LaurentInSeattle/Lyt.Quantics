@@ -37,6 +37,7 @@
     <ProjectReference Include="..\..\Lyt.Avalonia.Framework\Lyt.Avalonia.Mvvm\Lyt.Avalonia.Mvvm.csproj" />
     <ProjectReference Include="..\..\Lyt.Avalonia.Framework\Lyt.Avalonia.Persistence\Lyt.Avalonia.Persistence.csproj" />
     <ProjectReference Include="..\Lyt.Quantics.Engine\Lyt.Quantics.Engine.csproj" />
+    <ProjectReference Include="..\Lyt.Quantics.Studio.Model\Lyt.Quantics.Studio.Model.csproj" />
   </ItemGroup>
 
   <ItemGroup>

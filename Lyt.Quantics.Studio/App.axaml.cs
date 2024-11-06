@@ -17,7 +17,7 @@ public partial class App : ApplicationBase
         [
             // Models 
             typeof(FileManagerModel),
-            typeof(QuanticsStudioModel),
+            typeof(QsModel),
         ],
         [
            // Singletons

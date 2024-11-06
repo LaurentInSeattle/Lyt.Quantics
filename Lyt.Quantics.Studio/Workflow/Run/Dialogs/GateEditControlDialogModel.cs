@@ -21,7 +21,7 @@ public sealed class GateEditControlDialogModel : DialogBindable<GateEditControlD
         base.OnViewLoaded();
 
         // Retrieve GateParameters for the existing gate
-        var quanticsStudioModel = App.GetRequiredService<QuanticsStudioModel>();
+        var quanticsStudioModel = App.GetRequiredService<QsModel>();
         var gate = this.GateViewModel.Gate;
         int stageIndex = this.GateViewModel.StageIndex;
         var stage = quanticsStudioModel.QuComputer.Stages[stageIndex];

@@ -7,10 +7,10 @@ public sealed class ShellViewModel : Bindable<ShellView>
 {
     private readonly IToaster toaster;
     private readonly IDialogService dialogService; 
-    private readonly QuanticsStudioModel quanticsStudioModel; 
+    private readonly QsModel quanticsStudioModel; 
 
     public ShellViewModel(
-        IDialogService dialogService, IToaster toaster, QuanticsStudioModel quanticsStudioModel)
+        IDialogService dialogService, IToaster toaster, QsModel quanticsStudioModel)
     {
         this.toaster = toaster;
         this.dialogService = dialogService;

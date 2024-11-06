@@ -6,11 +6,11 @@ using static ViewActivationMessage;
 
 public sealed class DoSaveViewModel : Bindable<DoSaveView>
 {
-    private readonly QuanticsStudioModel quanticsStudioModel;
+    private readonly QsModel quanticsStudioModel;
 
     public DoSaveViewModel()
     {
-        this.quanticsStudioModel = App.GetRequiredService<QuanticsStudioModel>();
+        this.quanticsStudioModel = App.GetRequiredService<QsModel>();
         this.Messenger.Subscribe<ToolbarCommandMessage>(this.OnToolbarCommandMessage);
     }
 

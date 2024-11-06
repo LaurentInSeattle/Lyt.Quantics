@@ -4,7 +4,7 @@ using static ToolbarCommandMessage;
 
 public sealed class LoadDocumentsViewModel : Bindable<LoadDocumentsView>
 {
-    private readonly QuanticsStudioModel quanticsStudioModel;
+    private readonly QsModel quanticsStudioModel;
     private readonly List<DocumentViewModel> documentViews;
 
     private DocumentViewModel? documentToDelete;
@@ -12,7 +12,7 @@ public sealed class LoadDocumentsViewModel : Bindable<LoadDocumentsView>
     public LoadDocumentsViewModel()
     {
         // Do not use Injection directly as this is loaded programmatically by the RunView 
-        this.quanticsStudioModel = App.GetRequiredService<QuanticsStudioModel>();
+        this.quanticsStudioModel = App.GetRequiredService<QsModel>();
         this.documentViews = [];
         this.Messenger.Subscribe<ToolbarCommandMessage>(this.OnToolbarCommandMessage);
     }

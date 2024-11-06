@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Lyt.Avalonia.Framework\Lyt.Avalonia.Model\Lyt.Avalonia.Model.csproj" />
+    <ProjectReference Include="..\..\Lyt.Avalonia.Framework\Lyt.Avalonia.Persistence\Lyt.Avalonia.Persistence.csproj" />
+    <ProjectReference Include="..\Lyt.Quantics.Engine\Lyt.Quantics.Engine.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -3,12 +3,12 @@
 public sealed class StageViewModel : Bindable<StageView>
 {
     public readonly int stageIndex;
-    public readonly QuanticsStudioModel quanticsStudioModel;
+    public readonly QsModel quanticsStudioModel;
     public readonly IToaster toaster;
 
     private int activeGates;
 
-    public StageViewModel(int stageIndex, QuanticsStudioModel quanticsStudioModel)
+    public StageViewModel(int stageIndex, QsModel quanticsStudioModel)
     {
         this.stageIndex = stageIndex;
         this.quanticsStudioModel = quanticsStudioModel;
