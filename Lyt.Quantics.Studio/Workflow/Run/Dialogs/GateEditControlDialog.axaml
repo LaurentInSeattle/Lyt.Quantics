@@ -181,7 +181,7 @@
 						Foreground="{StaticResource LightAqua_1_100}"
 						/>
 					<TextBlock
-						Grid.Row="5"
+						Grid.Row="5" Grid.ColumnSpan="2"
 						VerticalAlignment="Center" HorizontalAlignment="Stretch"
 						TextAlignment="Left"
 						Foreground="{StaticResource OrangePeel_0_100}"

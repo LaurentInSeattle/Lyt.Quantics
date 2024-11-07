@@ -4,7 +4,7 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+	mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="400"
     xmlns:vm="clr-namespace:Lyt.Quantics.Studio.Workflow.Run.Dialogs"
     x:DataType="vm:GateEditQubitsDialogModel" 
 	xmlns:glyphs="clr-namespace:Lyt.Avalonia.Controls.Glyphs;assembly=Lyt.Avalonia.Controls"
@@ -12,7 +12,7 @@
     xmlns:theme="clr-namespace:Lyt.Quantics.Studio"
 	>
 	<Grid
-		Width="600" Height="300"
+		Width="640" Height="400"
 		Background="Transparent"
 		>
 		<Rectangle
@@ -108,16 +108,22 @@
 				<Grid
 					Grid.Row="2"
 					>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="230" />
+						<ColumnDefinition Width="*" />
+					</Grid.ColumnDefinitions>
 					<Grid.RowDefinitions>
-						<RowDefinition Height="4"/>
-						<RowDefinition Height="50"/>
-						<RowDefinition Height="60"/>
-						<RowDefinition Height="32"/>
+						<RowDefinition Height="0"/>
 						<RowDefinition Height="40"/>
+						<RowDefinition Height="42"/>
 						<RowDefinition Height="40"/>
+						<RowDefinition Height="42"/>
+						<RowDefinition Height="40"/>
+						<RowDefinition Height="42"/>
+						<RowDefinition Height="80"/>
 					</Grid.RowDefinitions>
 					<TextBlock
-						Text="{Binding AngleValueText}"
+						Text="{Binding FirstValueTextLabel}"
 						Grid.Row="1"
 						VerticalAlignment="Center" HorizontalAlignment="Left"
 						FontSize="20"
@@ -125,26 +131,96 @@
 						Opacity="1.0"
 						Margin="20 12 0 0"
 						/>
+					<TextBlock
+						Text="{Binding FirstValueText}"
+						Grid.Row="1" Grid.Column="1"
+						VerticalAlignment="Center" HorizontalAlignment="Left"
+						FontSize="20"
+						FontWeight="DemiBold"
+						Foreground="{StaticResource ResourceKey= LightAqua_1_100}"
+						Opacity="1.0"
+						Margin="0 12 0 0"
+						/>
 					<Slider
-						Grid.Row="2"
+						Grid.Row="2" Grid.ColumnSpan="2"
 						Margin="40 0 40 0"
 						Height="60"
 						Minimum="0" Maximum="{Binding ValuesCount}"
-						Value="{Binding SliderValue}"
+						Value="{Binding FirstSliderValue}"
 						IsSnapToTickEnabled="True"
 						TickFrequency="1" TickPlacement="BottomRight"
 						SmallChange="1" LargeChange="2"
 						Foreground="{StaticResource LightAqua_1_100}"
 						/>
 					<TextBlock
-						Grid.Row="6"
+						Text="{Binding SecondValueTextLabel}"
+						Grid.Row="3"
+						VerticalAlignment="Center" HorizontalAlignment="Left"
+						FontSize="20"
+						Foreground="{StaticResource ResourceKey= LightAqua_1_100}"
+						Opacity="1.0"
+						Margin="20 12 0 0"
+						/>
+					<TextBlock
+						Text="{Binding SecondValueText}"
+						Grid.Row="3" Grid.Column="1"
+						VerticalAlignment="Center" HorizontalAlignment="Left"
+						FontSize="20"
+						FontWeight="DemiBold"
+						Foreground="{StaticResource ResourceKey= LightAqua_1_100}"
+						Opacity="1.0"
+						Margin="0 12 0 0"
+						/>
+					<Slider
+						Grid.Row="4" Grid.ColumnSpan="2"
+						Margin="40 0 40 0"
+						Height="60"
+						Minimum="0" Maximum="{Binding ValuesCount}"
+						Value="{Binding SecondSliderValue}"
+						IsSnapToTickEnabled="True"
+						TickFrequency="1" TickPlacement="BottomRight"
+						SmallChange="1" LargeChange="2"
+						Foreground="{StaticResource LightAqua_1_100}"
+						/>
+					<TextBlock
+						Text="{Binding ThirdValueTextLabel}"
+						Grid.Row="5"
+						VerticalAlignment="Center" HorizontalAlignment="Left"
+						FontSize="20"
+						Foreground="{StaticResource ResourceKey= LightAqua_1_100}"
+						Opacity="1.0"
+						Margin="20 12 0 0"
+						/>
+					<TextBlock
+						Text="{Binding ThirdValueText}"
+						Grid.Row="5" Grid.Column="1"
+						VerticalAlignment="Center" HorizontalAlignment="Left"
+						FontSize="20"
+						FontWeight="DemiBold"
+						Foreground="{StaticResource ResourceKey= LightAqua_1_100}"
+						Opacity="1.0"
+						Margin="0 12 0 0"
+						/>
+					<Slider
+						Grid.Row="6" Grid.ColumnSpan="2"
+						Margin="40 0 40 0"
+						Height="60"
+						Minimum="0" Maximum="{Binding ValuesCount}"
+						Value="{Binding ThirdSliderValue}"
+						IsSnapToTickEnabled="True"
+						TickFrequency="1" TickPlacement="BottomRight"
+						SmallChange="1" LargeChange="2"
+						Foreground="{StaticResource LightAqua_1_100}"
+						/>
+					<TextBlock
+						Grid.Row="7" Grid.ColumnSpan="2"
 						VerticalAlignment="Center" HorizontalAlignment="Stretch"
 						TextAlignment="Left"
 						Foreground="{StaticResource OrangePeel_0_100}"
 						Text="{Binding ValidationMessage}"
 						FontStyle="Italic"
 						FontSize="16"
-						Margin="40 0 8 0"
+						Margin="40 0 0 0"
 						IsHitTestVisible="False"
 						TextWrapping="Wrap"
 		                />

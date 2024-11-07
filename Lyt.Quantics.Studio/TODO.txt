@@ -20,11 +20,13 @@ TODO: Engine:
 
 TODO: Studio : 
 
+	Dynamic creation of binary or ternary gate views based on stage operator definitions
+
 	==> UpdateUiGates : broken 
 
-	BUG: Can't dismiss toats in Computer view 
+	BUG: Can't dismiss toasts in Computer view 
 
-	Turn off measure on some qubit like QRyd is doing, use in amplitude histogram 
+	Turn off measure on some qubits like QRyd is doing, use in amplitude histogram 
 	
 	Support creation of controlled gate 	
 	
@@ -53,3 +55,6 @@ TODO: Studio :
 	Monospaced font for labels in the Amplitudes view
 
 	??? Introduce one more lower level for amplitudes
+
+	??? Export circuits to Q# or other languges 
+

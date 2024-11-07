@@ -2,11 +2,12 @@
 
 public sealed class GateEditQubitsDialogModel : DialogBindable<GateEditQubitsDialog, GateViewModel>
 {
-    private bool isInitializing;
+    private int firstIndex;
+    private int secondIndex;
+    private int thirdIndex;
 
     public GateEditQubitsDialogModel()
     {
-        this.GateParameters = new();
     }
 
     public GateViewModel GateViewModel
@@ -14,7 +15,7 @@ public sealed class GateEditQubitsDialogModel : DialogBindable<GateEditQubitsDia
                 gVm :
                 throw new ArgumentNullException("No parameters");
 
-    public GateParameters GateParameters { get; private set; }
+    public StageOperatorParameters StageOperatorParameters { get; private set; } = new();
 
     protected override void OnViewLoaded()
     {
@@ -22,17 +23,31 @@ public sealed class GateEditQubitsDialogModel : DialogBindable<GateEditQubitsDia
 
         // Retrieve GateParameters for the existing gate
         var quanticsStudioModel = App.GetRequiredService<QsModel>();
+        int quBitsCount = quanticsStudioModel.QuComputer.QuBitsCount;
         var gate = this.GateViewModel.Gate;
         int stageIndex = this.GateViewModel.StageIndex;
         var stage = quanticsStudioModel.QuComputer.Stages[stageIndex];
         var stageOperator = stage.StageOperatorAt(this.GateViewModel.QubitIndex);
-        this.GateParameters = stageOperator.GateParameters;
 
         this.Title = "Edit Qubits Inputs" ;
 
+        // Force property changed 
+        this.SaveButtonIsEnabled = true;
+        this.SaveButtonIsEnabled = false;
+        this.ValidationMessage = string.Empty;
+        this.ValuesCount = quBitsCount - 1;
+
+        this.FirstSliderValue = 0;
+        this.SecondSliderValue = 0;
+        this.ThirdSliderValue = 0;
+
+        this.FirstValueTextLabel = "First";
+        this.SecondValueTextLabel = "Second";
+        this.ThirdValueTextLabel = "Third";
+
         this.ValidationMessage = string.Empty;
         this.SaveButtonIsEnabled = true;
-        this.isInitializing = false;
+        this.Validate(out string _);
     }
 
 #pragma warning disable IDE0051 // Remove unused private members
@@ -50,50 +65,45 @@ public sealed class GateEditQubitsDialogModel : DialogBindable<GateEditQubitsDia
     }
 #pragma warning restore IDE0051 // Remove unused private members
 
-    /// <summary> Called from the view whenever the content of a text box is changed.</summary>
-    public void OnEditing()
-    {
-        bool validated = this.Validate(out string message);
-        this.ValidationMessage = validated ? string.Empty : message;
-        this.SaveButtonIsEnabled = validated;
-    }
-
     private bool Validate(out string message)
     {
+        bool validated = true;
         message = string.Empty;
-        if (double.TryParse(this.CustomValue, out double value))
+        if ((this.firstIndex == this.secondIndex)||
+            (this.firstIndex == this.thirdIndex)||
+            (this.secondIndex == this.thirdIndex))
         {
-            if (value.IsAlmostEqual(0.0))
-            {
-                message = "Cannot be zero.";
-            }
-            else if ((value < -Math.PI) || (value > Math.PI))
-            {
-                message = "Valid range: [ - π , + π ]";
-            }
-            else
-            {
-                return true;
-            }
+            message = "All qubit indices must be distinct.";
+            validated = false;
+        }
+
+        this.SaveButtonIsEnabled = validated;
+        this.ValidationMessage = validated ? string.Empty : message;
+        return validated;
+    }
+
+    private void OnSliderChanged( int sliderValue, int sliderIndex)
+    {
+        if (sliderIndex == 0)
+        {
+            this.firstIndex = sliderValue;
+            this.FirstValueText = string.Format("{0}", sliderValue);
+        }
+        else if (sliderIndex == 1)
+        {
+            this.secondIndex = sliderValue;
+            this.SecondValueText = string.Format("{0}", sliderValue);
         }
         else
         {
-            message = "Invalid entry";
+            this.thirdIndex = sliderValue;
+            this.ThirdValueText = string.Format("{0}", sliderValue);
         }
 
-        return false;
+        this.Validate(out string _);
     }
 
-    private void OnSliderChanged(int sliderValue)
-    {
-        if (this.isInitializing)
-        {
-            return;
-        }
-
-    }
-
-    public string CustomValue { get => this.Get<string>()!; set => this.Set(value); }
+    #region Bound  Properties 
 
     public string ValidationMessage { get => this.Get<string>()!; set => this.Set(value); }
 
@@ -105,17 +115,47 @@ public sealed class GateEditQubitsDialogModel : DialogBindable<GateEditQubitsDia
 
     public double ValuesCount { get => this.Get<double>(); set => this.Set(value); }
 
-    public double SliderValue
+    public double FirstSliderValue
     {
         get => this.Get<double>();
         set
         {
             this.Set(value);
-            this.OnSliderChanged((int)Math.Round(this.SliderValue));
+            this.OnSliderChanged((int)Math.Round(this.FirstSliderValue), sliderIndex: 0);
         }
     }
 
-    public string AngleValueText { get => this.Get<string>()!; set => this.Set(value); }
+    public string FirstValueTextLabel { get => this.Get<string>()!; set => this.Set(value); }
+
+    public string FirstValueText { get => this.Get<string>()!; set => this.Set(value); }
+
+    public double SecondSliderValue
+    {
+        get => this.Get<double>();
+        set
+        {
+            this.Set(value);
+            this.OnSliderChanged((int)Math.Round(this.SecondSliderValue), sliderIndex: 1);
+        }
+    }
+
+    public string SecondValueTextLabel { get => this.Get<string>()!; set => this.Set(value); }
+
+    public string SecondValueText { get => this.Get<string>()!; set => this.Set(value); }
+
+    public double ThirdSliderValue
+    {
+        get => this.Get<double>();
+        set
+        {
+            this.Set(value);
+            this.OnSliderChanged((int)Math.Round(this.ThirdSliderValue), sliderIndex: 2);
+        }
+    }
+
+    public string ThirdValueTextLabel { get => this.Get<string>()!; set => this.Set(value); }
+
+    public string ThirdValueText { get => this.Get<string>()!; set => this.Set(value); }
 
     public bool SaveButtonIsEnabled
     {
@@ -126,4 +166,6 @@ public sealed class GateEditQubitsDialogModel : DialogBindable<GateEditQubitsDia
             this.View.SaveButton.IsDisabled = !value;
         }
     }
+
+    #endregion Bound Properties 
 }
