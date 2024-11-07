@@ -2,43 +2,55 @@
 
 public sealed class GateEditControlDialogModel : DialogBindable<GateEditControlDialog, GateViewModel>
 {
-    private bool isInitializing;
+    private int controlIndex;
+    private int targetIndex;
 
-    public GateEditControlDialogModel()
-    {
-        this.GateParameters = new();
-    }
+    public GateEditControlDialogModel() { }
 
     public GateViewModel GateViewModel
         => base.parameters is GateViewModel gVm ?
                 gVm :
                 throw new ArgumentNullException("No parameters");
 
-    public GateParameters GateParameters { get; private set; }
+    public StageOperatorParameters StageOperatorParameters { get; private set; } = new();
 
     protected override void OnViewLoaded()
     {
         base.OnViewLoaded();
 
+        var gate = this.GateViewModel.Gate;
+        this.Title = string.Format("Mutate {0} to Controlled Gate", gate.CaptionKey) ;
+
         // Retrieve GateParameters for the existing gate
         var quanticsStudioModel = App.GetRequiredService<QsModel>();
-        var gate = this.GateViewModel.Gate;
-        int stageIndex = this.GateViewModel.StageIndex;
-        var stage = quanticsStudioModel.QuComputer.Stages[stageIndex];
-        var stageOperator = stage.StageOperatorAt(this.GateViewModel.QubitIndex);
-        this.GateParameters = stageOperator.GateParameters;
+        int quBitsCount = quanticsStudioModel.QuComputer.QuBitsCount;
+        int indexTarget = this.GateViewModel.QubitIndex;
+        int indexBefore = indexTarget - 1;
+        int indexAfter = indexTarget + 1;
+        int indexControl =
+            indexBefore >= 0 ?
+                indexBefore :
+                indexAfter <= quBitsCount - 1 ? indexAfter : -1;
+        if (indexControl == -1)
+        {
+            // throw ? 
+            if (Debugger.IsAttached) { Debugger.Break(); }
+        }
 
-        this.Title = "Controlled Gate" ;
-
-        this.ValidationMessage = string.Empty;
+        // Force property changed 
         this.SaveButtonIsEnabled = true;
-        this.isInitializing = false;
+        this.SaveButtonIsEnabled = false;
+        this.ValidationMessage = string.Empty;
+        this.ValuesCount = quBitsCount - 1;
+        this.TargetSliderValue = indexTarget;
+        this.ControlSliderValue = indexControl;
     }
 
 #pragma warning disable IDE0051 // Remove unused private members
 
     private void OnSave(object? _)
     {
+        this.StageOperatorParameters = new(this.controlIndex, this.targetIndex);
         this.onClose?.Invoke(this, true);
         this.dialogService.Dismiss();
     }
@@ -50,50 +62,36 @@ public sealed class GateEditControlDialogModel : DialogBindable<GateEditControlD
     }
 #pragma warning restore IDE0051 // Remove unused private members
 
-    /// <summary> Called from the view whenever the content of a text box is changed.</summary>
-    public void OnEditing()
-    {
-        bool validated = this.Validate(out string message);
-        this.ValidationMessage = validated ? string.Empty : message;
-        this.SaveButtonIsEnabled = validated;
-    }
-
     private bool Validate(out string message)
     {
+        bool validated = true;
         message = string.Empty;
-        if (double.TryParse(this.CustomValue, out double value))
+        if (this.targetIndex == this.controlIndex)
         {
-            if (value.IsAlmostEqual(0.0))
-            {
-                message = "Cannot be zero.";
-            }
-            else if ((value < -Math.PI) || (value > Math.PI))
-            {
-                message = "Valid range: [ - π , + π ]";
-            }
-            else
-            {
-                return true;
-            }
+            message = "Control and Target qubit indices must be distinct.";
+            validated = false;
+        }
+
+        this.SaveButtonIsEnabled = validated;
+        this.ValidationMessage = validated ? string.Empty : message;
+        return validated;
+    }
+
+    private void OnSliderChanged(int sliderValue, bool isControl)
+    {
+        if (isControl)
+        {
+            this.controlIndex = sliderValue;
+            this.ControlValueText = string.Format("{0}", sliderValue);
         }
         else
         {
-            message = "Invalid entry";
+            this.targetIndex = sliderValue;
+            this.TargetValueText = string.Format("{0}", sliderValue);
         }
 
-        return false;
+        this.Validate(out string _);
     }
-
-    private void OnSliderChanged(int sliderValue)
-    {
-        if (this.isInitializing)
-        {
-            return;
-        }
-
-    }
-
-    public string CustomValue { get => this.Get<string>()!; set => this.Set(value); }
 
     public string ValidationMessage { get => this.Get<string>()!; set => this.Set(value); }
 
@@ -105,17 +103,29 @@ public sealed class GateEditControlDialogModel : DialogBindable<GateEditControlD
 
     public double ValuesCount { get => this.Get<double>(); set => this.Set(value); }
 
-    public double SliderValue
+    public double ControlSliderValue
     {
         get => this.Get<double>();
         set
         {
             this.Set(value);
-            this.OnSliderChanged((int)Math.Round(this.SliderValue));
+            this.OnSliderChanged((int)Math.Round(this.ControlSliderValue), isControl: true);
         }
     }
 
-    public string AngleValueText { get => this.Get<string>()!; set => this.Set(value); }
+    public double TargetSliderValue
+    {
+        get => this.Get<double>();
+        set
+        {
+            this.Set(value);
+            this.OnSliderChanged((int)Math.Round(this.TargetSliderValue), isControl: false);
+        }
+    }
+
+    public string ControlValueText { get => this.Get<string>()!; set => this.Set(value); }
+
+    public string TargetValueText { get => this.Get<string>()!; set => this.Set(value); }
 
     public bool SaveButtonIsEnabled
     {

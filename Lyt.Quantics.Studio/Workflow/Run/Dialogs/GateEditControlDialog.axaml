@@ -54,7 +54,7 @@
 					Grid.Row="1" Grid.Column="0"
 					Text="{Binding Title}"
 					HorizontalAlignment="Left" VerticalAlignment="Center"
-					Margin="80 -8 0 0"
+					Margin="20 -8 0 0"
 					FontSize="26"
 					Foreground="{StaticResource LightAqua_0_080}"
 					TextWrapping="Wrap"
@@ -108,16 +108,20 @@
 				<Grid
 					Grid.Row="2"
 					>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="230" />
+						<ColumnDefinition Width="*" />
+					</Grid.ColumnDefinitions>
 					<Grid.RowDefinitions>
-						<RowDefinition Height="4"/>
-						<RowDefinition Height="50"/>
-						<RowDefinition Height="60"/>
-						<RowDefinition Height="32"/>
+						<RowDefinition Height="0"/>
 						<RowDefinition Height="40"/>
+						<RowDefinition Height="42"/>
 						<RowDefinition Height="40"/>
+						<RowDefinition Height="42"/>
+						<RowDefinition Height="80"/>
 					</Grid.RowDefinitions>
 					<TextBlock
-						Text="{Binding AngleValueText}"
+						Text="Control Qubit Index:"
 						Grid.Row="1"
 						VerticalAlignment="Center" HorizontalAlignment="Left"
 						FontSize="20"
@@ -125,49 +129,69 @@
 						Opacity="1.0"
 						Margin="20 12 0 0"
 						/>
+					<TextBlock
+						Text="{Binding ControlValueText}"
+						Grid.Row="1" Grid.Column="1"
+						VerticalAlignment="Center" HorizontalAlignment="Left"
+						FontSize="20"
+						FontWeight="DemiBold"
+						Foreground="{StaticResource ResourceKey= LightAqua_1_100}"
+						Opacity="1.0"
+						Margin="0 12 0 0"
+						/>
 					<Slider
-						Grid.Row="2"
+						Grid.Row="2" Grid.ColumnSpan="2"
 						Margin="40 0 40 0"
 						Height="60"
 						Minimum="0" Maximum="{Binding ValuesCount}"
-						Value="{Binding SliderValue}"
+						Value="{Binding ControlSliderValue}"
 						IsSnapToTickEnabled="True"
 						TickFrequency="1" TickPlacement="BottomRight"
 						SmallChange="1" LargeChange="2"
 						Foreground="{StaticResource LightAqua_1_100}"
 						/>
 					<TextBlock
+						Text="Target Qubit Index:"
 						Grid.Row="3"
-						VerticalAlignment="Center" HorizontalAlignment="Stretch"
-						TextAlignment="Left"
-						Foreground="{StaticResource LightAqua_0_080}"
-						Text="Custom Value:"
-						FontStyle="Italic"
-						FontSize="14"
-						Margin="20 0 0 0"
-						IsHitTestVisible="False"
-						/>
-					<TextBox
-						x:Name="ValueTextBox"
-						Grid.Row="4"
-						VerticalAlignment="Center" HorizontalAlignment="Stretch"
-						Watermark="Enter value in radians"
-						MaxLength="24"
-						Text="{Binding CustomValue}"
-						Margin="40 0 40 0"
+						VerticalAlignment="Center" HorizontalAlignment="Left"
+						FontSize="20"
+						Foreground="{StaticResource ResourceKey= LightAqua_1_100}"
+						Opacity="1.0"
+						Margin="20 12 0 0"
 						/>
 					<TextBlock
-						Grid.Row="6"
+						Text="{Binding TargetValueText}"
+						Grid.Row="3" Grid.Column="1"
+						VerticalAlignment="Center" HorizontalAlignment="Left"
+						FontSize="20"
+						FontWeight="DemiBold"
+						Foreground="{StaticResource ResourceKey= LightAqua_1_100}"
+						Opacity="1.0"
+						Margin="0 12 0 0"
+						/>
+					<Slider
+						Grid.Row="4" Grid.ColumnSpan="2"
+						Margin="40 0 40 0"
+						Height="60"
+						Minimum="0" Maximum="{Binding ValuesCount}"
+						Value="{Binding TargetSliderValue}"
+						IsSnapToTickEnabled="True"
+						TickFrequency="1" TickPlacement="BottomRight"
+						SmallChange="1" LargeChange="2"
+						Foreground="{StaticResource LightAqua_1_100}"
+						/>
+					<TextBlock
+						Grid.Row="5"
 						VerticalAlignment="Center" HorizontalAlignment="Stretch"
 						TextAlignment="Left"
 						Foreground="{StaticResource OrangePeel_0_100}"
 						Text="{Binding ValidationMessage}"
 						FontStyle="Italic"
 						FontSize="16"
-						Margin="40 0 8 0"
+						Margin="40 0 0 0"
 						IsHitTestVisible="False"
 						TextWrapping="Wrap"
-                />
+		                />
 				</Grid>
 			</Grid>
 		</Border>

@@ -10,6 +10,7 @@
 	Width="1680" Height="980"
 	MinWidth="400" MinHeight="360"
 	SizeToContent="Manual"
+	WindowStartupLocation="CenterScreen"
 	>
 	<Grid
 		x:Name="MainWindowGrid"

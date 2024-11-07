@@ -54,7 +54,7 @@
 					Grid.Row="1" Grid.Column="0"
 					Text="{Binding Title}"
 					HorizontalAlignment="Left" VerticalAlignment="Center"
-					Margin="80 -8 0 0"
+					Margin="20 -8 0 0"
 					FontSize="26"
 					Foreground="{StaticResource LightAqua_0_080}"
 					TextWrapping="Wrap"
