@@ -12,9 +12,14 @@ public sealed class ControlledControlledZ : Gate
 
     public override Matrix<Complex> Matrix => ControlledControlledZ.CCzMatrix;
 
+    // NOT SURE...  Figure that out 
+    // Can we say that:
+    //      The three Qubits are equivalent and hence should all be considered as Targets ??? 
     public override int ControlQuBits => 2;
 
     public override int TargetQuBits => 1;
+
+    // END  ~  NOT SURE...  Figure that out 
 
     public override string Name => "Controlled Controlled Z";
 

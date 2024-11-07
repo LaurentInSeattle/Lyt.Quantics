@@ -1,6 +1,6 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Dialogs;
 
-public sealed class GateEditDialogModel : DialogBindable<GateEditDialog, GateViewModel>
+public sealed class GateEditAngleDialogModel : DialogBindable<GateEditAngleDialog, GateViewModel>
 {
     private const int DefaultPredefinedValue = 8;
 
@@ -23,12 +23,12 @@ public sealed class GateEditDialogModel : DialogBindable<GateEditDialog, GateVie
     private bool isChangedFromSlider;
     private bool isInitializing;
 
-    public GateEditDialogModel()
+    public GateEditAngleDialogModel()
     {
         this.GateParameters = new();
         this.IsMakeControlled = false;
-        this.ValuesCount = GateEditDialogModel.PredefinedValues.Count - 1;
-        this.PredefinedValue = GateEditDialogModel.PredefinedValues[DefaultPredefinedValue];
+        this.ValuesCount = GateEditAngleDialogModel.PredefinedValues.Count - 1;
+        this.PredefinedValue = GateEditAngleDialogModel.PredefinedValues[DefaultPredefinedValue];
     }
 
     public GateViewModel GateViewModel
@@ -73,7 +73,7 @@ public sealed class GateEditDialogModel : DialogBindable<GateEditDialog, GateVie
         else
         {
             this.isInitializing = true;
-            this.SliderValue = GateEditDialogModel.DefaultPredefinedValue;
+            this.SliderValue = GateEditAngleDialogModel.DefaultPredefinedValue;
             this.AngleValue = this.GateParameters.Angle;
             this.AngleValueText =
                 string.Concat(this.Title, ": ", this.AngleValue.ToString("F3"), " radians.");
@@ -168,7 +168,7 @@ public sealed class GateEditDialogModel : DialogBindable<GateEditDialog, GateVie
             return;
         }
 
-        if (GateEditDialogModel.PredefinedValues.TryGetValue(sliderValue, out var angleValue))
+        if (GateEditAngleDialogModel.PredefinedValues.TryGetValue(sliderValue, out var angleValue))
         {
             if (angleValue is AnglePredefinedValue predefinedValue)
             {

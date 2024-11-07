@@ -23,6 +23,7 @@ public sealed class SwapGate : Gate
 
     public override Matrix<Complex> Matrix => SwapGate.SwapMatrix;
 
+    // For  SWAP the two Qubits are equivalent and hence considered both as Targets 
     public override int ControlQuBits => 0;
 
     public override int TargetQuBits => 2;

@@ -1,0 +1,194 @@
+<UserControl 
+	x:Class="Lyt.Quantics.Studio.Workflow.Run.Dialogs.GateEditAngleDialog"
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+    xmlns:vm="clr-namespace:Lyt.Quantics.Studio.Workflow.Run.Dialogs"
+    x:DataType="vm:GateEditAngleDialogModel" 
+	xmlns:glyphs="clr-namespace:Lyt.Avalonia.Controls.Glyphs;assembly=Lyt.Avalonia.Controls"
+	xmlns:toggle="clr-namespace:Lyt.Avalonia.Controls.Toggle;assembly=Lyt.Avalonia.Controls"
+    xmlns:theme="clr-namespace:Lyt.Quantics.Studio"
+	>
+	<Grid
+		Width="600" Height="300"
+		Background="Transparent"
+		>
+		<Rectangle
+			Fill="#C0000020"
+			Grid.ColumnSpan="999" Grid.RowSpan="999"
+			RadiusX="4" RadiusY="4"
+			Margin="1"
+			/>
+		<Border
+			Margin ="1"
+			BorderThickness="1.0"
+			BorderBrush="{StaticResource ResourceKey= LightAqua_2_100}"
+			Background="Transparent"
+			>
+			<Grid
+				>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="4"/>
+					<RowDefinition Height="56"/>
+					<RowDefinition Height="*"/>
+				</Grid.RowDefinitions>
+				<Rectangle
+					Grid.Row="0"
+					VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+					Fill="{StaticResource ResourceKey= OrangePeel_2_080}"
+					/>
+				<Rectangle
+					Grid.Row="1"
+					VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+					Fill="#60202040"
+					/>
+				<Rectangle
+					Grid.Row="1"
+					Height="1"
+					VerticalAlignment="Bottom" HorizontalAlignment="Stretch"
+					Fill="#F0302070"
+					/>
+				<TextBlock
+					Grid.Row="1" Grid.Column="0"
+					Text="{Binding Title}"
+					HorizontalAlignment="Left" VerticalAlignment="Center"
+					Margin="80 -8 0 0"
+					FontSize="26"
+					Foreground="{StaticResource LightAqua_0_080}"
+					TextWrapping="Wrap"
+					/>
+				<!--Toolbar -->
+				<Grid
+					Grid.Row="1"
+					HorizontalAlignment="Right" VerticalAlignment="Center"
+					Margin="0 0 12 0"
+					>
+					<Grid.ColumnDefinitions>
+						<!-- Spacer -->
+						<ColumnDefinition Width="24" />
+						<!-- Make Controlled -->
+						<ColumnDefinition Width="100" />
+						<!-- Spacer -->
+						<ColumnDefinition Width="4" />
+						<!-- Save and Close -->
+						<ColumnDefinition Width="100" />
+						<!-- Spacer -->
+						<ColumnDefinition Width="4" />
+						<!-- Dismiss -->
+						<ColumnDefinition Width="72" />
+					</Grid.ColumnDefinitions>
+					<!-- swipe_down -->
+					<glyphs:GlyphButton
+						x:Name="MakeControlledButton"
+						Grid.Column="1"
+						Style="{StaticResource ToolbarIconButton}"
+						Behaviour="Tap"
+						HorizontalAlignment="Center" VerticalAlignment="Center"
+						Width="92" Height="48"
+						Margin="4"
+						GlyphSource="swipe_down"
+						ButtonBackground="BorderlessRectangle"
+						GlyphStrokeThickness="0"
+						Text="To Controlled"
+						Command="{Binding MakeControlledCommand}"
+	    				/>
+					<glyphs:GlyphButton
+						x:Name="SaveButton"
+						Grid.Column="3"
+						Style="{StaticResource ToolbarIconButton}"
+						Behaviour="Tap"
+						HorizontalAlignment="Center" VerticalAlignment="Center"
+						Width="92" Height="48"
+						Margin="4"
+						GlyphSource="save"
+						ButtonBackground="BorderlessRectangle"
+						GlyphStrokeThickness="0"
+						Text="Save and Close"
+						Command="{Binding SaveCommand}"
+	    				/>
+					<glyphs:GlyphButton
+						Grid.Column="5"
+						Style="{StaticResource ToolbarIconButton}"
+						Behaviour="Tap"
+						HorizontalAlignment="Center" VerticalAlignment="Center"
+						Width="64" Height="48"
+						Margin="4"
+						GlyphSource="dismiss"
+						ButtonBackground="BorderlessRectangle"
+						GlyphStrokeThickness="0"
+						Text="Cancel"
+						Command="{Binding CancelCommand}"
+	    				/>
+				</Grid>
+
+				<!--Content -->
+				<Grid
+					Grid.Row="2"
+					>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="4"/>
+						<RowDefinition Height="50"/>
+						<RowDefinition Height="60"/>
+						<RowDefinition Height="32"/>
+						<RowDefinition Height="40"/>
+						<RowDefinition Height="40"/>
+					</Grid.RowDefinitions>
+					<TextBlock
+						Text="{Binding AngleValueText}"
+						Grid.Row="1"
+						VerticalAlignment="Center" HorizontalAlignment="Left"
+						FontSize="20"
+						Foreground="{StaticResource ResourceKey= LightAqua_1_100}"
+						Opacity="1.0"
+						Margin="20 12 0 0"
+						/>
+					<Slider
+						Grid.Row="2"
+						Margin="40 0 40 0"
+						Height="60"
+						Minimum="0" Maximum="{Binding ValuesCount}"
+						Value="{Binding SliderValue}"
+						IsSnapToTickEnabled="True"
+						TickFrequency="1" TickPlacement="BottomRight"
+						SmallChange="1" LargeChange="2"
+						Foreground="{StaticResource LightAqua_1_100}"
+						/>
+					<TextBlock
+						Grid.Row="3"
+						VerticalAlignment="Center" HorizontalAlignment="Stretch"
+						TextAlignment="Left"
+						Foreground="{StaticResource LightAqua_0_080}"
+						Text="Custom Value:"
+						FontStyle="Italic"
+						FontSize="14"
+						Margin="20 0 0 0"
+						IsHitTestVisible="False"
+						/>
+					<TextBox
+						x:Name="ValueTextBox"
+						Grid.Row="4"
+						VerticalAlignment="Center" HorizontalAlignment="Stretch"
+						Watermark="Enter value in radians"
+						MaxLength="24"
+						Text="{Binding CustomValue}"
+						Margin="40 0 40 0"
+						/>
+					<TextBlock
+						Grid.Row="6"
+						VerticalAlignment="Center" HorizontalAlignment="Stretch"
+						TextAlignment="Left"
+						Foreground="{StaticResource OrangePeel_0_100}"
+						Text="{Binding ValidationMessage}"
+						FontStyle="Italic"
+						FontSize="16"
+						Margin="40 0 8 0"
+						IsHitTestVisible="False"
+						TextWrapping="Wrap"
+                />
+				</Grid>
+			</Grid>
+		</Border>
+	</Grid>
+</UserControl>

@@ -26,9 +26,10 @@ public sealed class ControlledZGate : Gate
 
     public override Matrix<Complex> Matrix => ControlledZGate.ControlledZMatrix;
 
-    public override int ControlQuBits => 1;
+    // Like SWAP the two Qubits are equivalent and hence considered both as Targets 
+    public override int ControlQuBits => 0;
 
-    public override int TargetQuBits => 1;
+    public override int TargetQuBits => 2;
 
     public override string Name => "Controlled Z";
 

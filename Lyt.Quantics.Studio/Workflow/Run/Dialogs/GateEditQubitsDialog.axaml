@@ -1,12 +1,12 @@
 <UserControl 
-	x:Class="Lyt.Quantics.Studio.Workflow.Run.Dialogs.GateEditDialog"
+	x:Class="Lyt.Quantics.Studio.Workflow.Run.Dialogs.GateEditQubitsDialog"
 	xmlns="https://github.com/avaloniaui"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
     xmlns:vm="clr-namespace:Lyt.Quantics.Studio.Workflow.Run.Dialogs"
-    x:DataType="vm:GateEditDialogModel" 
+    x:DataType="vm:GateEditQubitsDialogModel" 
 	xmlns:glyphs="clr-namespace:Lyt.Avalonia.Controls.Glyphs;assembly=Lyt.Avalonia.Controls"
 	xmlns:toggle="clr-namespace:Lyt.Avalonia.Controls.Toggle;assembly=Lyt.Avalonia.Controls"
     xmlns:theme="clr-namespace:Lyt.Quantics.Studio"
@@ -67,10 +67,6 @@
 					>
 					<Grid.ColumnDefinitions>
 						<!-- Spacer -->
-						<ColumnDefinition Width="24" />
-						<!-- Make Controlled -->
-						<ColumnDefinition Width="100" />
-						<!-- Spacer -->
 						<ColumnDefinition Width="4" />
 						<!-- Save and Close -->
 						<ColumnDefinition Width="100" />
@@ -79,24 +75,9 @@
 						<!-- Dismiss -->
 						<ColumnDefinition Width="72" />
 					</Grid.ColumnDefinitions>
-					<!-- swipe_down -->
-					<glyphs:GlyphButton
-						x:Name="MakeControlledButton"
-						Grid.Column="1"
-						Style="{StaticResource ToolbarIconButton}"
-						Behaviour="Tap"
-						HorizontalAlignment="Center" VerticalAlignment="Center"
-						Width="92" Height="48"
-						Margin="4"
-						GlyphSource="swipe_down"
-						ButtonBackground="BorderlessRectangle"
-						GlyphStrokeThickness="0"
-						Text="To Controlled"
-						Command="{Binding MakeControlledCommand}"
-	    				/>
 					<glyphs:GlyphButton
 						x:Name="SaveButton"
-						Grid.Column="3"
+						Grid.Column="1"
 						Style="{StaticResource ToolbarIconButton}"
 						Behaviour="Tap"
 						HorizontalAlignment="Center" VerticalAlignment="Center"
@@ -109,7 +90,7 @@
 						Command="{Binding SaveCommand}"
 	    				/>
 					<glyphs:GlyphButton
-						Grid.Column="5"
+						Grid.Column="3"
 						Style="{StaticResource ToolbarIconButton}"
 						Behaviour="Tap"
 						HorizontalAlignment="Center" VerticalAlignment="Center"
@@ -156,26 +137,6 @@
 						Foreground="{StaticResource LightAqua_1_100}"
 						/>
 					<TextBlock
-						Grid.Row="3"
-						VerticalAlignment="Center" HorizontalAlignment="Stretch"
-						TextAlignment="Left"
-						Foreground="{StaticResource LightAqua_0_080}"
-						Text="Custom Value:"
-						FontStyle="Italic"
-						FontSize="14"
-						Margin="20 0 0 0"
-						IsHitTestVisible="False"
-						/>
-					<TextBox
-						x:Name="ValueTextBox"
-						Grid.Row="4"
-						VerticalAlignment="Center" HorizontalAlignment="Stretch"
-						Watermark="Enter value in radians"
-						MaxLength="24"
-						Text="{Binding CustomValue}"
-						Margin="40 0 40 0"
-						/>
-					<TextBlock
 						Grid.Row="6"
 						VerticalAlignment="Center" HorizontalAlignment="Stretch"
 						TextAlignment="Left"
@@ -186,7 +147,7 @@
 						Margin="40 0 8 0"
 						IsHitTestVisible="False"
 						TextWrapping="Wrap"
-                />
+		                />
 				</Grid>
 			</Grid>
 		</Border>

@@ -154,9 +154,21 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
             return;
         }
 
+        bool isTernary = this.Gate.QuBitsTransformed == 3;
+        bool isBinary = this.Gate.QuBitsTransformed == 2;
         bool isUnary = this.Gate.QuBitsTransformed == 1;
-        bool isNotControlled = !this.Gate.IsControlled;
-        bool canLaunchEditor = this.Gate.HasAngleParameter || (isUnary && isNotControlled);
+        bool isControlled = this.Gate.IsControlled;
+        bool canLaunchEditor =
+            // Phase and Rotation gates 
+            this.Gate.HasAngleParameter ||
+            // Transform into a binary controlled gate 
+            (isUnary && !isControlled) ||
+            // Edit Targets for swap and CZ
+            (isBinary && this.Gate.TargetQuBits == 2) ||
+            // Edit control and target for binary 
+            (isBinary && isControlled) ||
+            // All ternary gates are controlled or can be edited 
+            isTernary;
         if (canLaunchEditor)
         {
             // Launch edit gate dialog 

@@ -66,6 +66,9 @@
     <AvaloniaXaml Update="Workflow\Load\Toolbars\LoadBlankToolbarView.axaml">
       <SubType>Designer</SubType>
     </AvaloniaXaml>
+    <AvaloniaXaml Update="Workflow\Run\Dialogs\GateEditQubitsDialog.axaml">
+      <SubType>Designer</SubType>
+    </AvaloniaXaml>
     <AvaloniaXaml Update="Workflow\Run\Dialogs\GateEditControlDialog.axaml">
       <SubType>Designer</SubType>
     </AvaloniaXaml>
@@ -114,12 +117,16 @@
     <Compile Update="Workflow\Load\Tiles\DocumentView.axaml.cs">
       <DependentUpon>DocumentView.axaml</DependentUpon>
     </Compile>
+    <Compile Update="Workflow\Run\Dialogs\GateEditQubitsDialog.axaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>GateEditQubitsDialog.axaml</DependentUpon>
+    </Compile>
     <Compile Update="Workflow\Run\Dialogs\GateEditControlDialog.axaml.cs">
       <SubType>Code</SubType>
       <DependentUpon>GateEditControlDialog.axaml</DependentUpon>
     </Compile>
-    <Compile Update="Workflow\Run\Dialogs\GateEditDialog.axaml.cs">
-      <DependentUpon>GateEditDialog.axaml</DependentUpon>
+    <Compile Update="Workflow\Run\Dialogs\GateEditAngleDialog.axaml.cs">
+      <DependentUpon>GateEditAngleDialog.axaml</DependentUpon>
     </Compile>
     <Compile Update="Workflow\Run\Gates\Special\ACxGate.axaml.cs">
       <DependentUpon>ACxGate.axaml</DependentUpon>
