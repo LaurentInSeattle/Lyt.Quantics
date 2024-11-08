@@ -2,6 +2,9 @@
 TODO: Framework: 
 
 	Disabling / Enabling Glyph buttons fails via data binding. (Error in property?) 
+
+	Ability to drag modal dialogs 
+
 	Annoying flash when replacing a modal dialog by a new one, need some kind of dismiss and run API
 
 TODO: Engine: 
@@ -61,4 +64,8 @@ TODO: Studio :
 	??? Introduce one more lower level for amplitudes
 
 	??? Export circuits to Q# or other languges 
+
+	??? Help Window
+
+	??? Settings Window
 

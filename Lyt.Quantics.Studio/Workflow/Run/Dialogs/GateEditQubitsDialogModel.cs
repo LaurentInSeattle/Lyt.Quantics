@@ -38,10 +38,8 @@ public sealed class GateEditQubitsDialogModel : DialogBindable<GateEditQubitsDia
         this.ValidationMessage = string.Empty;
         this.ValuesCount = quBitsCount - 1;
 
-        this.FirstSliderValue = 0;
-        this.SecondSliderValue = 0;
-        this.ThirdSliderValue = 0;
         this.SetupLabels();
+        this.SetupSliders();
 
         this.ValidationMessage = string.Empty;
         this.SaveButtonIsEnabled = true;
@@ -52,7 +50,7 @@ public sealed class GateEditQubitsDialogModel : DialogBindable<GateEditQubitsDia
 
     private void OnSave(object? _)
     {
-        this.PopulateStageParameters(); 
+        this.PopulateStageParameters();
         this.onClose?.Invoke(this, true);
         this.dialogService.Dismiss();
     }
@@ -95,6 +93,50 @@ public sealed class GateEditQubitsDialogModel : DialogBindable<GateEditQubitsDia
             this.FirstValueTextLabel = "First Target Qubit Index:";
             this.SecondValueTextLabel = "Second Target Qubit Index:";
             this.ThirdValueTextLabel = "Third Target Qubit Index:";
+        }
+        else
+        {
+            throw new Exception("No such combination of controls and targets.");
+        }
+    }
+
+    private void SetupSliders()
+    {
+        this.FirstSliderValue = 0;
+        this.SecondSliderValue = 0;
+        this.ThirdSliderValue = 0;
+
+        var controlQubits = this.stageOperator.ControlQuBitIndices;
+        var targetQubits = this.stageOperator.TargetQuBitIndices;
+        int controls = controlQubits.Count;
+        int targets = targetQubits.Count;
+        if ((controls == 1) && (targets == 1))
+        {
+            this.FirstSliderValue = controlQubits[0];
+            this.SecondSliderValue = targetQubits[0];
+        }
+        else if ((controls == 0) && (targets == 2))
+        {
+            this.FirstSliderValue = targetQubits[0];
+            this.SecondSliderValue = targetQubits[1];
+        }
+        else if ((controls == 1) && (targets == 2))
+        {
+            this.FirstSliderValue = controlQubits[0];
+            this.SecondSliderValue = targetQubits[0];
+            this.ThirdSliderValue = targetQubits[1];
+        }
+        else if ((controls == 2) && (targets == 1))
+        {
+            this.FirstSliderValue = controlQubits[0];
+            this.SecondSliderValue = controlQubits[1];
+            this.ThirdSliderValue = targetQubits[0];
+        }
+        else if ((controls == 0) && (targets == 3))
+        {
+            this.FirstSliderValue = targetQubits[0];
+            this.SecondSliderValue = targetQubits[1];
+            this.ThirdSliderValue = targetQubits[2];
         }
         else
         {
