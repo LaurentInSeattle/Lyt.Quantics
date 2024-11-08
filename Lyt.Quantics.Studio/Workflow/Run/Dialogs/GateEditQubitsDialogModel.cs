@@ -2,13 +2,14 @@
 
 public sealed class GateEditQubitsDialogModel : DialogBindable<GateEditQubitsDialog, GateViewModel>
 {
+    public sealed record class QubitSetup(int Index, bool IsControl);
+
     private int firstIndex;
     private int secondIndex;
     private int thirdIndex;
+    private QuStageOperator stageOperator;
 
-    public GateEditQubitsDialogModel()
-    {
-    }
+    public GateEditQubitsDialogModel() => this.stageOperator = new();
 
     public GateViewModel GateViewModel
         => base.parameters is GateViewModel gVm ?
@@ -21,15 +22,15 @@ public sealed class GateEditQubitsDialogModel : DialogBindable<GateEditQubitsDia
     {
         base.OnViewLoaded();
 
-        // Retrieve GateParameters for the existing gate
+        // Retrieve various parameters and characteristics for the existing gate
         var quanticsStudioModel = App.GetRequiredService<QsModel>();
         int quBitsCount = quanticsStudioModel.QuComputer.QuBitsCount;
         var gate = this.GateViewModel.Gate;
         int stageIndex = this.GateViewModel.StageIndex;
         var stage = quanticsStudioModel.QuComputer.Stages[stageIndex];
-        var stageOperator = stage.StageOperatorAt(this.GateViewModel.QubitIndex);
-
-        this.Title = "Edit Qubits Inputs" ;
+        this.stageOperator = stage.StageOperatorAt(this.GateViewModel.QubitIndex);
+        this.HasThreeQubits = gate.QuBitsTransformed == 3;
+        this.Title = gate.CaptionKey + ": Edit Qubits Inputs";
 
         // Force property changed 
         this.SaveButtonIsEnabled = true;
@@ -40,10 +41,7 @@ public sealed class GateEditQubitsDialogModel : DialogBindable<GateEditQubitsDia
         this.FirstSliderValue = 0;
         this.SecondSliderValue = 0;
         this.ThirdSliderValue = 0;
-
-        this.FirstValueTextLabel = "First";
-        this.SecondValueTextLabel = "Second";
-        this.ThirdValueTextLabel = "Third";
+        this.SetupLabels();
 
         this.ValidationMessage = string.Empty;
         this.SaveButtonIsEnabled = true;
@@ -54,6 +52,7 @@ public sealed class GateEditQubitsDialogModel : DialogBindable<GateEditQubitsDia
 
     private void OnSave(object? _)
     {
+        this.PopulateStageParameters(); 
         this.onClose?.Invoke(this, true);
         this.dialogService.Dismiss();
     }
@@ -65,12 +64,91 @@ public sealed class GateEditQubitsDialogModel : DialogBindable<GateEditQubitsDia
     }
 #pragma warning restore IDE0051 // Remove unused private members
 
+    private void SetupLabels()
+    {
+        int controls = this.stageOperator.ControlQuBitIndices.Count;
+        int targets = this.stageOperator.TargetQuBitIndices.Count;
+        if ((controls == 1) && (targets == 1))
+        {
+            this.FirstValueTextLabel = "Control Qubit Index:";
+            this.SecondValueTextLabel = "Target Qubit Index:";
+        }
+        else if ((controls == 0) && (targets == 2))
+        {
+            this.FirstValueTextLabel = "First Target Qubit Index:";
+            this.SecondValueTextLabel = "Second Target Qubit Index:";
+        }
+        else if ((controls == 1) && (targets == 2))
+        {
+            this.FirstValueTextLabel = "Control Qubit Index:";
+            this.SecondValueTextLabel = "First Target Qubit Index:";
+            this.ThirdValueTextLabel = "Second Target Qubit Index:";
+        }
+        else if ((controls == 2) && (targets == 1))
+        {
+            this.FirstValueTextLabel = "First Control Qubit Index:";
+            this.SecondValueTextLabel = "Second Control Qubit Index:";
+            this.ThirdValueTextLabel = "Target Qubit Index:";
+        }
+        else if ((controls == 0) && (targets == 3))
+        {
+            this.FirstValueTextLabel = "First Target Qubit Index:";
+            this.SecondValueTextLabel = "Second Target Qubit Index:";
+            this.ThirdValueTextLabel = "Third Target Qubit Index:";
+        }
+        else
+        {
+            throw new Exception("No such combination of controls and targets.");
+        }
+    }
+
+    private void PopulateStageParameters()
+    {
+        int controls = this.stageOperator.ControlQuBitIndices.Count;
+        int targets = this.stageOperator.TargetQuBitIndices.Count;
+        this.StageOperatorParameters.Clear();
+        var controlIndices = this.StageOperatorParameters.TargetQuBitIndices;
+        var targetIndices = this.StageOperatorParameters.TargetQuBitIndices;
+        if ((controls == 1) && (targets == 1))
+        {
+            controlIndices.Add(firstIndex);
+            targetIndices.Add(secondIndex);
+        }
+        else if ((controls == 0) && (targets == 2))
+        {
+            targetIndices.Add(firstIndex);
+            targetIndices.Add(secondIndex);
+        }
+        else if ((controls == 1) && (targets == 2))
+        {
+            controlIndices.Add(firstIndex);
+            targetIndices.Add(secondIndex);
+            targetIndices.Add(thirdIndex);
+        }
+        else if ((controls == 2) && (targets == 1))
+        {
+            controlIndices.Add(firstIndex);
+            controlIndices.Add(secondIndex);
+            targetIndices.Add(thirdIndex);
+        }
+        else if ((controls == 0) && (targets == 3))
+        {
+            targetIndices.Add(firstIndex);
+            targetIndices.Add(secondIndex);
+            targetIndices.Add(thirdIndex);
+        }
+        else
+        {
+            throw new Exception("No such combination of controls and targets.");
+        }
+    }
+
     private bool Validate(out string message)
     {
         bool validated = true;
         message = string.Empty;
-        if ((this.firstIndex == this.secondIndex)||
-            (this.firstIndex == this.thirdIndex)||
+        if ((this.firstIndex == this.secondIndex) ||
+            (this.firstIndex == this.thirdIndex) ||
             (this.secondIndex == this.thirdIndex))
         {
             message = "All qubit indices must be distinct.";
@@ -82,7 +160,7 @@ public sealed class GateEditQubitsDialogModel : DialogBindable<GateEditQubitsDia
         return validated;
     }
 
-    private void OnSliderChanged( int sliderValue, int sliderIndex)
+    private void OnSliderChanged(int sliderValue, int sliderIndex)
     {
         if (sliderIndex == 0)
         {
@@ -104,6 +182,8 @@ public sealed class GateEditQubitsDialogModel : DialogBindable<GateEditQubitsDia
     }
 
     #region Bound  Properties 
+
+    public bool HasThreeQubits { get => this.Get<bool>(); set => this.Set(value); }
 
     public string ValidationMessage { get => this.Get<string>()!; set => this.Set(value); }
 
