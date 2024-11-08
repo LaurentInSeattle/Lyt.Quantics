@@ -4,6 +4,12 @@ public sealed class StageOperatorParameters
 {
     public StageOperatorParameters() { }
 
+    public StageOperatorParameters(QuStageOperator stageOperator) 
+    {
+        this.ControlQuBitIndices = stageOperator.ControlQuBitIndices;
+        this.TargetQuBitIndices = stageOperator.TargetQuBitIndices;
+    }
+
     /// <summary> Convenience ctor for mutating unary gates. </summary>
     public StageOperatorParameters(int controlIndex, int targetIndex)
     {

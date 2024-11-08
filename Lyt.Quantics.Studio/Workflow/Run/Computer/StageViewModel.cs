@@ -1,4 +1,6 @@
-﻿namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
+﻿using Lyt.Quantics.Studio.Workflow.Run.Gates;
+
+namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
 
 public sealed class StageViewModel : Bindable<StageView>
 {
@@ -88,8 +90,8 @@ public sealed class StageViewModel : Bindable<StageView>
         if (gateQubits + qubitIndex > computer.QuBitsCount)
         {
             this.toaster.Show(
-                "Can't Drop Here!", 
-                "Not enough qubits to drop the gate here.", 
+                "Can't Drop Here!",
+                "Not enough qubits to drop the gate here.",
                 4_000, InformationLevel.Warning);
             return;
         }
@@ -124,6 +126,7 @@ public sealed class StageViewModel : Bindable<StageView>
 
             foreach (var stageOperator in stage.Operators)
             {
+                string gateKey = stageOperator.GateKey;
                 if (stageOperator.GateKey == IdentityGate.Key)
                 {
                     // No need to show the identity operator
@@ -132,20 +135,33 @@ public sealed class StageViewModel : Bindable<StageView>
 
                 ++this.activeGates;
 
-                // TODO ~ TODO : Take care of Control and Targets 
-
-                int firstIndex = stageOperator.SmallestQubitIndex;
-                var gate = GateFactory.Produce(stageOperator.GateKey, stageOperator.GateParameters);
+                var gate = GateFactory.Produce(gateKey, stageOperator.GateParameters);
                 int gateRows = gate.QuBitsTransformed;
-                var gateViewModel =
-                    new GateViewModel(
-                        gate, isToolbox: false, stageIndex: this.stageIndex, qubitIndex: firstIndex);
-                var view = gateViewModel.CreateViewAndBind();
-                view.SetValue(Grid.RowProperty, firstIndex);
-                view.SetValue(Grid.RowSpanProperty, gateRows);
-                this.View.GatesGrid.Children.Add(view);
+                int firstIndex = stageOperator.SmallestQubitIndex;
+                var stageOperatorParameters = new StageOperatorParameters(stageOperator);
 
-                // TODO ~ TODO : Take care of Control and Targets 
+                if ((gateKey == "Swap") || (gateKey == "CX"))
+                {
+                    var gateVm = new ConstructedGateViewModel(gateKey, stageOperatorParameters);
+                    var gateView = gateVm.CreateViewAndBind();
+                    gateView.SetValue(Grid.RowProperty, firstIndex);
+                    gateView.SetValue(Grid.RowSpanProperty, gateRows);
+                    this.View.GatesGrid.Children.Add(gateView);
+                }
+                else
+                {
+                    // TODO ~ TODO : Take care of Control and Targets 
+
+                    var gateViewModel =
+                        new GateViewModel(
+                            gate, isToolbox: false, stageIndex: this.stageIndex, qubitIndex: firstIndex);
+                    var view = gateViewModel.CreateViewAndBind();
+                    view.SetValue(Grid.RowProperty, firstIndex);
+                    view.SetValue(Grid.RowSpanProperty, gateRows);
+                    this.View.GatesGrid.Children.Add(view);
+
+                    // TODO ~ TODO : Take care of Control and Targets 
+                }
             }
         }
         catch (Exception ex)

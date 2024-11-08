@@ -2,7 +2,7 @@
 
 public sealed class ConstructedGateViewModel : Bindable<ConstructedGateView>
 {
-    private const string BlueBrush = "LightAqua_1_100";
+    private const string BlueBrush = "LightAqua_0_100";
     private const double gateSize = 48.0;
     private const double spacerSize = 12.0;
     private const double largeSize = 16.0;
@@ -10,7 +10,7 @@ public sealed class ConstructedGateViewModel : Bindable<ConstructedGateView>
     private const double lineSize = 2.0;
 
     private readonly SolidColorBrush blueBrush;
-    private readonly SolidColorBrush debugBrush;
+    private readonly SolidColorBrush backgroundBrush;
     private readonly SolidColorBrush transparentBrush;
     private readonly string gateKey;
     private readonly StageOperatorParameters stageOperatorParameters;
@@ -23,7 +23,7 @@ public sealed class ConstructedGateViewModel : Bindable<ConstructedGateView>
             { "CX", "CreateCxGate" } ,
             //"CZ",
             //"FCX",
-            //"Swap",
+            {  "Swap" , "CreateSwapGate" },
 
             //// Ternary 
             //"CCX",
@@ -49,7 +49,7 @@ public sealed class ConstructedGateViewModel : Bindable<ConstructedGateView>
         this.gateKey = gateKey;
         this.stageOperatorParameters = stageOperatorParameters;
 
-        this.debugBrush = new SolidColorBrush(color: 0x40406080);
+        this.backgroundBrush = new SolidColorBrush(color: 0x30406080);
         this.transparentBrush = new SolidColorBrush(color: 0);
         Utilities.TryFindResource(BlueBrush, out SolidColorBrush? brush);
         if (brush is null)
@@ -67,32 +67,32 @@ public sealed class ConstructedGateViewModel : Bindable<ConstructedGateView>
         allIndices.AddRange(this.stageOperatorParameters.ControlQuBitIndices);
         allIndices.AddRange(this.stageOperatorParameters.TargetQuBitIndices);
         this.allQuBitIndicesSorted = [.. (from index in allIndices orderby index ascending select index)];
-        this.contentGrid = new Grid();
+
+        this.contentGrid = this.CreateContentGrid();
+        Rectangle rectangle = this.CreateConnectingLine();
+        this.contentGrid.Children.Add(rectangle);
+        this.CreateGate();
     }
 
     protected override void OnViewLoaded()
     {
         base.OnViewLoaded();
-        this.contentGrid = this.CreateContentGrid();
-        Rectangle rectangle = this.CreateConnectingLine();
-        this.contentGrid.Children.Add(rectangle);
-        Grid grid = this.CreateGate(); 
-        this.contentGrid.Children.Add(grid);
         this.View.Content = this.contentGrid;
+        this.View.InvalidateVisual();
     }
 
     private int SmallestQubitIndex => this.allQuBitIndicesSorted[0];
 
     private int LargestQubitIndex => this.allQuBitIndicesSorted[^1];
 
-    private Grid CreateGate()
+    private void CreateGate()
     {
-        if (!this.supportedGates.ContainsKey(gateKey))
+        if (!this.supportedGates.TryGetValue(gateKey, out string? value))
         {
             throw new NotSupportedException("Not supported gate: " + gateKey);
         }
 
-        string methodName = this.supportedGates[gateKey];
+        string methodName = value;
         if (string.IsNullOrWhiteSpace(methodName))
         {
             throw new NotSupportedException("No create method provided for gate: " + gateKey);
@@ -100,21 +100,12 @@ public sealed class ConstructedGateViewModel : Bindable<ConstructedGateView>
 
         try
         {
-            var methodInfo = 
-                this.GetType().GetMethod(
-                    methodName, BindingFlags.Instance | BindingFlags.NonPublic);
-            if (methodInfo == null)
-            {
-                throw new NotSupportedException("No suitable create method provided for gate: " + gateKey);
-            }
-
-            object? created = methodInfo.Invoke(this, null); 
-            if ( created is Grid grid)
-            {
-                return grid; 
-            }
-
-            throw new Exception("Failed to create gate: " + gateKey);
+            // Method will place elements in the content grid and will return nothing, but... 
+            // could throw or fail.
+            var methodInfo =
+                this.GetType().GetMethod( methodName, BindingFlags.Instance | BindingFlags.NonPublic) 
+                ?? throw new NotSupportedException("No suitable create method provided for gate: " + gateKey);
+            methodInfo.Invoke(this, null); 
         }
         catch (Exception ex)
         {
@@ -124,32 +115,53 @@ public sealed class ConstructedGateViewModel : Bindable<ConstructedGateView>
         } 
     }
 
+    #region Creating Gates 
+
+#pragma warning disable IDE0051 
+    // Remove unused private members
+    // USED ==> Invoked using reflection: see CreateGate()
+
     private void CreateCxGate()
     {
+        var parameters = this.stageOperatorParameters; 
+        var control = this.CreateControlDot();
+        int controlIndex = parameters.ControlQuBitIndices[0]; 
+        this.PlaceGridAt(control, controlIndex);
+        var not = this.CreateCNot();
+        int targetIndex = parameters.TargetQuBitIndices[0];
+        this.PlaceGridAt(not, targetIndex);
     }
 
-    #region Gate Elements 
-
-    private void PlaceGridAt(Grid grid, int qubitIndex)
+    private void CreateSwapGate()
     {
-        int baseIndex = qubitIndex - this.SmallestQubitIndex;
-        int gridRow = baseIndex * 2;
-        grid.SetValue(Grid.RowProperty, gridRow);
-        this.contentGrid.Children.Add(grid);
+        var parameters = this.stageOperatorParameters;
+        var first = this.CreateHalfSwap();
+        int targetIndex = parameters.TargetQuBitIndices[0];
+        this.PlaceGridAt(first, targetIndex);
+        var last = this.CreateHalfSwap();
+        targetIndex = parameters.TargetQuBitIndices[1];
+        this.PlaceGridAt(last, targetIndex);
     }
+
+#pragma warning restore IDE0051 
+
+    #endregion Creating Gates 
+
+    #region Creating Gate Elements 
 
     private Grid CreateContentGrid()
     {
         int spacerCount = this.LargestQubitIndex - this.SmallestQubitIndex;
         int gateCount = 1 + spacerCount;
         double height = gateCount * gateSize + spacerCount * spacerSize;
+        this.GateHeight = height;
         var grid = new Grid()
         {
             Height = height,
             Width = gateSize,
+            Background = this.backgroundBrush,
 #if DEBUG
-            Background = this.debugBrush,
-            ShowGridLines = true,
+            // ShowGridLines = true,
 #endif
         };
 
@@ -168,6 +180,14 @@ public sealed class ConstructedGateViewModel : Bindable<ConstructedGateView>
         return grid;
     }
 
+    private void PlaceGridAt(Grid grid, int qubitIndex)
+    {
+        int baseIndex = qubitIndex - this.SmallestQubitIndex;
+        int gridRow = baseIndex * 2;
+        grid.SetValue(Grid.RowProperty, gridRow);
+        this.contentGrid.Children.Add(grid);
+    }
+
     private Rectangle CreateConnectingLine()
     {
         int spacerCount = this.LargestQubitIndex - this.SmallestQubitIndex;
@@ -182,7 +202,7 @@ public sealed class ConstructedGateViewModel : Bindable<ConstructedGateView>
             Fill = this.blueBrush,
         };
 
-        double gridRows = gateCount + spacerCount;
+        int gridRows = gateCount + spacerCount;
         rectangle.SetValue(Grid.RowSpanProperty, gridRows);
         return rectangle;
     }
@@ -217,6 +237,7 @@ public sealed class ConstructedGateViewModel : Bindable<ConstructedGateView>
             VerticalAlignment = VerticalAlignment.Center,
             HorizontalAlignment = HorizontalAlignment.Center,
             Fill = this.blueBrush,
+            Stroke = this.blueBrush,
             RenderTransform = new RotateTransform(angle: 45.0),
         };
 
@@ -227,6 +248,7 @@ public sealed class ConstructedGateViewModel : Bindable<ConstructedGateView>
             VerticalAlignment = VerticalAlignment.Center,
             HorizontalAlignment = HorizontalAlignment.Center,
             Fill = this.blueBrush,
+            Stroke = this.blueBrush,
             RenderTransform = new RotateTransform(angle: 45.0),
         };
 
