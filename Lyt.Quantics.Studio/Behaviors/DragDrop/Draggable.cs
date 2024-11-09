@@ -1,7 +1,7 @@
 ﻿namespace Lyt.Quantics.Studio.Behaviors.DragDrop;
 
-using global::Avalonia.Input; 
-     
+using global::Avalonia.Input;
+
 public sealed class Draggable : BehaviorBase<BehaviorEnabledUserControl>
 {
     private bool isPointerPressed;
@@ -15,11 +15,12 @@ public sealed class Draggable : BehaviorBase<BehaviorEnabledUserControl>
     {
         _ = this.GuardAssociatedObject();
         Debug.WriteLine("On attached to: " + this.DraggableBindable.GetType().Name);
+        this.HookPointerEvents();
     }
 
     protected override void OnDetaching() => this.UnhookPointerEvents();
 
-    public UserControl UserControl => this.GuardAssociatedObject();
+    public BehaviorEnabledUserControl UserControl => this.GuardAssociatedObject();
 
     public IDraggableBindable DraggableBindable
     {
@@ -29,15 +30,28 @@ public sealed class Draggable : BehaviorBase<BehaviorEnabledUserControl>
         private set => this.draggableBindable = value;
     }
 
-    private UserControl GuardAssociatedObject()
+    private BehaviorEnabledUserControl GuardAssociatedObject()
     {
-        if ((this.AssociatedObject is not null) ||
-            (this.AssociatedObject is not UserControl userControl) ||
+        if (this.AssociatedObject is null)
+        {
+            throw new InvalidOperationException("Not attached.");
+        }
+
+        if (!this.AssociatedObject.GetType().DerivesFrom<BehaviorEnabledUserControl>())
+        {
+            throw new InvalidOperationException("Invalid asociated object.");
+        }
+
+#pragma warning disable IDE0019 // Use pattern matching
+        // VS BUG => Turns out that pattern matching cannot be used here !
+        var userControl = this.AssociatedObject as BehaviorEnabledUserControl;
+        if ((userControl is null) ||
             (userControl.DataContext is null) ||
             (userControl.DataContext is not IDraggableBindable iDraggableBindable))
         {
             throw new InvalidOperationException("Not attached or invalid asociated object.");
         }
+#pragma warning restore IDE0019 
 
         DraggableBindable = iDraggableBindable;
         return userControl;
@@ -45,7 +59,7 @@ public sealed class Draggable : BehaviorBase<BehaviorEnabledUserControl>
 
     private void HookPointerEvents()
     {
-        UserControl userControl = this.UserControl;
+        BehaviorEnabledUserControl userControl = this.UserControl;
         userControl.PointerPressed += this.OnPointerPressed;
         userControl.PointerReleased += this.OnPointerReleased;
         userControl.PointerMoved += this.OnPointerMoved;
@@ -55,7 +69,7 @@ public sealed class Draggable : BehaviorBase<BehaviorEnabledUserControl>
 
     private void UnhookPointerEvents()
     {
-        UserControl userControl = this.UserControl;
+        BehaviorEnabledUserControl userControl = this.UserControl;
         userControl.PointerPressed -= this.OnPointerPressed;
         userControl.PointerReleased -= this.OnPointerReleased;
         userControl.PointerMoved -= this.OnPointerMoved;
@@ -63,16 +77,16 @@ public sealed class Draggable : BehaviorBase<BehaviorEnabledUserControl>
         userControl.PointerExited -= this.OnPointerExited;
     }
 
-    private void OnPointerEntered(object? sender, PointerEventArgs pointerEventArgs) 
+    private void OnPointerEntered(object? sender, PointerEventArgs pointerEventArgs)
         => this.DraggableBindable.OnEntered();
 
-    private void OnPointerExited(object? sender, PointerEventArgs pointerEventArgs) 
+    private void OnPointerExited(object? sender, PointerEventArgs pointerEventArgs)
         => this.DraggableBindable.OnExited();
 
     private void OnPointerPressed(object? sender, PointerPressedEventArgs pointerPressedEventArgs)
     {
         Debug.WriteLine("Pressed");
-        UserControl userControl = this.UserControl;
+        BehaviorEnabledUserControl userControl = this.UserControl;
         this.isPointerPressed = true;
         this.pointerPressedPoint = pointerPressedEventArgs.GetCurrentPoint(userControl);
     }
@@ -94,7 +108,7 @@ public sealed class Draggable : BehaviorBase<BehaviorEnabledUserControl>
         else
         {
             Debug.WriteLine("Moving...");
-            UserControl userControl = this.UserControl;
+            BehaviorEnabledUserControl userControl = this.UserControl;
             Point currentPosition = pointerEventArgs.GetPosition(userControl);
             var distance = Point.Distance(currentPosition, pointerPressedPoint.Position);
             if (distance <= 4.2)
@@ -133,7 +147,7 @@ public sealed class Draggable : BehaviorBase<BehaviorEnabledUserControl>
             return;
         }
 
-        _ = this.GuardAssociatedObject();        
+        _ = this.GuardAssociatedObject();
         bool allowDrag = this.DraggableBindable.OnBeginDrag();
         if (!allowDrag)
         {
@@ -146,14 +160,6 @@ public sealed class Draggable : BehaviorBase<BehaviorEnabledUserControl>
 
         // Create the ghost view  
         this.ghostView = this.DraggableBindable.CreateGhostView();
-
-        // TODO in View model 
-        //this.ghostView = new GateView(isGhost: true)
-        //{
-        //    DataContext = gateViewModel,
-        //    Opacity = 0.8,
-        //    ZIndex = 999_999,
-        //};
 
         // TODO in View model 
         // Create the special graphics if needed 

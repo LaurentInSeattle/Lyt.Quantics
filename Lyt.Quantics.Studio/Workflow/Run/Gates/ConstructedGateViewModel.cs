@@ -1,7 +1,8 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Gates;
 
-public sealed class ConstructedGateViewModel : Bindable<ConstructedGateView>
+public sealed class ConstructedGateViewModel : Bindable<ConstructedGateView>, IDraggableBindable
 {
+    public const string CustomDragAndDropFormat = "GateViewModel";
     private const string BlueBrush = "LightAqua_0_100";
     private const string OrangeBrush = "OrangePeel_2_100";
     private const double gateSize = 48.0;
@@ -10,6 +11,7 @@ public sealed class ConstructedGateViewModel : Bindable<ConstructedGateView>
     private const double smallSize = 12.0;
     private const double lineSize = 2.0;
 
+    private readonly bool isGhostViewModel;
     private readonly SolidColorBrush blueBrush;
     private readonly SolidColorBrush orangeBrush;
     private readonly SolidColorBrush backgroundBrush;
@@ -40,7 +42,7 @@ public sealed class ConstructedGateViewModel : Bindable<ConstructedGateView>
 
     private readonly Grid contentGrid;
 
-    public ConstructedGateViewModel(string gateKey, StageOperatorParameters stageOperatorParameters)
+    public ConstructedGateViewModel(string gateKey, StageOperatorParameters stageOperatorParameters, bool isGhostViewModel = false)
     {
         if (!ConstructedGateViewModel.supportedGates.ContainsKey(gateKey))
         {
@@ -48,7 +50,9 @@ public sealed class ConstructedGateViewModel : Bindable<ConstructedGateView>
         }
 
         this.gateKey = gateKey;
+        this.Gate = GateFactory.Produce(gateKey, new GateParameters());
         this.stageOperatorParameters = stageOperatorParameters;
+        this.isGhostViewModel = isGhostViewModel;
 
         this.backgroundBrush = new SolidColorBrush(color: 0x30406080);
         this.transparentBrush = new SolidColorBrush(color: 0);
@@ -87,11 +91,19 @@ public sealed class ConstructedGateViewModel : Bindable<ConstructedGateView>
         this.CreateGate();
     }
 
+    public Gate Gate { get; private set; }
+
     protected override void OnViewLoaded()
     {
         base.OnViewLoaded();
-        this.View.Content = this.contentGrid;
-        this.View.InvalidateVisual();
+
+        if (!this.isGhostViewModel)
+        {
+            this.Draggable = new Draggable();
+            this.Draggable.Attach(this.View);
+            this.View.Content = this.contentGrid;
+            this.View.InvalidateVisual();
+        }
     }
 
     public static bool IsGateSupported(string gateKey) 
@@ -100,6 +112,62 @@ public sealed class ConstructedGateViewModel : Bindable<ConstructedGateView>
     private int SmallestQubitIndex => this.allQuBitIndicesSorted[0];
 
     private int LargestQubitIndex => this.allQuBitIndicesSorted[^1];
+
+    #region Draggable Bindable Implementation 
+
+    public Draggable? Draggable { get; private set; }
+
+    public string DragDropFormat => ConstructedGateViewModel.CustomDragAndDropFormat;
+
+    public bool OnBeginDrag()  => true;  // For now 
+
+    public void OnEntered() 
+        => this.Messenger.Publish(new GateHoverMessage(IsEnter: true, this.gateKey));    
+
+    public void OnExited() => this.Messenger.Publish(new GateHoverMessage());
+
+    public void OnClicked(bool isRightClick) 
+    {
+        bool isTernary = this.Gate.QuBitsTransformed == 3;
+        bool isBinary = this.Gate.QuBitsTransformed == 2;
+        bool isUnary = this.Gate.QuBitsTransformed == 1;
+        bool isControlled = this.Gate.IsControlled;
+        bool canLaunchEditor =
+            // Phase and Rotation gates 
+            this.Gate.HasAngleParameter ||
+            // Transform into a binary controlled gate 
+            (isUnary && !isControlled) ||
+            // Edit Targets for swap and CZ
+            (isBinary && this.Gate.TargetQuBits == 2) ||
+            // Edit control and target for binary 
+            (isBinary && isControlled) ||
+            // All ternary gates are controlled or can be edited 
+            isTernary;
+        if (canLaunchEditor)
+        {
+            // Launch edit gate dialog 
+            // this.Messenger.Publish(new GateEditMessage(this, isRightClick));
+        }
+    }
+    
+    public UserControl CreateGhostView()
+    {
+        var ghostViewModel = new ConstructedGateViewModel(
+            this.gateKey, this.stageOperatorParameters, isGhostViewModel: true);
+        ghostViewModel.CreateViewAndBind();
+        var view = ghostViewModel.View;
+
+        // Do NOT use 'this'.contentGrid (already has a parent and will crash Avalonia) 
+        view.Content = ghostViewModel.contentGrid;
+        view.ZIndex = 999_999;
+        view.Opacity = 0.8;
+        view.InvalidateVisual();
+        return view; 
+    }
+
+    #endregion Draggable Bindable Implementation 
+
+    #region Creating Gates 
 
     private void CreateGate()
     {
@@ -131,11 +199,9 @@ public sealed class ConstructedGateViewModel : Bindable<ConstructedGateView>
         }
     }
 
-    #region Creating Gates 
-
 #pragma warning disable IDE0051 
     // Remove unused private members
-    // USED ==> Invoked using reflection: see CreateGate()
+    // USED ==> Invoked using reflection: see CreateGate() above
 
     private void CreateCxGate()
     {

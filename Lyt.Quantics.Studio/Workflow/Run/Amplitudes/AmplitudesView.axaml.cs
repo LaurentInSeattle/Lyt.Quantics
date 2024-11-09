@@ -22,5 +22,11 @@ public partial class AmplitudesView : UserControl
         {
             gateViewModel.View.OnParentDragOver(dragEventArgs);
         }
+
+        if (data.Get(GateViewModel.CustomDragAndDropFormat) is IDraggableBindable draggableBindable)
+        {
+            var draggable = draggableBindable.Draggable; 
+            draggable?.OnParentDragOver(dragEventArgs);
+        }
     }
 }

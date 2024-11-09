@@ -13,4 +13,6 @@ public interface IDraggableBindable
     UserControl CreateGhostView();
 
     string DragDropFormat { get; }
+
+    Draggable? Draggable { get; }
 }

@@ -35,6 +35,20 @@ public partial class StageView : UserControl
             }
         }
 
+        if (data.Get(GateViewModel.CustomDragAndDropFormat) is IDraggableBindable draggableBindable)
+        {
+            var draggable = draggableBindable.Draggable;
+            draggable?.OnParentDragOver(dragEventArgs);
+
+            if (this.DataContext is StageViewModel stageViewModel)
+            {
+                // if (stageViewModel.CanDrop(dragEventArgs.GetPosition(this), gateViewModel))
+                {
+                    dragEventArgs.DragEffects = DragDropEffects.Move;
+                }
+            }
+        }
+
         // Must do this below so that the computer view is not corrupting the effect
         dragEventArgs.Handled = true;
     }

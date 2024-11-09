@@ -26,6 +26,20 @@ public partial class ComputerView : UserControl
                 }
             }
         }
+
+        if (data.Get(GateViewModel.CustomDragAndDropFormat) is IDraggableBindable draggableBindable)
+        {
+            var draggable = draggableBindable.Draggable;
+            draggable?.OnParentDragOver(dragEventArgs);
+
+            if (this.DataContext is ComputerViewModel computerViewModel)
+            {
+                //if (computerViewModel.CanDrop(dragEventArgs.GetPosition(this), null))
+                {
+                    dragEventArgs.DragEffects = DragDropEffects.Move;
+                }
+            }
+        }
     }
 
     private void OnDrop(object? sender, DragEventArgs dragEventArgs)
