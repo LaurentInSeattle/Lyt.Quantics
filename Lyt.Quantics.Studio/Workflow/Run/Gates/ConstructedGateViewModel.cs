@@ -29,12 +29,11 @@ public sealed class ConstructedGateViewModel : Bindable<ConstructedGateView>
             { "Swap" , "CreateSwapGate" },
 
             // Ternary 
-            //"CCX",
-            //"FCX",
-            //"CSwap",
+            { "CCX", "CreateCCxGate" } ,
+            { "CSwap" , "CreateCSwapGate" },
             { "CCZ" , "CreateCCzGate" },
 
-            // LATER 
+            // LATER : Controlled Gate
             // 
             //"C_" , // Controlled Gate
         };
@@ -196,6 +195,34 @@ public sealed class ConstructedGateViewModel : Bindable<ConstructedGateView>
         this.PlaceGridAt(last, targetIndex);
     }
 
+    private void CreateCCxGate()
+    {
+        var parameters = this.stageOperatorParameters;
+        var first = this.CreateControlDot();
+        int targetIndex = parameters.ControlQuBitIndices[0];
+        this.PlaceGridAt(first, targetIndex);
+        var second = this.CreateControlDot();
+        targetIndex = parameters.ControlQuBitIndices[1];
+        this.PlaceGridAt(second, targetIndex);
+        var last = this.CreateCNot();
+        targetIndex = parameters.TargetQuBitIndices[0];
+        this.PlaceGridAt(last, targetIndex);
+    }
+
+    private void CreateCSwapGate()
+    {
+        var parameters = this.stageOperatorParameters;
+        var first = this.CreateControlDot();
+        int firstIndex = parameters.ControlQuBitIndices[0];
+        this.PlaceGridAt(first, firstIndex);
+        var second = this.CreateHalfSwap();
+        int targetIndex = parameters.TargetQuBitIndices[0];
+        this.PlaceGridAt(second, targetIndex);
+        var last = this.CreateHalfSwap();
+        targetIndex = parameters.TargetQuBitIndices[1];
+        this.PlaceGridAt(last, targetIndex);
+    }
+
 #pragma warning restore IDE0051 
 
     #endregion Creating Gates 
@@ -212,10 +239,18 @@ public sealed class ConstructedGateViewModel : Bindable<ConstructedGateView>
         {
             Height = height,
             Width = gateSize,
-            Background = this.backgroundBrush,
 #if DEBUG
             // ShowGridLines = true,
 #endif
+        };
+
+        var border = new Border()
+        {
+            Margin = new Thickness(2.0),
+            CornerRadius = new CornerRadius(4.0),
+            Background = this.backgroundBrush,
+            VerticalAlignment = VerticalAlignment.Stretch,
+            HorizontalAlignment = HorizontalAlignment.Stretch,
         };
 
         var rowDefinitions = new RowDefinitions
@@ -230,6 +265,9 @@ public sealed class ConstructedGateViewModel : Bindable<ConstructedGateView>
         }
 
         grid.RowDefinitions = rowDefinitions;
+        border.SetValue(Grid.RowSpanProperty, rowDefinitions.Count);
+        grid.Children.Add(border);
+
         return grid;
     }
 
