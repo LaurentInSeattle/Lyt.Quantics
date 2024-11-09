@@ -140,7 +140,7 @@ public sealed class StageViewModel : Bindable<StageView>
                 int firstIndex = stageOperator.SmallestQubitIndex;
                 var stageOperatorParameters = new StageOperatorParameters(stageOperator);
 
-                if ((gateKey == "Swap") || (gateKey == "CX"))
+                if (ConstructedGateViewModel.IsGateSupported(gateKey))
                 {
                     var gateVm = new ConstructedGateViewModel(gateKey, stageOperatorParameters);
                     var gateView = gateVm.CreateViewAndBind();

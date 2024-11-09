@@ -32,7 +32,9 @@ public sealed class PhaseGate : Gate
         {
             this.Angle = (this.IsPositive ? 1.0 : -1.0) * Math.PI / this.PiDivisor;
             this.AngleParameterCaption =
-                string.Format("{0}π/{1}", (this.IsPositive ? "+" : "-"), this.PiDivisor);
+                this.PiDivisor == 1 ?
+                    string.Format("{0}π", this.IsPositive ? "+" : "-") :
+                    string.Format("{0}π/{1}", this.IsPositive ? "+" : "-", this.PiDivisor);
         }
         else
         {

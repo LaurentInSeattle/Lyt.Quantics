@@ -3,6 +3,7 @@
 public sealed class ConstructedGateViewModel : Bindable<ConstructedGateView>
 {
     private const string BlueBrush = "LightAqua_0_100";
+    private const string OrangeBrush = "OrangePeel_2_100";
     private const double gateSize = 48.0;
     private const double spacerSize = 12.0;
     private const double largeSize = 16.0;
@@ -10,38 +11,39 @@ public sealed class ConstructedGateViewModel : Bindable<ConstructedGateView>
     private const double lineSize = 2.0;
 
     private readonly SolidColorBrush blueBrush;
+    private readonly SolidColorBrush orangeBrush;
     private readonly SolidColorBrush backgroundBrush;
     private readonly SolidColorBrush transparentBrush;
     private readonly string gateKey;
     private readonly StageOperatorParameters stageOperatorParameters;
     private readonly List<int> allQuBitIndicesSorted;
 
-    private readonly Dictionary<string, string> supportedGates =
+    private static readonly Dictionary<string, string> supportedGates =
         new()
         {
             // Binary 
             { "CX", "CreateCxGate" } ,
-            //"CZ",
-            //"FCX",
-            {  "Swap" , "CreateSwapGate" },
+            { "FCX", "CreateCxGate" } ,
+            { "ACX", "CreateACxGate" } ,
+            { "CZ","CreateCzGate" } ,
+            { "Swap" , "CreateSwapGate" },
 
-            //// Ternary 
+            // Ternary 
             //"CCX",
-            //"CCZ",
             //"FCX",
             //"CSwap",
+            { "CCZ" , "CreateCCzGate" },
 
             // LATER 
             // 
             //"C_" , // Controlled Gate
-            //"ACX",
         };
 
-    private Grid contentGrid;
+    private readonly Grid contentGrid;
 
     public ConstructedGateViewModel(string gateKey, StageOperatorParameters stageOperatorParameters)
     {
-        if (!this.supportedGates.ContainsKey(gateKey))
+        if (!ConstructedGateViewModel.supportedGates.ContainsKey(gateKey))
         {
             throw new NotSupportedException("Not supported gate: " + gateKey);
         }
@@ -51,8 +53,8 @@ public sealed class ConstructedGateViewModel : Bindable<ConstructedGateView>
 
         this.backgroundBrush = new SolidColorBrush(color: 0x30406080);
         this.transparentBrush = new SolidColorBrush(color: 0);
-        Utilities.TryFindResource(BlueBrush, out SolidColorBrush? brush);
-        if (brush is null)
+        Utilities.TryFindResource(BlueBrush, out SolidColorBrush? maybeBlueBrush);
+        if (maybeBlueBrush is null)
         {
 #pragma warning disable CA2208 // Instantiate argument exceptions correctly
             throw new ArgumentNullException("Could not find resource: " + BlueBrush);
@@ -60,7 +62,19 @@ public sealed class ConstructedGateViewModel : Bindable<ConstructedGateView>
         }
         else
         {
-            this.blueBrush = brush;
+            this.blueBrush = maybeBlueBrush;
+        }
+
+        Utilities.TryFindResource(OrangeBrush, out SolidColorBrush? maybeOrangeBrush);
+        if (maybeOrangeBrush is null)
+        {
+#pragma warning disable CA2208 // Instantiate argument exceptions correctly
+            throw new ArgumentNullException("Could not find resource: " + OrangeBrush);
+#pragma warning restore CA2208 
+        }
+        else
+        {
+            this.orangeBrush = maybeOrangeBrush;
         }
 
         var allIndices = new List<int>();
@@ -81,13 +95,16 @@ public sealed class ConstructedGateViewModel : Bindable<ConstructedGateView>
         this.View.InvalidateVisual();
     }
 
+    public static bool IsGateSupported(string gateKey) 
+        => ConstructedGateViewModel.supportedGates.ContainsKey(gateKey);
+
     private int SmallestQubitIndex => this.allQuBitIndicesSorted[0];
 
     private int LargestQubitIndex => this.allQuBitIndicesSorted[^1];
 
     private void CreateGate()
     {
-        if (!this.supportedGates.TryGetValue(gateKey, out string? value))
+        if (!ConstructedGateViewModel.supportedGates.TryGetValue(gateKey, out string? value))
         {
             throw new NotSupportedException("Not supported gate: " + gateKey);
         }
@@ -103,16 +120,16 @@ public sealed class ConstructedGateViewModel : Bindable<ConstructedGateView>
             // Method will place elements in the content grid and will return nothing, but... 
             // could throw or fail.
             var methodInfo =
-                this.GetType().GetMethod( methodName, BindingFlags.Instance | BindingFlags.NonPublic) 
+                this.GetType().GetMethod(methodName, BindingFlags.Instance | BindingFlags.NonPublic)
                 ?? throw new NotSupportedException("No suitable create method provided for gate: " + gateKey);
-            methodInfo.Invoke(this, null); 
+            methodInfo.Invoke(this, null);
         }
         catch (Exception ex)
         {
             Debug.WriteLine(ex);
-            this.Logger.Error(ex.ToString()); 
+            this.Logger.Error(ex.ToString());
             throw;
-        } 
+        }
     }
 
     #region Creating Gates 
@@ -123,9 +140,20 @@ public sealed class ConstructedGateViewModel : Bindable<ConstructedGateView>
 
     private void CreateCxGate()
     {
-        var parameters = this.stageOperatorParameters; 
+        var parameters = this.stageOperatorParameters;
         var control = this.CreateControlDot();
-        int controlIndex = parameters.ControlQuBitIndices[0]; 
+        int controlIndex = parameters.ControlQuBitIndices[0];
+        this.PlaceGridAt(control, controlIndex);
+        var not = this.CreateCNot();
+        int targetIndex = parameters.TargetQuBitIndices[0];
+        this.PlaceGridAt(not, targetIndex);
+    }
+
+    private void CreateACxGate()
+    {
+        var parameters = this.stageOperatorParameters;
+        var control = this.CreateAntiControlDot();
+        int controlIndex = parameters.ControlQuBitIndices[0];
         this.PlaceGridAt(control, controlIndex);
         var not = this.CreateCNot();
         int targetIndex = parameters.TargetQuBitIndices[0];
@@ -140,6 +168,31 @@ public sealed class ConstructedGateViewModel : Bindable<ConstructedGateView>
         this.PlaceGridAt(first, targetIndex);
         var last = this.CreateHalfSwap();
         targetIndex = parameters.TargetQuBitIndices[1];
+        this.PlaceGridAt(last, targetIndex);
+    }
+
+    private void CreateCzGate()
+    {
+        var parameters = this.stageOperatorParameters;
+        var first = this.CreateControlDot();
+        int targetIndex = parameters.TargetQuBitIndices[0];
+        this.PlaceGridAt(first, targetIndex);
+        var last = this.CreateControlDot();
+        targetIndex = parameters.TargetQuBitIndices[1];
+        this.PlaceGridAt(last, targetIndex);
+    }
+
+    private void CreateCCzGate()
+    {
+        var parameters = this.stageOperatorParameters;
+        var first = this.CreateControlDot();
+        int targetIndex = parameters.TargetQuBitIndices[0];
+        this.PlaceGridAt(first, targetIndex);
+        var second = this.CreateControlDot();
+        targetIndex = parameters.TargetQuBitIndices[1];
+        this.PlaceGridAt(second, targetIndex);
+        var last = this.CreateControlDot();
+        targetIndex = parameters.TargetQuBitIndices[2];
         this.PlaceGridAt(last, targetIndex);
     }
 
@@ -216,6 +269,29 @@ public sealed class ConstructedGateViewModel : Bindable<ConstructedGateView>
             Height = smallSize,
             Width = smallSize,
             Fill = this.blueBrush,
+        };
+
+        var grid = new Grid()
+        {
+            Height = gateSize,
+            Width = gateSize,
+        };
+
+        grid.Children.Add(ellipse);
+        return grid;
+    }
+
+    private Grid CreateAntiControlDot()
+    {
+        var ellipse = new Ellipse()
+        {
+            VerticalAlignment = VerticalAlignment.Center,
+            HorizontalAlignment = HorizontalAlignment.Center,
+            Height = smallSize,
+            Width = smallSize,
+            Fill = this.orangeBrush,
+            Stroke = this.blueBrush,
+            StrokeThickness = 2.0,
         };
 
         var grid = new Grid()
@@ -314,16 +390,3 @@ public sealed class ConstructedGateViewModel : Bindable<ConstructedGateView>
 
     #endregion Bound Properties 
 }
-
-/*
- ANTI-Control Ellipse : Most likely not needed
-
-		<Ellipse
-			Grid.Row="0" Grid.RowSpan="2"
-			VerticalAlignment="Center" HorizontalAlignment="Center"
-			Height="12" Width="12"
-			Fill="AntiqueWhite"		
-			Stroke="{StaticResource ResourceKey= LightAqua_2_100}"		
-			StrokeThickness="2"
-			/>
- */

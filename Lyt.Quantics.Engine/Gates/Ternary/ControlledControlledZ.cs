@@ -15,9 +15,9 @@ public sealed class ControlledControlledZ : Gate
     // NOT SURE...  Figure that out 
     // Can we say that:
     //      The three Qubits are equivalent and hence should all be considered as Targets ??? 
-    public override int ControlQuBits => 2;
+    public override int ControlQuBits => 0;
 
-    public override int TargetQuBits => 1;
+    public override int TargetQuBits => 3;
 
     // END  ~  NOT SURE...  Figure that out 
 

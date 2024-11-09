@@ -38,7 +38,7 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
         {
             this.FontSize -= 6;
             this.Parameter = gate.AngleParameterCaption;
-            this.ParameterFontSize = 12.0;
+            this.ParameterFontSize = 13.0;
         }
 
 

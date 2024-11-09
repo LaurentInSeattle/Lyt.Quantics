@@ -45,6 +45,7 @@
 	    	/>
 		<Rectangle
 			Grid.Column="2" 
+			Margin="0 2 0 0"
 			Fill="{StaticResource ResourceKey= LightAqua_1_100}"
 			Opacity="0.8"
 			Height="2.0"

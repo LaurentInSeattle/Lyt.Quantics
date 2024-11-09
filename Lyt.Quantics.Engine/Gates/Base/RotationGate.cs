@@ -1,6 +1,4 @@
-﻿using MathNet.Numerics.Distributions;
-
-namespace Lyt.Quantics.Engine.Gates.Base;
+﻿namespace Lyt.Quantics.Engine.Gates.Base;
 
 public class RotationGate : Gate
 {
@@ -34,8 +32,10 @@ public class RotationGate : Gate
         if (this.IsPiDivisor)
         {
             this.Angle = (this.IsPositive ? 1.0 : -1.0) * Math.PI / this.PiDivisor;
-            this.AngleParameterCaption = 
-                string.Format("{0}π/{1}", (this.IsPositive ? "+" : "-"), this.PiDivisor);
+            this.AngleParameterCaption =
+                this.PiDivisor == 1 ?
+                    string.Format("{0}π", this.IsPositive ? "+" : "-") :
+                    string.Format("{0}π/{1}", this.IsPositive ? "+" : "-", this.PiDivisor);
         }
         else
         {
