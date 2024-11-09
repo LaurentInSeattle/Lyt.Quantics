@@ -41,6 +41,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Behaviors\DragDrop\" />
     <Folder Include="Utilities\" />
   </ItemGroup>
 
