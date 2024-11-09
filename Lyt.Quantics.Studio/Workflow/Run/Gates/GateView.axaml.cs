@@ -1,6 +1,6 @@
 namespace Lyt.Quantics.Studio.Workflow.Run.Gates;
 
-public partial class GateView : UserControl
+public partial class GateView : BehaviorEnabledUserControl
 {
     private readonly bool isGhost;
 
