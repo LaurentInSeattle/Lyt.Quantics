@@ -160,14 +160,6 @@ public sealed class Draggable : BehaviorBase<BehaviorEnabledUserControl>
 
         // Create the ghost view  
         this.ghostView = this.DraggableBindable.CreateGhostView();
-
-        // TODO in View model 
-        // Create the special graphics if needed 
-        //if (GateViewModel.SpecialGateToControl(gateViewModel.Gate.CaptionKey) is Control control)
-        //{
-        //    this.ghostView.GateIconContent.Content = control;
-        //}
-
         if (!this.ValidateGhost(out Canvas? canvas))
         {
             Debug.WriteLine("No canvas");

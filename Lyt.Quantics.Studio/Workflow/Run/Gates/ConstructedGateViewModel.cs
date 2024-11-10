@@ -128,22 +128,7 @@ public sealed class ConstructedGateViewModel : Bindable<ConstructedGateView>, ID
 
     public void OnClicked(bool isRightClick) 
     {
-        bool isTernary = this.Gate.QuBitsTransformed == 3;
-        bool isBinary = this.Gate.QuBitsTransformed == 2;
-        bool isUnary = this.Gate.QuBitsTransformed == 1;
-        bool isControlled = this.Gate.IsControlled;
-        bool canLaunchEditor =
-            // Phase and Rotation gates 
-            this.Gate.HasAngleParameter ||
-            // Transform into a binary controlled gate 
-            (isUnary && !isControlled) ||
-            // Edit Targets for swap and CZ
-            (isBinary && this.Gate.TargetQuBits == 2) ||
-            // Edit control and target for binary 
-            (isBinary && isControlled) ||
-            // All ternary gates are controlled or can be edited 
-            isTernary;
-        if (canLaunchEditor)
+        if (this.Gate.IsEditable)
         {
             // Launch edit gate dialog 
             // this.Messenger.Publish(new GateEditMessage(this, isRightClick));
@@ -162,7 +147,15 @@ public sealed class ConstructedGateViewModel : Bindable<ConstructedGateView>, ID
         view.ZIndex = 999_999;
         view.Opacity = 0.8;
         view.InvalidateVisual();
-        return view; 
+        return view;
+
+
+        // TODO in View model 
+        // Create the special graphics if needed 
+        //if (GateViewModel.SpecialGateToControl(gateViewModel.Gate.CaptionKey) is Control control)
+        //{
+        //    this.ghostView.GateIconContent.Content = control;
+        //}
     }
 
     #endregion Draggable Bindable Implementation 

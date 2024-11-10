@@ -20,6 +20,29 @@ public class Gate
 
     public virtual int TargetQuBits => 1;
 
+    /// <summary> True if the gate has parameters that can be edited </summary>
+    public bool IsEditable
+    {
+        get
+        {
+            bool isTernary = this.QuBitsTransformed == 3;
+            bool isBinary = this.QuBitsTransformed == 2;
+            bool isUnary = this.QuBitsTransformed == 1;
+            bool isControlled = this.IsControlled;
+            return 
+                // Phase and Rotation gates 
+                this.HasAngleParameter ||
+                // Transform into a binary controlled gate 
+                (isUnary && !isControlled) ||
+                // Edit Targets for swap and CZ
+                (isBinary && this.TargetQuBits == 2) ||
+                // Edit control and target for binary 
+                (isBinary && isControlled) ||
+                // All ternary gates are controlled or can be edited 
+                isTernary;
+        }
+    }
+
     /// <summary> True if the gate is controlling, if control and target qubit indices can be edited </summary>
     /// <remarks> Always false for now. </remarks>
     public virtual bool IsControlling => false;
