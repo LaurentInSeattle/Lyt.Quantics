@@ -23,17 +23,17 @@ TODO: Engine:
 
 TODO: Studio : 
 
-	Rounded border for dynamic gates 
-
-	Dymanic gates cannot be removed bc no drag and drop
+	Priority:	
+			=> First: Make GateViewModel to use Draggable 
+			"Frameworkization" of drag/drop
+			Dymanic gates cannot be removed bc no drag and drop
+			==> UpdateUiGates : broken 
 
 	Edit QuBits dialog:  Initial position of sliders to be improved. 
 	
 	Figure out the optimal height of a Slider, update dialogs accordingly (currently == 60) 
 
 	Dynamic creation of binary or ternary gate views based on stage operator definitions
-
-	==> UpdateUiGates : broken 
 
 	BUG: Can't dismiss toasts in Computer view 
 
@@ -55,9 +55,7 @@ TODO: Studio :
 	Toolbar: Filters for built-in projects  (Unit tests, etc)
 	
 	Move a gate using Drag/drop
-	
-	"Frameworkization" of drag/drop
-	
+		
 	Nicer app icon 
 	
 	Measure icon 

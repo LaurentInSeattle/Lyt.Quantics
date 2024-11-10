@@ -5,11 +5,6 @@ public partial class AmplitudesView : UserControl
     public AmplitudesView()
     {
         this.InitializeComponent();
-        this.Loaded += this.OnLoaded;
-    }
-
-    private void OnLoaded(object? sender, RoutedEventArgs e)
-    {
         DragDrop.SetAllowDrop(this, true);
         this.AddHandler(DragDrop.DragOverEvent, this.OnDragOver);
     }
@@ -18,11 +13,6 @@ public partial class AmplitudesView : UserControl
     {
         dragEventArgs.DragEffects = DragDropEffects.None;
         var data = dragEventArgs.Data;
-        if (data.Get(GateViewModel.CustomDragAndDropFormat) is GateViewModel gateViewModel)
-        {
-            gateViewModel.View.OnParentDragOver(dragEventArgs);
-        }
-
         if (data.Get(GateViewModel.CustomDragAndDropFormat) is IDraggableBindable draggableBindable)
         {
             var draggable = draggableBindable.Draggable; 

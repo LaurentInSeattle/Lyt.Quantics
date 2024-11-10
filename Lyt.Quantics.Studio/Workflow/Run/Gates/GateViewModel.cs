@@ -111,10 +111,10 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
     /// <summary> True when this is a toolbox gate view model. </summary>
     public bool IsToolbox { get; private set; }
 
-    /// <summary> Only valid when this is a toolbox gate view model. </summary>
+    /// <summary> Only valid when this is NOT a toolbox gate view model. </summary>
     public int StageIndex { get; private set; }
 
-    /// <summary> Only valid when this is a toolbox gate view model. </summary>
+    /// <summary> Only valid when this is NOT a toolbox gate view model. </summary>
     public int QubitIndex { get; private set; }
 
     public Gate Gate { get; private set; }
