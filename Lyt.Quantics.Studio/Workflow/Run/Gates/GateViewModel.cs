@@ -1,10 +1,8 @@
-﻿
-namespace Lyt.Quantics.Studio.Workflow.Run.Gates;
+﻿namespace Lyt.Quantics.Studio.Workflow.Run.Gates;
 
-public sealed class GateViewModel : Bindable<GateView> // : IDraggable
+public sealed class GateViewModel 
+    : Bindable<GateView>, IDraggableBindable, IGateInfoProvider
 {
-    public const string CustomDragAndDropFormat = "GateViewModel";
-
     private readonly QsModel quanticsStudioModel;
     private readonly IToaster toaster;
 
@@ -108,6 +106,13 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
             _ => null,
         };
 
+    #region IGateInfoProvider Implementation 
+
+    public Gate Gate { get; private set; }
+
+    /// <summary> True when this is a ghost gate view model. </summary>
+    public bool IsGhost { get; private set; }
+
     /// <summary> True when this is a toolbox gate view model. </summary>
     public bool IsToolbox { get; private set; }
 
@@ -117,7 +122,19 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
     /// <summary> Only valid when this is NOT a toolbox gate view model. </summary>
     public int QubitIndex { get; private set; }
 
-    public Gate Gate { get; private set; }
+    #endregion IGateInfoProvider Implementation 
+
+    protected override void OnViewLoaded()
+    {
+        base.OnViewLoaded();
+
+        if (!this.IsGhost)
+        {
+            this.Draggable = new Draggable();
+            this.Draggable.Attach(this.View);
+            this.View.InvalidateVisual();
+        }
+    }
 
     public void Remove()
     {
@@ -131,11 +148,13 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
         }
     }
 
-#pragma warning disable CA1822 // Mark members as static
-    public bool BeginDrag() => true;  // For now 
-#pragma warning restore CA1822 
+    #region IDraggableBindable Implementation 
 
-    public void OnGateEntered()
+    public Draggable? Draggable { get; private set; }
+
+    public string DragDropFormat => ConstructedGateViewModel.CustomDragAndDropFormat;
+
+    public void OnEntered()
     {
         if (!this.IsToolbox)
         {
@@ -145,9 +164,9 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
         this.Messenger.Publish(new GateHoverMessage(IsEnter: true, this.Gate.CaptionKey));
     }
 
-    public void OnGateExited() => this.Messenger.Publish(new GateHoverMessage());
+    public void OnExited() => this.Messenger.Publish(new GateHoverMessage());
 
-    public void OnGateClicked(bool isRightClick)
+    public void OnClicked(bool isRightClick)
     {
         if (this.IsToolbox)
         {
@@ -160,6 +179,33 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
             this.Messenger.Publish(new GateEditMessage(this, isRightClick));
         }
     }
+
+    public bool OnBeginDrag() => true;
+
+    public UserControl CreateGhostView()
+    {
+        var ghostViewModel = new GateViewModel(this.Gate, isToolbox: true)
+        {
+            IsGhost = true
+        };
+        ghostViewModel.CreateViewAndBind();
+        var view = ghostViewModel.View;
+
+        // Create the special graphics if needed 
+        if (GateViewModel.SpecialGateToControl(this.Gate.CaptionKey) is Control control)
+        {
+            view.GateIconContent.Content = control;
+        }
+
+        view.ZIndex = 999_999;
+        view.Opacity = 0.8;
+        view.InvalidateVisual();
+        return view;
+    }
+
+    #endregion IDraggableBindable Implementation 
+
+    #region Bound properties 
 
     public double GateHeight { get => this.Get<double>(); set => this.Set(value); }
 
@@ -194,4 +240,6 @@ public sealed class GateViewModel : Bindable<GateView> // : IDraggable
     public bool IsSpecialVisible { get => this.Get<bool>(); set => this.Set(value); }
 
     public Control SpecialGate { get => this.Get<Control>()!; set => this.Set(value); }
+
+    #endregion Bound properties 
 }

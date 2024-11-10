@@ -1,6 +1,4 @@
-﻿using Lyt.Quantics.Engine.Gates.Base;
-
-namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
+﻿namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
 
 public sealed partial class ComputerViewModel : Bindable<ComputerView>
 {
@@ -14,8 +12,14 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
         }
 
         // Pick up a modal dialog to run when clicking a gate
-        if (this.dialogService is DialogService modalService)
+        if (this.dialogService is DialogService)
         {
+            if (this.dialogService.IsModal)
+            {
+                // Prevents multiple clicks 
+                return; 
+            } 
+
             var gateViewModel = message.GateViewModel;
             var gate = gateViewModel.Gate;
             bool isUnary = gate.QuBitsTransformed == 1;

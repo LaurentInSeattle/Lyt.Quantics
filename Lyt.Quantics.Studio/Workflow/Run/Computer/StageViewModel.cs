@@ -41,10 +41,10 @@ public sealed class StageViewModel : Bindable<StageView>
         this.IsMarkerVisible = select;
     }
 
-    public bool CanDrop(Point point, GateViewModel gateViewModel)
+    public bool CanDrop(Point point, IGateInfoProvider gateInfoProvider)
     {
-        // TODO: This prevents moving a gate !
-        if (!gateViewModel.IsToolbox)
+        // TODO: This prevents moving a gate in the circuit view !
+        if (!gateInfoProvider.IsToolbox)
         {
             return false;
         }
@@ -58,7 +58,7 @@ public sealed class StageViewModel : Bindable<StageView>
         }
 
         // Can't drop a binary or ternary gate on last qubit 
-        if (gateViewModel.Gate.MatrixDimension > 2)
+        if (gateInfoProvider.Gate.MatrixDimension > 2)
         {
             var computer = this.quanticsStudioModel.QuComputer;
             int qubitIndex = (int)Math.Floor(offset);
@@ -71,16 +71,16 @@ public sealed class StageViewModel : Bindable<StageView>
         return true;
     }
 
-    public void OnDrop(Point point, GateViewModel gateViewModel)
+    public void OnDrop(Point point, IGateInfoProvider gateInfoProvider)
     {
-        if (!this.CanDrop(point, gateViewModel))
+        if (!this.CanDrop(point, gateInfoProvider))
         {
             return;
         }
 
         // 600 pixels for 10 qubits ~ Magic numbers !
         int qubitIndex = (int)Math.Floor(point.Y / 60.0);
-        this.AddGateAt(qubitIndex, gateViewModel.Gate);
+        this.AddGateAt(qubitIndex, gateInfoProvider.Gate);
     }
 
     public void AddGateAt(int qubitIndex, Gate gate)

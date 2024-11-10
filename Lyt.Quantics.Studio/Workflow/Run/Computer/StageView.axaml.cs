@@ -23,28 +23,20 @@ public partial class StageView : UserControl
         // Debug.WriteLine("On Drag Over Gates View");
         dragEventArgs.DragEffects = DragDropEffects.None;
         var data = dragEventArgs.Data;
-        if (data.Get(GateViewModel.CustomDragAndDropFormat) is GateViewModel gateViewModel)
-        {
-            gateViewModel.View.OnParentDragOver(dragEventArgs);
-            if (this.DataContext is StageViewModel stageViewModel)
-            {
-                if (stageViewModel.CanDrop(dragEventArgs.GetPosition(this), gateViewModel))
-                {
-                    dragEventArgs.DragEffects = DragDropEffects.Move;
-                }
-            }
-        }
-
-        if (data.Get(GateViewModel.CustomDragAndDropFormat) is IDraggableBindable draggableBindable)
+        object? dragDropObject = data.Get(ConstructedGateViewModel.CustomDragAndDropFormat); 
+        if (dragDropObject is IDraggableBindable draggableBindable)
         {
             var draggable = draggableBindable.Draggable;
             draggable?.OnParentDragOver(dragEventArgs);
 
             if (this.DataContext is StageViewModel stageViewModel)
             {
-                // if (stageViewModel.CanDrop(dragEventArgs.GetPosition(this), gateViewModel))
+                if (dragDropObject is IGateInfoProvider gateInfoProvider)
                 {
-                    dragEventArgs.DragEffects = DragDropEffects.Move;
+                    if (stageViewModel.CanDrop(dragEventArgs.GetPosition(this), gateInfoProvider))
+                    {
+                        dragEventArgs.DragEffects = DragDropEffects.Move;
+                    }
                 }
             }
         }
@@ -55,7 +47,7 @@ public partial class StageView : UserControl
 
     private void OnDrop(object? sender, DragEventArgs dragEventArgs)
     {
-        var data = dragEventArgs.Data.Get(GateViewModel.CustomDragAndDropFormat);
+        var data = dragEventArgs.Data.Get(ConstructedGateViewModel.CustomDragAndDropFormat);
         if (data is GateViewModel gateViewModel)
         {
             if (this.DataContext is StageViewModel stageViewModel)

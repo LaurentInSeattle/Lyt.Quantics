@@ -24,12 +24,9 @@ TODO: Engine:
 TODO: Studio : 
 
 	Priority:	
-			=> First: Make GateViewModel to use Draggable 
 			"Frameworkization" of drag/drop
 			Dymanic gates cannot be removed bc no drag and drop
 			==> UpdateUiGates : broken 
-
-	Edit QuBits dialog:  Initial position of sliders to be improved. 
 	
 	Figure out the optimal height of a Slider, update dialogs accordingly (currently == 60) 
 
@@ -71,4 +68,3 @@ TODO: Studio :
 	??? Help Window
 
 	??? Settings Window
-

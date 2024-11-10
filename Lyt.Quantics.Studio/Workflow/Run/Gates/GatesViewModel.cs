@@ -2,9 +2,16 @@
 
 public sealed class GatesViewModel : Bindable<GatesView>
 {
+    private readonly QsModel quanticsStudioModel;
+    private readonly IToaster toaster;
+
     public GatesViewModel()
     {
-        this.DisablePropertyChangedLogging = true; 
+        this.DisablePropertyChangedLogging = true;
+
+        // Do not use Injection directly as this is loaded programmatically by the RunView 
+        this.quanticsStudioModel = App.GetRequiredService<QsModel>();
+        this.toaster = App.GetRequiredService<IToaster>();
         this.Messenger.Subscribe<GateHoverMessage>(this.OnGateHover);
     }
 
@@ -30,18 +37,19 @@ public sealed class GatesViewModel : Bindable<GatesView>
     }
 
 #pragma warning disable CA1822 // Mark members as static
-    public bool CanDrop(Point _, GateViewModel gateViewModel) => !gateViewModel.IsToolbox;
+    public bool CanDrop(Point _, IGateInfoProvider gateInfoProvider) 
+        => !gateInfoProvider.IsToolbox;
 
-    public void OnDrop(Point _, GateViewModel gateViewModel)
+    public void OnDrop(Point _, IGateInfoProvider gateInfoProvider)
 #pragma warning restore CA1822 
     {
-        if (gateViewModel.IsToolbox)
+        if (gateInfoProvider.IsToolbox)
         {
             return;
         }
 
         Debug.WriteLine("Gates View Model: OnDrop");
-        gateViewModel.Remove();
+        this.Remove(gateInfoProvider);
     }
 
     private void OnGateHover(GateHoverMessage message)
@@ -55,6 +63,18 @@ public sealed class GatesViewModel : Bindable<GatesView>
         {
             this.GateTitle = string.Empty;
             this.GateDescription = string.Empty;
+        }
+    }
+
+    private void Remove(IGateInfoProvider gateInfoProvider)
+    {
+        Debug.WriteLine("Removing gate: " + gateInfoProvider.Gate.CaptionKey);
+        if (!this.quanticsStudioModel.RemoveGate(
+            gateInfoProvider.StageIndex, gateInfoProvider.QubitIndex, gateInfoProvider.Gate, out string message))
+        {
+            this.toaster.Show(
+                "Failed to Remove gate: " + gateInfoProvider.Gate.CaptionKey, message,
+                4_000, InformationLevel.Error);
         }
     }
 

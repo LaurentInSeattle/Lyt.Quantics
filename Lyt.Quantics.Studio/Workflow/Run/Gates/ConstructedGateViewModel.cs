@@ -1,6 +1,7 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Gates;
 
-public sealed class ConstructedGateViewModel : Bindable<ConstructedGateView>, IDraggableBindable
+public sealed class ConstructedGateViewModel 
+    : Bindable<ConstructedGateView>, IDraggableBindable, IGateInfoProvider
 {
     public const string CustomDragAndDropFormat = "GateViewModel";
     private const string BlueBrush = "LightAqua_0_100";
@@ -11,7 +12,6 @@ public sealed class ConstructedGateViewModel : Bindable<ConstructedGateView>, ID
     private const double smallSize = 12.0;
     private const double lineSize = 2.0;
 
-    private readonly bool isGhostViewModel;
     private readonly SolidColorBrush blueBrush;
     private readonly SolidColorBrush orangeBrush;
     private readonly SolidColorBrush backgroundBrush;
@@ -42,7 +42,7 @@ public sealed class ConstructedGateViewModel : Bindable<ConstructedGateView>, ID
 
     private readonly Grid contentGrid;
 
-    public ConstructedGateViewModel(string gateKey, StageOperatorParameters stageOperatorParameters, bool isGhostViewModel = false)
+    public ConstructedGateViewModel(string gateKey, StageOperatorParameters stageOperatorParameters, bool isGhost = false)
     {
         if (!ConstructedGateViewModel.supportedGates.ContainsKey(gateKey))
         {
@@ -52,7 +52,7 @@ public sealed class ConstructedGateViewModel : Bindable<ConstructedGateView>, ID
         this.gateKey = gateKey;
         this.Gate = GateFactory.Produce(gateKey, new GateParameters());
         this.stageOperatorParameters = stageOperatorParameters;
-        this.isGhostViewModel = isGhostViewModel;
+        this.IsGhost = isGhost;
 
         this.backgroundBrush = new SolidColorBrush(color: 0x30406080);
         this.transparentBrush = new SolidColorBrush(color: 0);
@@ -91,13 +91,11 @@ public sealed class ConstructedGateViewModel : Bindable<ConstructedGateView>, ID
         this.CreateGate();
     }
 
-    public Gate Gate { get; private set; }
-
     protected override void OnViewLoaded()
     {
         base.OnViewLoaded();
 
-        if (!this.isGhostViewModel)
+        if (!this.IsGhost)
         {
             this.Draggable = new Draggable();
             this.Draggable.Attach(this.View);
@@ -105,6 +103,24 @@ public sealed class ConstructedGateViewModel : Bindable<ConstructedGateView>, ID
             this.View.InvalidateVisual();
         }
     }
+
+    #region IGateInfoProvider Implementation 
+
+    public Gate Gate { get; private set; }
+
+    /// <summary> True when this is a ghost gate view model. </summary>
+    public bool IsGhost { get; private set; }
+
+    /// <summary> True when this is a toolbox gate view model. </summary>
+    public bool IsToolbox { get; private set; }
+
+    /// <summary> Only valid when this is NOT a toolbox gate view model. </summary>
+    public int StageIndex { get; private set; }
+
+    /// <summary> Only valid when this is NOT a toolbox gate view model. </summary>
+    public int QubitIndex { get; private set; }
+
+    #endregion IGateInfoProvider Implementation 
 
     public static bool IsGateSupported(string gateKey) 
         => ConstructedGateViewModel.supportedGates.ContainsKey(gateKey);
@@ -138,7 +154,7 @@ public sealed class ConstructedGateViewModel : Bindable<ConstructedGateView>, ID
     public UserControl CreateGhostView()
     {
         var ghostViewModel = new ConstructedGateViewModel(
-            this.gateKey, this.stageOperatorParameters, isGhostViewModel: true);
+            this.gateKey, this.stageOperatorParameters, isGhost: true);
         ghostViewModel.CreateViewAndBind();
         var view = ghostViewModel.View;
 

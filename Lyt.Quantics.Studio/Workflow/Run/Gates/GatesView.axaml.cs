@@ -13,7 +13,7 @@ public partial class GatesView : UserControl
     {
         var data = dragEventArgs.Data;
         dragEventArgs.DragEffects = DragDropEffects.None;
-        if (data.Get(GateViewModel.CustomDragAndDropFormat) is IDraggableBindable draggableBindable)
+        if (data.Get(ConstructedGateViewModel.CustomDragAndDropFormat) is IDraggableBindable draggableBindable)
         {
             var draggable = draggableBindable.Draggable;
             draggable?.OnParentDragOver(dragEventArgs);

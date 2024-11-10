@@ -15,28 +15,20 @@ public partial class ComputerView : UserControl
     {
         dragEventArgs.DragEffects = DragDropEffects.None;
         var data = dragEventArgs.Data;
-        if (data.Get(GateViewModel.CustomDragAndDropFormat) is GateViewModel gateViewModel)
-        {
-            gateViewModel.View.OnParentDragOver(dragEventArgs);
-            if (this.DataContext is ComputerViewModel computerViewModel)
-            {
-                if (computerViewModel.CanDrop(dragEventArgs.GetPosition(this), gateViewModel))
-                {
-                    dragEventArgs.DragEffects = DragDropEffects.Move;
-                }
-            }
-        }
-
-        if (data.Get(GateViewModel.CustomDragAndDropFormat) is IDraggableBindable draggableBindable)
+        object? dragDropObject = data.Get(ConstructedGateViewModel.CustomDragAndDropFormat);
+        if (dragDropObject is IDraggableBindable draggableBindable)
         {
             var draggable = draggableBindable.Draggable;
             draggable?.OnParentDragOver(dragEventArgs);
 
             if (this.DataContext is ComputerViewModel computerViewModel)
             {
-                //if (computerViewModel.CanDrop(dragEventArgs.GetPosition(this), null))
+                if (dragDropObject is IGateInfoProvider gateInfoProvider)
                 {
-                    dragEventArgs.DragEffects = DragDropEffects.Move;
+                    if (computerViewModel.CanDrop(dragEventArgs.GetPosition(this), gateInfoProvider))
+                    {
+                        dragEventArgs.DragEffects = DragDropEffects.Move;
+                    }
                 }
             }
         }
@@ -44,12 +36,12 @@ public partial class ComputerView : UserControl
 
     private void OnDrop(object? sender, DragEventArgs dragEventArgs)
     {
-        var data = dragEventArgs.Data.Get(GateViewModel.CustomDragAndDropFormat);
-        if (data is GateViewModel gateViewModel)
+        var data = dragEventArgs.Data.Get(ConstructedGateViewModel.CustomDragAndDropFormat);
+        if (data is IGateInfoProvider gateInfoProvider)
         {
             if (this.DataContext is ComputerViewModel computerViewModel)
             {
-                computerViewModel.OnDrop(dragEventArgs.GetPosition(this), gateViewModel);
+                computerViewModel.OnDrop(dragEventArgs.GetPosition(this), gateInfoProvider);
             }
         }
     }

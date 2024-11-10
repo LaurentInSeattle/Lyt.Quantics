@@ -18,9 +18,11 @@ public partial class CodeView : UserControl
     {
         dragEventArgs.DragEffects = DragDropEffects.None;
         var data = dragEventArgs.Data;
-        if (data.Get(GateViewModel.CustomDragAndDropFormat) is GateViewModel gateViewModel)
+        object? dragDropObject = data.Get(ConstructedGateViewModel.CustomDragAndDropFormat);
+        if (dragDropObject is IDraggableBindable draggableBindable)
         {
-            gateViewModel.View.OnParentDragOver(dragEventArgs);
+            var draggable = draggableBindable.Draggable;
+            draggable?.OnParentDragOver(dragEventArgs);
         }
     }
 }

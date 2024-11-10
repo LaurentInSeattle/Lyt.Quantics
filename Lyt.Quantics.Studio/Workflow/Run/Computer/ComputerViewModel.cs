@@ -590,30 +590,30 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
     }
 
 #pragma warning disable CA1822 // Mark members as static
-    public bool CanDrop(Point _, GateViewModel gateViewModel)
+    public bool CanDrop(Point _, IGateInfoProvider gateInfoProvider)
+        => !gateInfoProvider.IsToolbox;
 #pragma warning restore CA1822 
-    {
-        if (gateViewModel.IsToolbox)
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-    }
 
-#pragma warning disable CA1822 // Mark members as static
-    public void OnDrop(Point _, GateViewModel gateViewModel)
-#pragma warning restore CA1822 
+    public void OnDrop(Point _, IGateInfoProvider gateInfoProvider)
     {
-        if (gateViewModel.IsToolbox)
+        if (gateInfoProvider.IsToolbox)
         {
             return;
         }
 
-        Debug.WriteLine("ComputerViewModel: OnDrop");
-        gateViewModel.Remove();
+        this.Remove(gateInfoProvider);
+    }
+
+    private void Remove(IGateInfoProvider gateInfoProvider)
+    {
+        Debug.WriteLine("Removing gate: " + gateInfoProvider.Gate.CaptionKey);
+        if (!this.quanticsStudioModel.RemoveGate(
+            gateInfoProvider.StageIndex, gateInfoProvider.QubitIndex, gateInfoProvider.Gate, out string message))
+        {
+            this.toaster.Show(
+                "Failed to Remove gate: " + gateInfoProvider.Gate.CaptionKey, message,
+                4_000, InformationLevel.Error);
+        }
     }
 
     public bool NeedsToLoadModel
