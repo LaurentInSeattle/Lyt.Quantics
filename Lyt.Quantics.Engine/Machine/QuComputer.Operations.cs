@@ -109,7 +109,7 @@ public sealed partial class QuComputer
         }
     }
 
-    public bool AddGate(int stageIndex, int qubitIndex, Gate gate, out string message)
+    public bool AddGate(int stageIndex, QubitsIndices qubitsIndices, Gate gate, out string message)
     {
         message = string.Empty;
         // Allow : stageIndex == this.Stages.Count
@@ -118,11 +118,14 @@ public sealed partial class QuComputer
             message = "Add Gate: Invalid Stage index.";
             return false;
         }
-
-        if ((qubitIndex < 0) || (qubitIndex >= this.QuBitsCount))
+        var allIndices = qubitsIndices.AllQubitIndicesSorted();
+        foreach (int qubitIndex in allIndices)
         {
-            message = "Add Gate: Invalid Qubit index.";
-            return false;
+            if ((qubitIndex < 0) || (qubitIndex >= this.QuBitsCount))
+            {
+                message = "Add Gate: Invalid Qubit index.";
+                return false;
+            }
         }
 
         try
@@ -135,22 +138,14 @@ public sealed partial class QuComputer
 
             QuStage stage = this.Stages[stageIndex];
 
-            // Remove operators at qubitIndex if any, then add the provided gate
+            // Remove operators at all qubit indices if any, then add the provided gate
             // Dont care how many removed 
-            _ = stage.ClearAtQubit(qubitIndex);
-            if (gate.MatrixDimension >= 4)
+            foreach (int qubitIndex in allIndices)
             {
-                // Binary or ternary gate: Clear next spot 
-                _ = stage.ClearAtQubit(qubitIndex+1);
+                _ = stage.ClearAtQubit(qubitIndex);
             }
 
-            if (gate.MatrixDimension == 8)
-            {
-                // Ternary gate: Clear next spot 
-                _ = stage.ClearAtQubit(qubitIndex + 2);
-            }
-
-            stage.AddAtQubit(this, qubitIndex, gate);
+            stage.AddAtQubit(this, qubitsIndices, gate);
 
             return true;
         }
@@ -162,10 +157,9 @@ public sealed partial class QuComputer
         }
     }
 
-    public bool RemoveGate(int stageIndex, int qubitIndex, Gate gate, out string message)
+    public bool RemoveGate(int stageIndex, QubitsIndices qubitsIndices, Gate gate, out string message)
     {
         message = string.Empty;
-
         // Do NOT Allow : stageIndex == this.Stages.Count
         if ((stageIndex < 0) || (stageIndex >= this.Stages.Count))
         {
@@ -173,22 +167,30 @@ public sealed partial class QuComputer
             return false;
         }
 
-        if ((qubitIndex < 0) || (qubitIndex >= this.QuBitsCount))
+        var allIndices = qubitsIndices.AllQubitIndicesSorted();
+        foreach (int qubitIndex in allIndices)
         {
-            message = "Remove Gate: Invalid Qubit index.";
-            return false;
+            if ((qubitIndex < 0) || (qubitIndex >= this.QuBitsCount))
+            {
+                message = "Remove Gate: Invalid Qubit index.";
+                return false;
+            }
         }
 
         try
         {
             QuStage stage = this.Stages[stageIndex];
 
-            // Remove operator at qubitIndex if any, but there should just only one
-            int removed = stage.ClearAtQubit(qubitIndex);
-            if (removed != 1)
+            // Remove operator at all qubit Indices if any,
+            // but there should just only one for unary gates 
+            foreach (int qubitIndex in allIndices)
             {
-                message = "Remove Gate: Unexpected count of removals.";
-                return false;
+                int removed = stage.ClearAtQubit(qubitIndex);
+                //if (removed != 1)
+                //{
+                //    message = "Remove Gate: Unexpected count of removals.";
+                //    return false;
+                //}
             }
 
             return true;

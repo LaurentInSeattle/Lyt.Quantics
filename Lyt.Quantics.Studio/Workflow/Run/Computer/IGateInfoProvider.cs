@@ -14,5 +14,5 @@ public interface IGateInfoProvider
     int StageIndex { get; }
 
     /// <summary> Only valid when this is NOT a toolbox gate view model. </summary>
-    int QubitIndex { get;}
+    QubitsIndices QubitsIndices { get;}
 }

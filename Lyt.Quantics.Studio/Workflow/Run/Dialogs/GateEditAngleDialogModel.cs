@@ -53,7 +53,7 @@ public sealed class GateEditAngleDialogModel : DialogBindable<GateEditAngleDialo
         var gate = this.GateViewModel.Gate;
         int stageIndex = this.GateViewModel.StageIndex;
         var stage = quanticsStudioModel.QuComputer.Stages[stageIndex];
-        var stageOperator = stage.StageOperatorAt(this.GateViewModel.QubitIndex);
+        var stageOperator = stage.StageOperatorAt(this.GateViewModel.QubitsIndices);
         this.GateParameters = stageOperator.GateParameters;
 
         bool isRotation = false;

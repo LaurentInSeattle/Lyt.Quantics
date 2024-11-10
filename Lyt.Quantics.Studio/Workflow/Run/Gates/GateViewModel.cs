@@ -19,7 +19,7 @@ public sealed class GateViewModel
         this.Gate = gate;
         this.IsToolbox = isToolbox;
         this.StageIndex = stageIndex;
-        this.QubitIndex = qubitIndex;
+        this.QubitsIndices = new QubitsIndices (qubitIndex);
         this.Name = gate.CaptionKey.Replace("dg", "\u2020");
         this.FontSize = Name.Length switch
         {
@@ -120,7 +120,7 @@ public sealed class GateViewModel
     public int StageIndex { get; private set; }
 
     /// <summary> Only valid when this is NOT a toolbox gate view model. </summary>
-    public int QubitIndex { get; private set; }
+    public QubitsIndices QubitsIndices { get; private set; }
 
     #endregion IGateInfoProvider Implementation 
 
@@ -140,7 +140,7 @@ public sealed class GateViewModel
     {
         Debug.WriteLine("Removing gate: " + this.Gate.CaptionKey);
         if (!this.quanticsStudioModel.RemoveGate(
-            this.StageIndex, this.QubitIndex, this.Gate, out string message))
+            this.StageIndex, this.QubitsIndices, this.Gate, out string message))
         {
             this.toaster.Show(
                 "Failed to Remove gate: " + this.Gate.CaptionKey, message,

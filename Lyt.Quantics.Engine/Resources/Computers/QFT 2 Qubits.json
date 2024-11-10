@@ -42,8 +42,8 @@
         {
             "Operators": [
                 {
-                    "ControlQuBitIndices": [ 0 ],
-                    "TargetQuBitIndices": [ 1 ],
+                    "ControlQuBitIndices": [ ],
+                    "TargetQuBitIndices": [ 0, 1 ],
                     "GateKey": "Swap"
                 }
             ]

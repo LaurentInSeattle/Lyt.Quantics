@@ -9,8 +9,8 @@
         {
             "Operators": [
                 {
-                    "ControlQuBitIndices": [ 0, 1 ],
-                    "TargetQuBitIndices": [ 2 ],
+                    "ControlQuBitIndices": [0 ],
+                    "TargetQuBitIndices": [ 1, 2 ],
                     "GateKey": "CSwap"
                 }
             ]

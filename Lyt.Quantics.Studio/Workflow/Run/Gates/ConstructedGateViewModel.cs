@@ -4,6 +4,7 @@ public sealed class ConstructedGateViewModel
     : Bindable<ConstructedGateView>, IDraggableBindable, IGateInfoProvider
 {
     public const string CustomDragAndDropFormat = "GateViewModel";
+
     private const string BlueBrush = "LightAqua_0_100";
     private const string OrangeBrush = "OrangePeel_2_100";
     private const double gateSize = 48.0;
@@ -17,7 +18,6 @@ public sealed class ConstructedGateViewModel
     private readonly SolidColorBrush backgroundBrush;
     private readonly SolidColorBrush transparentBrush;
     private readonly string gateKey;
-    private readonly StageOperatorParameters stageOperatorParameters;
     private readonly List<int> allQuBitIndicesSorted;
 
     private static readonly Dictionary<string, string> supportedGates =
@@ -42,7 +42,7 @@ public sealed class ConstructedGateViewModel
 
     private readonly Grid contentGrid;
 
-    public ConstructedGateViewModel(string gateKey, StageOperatorParameters stageOperatorParameters, bool isGhost = false)
+    public ConstructedGateViewModel(string gateKey, int stageIndex, QubitsIndices qubitsIndices, bool isGhost = false)
     {
         if (!ConstructedGateViewModel.supportedGates.ContainsKey(gateKey))
         {
@@ -51,8 +51,10 @@ public sealed class ConstructedGateViewModel
 
         this.gateKey = gateKey;
         this.Gate = GateFactory.Produce(gateKey, new GateParameters());
-        this.stageOperatorParameters = stageOperatorParameters;
+        this.StageIndex = stageIndex;
+        this.QubitsIndices = qubitsIndices;
         this.IsGhost = isGhost;
+        this.IsToolbox = false;
 
         this.backgroundBrush = new SolidColorBrush(color: 0x30406080);
         this.transparentBrush = new SolidColorBrush(color: 0);
@@ -80,11 +82,7 @@ public sealed class ConstructedGateViewModel
             this.orangeBrush = maybeOrangeBrush;
         }
 
-        var allIndices = new List<int>();
-        allIndices.AddRange(this.stageOperatorParameters.ControlQuBitIndices);
-        allIndices.AddRange(this.stageOperatorParameters.TargetQuBitIndices);
-        this.allQuBitIndicesSorted = [.. (from index in allIndices orderby index ascending select index)];
-
+        this.allQuBitIndicesSorted = [.. this.QubitsIndices.AllQubitIndicesSorted()];
         this.contentGrid = this.CreateContentGrid();
         Rectangle rectangle = this.CreateConnectingLine();
         this.contentGrid.Children.Add(rectangle);
@@ -118,7 +116,7 @@ public sealed class ConstructedGateViewModel
     public int StageIndex { get; private set; }
 
     /// <summary> Only valid when this is NOT a toolbox gate view model. </summary>
-    public int QubitIndex { get; private set; }
+    public QubitsIndices QubitsIndices { get; private set; }
 
     #endregion IGateInfoProvider Implementation 
 
@@ -154,7 +152,7 @@ public sealed class ConstructedGateViewModel
     public UserControl CreateGhostView()
     {
         var ghostViewModel = new ConstructedGateViewModel(
-            this.gateKey, this.stageOperatorParameters, isGhost: true);
+            this.gateKey, this.StageIndex, this.QubitsIndices, isGhost: true);
         ghostViewModel.CreateViewAndBind();
         var view = ghostViewModel.View;
 
@@ -214,7 +212,7 @@ public sealed class ConstructedGateViewModel
 
     private void CreateCxGate()
     {
-        var parameters = this.stageOperatorParameters;
+        var parameters = this.QubitsIndices;
         var control = this.CreateControlDot();
         int controlIndex = parameters.ControlQuBitIndices[0];
         this.PlaceGridAt(control, controlIndex);
@@ -225,7 +223,7 @@ public sealed class ConstructedGateViewModel
 
     private void CreateACxGate()
     {
-        var parameters = this.stageOperatorParameters;
+        var parameters = this.QubitsIndices;
         var control = this.CreateAntiControlDot();
         int controlIndex = parameters.ControlQuBitIndices[0];
         this.PlaceGridAt(control, controlIndex);
@@ -236,7 +234,7 @@ public sealed class ConstructedGateViewModel
 
     private void CreateSwapGate()
     {
-        var parameters = this.stageOperatorParameters;
+        var parameters = this.QubitsIndices;
         var first = this.CreateHalfSwap();
         int targetIndex = parameters.TargetQuBitIndices[0];
         this.PlaceGridAt(first, targetIndex);
@@ -247,7 +245,7 @@ public sealed class ConstructedGateViewModel
 
     private void CreateCzGate()
     {
-        var parameters = this.stageOperatorParameters;
+        var parameters = this.QubitsIndices;
         var first = this.CreateControlDot();
         int targetIndex = parameters.TargetQuBitIndices[0];
         this.PlaceGridAt(first, targetIndex);
@@ -258,7 +256,7 @@ public sealed class ConstructedGateViewModel
 
     private void CreateCCzGate()
     {
-        var parameters = this.stageOperatorParameters;
+        var parameters = this.QubitsIndices;
         var first = this.CreateControlDot();
         int targetIndex = parameters.TargetQuBitIndices[0];
         this.PlaceGridAt(first, targetIndex);
@@ -272,7 +270,7 @@ public sealed class ConstructedGateViewModel
 
     private void CreateCCxGate()
     {
-        var parameters = this.stageOperatorParameters;
+        var parameters = this.QubitsIndices;
         var first = this.CreateControlDot();
         int targetIndex = parameters.ControlQuBitIndices[0];
         this.PlaceGridAt(first, targetIndex);
@@ -286,7 +284,7 @@ public sealed class ConstructedGateViewModel
 
     private void CreateCSwapGate()
     {
-        var parameters = this.stageOperatorParameters;
+        var parameters = this.QubitsIndices;
         var first = this.CreateControlDot();
         int firstIndex = parameters.ControlQuBitIndices[0];
         this.PlaceGridAt(first, firstIndex);

@@ -80,23 +80,26 @@ public sealed class StageViewModel : Bindable<StageView>
 
         // 600 pixels for 10 qubits ~ Magic numbers !
         int qubitIndex = (int)Math.Floor(point.Y / 60.0);
-        this.AddGateAt(qubitIndex, gateInfoProvider.Gate);
+        this.AddGateAt(new QubitsIndices(qubitIndex), gateInfoProvider.Gate);
     }
 
-    public void AddGateAt(int qubitIndex, Gate gate)
+    public void AddGateAt(QubitsIndices qubitsIndices, Gate gate)
     {
         var computer = this.quanticsStudioModel.QuComputer;
         int gateQubits = gate.QuBitsTransformed;
-        if (gateQubits + qubitIndex > computer.QuBitsCount)
+        foreach (int qubitIndex in qubitsIndices.AllQubitIndicesSorted())
         {
-            this.toaster.Show(
-                "Can't Drop Here!",
-                "Not enough qubits to drop the gate here.",
-                4_000, InformationLevel.Warning);
-            return;
+            if (gateQubits + qubitIndex > computer.QuBitsCount)
+            {
+                this.toaster.Show(
+                    "Can't Drop Here!",
+                    "Not enough qubits to drop the gate here.",
+                    4_000, InformationLevel.Warning);
+                return;
+            }
         }
 
-        if (!this.quanticsStudioModel.AddGate(this.stageIndex, qubitIndex, gate, out string message))
+        if (!this.quanticsStudioModel.AddGate(this.stageIndex, qubitsIndices, gate, out string message))
         {
             this.toaster.Show("Failed to Add Gate!", message, 4_000, InformationLevel.Error);
             return;
@@ -138,11 +141,12 @@ public sealed class StageViewModel : Bindable<StageView>
                 var gate = GateFactory.Produce(gateKey, stageOperator.GateParameters);
                 int gateRows = gate.QuBitsTransformed;
                 int firstIndex = stageOperator.SmallestQubitIndex;
-                var stageOperatorParameters = new StageOperatorParameters(stageOperator);
+                var qubitsIndices = new QubitsIndices(stageOperator);
 
                 if (ConstructedGateViewModel.IsGateSupported(gateKey))
                 {
-                    var gateVm = new ConstructedGateViewModel(gateKey, stageOperatorParameters);
+                    var gateVm = 
+                        new ConstructedGateViewModel(gateKey, this.stageIndex, qubitsIndices);
                     var gateView = gateVm.CreateViewAndBind();
                     gateView.SetValue(Grid.RowProperty, firstIndex);
                     gateView.SetValue(Grid.RowSpanProperty, gateRows);

@@ -16,7 +16,7 @@ public sealed class GateEditQubitsDialogModel : DialogBindable<GateEditQubitsDia
                 gVm :
                 throw new ArgumentNullException("No parameters");
 
-    public StageOperatorParameters StageOperatorParameters { get; private set; } = new();
+    public QubitsIndices QubitsIndices { get; private set; } = new();
 
     protected override void OnViewLoaded()
     {
@@ -28,7 +28,7 @@ public sealed class GateEditQubitsDialogModel : DialogBindable<GateEditQubitsDia
         var gate = this.GateViewModel.Gate;
         int stageIndex = this.GateViewModel.StageIndex;
         var stage = quanticsStudioModel.QuComputer.Stages[stageIndex];
-        this.stageOperator = stage.StageOperatorAt(this.GateViewModel.QubitIndex);
+        this.stageOperator = stage.StageOperatorAt(this.GateViewModel.QubitsIndices);
         this.HasThreeQubits = gate.QuBitsTransformed == 3;
         this.Title = gate.CaptionKey + ": Edit Qubits Inputs";
 
@@ -148,9 +148,9 @@ public sealed class GateEditQubitsDialogModel : DialogBindable<GateEditQubitsDia
     {
         int controls = this.stageOperator.ControlQuBitIndices.Count;
         int targets = this.stageOperator.TargetQuBitIndices.Count;
-        this.StageOperatorParameters.Clear();
-        var controlIndices = this.StageOperatorParameters.TargetQuBitIndices;
-        var targetIndices = this.StageOperatorParameters.TargetQuBitIndices;
+        this.QubitsIndices.Clear();
+        var controlIndices = this.QubitsIndices.TargetQuBitIndices;
+        var targetIndices = this.QubitsIndices.TargetQuBitIndices;
         if ((controls == 1) && (targets == 1))
         {
             controlIndices.Add(firstIndex);

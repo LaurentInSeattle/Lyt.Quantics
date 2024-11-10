@@ -52,26 +52,29 @@ public sealed class QuStage
         return true;
     }
 
-    public QuStageOperator StageOperatorAt(int qubitIndex)
+    public QuStageOperator StageOperatorAt(QubitsIndices qubitsIndices)
     {
-        foreach (var stageOperator in Operators)
+        foreach (int qubitIndex in qubitsIndices.AllQubitIndicesSorted())
         {
-            if (stageOperator.TargetQuBitIndices.Count > 0)
+            foreach (var stageOperator in Operators)
             {
-                if (stageOperator.TargetQuBitIndices[0] == qubitIndex)
+                if (stageOperator.TargetQuBitIndices.Count > 0)
                 {
-                    return stageOperator;
+                    if (stageOperator.TargetQuBitIndices[0] == qubitIndex)
+                    {
+                        return stageOperator;
+                    }
                 }
-            }
 
-            if (stageOperator.ControlQuBitIndices.Count > 0)
-            {
-                if (stageOperator.ControlQuBitIndices[0] == qubitIndex)
+                if (stageOperator.ControlQuBitIndices.Count > 0)
                 {
-                    return stageOperator;
+                    if (stageOperator.ControlQuBitIndices[0] == qubitIndex)
+                    {
+                        return stageOperator;
+                    }
                 }
             }
-        }
+        } 
 
         throw new Exception("Failed to retrieve Stage Operator");
     }
@@ -107,9 +110,9 @@ public sealed class QuStage
         return listToRemove.Count;
     }
 
-    public void AddAtQubit(QuComputer computer, int qubitIndex, Gate gate)
+    public void AddAtQubit(QuComputer computer, QubitsIndices qubitsIndices, Gate gate)
     {
-        var stageOperator = new QuStageOperator(gate, qubitIndex);
+        var stageOperator = new QuStageOperator(gate, qubitsIndices);
         if (!stageOperator.Validate(computer, out string message))
         {
             throw new Exception(message);

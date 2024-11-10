@@ -12,7 +12,7 @@ public sealed class GateEditControlDialogModel : DialogBindable<GateEditControlD
                 gVm :
                 throw new ArgumentNullException("No parameters");
 
-    public StageOperatorParameters StageOperatorParameters { get; private set; } = new();
+    public QubitsIndices QubitsIndices { get; private set; } = new();
 
     protected override void OnViewLoaded()
     {
@@ -24,7 +24,7 @@ public sealed class GateEditControlDialogModel : DialogBindable<GateEditControlD
         // Retrieve GateParameters for the existing gate
         var quanticsStudioModel = App.GetRequiredService<QsModel>();
         int quBitsCount = quanticsStudioModel.QuComputer.QuBitsCount;
-        int indexTarget = this.GateViewModel.QubitIndex;
+        int indexTarget = this.GateViewModel.QubitsIndices.TargetQuBitIndices[0];
         int indexBefore = indexTarget - 1;
         int indexAfter = indexTarget + 1;
         int indexControl =
@@ -50,7 +50,7 @@ public sealed class GateEditControlDialogModel : DialogBindable<GateEditControlD
 
     private void OnSave(object? _)
     {
-        this.StageOperatorParameters = new(this.controlIndex, this.targetIndex);
+        this.QubitsIndices = new(this.controlIndex, this.targetIndex);
         this.onClose?.Invoke(this, true);
         this.dialogService.Dismiss();
     }
@@ -60,6 +60,7 @@ public sealed class GateEditControlDialogModel : DialogBindable<GateEditControlD
         this.onClose?.Invoke(this, false);
         this.dialogService.Dismiss();
     }
+
 #pragma warning restore IDE0051 // Remove unused private members
 
     private bool Validate(out string message)

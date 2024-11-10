@@ -1,17 +1,21 @@
-﻿namespace Lyt.Quantics.Studio.Workflow.Run.Dialogs;
+﻿namespace Lyt.Quantics.Engine.Machine;
 
-public sealed class StageOperatorParameters
+public sealed class QubitsIndices
 {
-    public StageOperatorParameters() { }
+    public QubitsIndices() { }
 
-    public StageOperatorParameters(QuStageOperator stageOperator) 
+    public QubitsIndices(QuStageOperator stageOperator) 
     {
         this.ControlQuBitIndices = stageOperator.ControlQuBitIndices;
         this.TargetQuBitIndices = stageOperator.TargetQuBitIndices;
     }
 
+    /// <summary> Convenience ctor for unary gates. </summary>
+    public QubitsIndices(int targetIndex) 
+        => this.TargetQuBitIndices.Add(targetIndex);
+
     /// <summary> Convenience ctor for mutating unary gates. </summary>
-    public StageOperatorParameters(int controlIndex, int targetIndex)
+    public QubitsIndices(int controlIndex, int targetIndex)
     {
         this.ControlQuBitIndices.Add(controlIndex);
         this.TargetQuBitIndices.Add(targetIndex);
@@ -22,6 +26,14 @@ public sealed class StageOperatorParameters
 
     /// <summary> Target Qubit Indices for controlled gates and non controlled ones</summary>
     public List<int> TargetQuBitIndices { get; set; } = [];
+
+    public List<int> AllQubitIndicesSorted()
+    {
+        var allIndices = new List<int>();
+        allIndices.AddRange(this.ControlQuBitIndices);
+        allIndices.AddRange(this.TargetQuBitIndices);
+        return [.. (from index in allIndices orderby index ascending select index)];
+    } 
 
     public void Clear ()
     {

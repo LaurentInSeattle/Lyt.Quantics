@@ -608,7 +608,7 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
     {
         Debug.WriteLine("Removing gate: " + gateInfoProvider.Gate.CaptionKey);
         if (!this.quanticsStudioModel.RemoveGate(
-            gateInfoProvider.StageIndex, gateInfoProvider.QubitIndex, gateInfoProvider.Gate, out string message))
+            gateInfoProvider.StageIndex, gateInfoProvider.QubitsIndices, gateInfoProvider.Gate, out string message))
         {
             this.toaster.Show(
                 "Failed to Remove gate: " + gateInfoProvider.Gate.CaptionKey, message,
