@@ -1,4 +1,6 @@
-﻿namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
+﻿using Lyt.Quantics.Engine.Gates.Base;
+
+namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
 
 public sealed class StageViewModel : Bindable<StageView>
 {
@@ -78,10 +80,10 @@ public sealed class StageViewModel : Bindable<StageView>
 
         // 600 pixels for 10 qubits ~ Magic numbers !
         int qubitIndex = (int)Math.Floor(point.Y / 60.0);
-        this.AddGateAt(new QubitsIndices(qubitIndex), gateInfoProvider.Gate);
+        this.AddGateAt(new QubitsIndices(qubitIndex), gateInfoProvider.Gate, isDrop: true);
     }
 
-    public void AddGateAt(QubitsIndices qubitsIndices, Gate gate)
+    public void AddGateAt(QubitsIndices qubitsIndices, Gate gate, bool isDrop)
     {
         var computer = this.quanticsStudioModel.QuComputer;
         int gateQubits = gate.QuBitsTransformed;
@@ -97,7 +99,8 @@ public sealed class StageViewModel : Bindable<StageView>
             }
         }
 
-        if (!this.quanticsStudioModel.AddGate(this.stageIndex, qubitsIndices, gate, out string message))
+        if (!this.quanticsStudioModel.AddGate(
+            this.stageIndex, qubitsIndices, gate, isDrop, out string message))
         {
             this.toaster.Show("Failed to Add Gate!", message, 4_000, InformationLevel.Error);
             return;

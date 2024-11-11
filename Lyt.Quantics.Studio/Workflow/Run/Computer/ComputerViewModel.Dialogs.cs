@@ -17,8 +17,8 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
             if (this.dialogService.IsModal)
             {
                 // Prevents multiple clicks 
-                return; 
-            } 
+                return;
+            }
 
             var gateViewModel = message.GateViewModel;
             var gate = gateViewModel.Gate;
@@ -125,7 +125,7 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
             // No need to update the UI here
             int stageIndex = gateViewModel.StageIndex;
             var stage = this.Stages[stageIndex];
-            stage.AddGateAt(gateViewModel.QubitsIndices, newGate);
+            stage.AddGateAt(gateViewModel.QubitsIndices, newGate, isDrop: false);
         }
         catch (Exception ex)
         {

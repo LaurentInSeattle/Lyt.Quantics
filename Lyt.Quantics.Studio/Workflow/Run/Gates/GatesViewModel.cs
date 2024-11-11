@@ -39,9 +39,9 @@ public sealed class GatesViewModel : Bindable<GatesView>
 #pragma warning disable CA1822 // Mark members as static
     public bool CanDrop(Point _, IGateInfoProvider gateInfoProvider) 
         => !gateInfoProvider.IsToolbox;
+#pragma warning restore CA1822 
 
     public void OnDrop(Point _, IGateInfoProvider gateInfoProvider)
-#pragma warning restore CA1822 
     {
         if (gateInfoProvider.IsToolbox)
         {

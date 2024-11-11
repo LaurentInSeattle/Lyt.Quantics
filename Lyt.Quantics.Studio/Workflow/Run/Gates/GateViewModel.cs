@@ -7,7 +7,7 @@ public sealed class GateViewModel
     private readonly IToaster toaster;
 
     public GateViewModel(
-        Gate gate, bool isToolbox = false, int stageIndex = -1, int qubitIndex = -1)
+        Gate gate, bool isGhost = false, bool isToolbox = false, int stageIndex = -1, int qubitIndex = -1)
     {
         // Too many properties here and too many gates !
         this.DisablePropertyChangedLogging = true;
@@ -17,6 +17,12 @@ public sealed class GateViewModel
         this.toaster = App.GetRequiredService<IToaster>();
 
         this.Gate = gate;
+        this.IsGhost = isGhost;
+        if (!this.IsGhost)
+        {
+            this.Draggable = new Draggable();
+        }
+
         this.IsToolbox = isToolbox;
         this.StageIndex = stageIndex;
         this.QubitsIndices = new QubitsIndices (qubitIndex);
@@ -128,9 +134,8 @@ public sealed class GateViewModel
     {
         base.OnViewLoaded();
 
-        if (!this.IsGhost)
+        if (!this.IsGhost && this.Draggable is not null)
         {
-            this.Draggable = new Draggable();
             this.Draggable.Attach(this.View);
             this.View.InvalidateVisual();
         }
@@ -184,10 +189,7 @@ public sealed class GateViewModel
 
     public UserControl CreateGhostView()
     {
-        var ghostViewModel = new GateViewModel(this.Gate, isToolbox: true)
-        {
-            IsGhost = true
-        };
+        var ghostViewModel = new GateViewModel(this.Gate, isGhost:true,  isToolbox: true);
         ghostViewModel.CreateViewAndBind();
         var view = ghostViewModel.View;
 

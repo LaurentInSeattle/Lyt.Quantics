@@ -4,7 +4,9 @@ using MathNet.Numerics.LinearAlgebra;
 
 public sealed class FlippedControlledNotGate : Gate
 {
-    private static readonly Matrix<Complex> FlippedControlledNotMatrix; 
+    public const string Key = "FCX";
+
+    private static readonly Matrix<Complex> FlippedControlledNotMatrix;
 
     static FlippedControlledNotGate()
     {
@@ -29,7 +31,7 @@ public sealed class FlippedControlledNotGate : Gate
 
     public override string AlternateName => "FCNOT";
 
-    public override string CaptionKey => "FCX";
+    public override string CaptionKey => FlippedControlledNotGate.Key;
 
     public override GateCategory Category => GateCategory.E_BinaryControlled;
 }

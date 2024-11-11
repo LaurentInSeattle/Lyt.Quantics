@@ -109,7 +109,9 @@ public sealed partial class QuComputer
         }
     }
 
-    public bool AddGate(int stageIndex, QubitsIndices qubitsIndices, Gate gate, out string message)
+    /// <summary> If isDrop is true we only have one target qubit index ! </summary>
+    public bool AddGate(
+        int stageIndex, QubitsIndices qubitsIndices, Gate gate, bool isDrop, out string message)
     {
         message = string.Empty;
         // Allow : stageIndex == this.Stages.Count
@@ -145,7 +147,7 @@ public sealed partial class QuComputer
                 _ = stage.ClearAtQubit(qubitIndex);
             }
 
-            stage.AddAtQubit(this, qubitsIndices, gate);
+            stage.AddAtQubit(this, qubitsIndices, gate, isDrop);
 
             return true;
         }

@@ -24,10 +24,8 @@ TODO: Engine:
 TODO: Studio : 
 
 	Priority:	
-			=> Removal of 'QuBitIndex' and use collections of Targets and Controls
 			==> UpdateUiGates : broken 
 			"Frameworkization" of drag/drop
-			Dymanic gates cannot be removed bc of 'QuBitIndex' 
 	
 	Figure out the optimal height of a Slider, update dialogs accordingly (currently == 60) 
 

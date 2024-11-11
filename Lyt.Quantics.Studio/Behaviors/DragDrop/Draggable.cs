@@ -8,14 +8,13 @@ public sealed class Draggable : BehaviorBase<BehaviorEnabledUserControl>
     private bool isDragging;
     private PointerPoint pointerPressedPoint;
     private UserControl? ghostView;
-
     private IDraggableBindable? draggableBindable;
 
     protected override void OnAttached()
     {
         _ = this.GuardAssociatedObject();
-        Debug.WriteLine("On attached to: " + this.DraggableBindable.GetType().Name);
         this.HookPointerEvents();
+        //Debug.WriteLine("On attached to: " + this.DraggableBindable.GetType().Name);
     }
 
     protected override void OnDetaching() => this.UnhookPointerEvents();
@@ -85,7 +84,7 @@ public sealed class Draggable : BehaviorBase<BehaviorEnabledUserControl>
 
     private void OnPointerPressed(object? sender, PointerPressedEventArgs pointerPressedEventArgs)
     {
-        Debug.WriteLine("Pressed");
+        // Debug.WriteLine("Pressed");
         BehaviorEnabledUserControl userControl = this.UserControl;
         this.isPointerPressed = true;
         this.pointerPressedPoint = pointerPressedEventArgs.GetCurrentPoint(userControl);
@@ -101,19 +100,19 @@ public sealed class Draggable : BehaviorBase<BehaviorEnabledUserControl>
 
         if (this.isDragging)
         {
-            Debug.WriteLine("Dragging...");
+            // Debug.WriteLine("Dragging...");
             this.AdjustGhostPosition(pointerEventArgs);
             return;
         }
         else
         {
-            Debug.WriteLine("Moving...");
+            // Debug.WriteLine("Moving...");
             BehaviorEnabledUserControl userControl = this.UserControl;
             Point currentPosition = pointerEventArgs.GetPosition(userControl);
             var distance = Point.Distance(currentPosition, pointerPressedPoint.Position);
             if (distance <= 4.2)
             {
-                Debug.WriteLine("Too close.");
+                // Debug.WriteLine("Too close.");
                 return;
             }
 
@@ -123,7 +122,7 @@ public sealed class Draggable : BehaviorBase<BehaviorEnabledUserControl>
 
     private void OnPointerReleased(object? sender, PointerReleasedEventArgs args)
     {
-        Debug.WriteLine("Released");
+        // Debug.WriteLine("Released");
         if (this.isDragging || !this.isPointerPressed)
         {
             return;
@@ -140,8 +139,7 @@ public sealed class Draggable : BehaviorBase<BehaviorEnabledUserControl>
 
     private void BeginDrag(PointerEventArgs pointerEventArgs)
     {
-        Debug.WriteLine("Try Begin Drag");
-
+        // Debug.WriteLine("Try Begin Drag");
         if (this.isDragging)
         {
             return;
@@ -151,18 +149,19 @@ public sealed class Draggable : BehaviorBase<BehaviorEnabledUserControl>
         bool allowDrag = this.DraggableBindable.OnBeginDrag();
         if (!allowDrag)
         {
-            Debug.WriteLine("Dragging rejected");
+            // Debug.WriteLine("Dragging rejected");
             return;
         }
 
-        Debug.WriteLine("Drag == true ");
+        // Debug.WriteLine("Drag == true ");
         this.isDragging = true;
 
         // Create the ghost view  
         this.ghostView = this.DraggableBindable.CreateGhostView();
+        // Debug.WriteLine("ghost view created");
         if (!this.ValidateGhost(out Canvas? canvas))
         {
-            Debug.WriteLine("No canvas");
+            // Debug.WriteLine("No canvas");
             return;
         }
 
@@ -174,7 +173,7 @@ public sealed class Draggable : BehaviorBase<BehaviorEnabledUserControl>
     {
         if (this.ghostView is null)
         {
-            Debug.WriteLine("No ghost");
+            // Debug.WriteLine("No ghost");
             return;
         }
 
@@ -186,14 +185,17 @@ public sealed class Draggable : BehaviorBase<BehaviorEnabledUserControl>
         string dragAndDropFormat = this.DraggableBindable.DragDropFormat;
         dragData.Set(dragAndDropFormat, this.DraggableBindable);
 
+        // Debug.WriteLine("Sarting DnD thread");
         var result = await DragDrop.DoDragDrop(pointerEventArgs, dragData, DragDropEffects.Move);
         Debug.WriteLine($"DragAndDrop result: {result}");
 
         canvas.Children.Remove(this.ghostView);
         this.ghostView.DataContext = null;
+
+        // Debug.WriteLine("Nullifying ghost view");
         this.ghostView = null;
 
-        Debug.WriteLine("Drag == false");
+        // Debug.WriteLine("Drag == false");
         this.isPointerPressed = false;
         this.isDragging = false;
         this.HookPointerEvents();
@@ -231,20 +233,20 @@ public sealed class Draggable : BehaviorBase<BehaviorEnabledUserControl>
         canvas = null;
         if (this.ghostView is null)
         {
-            Debug.WriteLine("No ghost");
+            // Debug.WriteLine("No ghost");
             return false;
         }
 
         if (App.MainWindow is not MainWindow mainWindow)
         {
-            Debug.WriteLine("No main window");
+            // Debug.WriteLine("No main window");
             return false;
         }
 
         canvas = mainWindow.MainWindowCanvas;
         if (canvas is null)
         {
-            Debug.WriteLine("No grid in main window");
+            // Debug.WriteLine("No canvas in main window");
             return false;
         }
 

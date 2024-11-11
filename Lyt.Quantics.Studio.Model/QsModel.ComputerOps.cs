@@ -77,9 +77,9 @@ public sealed partial class QsModel : ModelBase
         return status;
     }
 
-    public bool AddGate(int stageIndex, QubitsIndices qubitsIndices, Gate gate, out string message)
+    public bool AddGate(int stageIndex, QubitsIndices qubitsIndices, Gate gate, bool isDrop, out string message)
     {
-        bool status = this.QuComputer.AddGate(stageIndex, qubitsIndices, gate, out message);
+        bool status = this.QuComputer.AddGate(stageIndex, qubitsIndices, gate, isDrop, out message);
         if (status)
         {
             this.IsDirty = true;

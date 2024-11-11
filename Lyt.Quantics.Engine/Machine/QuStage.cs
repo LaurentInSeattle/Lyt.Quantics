@@ -110,9 +110,10 @@ public sealed class QuStage
         return listToRemove.Count;
     }
 
-    public void AddAtQubit(QuComputer computer, QubitsIndices qubitsIndices, Gate gate)
+    /// <summary> If isDrop is true we only have one target qubit index ! </summary>
+    public void AddAtQubit(QuComputer computer, QubitsIndices qubitsIndices, Gate gate, bool isDrop)
     {
-        var stageOperator = new QuStageOperator(gate, qubitsIndices);
+        var stageOperator = new QuStageOperator(gate, qubitsIndices, isDrop);
         if (!stageOperator.Validate(computer, out string message))
         {
             throw new Exception(message);
