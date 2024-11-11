@@ -89,7 +89,7 @@ public sealed class StageViewModel : Bindable<StageView>
         int gateQubits = gate.QuBitsTransformed;
         foreach (int qubitIndex in qubitsIndices.AllQubitIndicesSorted())
         {
-            if (gateQubits + qubitIndex > computer.QuBitsCount)
+            if (qubitIndex >= computer.QuBitsCount)
             {
                 this.toaster.Show(
                     "Can't Drop Here!",

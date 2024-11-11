@@ -79,18 +79,18 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
 
     private void OnGateEditAngleClose(object sender, bool save)
     {
-        if ((!save) || (sender is not GateEditAngleDialogModel gateEditDialogModel))
+        if ((!save) || (sender is not GateEditAngleDialogModel gateEditAngleDialogModel))
         {
             // Dismissed or problem...
             return;
         }
 
-        if (gateEditDialogModel.IsMakeControlled)
+        if (gateEditAngleDialogModel.IsMakeControlled)
         {
             this.dialogService.Dismiss();
             Schedule.OnUiThread(20, () =>
             {
-                this.LaunchGateEditControlDialog(gateEditDialogModel.GateInfoProvider);
+                this.LaunchGateEditControlDialog(gateEditAngleDialogModel.GateInfoProvider);
             }, DispatcherPriority.Background);
             return;
         }
@@ -98,7 +98,7 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
         try
         {
             // Grab the data 
-            IGateInfoProvider gateInfoProvider = gateEditDialogModel.GateInfoProvider;
+            IGateInfoProvider gateInfoProvider = gateEditAngleDialogModel.GateInfoProvider;
             Gate oldGate = gateInfoProvider.Gate;
             if ((oldGate is not RotationGate) && (oldGate is not PhaseGate))
             {
@@ -106,7 +106,7 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
             }
 
             Gate? newGate = null;
-            var gateParameters = gateEditDialogModel.GateParameters;
+            var gateParameters = gateEditAngleDialogModel.GateParameters;
             if (oldGate is RotationGate rotationGate)
             {
 
@@ -200,7 +200,7 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
 
     private void OnEditQubitsClose(object sender, bool save)
     {
-        if ((!save) || (sender is not GateEditControlDialogModel gateEditControlDialogModel))
+        if ((!save) || (sender is not GateEditQubitsDialogModel gateEditQubitsDialogModel))
         {
             // Dismissed or problem...
             return;
@@ -208,18 +208,25 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
 
         try
         {
-            // TODO !!! 
-
             // Grab the data 
-            IGateInfoProvider gateInfoProvider = gateEditControlDialogModel.GateInfoProvider;
+            IGateInfoProvider gateInfoProvider = gateEditQubitsDialogModel.GateInfoProvider;
+            int stageIndex = gateInfoProvider.StageIndex;
+            var computer = this.quanticsStudioModel.QuComputer;
+            var computerStage = computer.Stages[stageIndex];
+
+            // Use original qubits indices 
+            var stageOperator = computerStage.StageOperatorAt(gateInfoProvider.QubitsIndices);
+            var gateParameters = stageOperator.GateParameters;
             Gate oldGate = gateInfoProvider.Gate;
+            var newGate = GateFactory.Produce(oldGate.CaptionKey, gateParameters);
 
-            // Gate view likely needs an update 
-            // gateViewModel.Update(gate); 
+            // Update the model. The gate view likely needs an update.
+            // It will be done later when the model will be messaging.
+            // No need to update the UI here
+            var uiStage = this.Stages[stageIndex];
 
-            // Update the model 
-
-            // TODO !!! 
+            // Here use modified qubits indices 
+            uiStage.AddGateAt(gateEditQubitsDialogModel.QubitsIndices, newGate, isDrop: false);
         }
         catch (Exception ex)
         {

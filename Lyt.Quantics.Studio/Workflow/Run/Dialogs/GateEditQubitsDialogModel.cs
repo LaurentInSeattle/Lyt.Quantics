@@ -1,6 +1,6 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Dialogs;
 
-public sealed class GateEditQubitsDialogModel 
+public sealed class GateEditQubitsDialogModel
     : DialogBindable<GateEditQubitsDialog, IGateInfoProvider>
 {
     public sealed record class QubitSetup(int Index, bool IsControl);
@@ -150,7 +150,7 @@ public sealed class GateEditQubitsDialogModel
         int controls = this.stageOperator.ControlQuBitIndices.Count;
         int targets = this.stageOperator.TargetQuBitIndices.Count;
         this.QubitsIndices.Clear();
-        var controlIndices = this.QubitsIndices.TargetQuBitIndices;
+        var controlIndices = this.QubitsIndices.ControlQuBitIndices;
         var targetIndices = this.QubitsIndices.TargetQuBitIndices;
         if ((controls == 1) && (targets == 1))
         {
@@ -190,9 +190,20 @@ public sealed class GateEditQubitsDialogModel
     {
         bool validated = true;
         message = string.Empty;
-        if ((this.firstIndex == this.secondIndex) ||
-            (this.firstIndex == this.thirdIndex) ||
-            (this.secondIndex == this.thirdIndex))
+        bool fail;
+        if (this.HasThreeQubits)
+        {
+            fail =
+                (this.firstIndex == this.secondIndex) ||
+                (this.firstIndex == this.thirdIndex) ||
+                (this.secondIndex == this.thirdIndex);
+        }
+        else
+        {
+            fail = this.firstIndex == this.secondIndex;
+        }
+
+        if (fail)
         {
             message = "All qubit indices must be distinct.";
             validated = false;
