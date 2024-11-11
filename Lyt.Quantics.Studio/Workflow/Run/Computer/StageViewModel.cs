@@ -1,6 +1,4 @@
-﻿using Lyt.Quantics.Studio.Workflow.Run.Gates;
-
-namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
+﻿namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
 
 public sealed class StageViewModel : Bindable<StageView>
 {

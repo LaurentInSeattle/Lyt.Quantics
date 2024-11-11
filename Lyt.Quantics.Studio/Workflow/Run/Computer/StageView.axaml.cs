@@ -20,39 +20,49 @@ public partial class StageView : UserControl
 
     private void OnDragOver(object? sender, DragEventArgs dragEventArgs)
     {
-        // Debug.WriteLine("On Drag Over Gates View");
+        Debug.WriteLine("Dragging over stage view");
+
         dragEventArgs.DragEffects = DragDropEffects.None;
         var data = dragEventArgs.Data;
         object? dragDropObject = data.Get(ConstructedGateViewModel.CustomDragAndDropFormat); 
         if (dragDropObject is IDraggableBindable draggableBindable)
         {
+            Debug.WriteLine("Drag object is IDraggableBindable");
             var draggable = draggableBindable.Draggable;
             draggable?.OnParentDragOver(dragEventArgs);
-
             if (this.DataContext is StageViewModel stageViewModel)
             {
                 if (dragDropObject is IGateInfoProvider gateInfoProvider)
                 {
+                    Debug.WriteLine("Drag object is IGateInfoProvider");
                     if (stageViewModel.CanDrop(dragEventArgs.GetPosition(this), gateInfoProvider))
                     {
+                        Debug.WriteLine("Drag object can be dropped ");
                         dragEventArgs.DragEffects = DragDropEffects.Move;
+                    }
+                    else
+                    {
+                        Debug.WriteLine("Drop rejected ");
                     }
                 }
             }
+
+            // Must do this below so that the computer view is not corrupting the effect
+            dragEventArgs.Handled = true;
+            Debug.WriteLine("Event handled: Dragging over stage view");
         }
 
-        // Must do this below so that the computer view is not corrupting the effect
-        dragEventArgs.Handled = true;
     }
 
     private void OnDrop(object? sender, DragEventArgs dragEventArgs)
     {
         var data = dragEventArgs.Data.Get(ConstructedGateViewModel.CustomDragAndDropFormat);
-        if (data is GateViewModel gateViewModel)
+        if (data is IGateInfoProvider gateInfoProvider)
         {
             if (this.DataContext is StageViewModel stageViewModel)
             {
-                stageViewModel.OnDrop(dragEventArgs.GetPosition(this), gateViewModel);
+                stageViewModel.OnDrop(dragEventArgs.GetPosition(this), gateInfoProvider);
+                dragEventArgs.Handled = true;
             }
         }
     }
