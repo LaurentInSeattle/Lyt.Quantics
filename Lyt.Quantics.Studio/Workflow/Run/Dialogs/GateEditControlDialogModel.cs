@@ -1,14 +1,14 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Dialogs;
 
-public sealed class GateEditControlDialogModel : DialogBindable<GateEditControlDialog, GateViewModel>
+public sealed class GateEditControlDialogModel : DialogBindable<GateEditControlDialog, IGateInfoProvider>
 {
     private int controlIndex;
     private int targetIndex;
 
     public GateEditControlDialogModel() { }
 
-    public GateViewModel GateViewModel
-        => base.parameters is GateViewModel gVm ?
+    public IGateInfoProvider GateInfoProvider
+        => base.parameters is IGateInfoProvider gVm ?
                 gVm :
                 throw new ArgumentNullException("No parameters");
 
@@ -18,13 +18,13 @@ public sealed class GateEditControlDialogModel : DialogBindable<GateEditControlD
     {
         base.OnViewLoaded();
 
-        var gate = this.GateViewModel.Gate;
+        var gate = this.GateInfoProvider.Gate;
         this.Title = string.Format("Mutate '{0}' to Controlled Gate", gate.CaptionKey) ;
 
         // Retrieve GateParameters for the existing gate
         var quanticsStudioModel = App.GetRequiredService<QsModel>();
         int quBitsCount = quanticsStudioModel.QuComputer.QuBitsCount;
-        int indexTarget = this.GateViewModel.QubitsIndices.TargetQuBitIndices[0];
+        int indexTarget = this.GateInfoProvider.QubitsIndices.TargetQuBitIndices[0];
         int indexBefore = indexTarget - 1;
         int indexAfter = indexTarget + 1;
         int indexControl =

@@ -145,7 +145,7 @@ public sealed class ConstructedGateViewModel
         if (this.Gate.IsEditable)
         {
             // Launch edit gate dialog 
-            // this.Messenger.Publish(new GateEditMessage(this, isRightClick));
+            this.Messenger.Publish(new GateEditMessage(this, isRightClick));
         }
     }
     
@@ -162,14 +162,6 @@ public sealed class ConstructedGateViewModel
         view.Opacity = 0.8;
         view.InvalidateVisual();
         return view;
-
-
-        // TODO in View model 
-        // Create the special graphics if needed 
-        //if (GateViewModel.SpecialGateToControl(gateViewModel.Gate.CaptionKey) is Control control)
-        //{
-        //    this.ghostView.GateIconContent.Content = control;
-        //}
     }
 
     #endregion Draggable Bindable Implementation 

@@ -1,6 +1,7 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Dialogs;
 
-public sealed class GateEditAngleDialogModel : DialogBindable<GateEditAngleDialog, GateViewModel>
+public sealed class GateEditAngleDialogModel 
+    : DialogBindable<GateEditAngleDialog, IGateInfoProvider>
 {
     private const int DefaultPredefinedValue = 8;
 
@@ -31,8 +32,8 @@ public sealed class GateEditAngleDialogModel : DialogBindable<GateEditAngleDialo
         this.PredefinedValue = GateEditAngleDialogModel.PredefinedValues[DefaultPredefinedValue];
     }
 
-    public GateViewModel GateViewModel
-        => base.parameters is GateViewModel gVm ?
+    public IGateInfoProvider GateInfoProvider
+        => base.parameters is IGateInfoProvider gVm ?
                 gVm :
                 throw new ArgumentNullException("No parameters");
 
@@ -50,10 +51,10 @@ public sealed class GateEditAngleDialogModel : DialogBindable<GateEditAngleDialo
 
         // Retrieve GateParameters for the existing gate
         var quanticsStudioModel = App.GetRequiredService<QsModel>();
-        var gate = this.GateViewModel.Gate;
-        int stageIndex = this.GateViewModel.StageIndex;
+        var gate = this.GateInfoProvider.Gate;
+        int stageIndex = this.GateInfoProvider.StageIndex;
         var stage = quanticsStudioModel.QuComputer.Stages[stageIndex];
-        var stageOperator = stage.StageOperatorAt(this.GateViewModel.QubitsIndices);
+        var stageOperator = stage.StageOperatorAt(this.GateInfoProvider.QubitsIndices);
         this.GateParameters = stageOperator.GateParameters;
 
         bool isRotation = false;

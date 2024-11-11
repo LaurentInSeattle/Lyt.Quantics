@@ -1,6 +1,7 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Dialogs;
 
-public sealed class GateEditQubitsDialogModel : DialogBindable<GateEditQubitsDialog, GateViewModel>
+public sealed class GateEditQubitsDialogModel 
+    : DialogBindable<GateEditQubitsDialog, IGateInfoProvider>
 {
     public sealed record class QubitSetup(int Index, bool IsControl);
 
@@ -11,8 +12,8 @@ public sealed class GateEditQubitsDialogModel : DialogBindable<GateEditQubitsDia
 
     public GateEditQubitsDialogModel() => this.stageOperator = new();
 
-    public GateViewModel GateViewModel
-        => base.parameters is GateViewModel gVm ?
+    public IGateInfoProvider GateInfoProvider
+        => base.parameters is IGateInfoProvider gVm ?
                 gVm :
                 throw new ArgumentNullException("No parameters");
 
@@ -25,10 +26,10 @@ public sealed class GateEditQubitsDialogModel : DialogBindable<GateEditQubitsDia
         // Retrieve various parameters and characteristics for the existing gate
         var quanticsStudioModel = App.GetRequiredService<QsModel>();
         int quBitsCount = quanticsStudioModel.QuComputer.QuBitsCount;
-        var gate = this.GateViewModel.Gate;
-        int stageIndex = this.GateViewModel.StageIndex;
+        var gate = this.GateInfoProvider.Gate;
+        int stageIndex = this.GateInfoProvider.StageIndex;
         var stage = quanticsStudioModel.QuComputer.Stages[stageIndex];
-        this.stageOperator = stage.StageOperatorAt(this.GateViewModel.QubitsIndices);
+        this.stageOperator = stage.StageOperatorAt(this.GateInfoProvider.QubitsIndices);
         this.HasThreeQubits = gate.QuBitsTransformed == 3;
         this.Title = gate.CaptionKey + ": Edit Qubits Inputs";
 

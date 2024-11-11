@@ -6,7 +6,7 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
 
     private void OnGateEditMessage(GateEditMessage message)
     {
-        if (message.GateViewModel is null)
+        if (message.GateInfoProvider is null)
         {
             return;
         }
@@ -20,8 +20,8 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
                 return;
             }
 
-            var gateViewModel = message.GateViewModel;
-            var gate = gateViewModel.Gate;
+            var gateInfoProvider = message.GateInfoProvider;
+            var gate = gateInfoProvider.Gate;
             bool isUnary = gate.QuBitsTransformed == 1;
             bool isBinary = gate.QuBitsTransformed == 2;
             bool isTernary = gate.QuBitsTransformed == 3;
@@ -38,23 +38,23 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
                 // Special click: Go direct to the controlled gate dialog, if possible 
                 if (message.WithModifier && isUnary && isNotControlled)
                 {
-                    this.LaunchGateEditControlDialog(gateViewModel);
+                    this.LaunchGateEditControlDialog(gateInfoProvider);
                 }
                 else
                 {
                     // Edit angle
-                    this.LaunchGateEditAngleDialog(gateViewModel);
+                    this.LaunchGateEditAngleDialog(gateInfoProvider);
                 }
             }
             else if (isUnary && isNotControlled)
             {
                 // Create a controlled gate
-                this.LaunchGateEditControlDialog(gateViewModel);
+                this.LaunchGateEditControlDialog(gateInfoProvider);
             }
             else if (launchQubitEditor)
             {
                 // Change qubits inputs
-                this.LaunchEditQubitsDialog(gateViewModel);
+                this.LaunchEditQubitsDialog(gateInfoProvider);
             }
             else
             {
@@ -64,14 +64,16 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
         }
     }
 
-    private void LaunchGateEditAngleDialog(GateViewModel gateViewModel)
+    #region Editing Angle for Phase and Rotation 
+
+    private void LaunchGateEditAngleDialog(IGateInfoProvider gateInfoProvider)
     {
         // Run modal dialog to phase or rotation angle
         if (this.dialogService is DialogService modalService)
         {
-            modalService.RunModal<GateEditAngleDialog, GateViewModel>(
+            modalService.RunModal<GateEditAngleDialog, IGateInfoProvider>(
                 this.View.ToasterHost, new GateEditAngleDialogModel(),
-                this.OnGateEditAngleClose, gateViewModel);
+                this.OnGateEditAngleClose, gateInfoProvider);
         }
     }
 
@@ -88,7 +90,7 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
             this.dialogService.Dismiss();
             Schedule.OnUiThread(20, () =>
             {
-                this.LaunchGateEditControlDialog(gateEditDialogModel.GateViewModel);
+                this.LaunchGateEditControlDialog(gateEditDialogModel.GateInfoProvider);
             }, DispatcherPriority.Background);
             return;
         }
@@ -96,8 +98,8 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
         try
         {
             // Grab the data 
-            GateViewModel gateViewModel = gateEditDialogModel.GateViewModel;
-            Gate oldGate = gateViewModel.Gate;
+            IGateInfoProvider gateInfoProvider = gateEditDialogModel.GateInfoProvider;
+            Gate oldGate = gateInfoProvider.Gate;
             if ((oldGate is not RotationGate) && (oldGate is not PhaseGate))
             {
                 throw new Exception("Incorrect gate type.");
@@ -123,9 +125,9 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
             // Update the model. The gate view likely needs an update.
             // It will be done later when the model will be messaging.
             // No need to update the UI here
-            int stageIndex = gateViewModel.StageIndex;
+            int stageIndex = gateInfoProvider.StageIndex;
             var stage = this.Stages[stageIndex];
-            stage.AddGateAt(gateViewModel.QubitsIndices, newGate, isDrop: false);
+            stage.AddGateAt(gateInfoProvider.QubitsIndices, newGate, isDrop: false);
         }
         catch (Exception ex)
         {
@@ -135,14 +137,18 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
         }
     }
 
-    private void LaunchGateEditControlDialog(GateViewModel gateViewModel)
+    #endregion Editing Angle for Phase and Rotation 
+
+    #region Mutating a unary into a controlled gate  
+
+    private void LaunchGateEditControlDialog(IGateInfoProvider gateInfoProvider)
     {
         // Run modal dialog to construct a controlled gate from the existing one
         if (this.dialogService is DialogService modalService)
         {
-            modalService.RunModal<GateEditControlDialog, GateViewModel>(
+            modalService.RunModal<GateEditControlDialog, IGateInfoProvider>(
                 this.View.ToasterHost, new GateEditControlDialogModel(),
-                this.OnGateEditControlClose, gateViewModel);
+                this.OnGateEditControlClose, gateInfoProvider);
         }
     }
 
@@ -159,8 +165,8 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
             // TODO !!! 
 
             // Grab the data 
-            GateViewModel gateViewModel = gateEditControlDialogModel.GateViewModel;
-            Gate oldGate = gateViewModel.Gate;
+            IGateInfoProvider gateInfoProvider = gateEditControlDialogModel.GateInfoProvider;
+            Gate oldGate = gateInfoProvider.Gate;
 
             // Gate view likely needs an update 
             // gateViewModel.Update(gate); 
@@ -177,14 +183,18 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
         }
     }
 
-    private void LaunchEditQubitsDialog(GateViewModel gateViewModel)
+    #endregion Mutating a unary into a controlled gate  
+
+    #region Modifying control and target qubits for a binary or ternary gate
+
+    private void LaunchEditQubitsDialog(IGateInfoProvider gateInfoProvider)
     {
         // Run modal dialog to edit Targets for swap or edit control and target for binary gates 
         if (this.dialogService is DialogService modalService)
         {
-            modalService.RunModal<GateEditQubitsDialog, GateViewModel>(
+            modalService.RunModal<GateEditQubitsDialog, IGateInfoProvider>(
                 this.View.ToasterHost, new GateEditQubitsDialogModel(),
-                this.OnEditQubitsClose, gateViewModel);
+                this.OnEditQubitsClose, gateInfoProvider);
         }
     }
 
@@ -201,8 +211,8 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
             // TODO !!! 
 
             // Grab the data 
-            GateViewModel gateViewModel = gateEditControlDialogModel.GateViewModel;
-            Gate oldGate = gateViewModel.Gate;
+            IGateInfoProvider gateInfoProvider = gateEditControlDialogModel.GateInfoProvider;
+            Gate oldGate = gateInfoProvider.Gate;
 
             // Gate view likely needs an update 
             // gateViewModel.Update(gate); 
@@ -218,4 +228,6 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
             this.toaster.Show("Unexpected Error", uiMessage, 4_000, InformationLevel.Error);
         }
     }
+
+    #endregion Modifying control and target qubits for a binary or ternary gate
 }
