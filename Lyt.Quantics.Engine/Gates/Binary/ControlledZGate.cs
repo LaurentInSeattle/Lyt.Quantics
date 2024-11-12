@@ -27,6 +27,8 @@ public sealed class ControlledZGate : Gate
     public override Matrix<Complex> Matrix => ControlledZGate.ControlledZMatrix;
 
     // Like SWAP the two Qubits are equivalent and hence considered both as Targets 
+    // https://quantumcomputing.stackexchange.com/questions/17677/does-control-and-target-matter-in-the-cz-controlled-z-gate
+
     public override int ControlQuBits => 0;
 
     public override int TargetQuBits => 2;

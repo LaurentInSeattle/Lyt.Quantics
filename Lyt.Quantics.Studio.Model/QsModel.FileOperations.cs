@@ -174,9 +174,10 @@ public sealed partial class QsModel : ModelBase
 
             // Update or Add to Projects 
             var clone = this.QuComputer.DeepClone();
-            if (!this.Projects.TryAdd(name, clone))
+            string fileName = string.Concat(pathName, FileManagerModel.JsonExtension);
+            if (!this.Projects.TryAdd(fileName, clone))
             {
-                this.Projects[name] = clone;
+                this.Projects[fileName] = clone;
             }
 
             this.IsDirty = false;

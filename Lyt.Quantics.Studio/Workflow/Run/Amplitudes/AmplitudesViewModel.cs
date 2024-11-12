@@ -93,6 +93,12 @@ public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
                  select entry)];
         }
 
+        if (filtered.Count == 0)
+        {
+            MessagingExtensions.Command(ToolbarCommand.ShowAll); 
+            return;
+        }
+
         List<HistogramEntry> sorted;
         if (this.showByBitOrder)
         {
