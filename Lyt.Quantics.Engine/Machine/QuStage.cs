@@ -38,7 +38,7 @@ public sealed class QuStage
         }
     }
 
-    /// <returns> True is the only operators are Identity. </returns>
+    /// <returns> True if the only operators are Identity. </returns>
     public bool IsEmpty()
     {
         foreach (var op in this.Operators)
@@ -74,7 +74,7 @@ public sealed class QuStage
                     }
                 }
             }
-        } 
+        }
 
         throw new Exception("Failed to retrieve Stage Operator");
     }
@@ -140,10 +140,10 @@ public sealed class QuStage
         {
             foreach (int qubitIndex in stageOperator.ControlQuBitIndices)
             {
-                bool added = set.Add(qubitIndex); 
-                if ( !added )
+                bool added = set.Add(qubitIndex);
+                if (!added)
                 {
-                    message = stageOperator.GateKey + ": Overlapping Control qubit indices"; 
+                    message = stageOperator.GateKey + ": Overlapping Control qubit indices";
                     return false;
                 }
             }
@@ -268,8 +268,15 @@ public sealed class QuStage
         try
         {
             // Single Step
-            this.StageRegister.State = this.StageMatrix.Multiply(sourceRegister.State);
-            // Debug.WriteLine("Step Result: " + this.StageRegister.State.ToString());
+            if (this.IsEmpty())
+            {
+                this.StageRegister.State = sourceRegister.State.Clone();
+            }
+            else
+            {
+                this.StageRegister.State = this.StageMatrix.Multiply(sourceRegister.State);
+                // Debug.WriteLine("Step Result: " + this.StageRegister.State.ToString());
+            }
         }
         catch (Exception ex)
         {

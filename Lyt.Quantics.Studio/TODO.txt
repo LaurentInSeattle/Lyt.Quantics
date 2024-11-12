@@ -14,6 +14,10 @@ TODO: Engine:
 			Binary Gates with non consecutive qubits (Ex: swap 0 and 2)
 			Ternary Gates with non consecutive qubits 
 
+	Process swap gates as just swappig qubits 
+
+	Optimize Identity gates 
+
 	Document gates, so that there's always something to show when hovering 
 	
 	Review all circuits for names and descriptions to display when hovering the toolbox
@@ -27,7 +31,13 @@ TODO: Studio :
 	Finalize support for creation of controlled gates from unary ones 
 
 	"Frameworkization" of drag/drop (Almost done)
-	
+
+	Ghost view on valid drop location 
+
+	Flag model as NOT dirty if OK to discard changes on close	
+
+	Duplicate stage indices at the top 
+
 	Figure out the optimal height of a Slider, update dialogs accordingly (currently == 60) 
 
 	BUG: Can't dismiss toasts in Computer view 

@@ -527,7 +527,8 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
             return;
         }
 
-        // changes will be lost
+        // Clear dirty flag, changes will be lost on exit 
+        this.quanticsStudioModel.Clean();
         ActivateView(ActivatedView.Load);
     }
 
