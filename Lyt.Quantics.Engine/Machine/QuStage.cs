@@ -237,7 +237,7 @@ public sealed class QuStage
             }
 
             int dimension = this.StageMatrix.RowCount;
-            Debug.WriteLine(this.StageMatrix);
+            // Debug.WriteLine(this.StageMatrix);
             var dagger = this.StageMatrix.ConjugateTranspose();
             var shouldBeIdentity = this.StageMatrix.Multiply(dagger);
             var trueIdentity = Matrix<Complex>.Build.DenseIdentity(dimension, dimension);
@@ -269,7 +269,7 @@ public sealed class QuStage
         {
             // Single Step
             this.StageRegister.State = this.StageMatrix.Multiply(sourceRegister.State);
-            Debug.WriteLine("Step Result: " + this.StageRegister.State.ToString());
+            // Debug.WriteLine("Step Result: " + this.StageRegister.State.ToString());
         }
         catch (Exception ex)
         {

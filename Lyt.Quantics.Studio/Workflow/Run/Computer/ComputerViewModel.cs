@@ -606,7 +606,7 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
 
     private void Remove(IGateInfoProvider gateInfoProvider)
     {
-        Debug.WriteLine("Removing gate: " + gateInfoProvider.Gate.CaptionKey);
+        // Debug.WriteLine("Removing gate: " + gateInfoProvider.Gate.CaptionKey);
         if (!this.quanticsStudioModel.RemoveGate(
             gateInfoProvider.StageIndex, gateInfoProvider.QubitsIndices, gateInfoProvider.Gate, out string message))
         {

@@ -160,14 +160,7 @@ public sealed class GateViewModel
     public string DragDropFormat => ConstructedGateViewModel.CustomDragAndDropFormat;
 
     public void OnEntered()
-    {
-        if (!this.IsToolbox)
-        {
-            return;
-        }
-
-        this.Messenger.Publish(new GateHoverMessage(IsEnter: true, this.Gate.CaptionKey));
-    }
+        => this.Messenger.Publish(new GateHoverMessage(IsEnter: true, this.Gate.CaptionKey));
 
     public void OnExited() => this.Messenger.Publish(new GateHoverMessage());
 

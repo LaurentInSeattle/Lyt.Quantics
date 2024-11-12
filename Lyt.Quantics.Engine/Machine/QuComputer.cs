@@ -288,11 +288,11 @@ public sealed partial class QuComputer
             // Setup initial register
             this.StepIndex = 0;
             this.InitialRegister = new QuRegister(this.InitialStates);
-            Debug.WriteLine(string.Format("Initial State: {0}", this.InitialRegister.State));
-            Debug.WriteLine(
-                string.Format(
-                    "Initial State Probabilities: {0}",
-                    Vector<double>.Build.Dense([.. this.InitialRegister.KetProbabilities()])));
+            //Debug.WriteLine(string.Format("Initial State: {0}", this.InitialRegister.State));
+            //Debug.WriteLine(
+            //    string.Format(
+            //        "Initial State Probabilities: {0}",
+            //        Vector<double>.Build.Dense([.. this.InitialRegister.KetProbabilities()])));
         }
         catch (Exception ex)
         {
@@ -361,7 +361,7 @@ public sealed partial class QuComputer
         {
             // Single Step
             var stage = this.Stages[this.StepIndex];
-            Debug.WriteLine(string.Format("Step: {0}  {1}", this.StepIndex, stage.Operations));
+            // Debug.WriteLine(string.Format("Step: {0}  {1}", this.StepIndex, stage.Operations));
             QuRegister sourceRegister =
                 this.StepIndex == 0 ? this.InitialRegister : this.Stages[this.StepIndex - 1].StageRegister;
             stage.Calculate(sourceRegister, out message);
@@ -371,8 +371,8 @@ public sealed partial class QuComputer
                 return false;
             }
 
-            Debug.WriteLine(
-                string.Format("Step: {0} - Probabilities: {1}", this.StepIndex, stage.KetProbabilities));
+            //Debug.WriteLine(
+            //    string.Format("Step: {0} - Probabilities: {1}", this.StepIndex, stage.KetProbabilities));
         }
         catch (Exception ex)
         {
@@ -428,7 +428,7 @@ public sealed partial class QuComputer
             // Measure last register
             QuRegister lastRegister = this.Stages[^1].StageRegister;
             Vector<float> measure = Vector<float>.Build.Dense([.. lastRegister.Measure()]);
-            Debug.WriteLine("Last stage, measure: " + measure.ToString());
+            //Debug.WriteLine("Last stage, measure: " + measure.ToString());
             this.Result = measure;
         }
         catch (Exception ex)

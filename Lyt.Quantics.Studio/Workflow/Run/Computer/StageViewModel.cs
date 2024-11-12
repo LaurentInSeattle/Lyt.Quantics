@@ -1,6 +1,4 @@
-﻿using Lyt.Quantics.Engine.Gates.Base;
-
-namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
+﻿namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
 
 public sealed class StageViewModel : Bindable<StageView>
 {
@@ -27,7 +25,7 @@ public sealed class StageViewModel : Bindable<StageView>
     {
         if (this.Control is null)
         {
-            // Too early: The View might is still null 
+            // Too early: The View might still be null 
             return;
         }
 
@@ -86,7 +84,6 @@ public sealed class StageViewModel : Bindable<StageView>
     public void AddGateAt(QubitsIndices qubitsIndices, Gate gate, bool isDrop)
     {
         var computer = this.quanticsStudioModel.QuComputer;
-        int gateQubits = gate.QuBitsTransformed;
         foreach (int qubitIndex in qubitsIndices.AllQubitIndicesSorted())
         {
             if (qubitIndex >= computer.QuBitsCount)
