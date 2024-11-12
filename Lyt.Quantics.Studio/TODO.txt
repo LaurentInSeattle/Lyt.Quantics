@@ -24,19 +24,15 @@ TODO: Engine:
 TODO: Studio : 
 
 	Priority:	
-			==> UpdateUiGates : broken 
-			"Frameworkization" of drag/drop
+		Finalize support for creation of controlled gates from unary ones 
+		"Frameworkization" of drag/drop (Almost done)
 	
 	Figure out the optimal height of a Slider, update dialogs accordingly (currently == 60) 
-
-	Dynamic creation of binary or ternary gate views based on stage operator definitions
 
 	BUG: Can't dismiss toasts in Computer view 
 
 	Turn off measure on some qubits like QRyd is doing, use in amplitude histogram 
-	
-	Support creation of controlled gate 	
-	
+		
 	=> BUG: Overwrite save creates new entries in the Load view 
 
 	Hard to Repro now: 

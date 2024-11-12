@@ -35,7 +35,7 @@ public sealed class QuStageOperator
         }
     }
 
-    #region Public (get+set) Serialized Properties 
+    #region Public (must have get + set) Serialized Properties 
 
     /// <summary> Gate Identifier </summary>
     public string GateKey { get; set; } = "I";
@@ -65,6 +65,9 @@ public sealed class QuStageOperator
 
     [JsonIgnore]
     public int SmallestQubitIndex => this.AllQuBitIndicesSorted[0];
+
+    [JsonIgnore]
+    public int LargestQubitIndex => this.AllQuBitIndicesSorted[^1];
 
     [JsonIgnore]
     public Matrix<Complex> StageOperatorMatrix { get; private set; } = Matrix<Complex>.Build.Dense(1, 1);

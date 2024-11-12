@@ -140,13 +140,14 @@ public sealed class StageViewModel : Bindable<StageView>
                 ++this.activeGates;
 
                 var gate = GateFactory.Produce(gateKey, stageOperator.GateParameters);
-                int gateRows = gate.QuBitsTransformed;
                 int firstIndex = stageOperator.SmallestQubitIndex;
+                int lastIndex = stageOperator.LargestQubitIndex;
+                int gateRows = 1 + lastIndex - firstIndex;
                 var qubitsIndices = new QubitsIndices(stageOperator);
 
                 if (ConstructedGateViewModel.IsGateSupported(gateKey))
                 {
-                    var gateVm = 
+                    var gateVm =
                         new ConstructedGateViewModel(gateKey, this.stageIndex, qubitsIndices);
                     var gateView = gateVm.CreateViewAndBind();
                     gateView.SetValue(Grid.RowProperty, firstIndex);
