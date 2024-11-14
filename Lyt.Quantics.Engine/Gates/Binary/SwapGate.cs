@@ -5,7 +5,8 @@ using MathNet.Numerics.LinearAlgebra;
 public sealed class SwapGate : Gate
 {
     // The swap gate swaps two qubits. 
-        
+    public const string Key = "Swap";
+
     private static readonly Matrix<Complex> SwapMatrix;
 
     static SwapGate()
@@ -32,7 +33,7 @@ public sealed class SwapGate : Gate
 
     public override string AlternateName => "Swap";
 
-    public override string CaptionKey => "Swap";
+    public override string CaptionKey => SwapGate.Key;
 
     /// <summary> In this category for UI layout but is NOT controlled </summary>
     public override GateCategory Category => GateCategory.E_BinaryControlled;
