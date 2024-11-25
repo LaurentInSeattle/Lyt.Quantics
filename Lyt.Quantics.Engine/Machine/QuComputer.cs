@@ -58,6 +58,9 @@ public sealed partial class QuComputer
     public QuRegister InitialRegister { get; private set; } = new(1);
 
     [JsonIgnore]
+    public QuRegister FinalRegister { get; private set; } = new(1);
+
+    [JsonIgnore]
     public Vector<float> Result { get; private set; } = Vector<float>.Build.Dense(1);
 
     // TODO:
@@ -304,6 +307,12 @@ public sealed partial class QuComputer
         return true;
     }
 
+    public void Randomize ()
+        => this.InitialRegister.Randomize();
+
+    public void Initialize(QuRegister initialState)
+        => this.InitialRegister = initialState;
+
     public bool Reset(out string message)
     {
         this.IsValid = false;
@@ -427,6 +436,7 @@ public sealed partial class QuComputer
 
             // Measure last register
             QuRegister lastRegister = this.Stages[^1].StageRegister;
+            this.FinalRegister = lastRegister.DeepClone(); 
             Vector<float> measure = Vector<float>.Build.Dense([.. lastRegister.Measure()]);
             //Debug.WriteLine("Last stage, measure: " + measure.ToString());
             this.Result = measure;

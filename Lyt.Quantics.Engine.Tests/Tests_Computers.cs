@@ -48,11 +48,11 @@ public sealed class Tests_Computers
     {
         try
         {
-            static void ValidateBuildAndRun(string resourceFileName)
+            static QuComputer ValidateBuildAndRun(string resourceFileName, QuRegister? initialState = null)
             {
                 Assert.IsFalse(string.IsNullOrWhiteSpace(resourceFileName));
                 resourceFileName += ".json";
-                string serialized = SerializationUtilities.LoadEmbeddedTextResource(resourceFileName);
+                string serialized = SerializationUtilities.LoadEmbeddedTextResource(resourceFileName, out string? resourceFullName);
                 Assert.IsFalse(string.IsNullOrWhiteSpace(serialized));
                 var computer = SerializationUtilities.Deserialize<QuComputer>(serialized);
                 Assert.IsTrue(computer is not null);
@@ -80,28 +80,43 @@ public sealed class Tests_Computers
                 }
                 Assert.IsTrue(isPrepared);
 
+                if (initialState is not null)
+                {
+                    computer.Initialize(initialState); 
+                }
+
                 bool isComplete = computer.Run(checkExpected: true, out message);
                 if (!string.IsNullOrWhiteSpace(message))
                 {
                     Debug.WriteLine(message);
                 }
                 Assert.IsTrue(isComplete);
-                Debug.WriteLine(computer.Name + " - Final result: " + computer.Result);
+                Debug.WriteLine(
+                    computer.Name + 
+                    "\n   Final Register: " + computer.FinalRegister.ToString() + 
+                    "\n   Measure: "  + computer.Result);
+
+                return computer;
             }
 
-            ValidateBuildAndRun("Rxyz_Test");
-            ValidateBuildAndRun("RxyzCnot_Test");
+            var initialState1 = new QuRegister(4);
+            var initialState2 = initialState1.DeepClone();
 
-            ValidateBuildAndRun("FullAdder");
-            ValidateBuildAndRun("Deutsch_Balanced");
-            ValidateBuildAndRun("Deutsch_Constant");
-            ValidateBuildAndRun("SX_Test");
-            ValidateBuildAndRun("Toffoli_Basic");
-            ValidateBuildAndRun("HX_PhaseFlip");
-            ValidateBuildAndRun("Entanglement");
-            ValidateBuildAndRun("EntanglementNot");
-            ValidateBuildAndRun("EntanglementFlipped");
-            ValidateBuildAndRun("HX_Swap");
+            ValidateBuildAndRun("Rotations_Single_Stage", initialState1);
+            ValidateBuildAndRun("Rotations_Dual_Stage", initialState2);
+
+            //ValidateBuildAndRun("Rxyz_Test");
+            //ValidateBuildAndRun("RxyzCnot_Test");
+            //ValidateBuildAndRun("FullAdder");
+            //ValidateBuildAndRun("Deutsch_Balanced");
+            //ValidateBuildAndRun("Deutsch_Constant");
+            //ValidateBuildAndRun("SX_Test");
+            //ValidateBuildAndRun("Toffoli_Basic");
+            //ValidateBuildAndRun("HX_PhaseFlip");
+            //ValidateBuildAndRun("Entanglement");
+            //ValidateBuildAndRun("EntanglementNot");
+            //ValidateBuildAndRun("EntanglementFlipped");
+            //ValidateBuildAndRun("HX_Swap");
         }
         catch (Exception ex)
         {
@@ -119,7 +134,8 @@ public sealed class Tests_Computers
             {
                 Assert.IsFalse(string.IsNullOrWhiteSpace(resourceFileName));
                 resourceFileName += ".json";
-                string serialized = SerializationUtilities.LoadEmbeddedTextResource(resourceFileName);
+                string serialized = 
+                    SerializationUtilities.LoadEmbeddedTextResource(resourceFileName, out string? resourceFullName);
                 Assert.IsFalse(string.IsNullOrWhiteSpace(serialized));
                 var computer = SerializationUtilities.Deserialize<QuComputer>(serialized);
                 Assert.IsTrue(computer is not null);

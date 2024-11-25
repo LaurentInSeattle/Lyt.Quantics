@@ -12,9 +12,6 @@ public sealed class QuRegister
 {
     private Vector<Complex> state;
 
-    public QuRegister(int quBitsCount) =>
-        this.state = Vector<Complex>.Build.Dense(2 * quBitsCount);
-
     public QuRegister(List<QuState> initialStates)
     {
         this.state = Vector<Complex>.Build.Dense(2 * initialStates.Count);
@@ -29,6 +26,42 @@ public sealed class QuRegister
         {
             this.state = MathUtilities.TensorProduct(this.state, vectors[i]);
         }
+    }
+
+    public QuRegister(int quBits)
+    {
+        this.state = Vector<Complex>.Build.Dense(2 * quBits);
+        List<Vector<Complex>> vectors = new(quBits);
+        for (int i = 0; i < quBits; ++i)
+        {
+            Complex[] rand = [MathUtilities.RandomComplex(), MathUtilities.RandomComplex()];
+            vectors.Add(rand.ToVector());
+        }
+
+        this.state = vectors[0];
+        for (int i = 1; i < quBits; ++i) // start at One 
+        {
+            this.state = MathUtilities.TensorProduct(this.state, vectors[i]);
+        }
+    }
+
+    public void Randomize()
+    {
+        for (int i = 0; i < this.state.Count; ++i)
+        {
+            state[i] = MathUtilities.RandomComplex();
+
+        }
+    }
+
+    public QuRegister DeepClone()
+    {
+        var clone = new QuRegister(this.state.Count / 2)
+        {
+            State = this.State.Clone()
+        };
+
+        return clone;
     }
 
     public Vector<Complex> State
@@ -170,5 +203,22 @@ public sealed class QuRegister
 #endif // VERBOSE
 
         return result;
+    }
+
+    public override string ToString()
+    {
+        StringBuilder sb = new (this.State.Count *8 );
+        sb.AppendLine("");
+        for (int i = 0; i < this.State.Count; ++i)
+        {
+            Complex x = this.State[i];
+            sb.Append(x.ToString());
+            if ((i & 1) != 0)
+            {
+                sb.AppendLine("");
+            }
+        }
+
+        return sb.ToString();
     }
 }

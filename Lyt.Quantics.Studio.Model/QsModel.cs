@@ -139,12 +139,20 @@ public sealed partial class QsModel : ModelBase
                     resourceFileName = computerName + SerializationUtilities.ResourcesExtension;
                 }
 
-                string serialized = SerializationUtilities.LoadEmbeddedTextResource(resourceFileName);
+                string serialized = SerializationUtilities.LoadEmbeddedTextResource(resourceFileName, out string? resourceFullName);
                 var computer = SerializationUtilities.Deserialize<QuComputer>(serialized) ?? throw new Exception("Failed to deserialize");
                 bool isValid = computer.Validate(out string message);
                 if (!isValid)
                 {
                     throw new Exception(message);
+                }
+
+                if (!string.IsNullOrEmpty(resourceFullName))
+                {
+                    if (resourceFullName.Contains("Test"))
+                    {
+                        computer.IsUnitTest = true;
+                    }
                 }
 
                 bool isBuilt = computer.Build(out message);

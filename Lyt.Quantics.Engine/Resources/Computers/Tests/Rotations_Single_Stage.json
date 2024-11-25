@@ -1,0 +1,78 @@
+{
+  "Created": "2024-11-25T09:37:59.4331149-08:00",
+  "LastModified": "2024-11-25T09:39:35.8767189-08:00",
+  "IsUnitTest": false,
+  "Name": "Rotations_Single_Stage",
+  "Description": "XYZ Rotation and Phase gate in one single stage",
+  "Comment": "\u003C No comments \u003E",
+  "QuBitsCount": 4,
+  "InitialStates": [
+    "Zero",
+    "Zero",
+    "Zero",
+    "Zero"
+  ],
+  "Stages": [
+    {
+      "Operators": [
+        {
+          "GateKey": "Rx",
+          "GateParameters": {
+            "Axis": "X",
+            "Angle": 1.5707963267948966,
+            "IsPiDivisor": true,
+            "PiDivisor": 2,
+            "IsPositive": true
+          },
+          "ControlQuBitIndices": [],
+          "TargetQuBitIndices": [
+            0
+          ]
+        },
+        {
+          "GateKey": "Ry",
+          "GateParameters": {
+            "Axis": "Y",
+            "Angle": 1.5707963267948966,
+            "IsPiDivisor": true,
+            "PiDivisor": 2,
+            "IsPositive": true
+          },
+          "ControlQuBitIndices": [],
+          "TargetQuBitIndices": [
+            1
+          ]
+        },
+        {
+          "GateKey": "Rz",
+          "GateParameters": {
+            "Axis": "Z",
+            "Angle": 1.5707963267948966,
+            "IsPiDivisor": true,
+            "PiDivisor": 2,
+            "IsPositive": true
+          },
+          "ControlQuBitIndices": [],
+          "TargetQuBitIndices": [
+            2
+          ]
+        },
+        {
+          "GateKey": "Ph",
+          "GateParameters": {
+            "Axis": "X",
+            "Angle": 1.5707963267948966,
+            "IsPiDivisor": true,
+            "PiDivisor": 2,
+            "IsPositive": true
+          },
+          "ControlQuBitIndices": [],
+          "TargetQuBitIndices": [
+            3
+          ]
+        }
+      ]
+    }
+  ],
+  "ExpectedFinalProbabilities": []
+}

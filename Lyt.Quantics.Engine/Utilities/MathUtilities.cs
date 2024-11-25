@@ -40,6 +40,12 @@ public static class MathUtilities
     public static bool IsAlmostEqual(this double x, double y)
         => Math.Abs(x - y) <= MathUtilities.Epsilon;
 
+    public static Complex RandomComplex()
+    {
+        double angle = Math.Tau * RandomUtility.NextDouble();
+        return new(Math.Cos(angle), Math.Sin(angle));
+    }
+
     public static double SquaredMagnitude(this Complex[] tensor)
     {
         double magnitude = 0.0;

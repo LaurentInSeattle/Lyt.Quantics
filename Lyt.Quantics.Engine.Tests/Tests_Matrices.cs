@@ -52,20 +52,20 @@ public sealed class Tests_Matrices
             {
                 for (int quBits = 2; quBits <= 8; ++quBits)
                 {
-                    for (int step = 1; step < quBits-1; ++step)
+                    for (int step = 1; step < quBits - 1; ++step)
                     {
-                        Matrix<Complex>[] identities = new Matrix<Complex>[step];
+                        var identities = new Matrix<Complex>[step];
                         for (int k = 0; k < step; ++k)
                         {
                             identities[k] = CreateIdentityMatrix(2);
                         }
 
-                        Matrix<Complex>[] randoms = new Matrix<Complex>[quBits - step];
+                        var randoms = new Matrix<Complex>[quBits - step];
                         for (int k = 0; k < quBits - step; ++k)
                         {
                             randoms[k] = CreateRandomMatrix(2);
                         }
-                        
+
                         // Combine all operator matrices to create the stage matrix
                         // using the Knonecker product
                         Matrix<Complex> classic = identities[0];
@@ -75,16 +75,15 @@ public sealed class Tests_Matrices
                             classic = classic.KroneckerProduct(matrix);
                         }
 
-                        for (int rand = 0; rand< quBits - step; ++rand) // Must start at ZERO!
+                        for (int rand = 0; rand < quBits - step; ++rand) // Must start at ZERO!
                         {
                             var matrix = randoms[rand];
                             classic = classic.KroneckerProduct(matrix);
                         }
 
 
-                        var registerSource = CreateRandomQuRegister(quBits);
-                        var registerClone  = CreateRandomQuRegister(quBits);
-                        registerClone.State = registerSource.State.Clone();
+                        var registerSource = new QuRegister(quBits);
+                        var registerClone = registerSource.DeepClone();
 
                         Debug.WriteLine(registerSource.State);
                         Debug.WriteLine(classic);
@@ -93,7 +92,7 @@ public sealed class Tests_Matrices
                         Debug.WriteLine(classicNewState);
 
                         // Verify that for the first steps we have equality 
-                        for ( int istep = 0; istep  < 2 * step; ++istep)
+                        for (int istep = 0; istep < 2 * step; ++istep)
                         {
                             Complex r = registerClone.State[istep];
                             Complex c = classicNewState[istep];
@@ -109,7 +108,7 @@ public sealed class Tests_Matrices
                         }
 
                     }
-                } 
+                }
             }
         }
         catch (Exception ex)
@@ -124,95 +123,40 @@ public sealed class Tests_Matrices
     {
         try
         {
-            for (int i = 0; i < 10; i++)
-            {
-                for (int quBits = 2; quBits <= 8; ++quBits)
-                {
-                    for (int step = 1; step < quBits - 1; ++step)
-                    {
-                        // Fill all with identity 
-                        Matrix<Complex>[] identities = new Matrix<Complex>[quBits];
-                        for (int k = 0; k < quBits-1; ++k)
-                        {
-                            identities[k] = CreateIdentityMatrix(2);
-                        }
+            var swapGate = GateFactory.Produce(SwapGate.Key, new GateParameters());
+            var identityGate = GateFactory.Produce(IdentityGate.Key, new GateParameters());
 
-                        // At step, replace by a Swap
-                        var swapGate = GateFactory.Produce(SwapGate.Key, new GateParameters());
-                        identities[step] = swapGate.Matrix;
+            var swap = swapGate.Matrix;
+            var identity = identityGate.Matrix;
 
-                        // Combine all operator matrices to create a stage matrix
-                        // using the Knonecker product
-                        Matrix<Complex> classic = identities[0];
-                        for (int ident = 1; ident < quBits-1; ++ident) // Must start at ONE!
-                        {
-                            var matrix = identities[ident];
-                            classic = classic.KroneckerProduct(matrix);
-                        }
+            var m1 = swap.KroneckerProduct(identity);
+            var m2 = identity.KroneckerProduct(swap);
 
-                        var registerSource = CreateRandomQuRegister(quBits);
-                        var registerClone = CreateRandomQuRegister(quBits);
-                        registerClone.State = registerSource.State.Clone();
+            var registerSource = new QuRegister(3);
+            var registerClone = registerSource.DeepClone();
 
-                        var classicNewState = classic.Multiply(registerSource.State);
+            var newState = m1.Multiply(registerSource.State);
+            Debug.WriteLine(registerSource.State);
+            Debug.WriteLine(m1);
+            Debug.WriteLine(newState);
 
-                        Debug.WriteLine(registerSource.State);
-                        Debug.WriteLine(classic);
-                        Debug.WriteLine(classicNewState);
+            newState = m2.Multiply(registerSource.State);
+            Debug.WriteLine(registerSource.State);
+            Debug.WriteLine(m2);
+            Debug.WriteLine(newState);
 
-                        // Verify that we have equality at step vs step+1 
+            newState = m1.Multiply(registerSource.State);
+            newState = m2.Multiply(newState);
+            newState = m1.Multiply(newState);
 
-                        // Check is incorrect
-
-                        //int stepBy2 = step + step; 
-                        //Complex r1a = registerClone.State[stepBy2];
-                        //Complex r1b = registerClone.State[1 + stepBy2];
-                        //Complex r2a = registerClone.State[stepBy2];
-                        //Complex r2b = registerClone.State[1 + stepBy2];
-
-                        //Complex c1a = classicNewState[stepBy2];
-                        //Complex c1b = classicNewState[1 + stepBy2];
-                        //Complex c2a = classicNewState[stepBy2];
-                        //Complex c2b = classicNewState[1 + stepBy2];
-
-                        //Assert.AreEqual(r1a, c2a);
-                        //Assert.AreEqual(r1b, c2b);
-                        //Assert.AreEqual(r2a, c1a);
-                        //Assert.AreEqual(r2b, c1b);
-                    }
-                }
-            }
+            Debug.WriteLine(registerSource.State);
+            Debug.WriteLine(newState);
         }
         catch (Exception ex)
         {
             Debug.WriteLine(ex);
             Assert.Fail();
         }
-    }
-
-    private static Complex RandomComplex()
-    {
-        double angle = Math.Tau * RandomUtility.NextDouble();
-        return new(Math.Cos(angle), Math.Sin(angle));
-    } 
-
-    private static QuRegister CreateRandomQuRegister(int dimension)
-    {
-        var quStates = new List<QuState>(dimension);
-        for (int i = 0; i < dimension; ++i)
-        {
-            quStates.Add(QuState.One);
-        }
-
-        var register = new QuRegister(quStates);
-        var state = register.State;
-        for (int i = 0; i < state.Count; ++i)
-        {
-            state [i] = RandomComplex();
-
-        }
-
-        return register;
     }
 
     private static Matrix<Complex> CreateIdentityMatrix(int dimension)
@@ -225,7 +169,7 @@ public sealed class Tests_Matrices
         {
             for (int col = 0; col < dimension; ++col)
             {
-                matrix.At(row, col, RandomComplex());
+                matrix.At(row, col, MathUtilities.RandomComplex());
             }
         }
 
@@ -236,18 +180,48 @@ public sealed class Tests_Matrices
 /*
  * 
 
-Run for I at 0 , Swap at 1 2 
+Matrix M1 : Run for I at 2 , Swap at 0 1  
+
+Bits 0 and 1 get swapped, bit string starting at zero 
+
+000     a  <0.416252; 0.909249>        <0.416252; 0.909249>    a
+001     b  <-0.753437; 0.65752>        <-0.753437; 0.65752>    b
+010     c  <-0.797772; 0.602959>       <0.800567; -0.599243>   e   * 
+011     d  <0.368802; 0.929508>        <0.786292; -0.617856>   f   * 
+100     e  <0.800567; -0.599243>       <-0.797772; 0.602959>   c   * 
+101     f  <0.786292; -0.617856>       <0.368802; 0.929508>    d   * 
+110     g  <-0.975252; 0.221097>       <-0.975252; 0.221097>   g
+111     h  <0.497383; 0.867531>        <0.497383; 0.867531>    h 
+
+
+Matrix M2 : Run for I at 0 , Swap at 1 2 
 
 Bits 1 and 2 get swapped, bit string starting at zero 
 
 000     a   <-0.77722; 0.629229>        <-0.77722; 0.629229>        a
 001     b   <-0.354704; -0.934979>      <-0.996955; 0.0779801>      c   * 
 010     c   <-0.996955; 0.0779801>      <-0.354704; -0.934979>      b   * 
-011     d   <0.367435; -0.930049>       <0.367435; -0.930049>       d   
+011     d   <0.367435; -0.930049>       <0.367435; -0.930049>       d  
+
 100     e   <-0.0444433; 0.999012>      <-0.0444433; 0.999012>      e
 101     f   <-0.773535; -0.633754>      <-0.923949; -0.382516>      g   *
 110     g   <-0.923949; -0.382516>      <-0.773535; -0.633754>      f   *
 111     h   <-0.932534; 0.361082>       <-0.932534; 0.361082>       h 
  
+
+Matrix M1 x M2 x M1 : Run for Swap at 0 2  
+
+Bits 0 and 2 get swapped, bit string starting at zero 
+
+000     a   <-0.939101; 0.34364>       <-0.939101; 0.34364>     a
+001     b   <0.344317; 0.938853>       <-0.879411; 0.476063>    e   *
+010     c  <0.866865; -0.498542>       <0.866865; -0.498542>    c
+011     d   <-0.99399; 0.109469>       <0.330961; 0.943644>     g   *
+100     e  <-0.879411; 0.476063>       <0.344317; 0.938853>     b   *   
+101     f  <0.999892; 0.0147022>       <0.999892; 0.0147022>    f
+110     g   <0.330961; 0.943644>       <-0.99399; 0.109469>     d   *
+111     h   <0.823723; 0.566992>       <0.823723; 0.566992>     h 
+
+
  * 
  */

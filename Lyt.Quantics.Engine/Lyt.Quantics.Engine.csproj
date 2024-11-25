@@ -44,7 +44,9 @@
     <EmbeddedResource Include="Resources\Computers\SX_Test.json" />
     <EmbeddedResource Include="Resources\Computers\HX_PhaseFlip.json" />
     <EmbeddedResource Include="Resources\Computers\Fredkin_Basic.json" />
-    <EmbeddedResource Include="Resources\Computers\Toffoli_Basic.json" />
+    <EmbeddedResource Include="Resources\Computers\Tests\Rotations_Dual_Stage.json" />
+    <EmbeddedResource Include="Resources\Computers\Tests\Rotations_Single_Stage.json" />
+    <EmbeddedResource Include="Resources\Computers\Tests\Toffoli_Basic.json" />
     <EmbeddedResource Include="Resources\Computers\HX_Swap.json" />
     <EmbeddedResource Include="Resources\Computers\EntanglementFlipped.json" />
     <EmbeddedResource Include="Resources\Computers\EntanglementNot.json" />

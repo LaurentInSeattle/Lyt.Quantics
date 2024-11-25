@@ -31,10 +31,10 @@ public static class SerializationUtilities
     public static string? GetFullResourceName(string name, Assembly assembly)
         => assembly.GetManifestResourceNames().Single(str => str.EndsWith(name));
 
-    public static string LoadEmbeddedTextResource(string name)
+    public static string LoadEmbeddedTextResource(string name, out string? resourceName)
     {
         var assembly = Assembly.GetExecutingAssembly();
-        string? resourceName = SerializationUtilities.GetFullResourceName(name, assembly);
+        resourceName = SerializationUtilities.GetFullResourceName(name, assembly);
         if (!string.IsNullOrEmpty(resourceName))
         {
             var stream = assembly.GetManifestResourceStream(resourceName);
@@ -111,11 +111,20 @@ public static class SerializationUtilities
         try
         {
             string resourceFileName = name + ResourcesExtension;
-            string serialized = SerializationUtilities.LoadEmbeddedTextResource(resourceFileName);
+            string serialized = 
+                SerializationUtilities.LoadEmbeddedTextResource(resourceFileName, out string? resourceFullName);
             var computer = SerializationUtilities.Deserialize<QuComputer>(serialized);
             bool isValid = computer.Validate(out message);
             if (isValid)
             {
+                if ( !string.IsNullOrEmpty(resourceFullName))
+                {
+                    if ( resourceFileName.Contains("Test"))
+                    {
+                        computer.IsUnitTest = true;
+                    }
+                }
+
                 return computer;
             }
 
