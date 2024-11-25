@@ -25,6 +25,9 @@
     <None Remove="Resources\Computers\Swap using CNOT.json" />
     <None Remove="Resources\Computers\SX_Test.json" />
     <None Remove="Resources\Computers\Teleport.json" />
+    <None Remove="Resources\Computers\Tests\All Gates.json" />
+    <None Remove="Resources\Computers\Tests\Double_Ent_Five_Stages.json" />
+    <None Remove="Resources\Computers\Tests\Double_Ent_Three_Stages.json" />
     <None Remove="Resources\Computers\Toffoli_Basic.json" />
     <None Remove="Resources\Entanglement.json" />
   </ItemGroup>
@@ -44,6 +47,9 @@
     <EmbeddedResource Include="Resources\Computers\SX_Test.json" />
     <EmbeddedResource Include="Resources\Computers\HX_PhaseFlip.json" />
     <EmbeddedResource Include="Resources\Computers\Fredkin_Basic.json" />
+    <EmbeddedResource Include="Resources\Computers\Tests\All Gates.json" />
+    <EmbeddedResource Include="Resources\Computers\Tests\Double_Ent_Five_Stages.json" />
+    <EmbeddedResource Include="Resources\Computers\Tests\Double_Ent_Three_Stages.json" />
     <EmbeddedResource Include="Resources\Computers\Tests\Rotations_Dual_Stage.json" />
     <EmbeddedResource Include="Resources\Computers\Tests\Rotations_Single_Stage.json" />
     <EmbeddedResource Include="Resources\Computers\Tests\Toffoli_Basic.json" />

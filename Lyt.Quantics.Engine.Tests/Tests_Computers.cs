@@ -101,22 +101,30 @@ public sealed class Tests_Computers
 
             var initialState1 = new QuRegister(4);
             var initialState2 = initialState1.DeepClone();
+            var computer1 = ValidateBuildAndRun("Rotations_Single_Stage", initialState1);
+            var computer2 = ValidateBuildAndRun("Rotations_Dual_Stage", initialState2);
+            Assert.IsTrue(
+                computer1.FinalRegister.IsAlmostEqualTo(computer2.FinalRegister));
 
-            ValidateBuildAndRun("Rotations_Single_Stage", initialState1);
-            ValidateBuildAndRun("Rotations_Dual_Stage", initialState2);
+            initialState1 = new QuRegister(4);
+            initialState2 = initialState1.DeepClone();
+            computer1 = ValidateBuildAndRun("Double_Ent_Three_Stages", initialState1);
+            computer2 = ValidateBuildAndRun("Double_Ent_Five_Stages", initialState2);
+            Assert.IsTrue(
+                computer1.FinalRegister.IsAlmostEqualTo(computer2.FinalRegister));
 
-            //ValidateBuildAndRun("Rxyz_Test");
-            //ValidateBuildAndRun("RxyzCnot_Test");
-            //ValidateBuildAndRun("FullAdder");
-            //ValidateBuildAndRun("Deutsch_Balanced");
-            //ValidateBuildAndRun("Deutsch_Constant");
-            //ValidateBuildAndRun("SX_Test");
-            //ValidateBuildAndRun("Toffoli_Basic");
-            //ValidateBuildAndRun("HX_PhaseFlip");
-            //ValidateBuildAndRun("Entanglement");
-            //ValidateBuildAndRun("EntanglementNot");
-            //ValidateBuildAndRun("EntanglementFlipped");
-            //ValidateBuildAndRun("HX_Swap");
+            ValidateBuildAndRun("Rxyz_Test");
+            ValidateBuildAndRun("RxyzCnot_Test");
+            ValidateBuildAndRun("FullAdder");
+            ValidateBuildAndRun("Deutsch_Balanced");
+            ValidateBuildAndRun("Deutsch_Constant");
+            ValidateBuildAndRun("SX_Test");
+            ValidateBuildAndRun("Toffoli_Basic");
+            ValidateBuildAndRun("HX_PhaseFlip");
+            ValidateBuildAndRun("Entanglement");
+            ValidateBuildAndRun("EntanglementNot");
+            ValidateBuildAndRun("EntanglementFlipped");
+            ValidateBuildAndRun("HX_Swap");
         }
         catch (Exception ex)
         {
