@@ -159,6 +159,40 @@ public sealed class Tests_Matrices
         }
     }
 
+    [TestMethod]
+    public void Test_NotTensorProduct()
+    {
+        try
+        {
+            var xGate = GateFactory.Produce("X");
+            var identityGate = GateFactory.Produce(IdentityGate.Key);
+
+            var not = xGate.Matrix;
+            var identity = identityGate.Matrix;
+
+            var m1 = not.KroneckerProduct(identity);
+            var m2 = identity.KroneckerProduct(not);
+
+            var registerSource = new QuRegister(2);
+            var registerClone = registerSource.DeepClone();
+
+            var newState = m1.Multiply(registerSource.State);
+            Debug.WriteLine(registerSource.State);
+            Debug.WriteLine(m1);
+            Debug.WriteLine(newState);
+
+            newState = m2.Multiply(registerSource.State);
+            Debug.WriteLine(registerSource.State);
+            Debug.WriteLine(m2);
+            Debug.WriteLine(newState);
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            Assert.Fail();
+        }
+    }
+
     private static Matrix<Complex> CreateIdentityMatrix(int dimension)
         => Matrix<Complex>.Build.DenseIdentity(dimension, dimension);
 
@@ -225,3 +259,37 @@ Bits 0 and 2 get swapped, bit string starting at zero
 
  * 
  */
+
+
+/*
+
+
+M1 
+
+<0; 0>  <0; 0>  <1; 0>  <0; 0>
+<0; 0>  <0; 0>  <0; 0>  <1; 0>
+<1; 0>  <0; 0>  <0; 0>  <0; 0>
+<0; 0>  <1; 0>  <0; 0>  <0; 0>
+
+00  a    <0.532397; 0.846495>        <0.840344; 0.542053>       c
+01  b    <-0.990555; 0.137115>       <-0.839716; 0.543026>      d
+10  c   <0.840344; 0.542053>        <0.532397; 0.846495>        a 
+11  d   <-0.839716; 0.543026>       <-0.990555; 0.137115>       b
+
+
+M2 
+
+<0; 0>  <1; 0>  <0; 0>  <0; 0>
+<1; 0>  <0; 0>  <0; 0>  <0; 0>
+<0; 0>  <0; 0>  <0; 0>  <1; 0>
+<0; 0>  <0; 0>  <1; 0>  <0; 0>
+
+00  a    <0.532397; 0.846495>  <-0.990555; 0.137115>    b
+01  b   <-0.990555; 0.137115>   <0.532397; 0.846495>    a
+10  c    <0.840344; 0.542053>  <-0.839716; 0.543026>    d
+11  d   <-0.839716; 0.543026>   <0.840344; 0.542053>    c
+
+
+
+
+*/
