@@ -185,6 +185,18 @@ public sealed class Tests_Matrices
             Debug.WriteLine(registerSource.State);
             Debug.WriteLine(m2);
             Debug.WriteLine(newState);
+
+            var m3 = identity.KroneckerProduct(identity);
+            Debug.WriteLine(m3);
+            var m4 = m3.KroneckerProduct(not);
+            Debug.WriteLine(m4);
+            registerSource = new QuRegister(3);
+            registerClone = registerSource.DeepClone();
+            newState = m4.Multiply(registerSource.State);
+            Debug.WriteLine(registerSource.State);
+            Debug.WriteLine(m4);
+            Debug.WriteLine(newState);
+
         }
         catch (Exception ex)
         {

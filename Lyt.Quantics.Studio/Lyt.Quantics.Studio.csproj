@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -21,12 +21,12 @@
     </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.1.4" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.1.4" />
-    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.1.4" />
-    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.1.4" />
+    <PackageReference Include="Avalonia" Version="11.2.2" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.2.2" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.2" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.2.2" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.1.4" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.2.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -44,120 +44,4 @@
     <Folder Include="Utilities\" />
   </ItemGroup>
 
-  <ItemGroup>
-    <AvaloniaResource Update="Assets\Icons\GatesResourceDictionary.axaml">
-      <SubType>Designer</SubType>
-    </AvaloniaResource>
-    <AvaloniaResource Update="Assets\Icons\PathResourceDictionary.axaml">
-      <SubType>Designer</SubType>
-    </AvaloniaResource>
-    <AvaloniaResource Update="Assets\Theme\Sliders.axaml">
-      <SubType>Designer</SubType>
-    </AvaloniaResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <AvaloniaXaml Update="Workflow\Intro\DoIntroToolbarView.axaml">
-      <SubType>Designer</SubType>
-    </AvaloniaXaml>
-    <AvaloniaXaml Update="Workflow\Intro\DoIntroView.axaml">
-      <SubType>Designer</SubType>
-    </AvaloniaXaml>
-    <AvaloniaXaml Update="Workflow\Load\Toolbars\LoadBlankToolbarView.axaml">
-      <SubType>Designer</SubType>
-    </AvaloniaXaml>
-    <AvaloniaXaml Update="Workflow\Run\Dialogs\GateEditQubitsDialog.axaml">
-      <SubType>Designer</SubType>
-    </AvaloniaXaml>
-    <AvaloniaXaml Update="Workflow\Run\Dialogs\GateEditControlDialog.axaml">
-      <SubType>Designer</SubType>
-    </AvaloniaXaml>
-    <AvaloniaXaml Update="Workflow\Run\Gates\Special\CsGate.axaml">
-      <SubType>Designer</SubType>
-    </AvaloniaXaml>
-    <AvaloniaXaml Update="Workflow\Run\Gates\Special\CCxGate.axaml">
-      <SubType>Designer</SubType>
-    </AvaloniaXaml>
-    <AvaloniaXaml Update="Workflow\Run\Gates\Special\SwapGate.axaml">
-      <SubType>Designer</SubType>
-    </AvaloniaXaml>
-    <AvaloniaXaml Update="Workflow\Run\Gates\Special\CzGate.axaml">
-      <SubType>Designer</SubType>
-    </AvaloniaXaml>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Controls\AmplitudeMinibarView.axaml.cs">
-      <DependentUpon>AmplitudeMinibarView.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Workflow\Intro\DoIntroToolbarView.axaml.cs">
-      <SubType>Code</SubType>
-      <DependentUpon>DoIntroToolbarView.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Workflow\Intro\DoIntroView.axaml.cs">
-      <SubType>Code</SubType>
-      <DependentUpon>DoIntroView.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Workflow\Load\Toolbars\LoadDocumentsToolbarView.axaml.cs">
-      <DependentUpon>LoadDocumentsToolbarView.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Workflow\Load\Toolbars\LoadBuiltInToolbarView.axaml.cs">
-      <DependentUpon>LoadBuiltInToolbarView.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Workflow\Load\Toolbars\LoadBlankToolbarView.axaml.cs">
-      <SubType>Code</SubType>
-      <DependentUpon>LoadBlankToolbarView.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Workflow\Load\LoadDocumentsView.axaml.cs">
-      <DependentUpon>LoadDocumentsView.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Workflow\Load\LoadBuiltInView.axaml.cs">
-      <DependentUpon>LoadBuiltInView.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Workflow\Load\Tiles\DocumentView.axaml.cs">
-      <DependentUpon>DocumentView.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Workflow\Run\Dialogs\GateEditQubitsDialog.axaml.cs">
-      <SubType>Code</SubType>
-      <DependentUpon>GateEditQubitsDialog.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Workflow\Run\Dialogs\GateEditControlDialog.axaml.cs">
-      <SubType>Code</SubType>
-      <DependentUpon>GateEditControlDialog.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Workflow\Run\Dialogs\GateEditAngleDialog.axaml.cs">
-      <DependentUpon>GateEditAngleDialog.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Workflow\Run\Gates\Special\ACxGate.axaml.cs">
-      <DependentUpon>ACxGate.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Workflow\Run\Gates\Special\CCzGate.axaml.cs">
-      <DependentUpon>CCzGate.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Workflow\Run\Gates\Special\CSwapGate.axaml.cs">
-      <DependentUpon>CSwapGate.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Workflow\Run\Gates\Special\CsGate.axaml.cs">
-      <SubType>Code</SubType>
-      <DependentUpon>CsGate.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Workflow\Run\Gates\Special\CCxGate.axaml.cs">
-      <SubType>Code</SubType>
-      <DependentUpon>CCxGate.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Workflow\Run\Gates\Special\SwapGate.axaml.cs">
-      <SubType>Code</SubType>
-      <DependentUpon>SwapGate.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Workflow\Run\Gates\Special\FCxGate.axaml.cs">
-      <DependentUpon>FCxGate.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Workflow\Run\Gates\Special\CzGate.axaml.cs">
-      <SubType>Code</SubType>
-      <DependentUpon>CzGate.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Workflow\Run\Gates\Special\CxGate.axaml.cs">
-      <DependentUpon>CxGate.axaml</DependentUpon>
-    </Compile>
-  </ItemGroup>
 </Project>

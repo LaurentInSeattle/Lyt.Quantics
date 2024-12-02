@@ -75,3 +75,20 @@ TODO: Studio :
 	??? Help Window
 
 	??? Settings Window
+
+
+	---
+
+double 		8
+complex		16
+N qubit		2 ^ N x complex 
+Matrix 		2 ^ N x 2 ^ N x complex
+
+N	Register	Reg Bytes	Matrix	Matrix bytes 
+4	16			256			256		4 K 
+8	256			4 K			64 K	1 M
+10	1024		16 K		1 M		16 M
+11	2048		32 K		4 M		32 M 
+12	4 K			32 K		16 M	256 M   <=
+14	16 K		256 K 
+16	64 K		1 M		

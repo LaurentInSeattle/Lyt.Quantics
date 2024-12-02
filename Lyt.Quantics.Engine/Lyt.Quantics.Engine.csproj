@@ -1,63 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="Resources\Computers\DenseCoding.json" />
-    <None Remove="Resources\Computers\Deutsch_Balanced.json" />
-    <None Remove="Resources\Computers\Deutsch_Constant.json" />
-    <None Remove="Resources\Computers\Double Superposition.json" />
-    <None Remove="Resources\Computers\EntanglementFlipped.json" />
-    <None Remove="Resources\Computers\EntanglementNot.json" />
-    <None Remove="Resources\Computers\Fredkin_Basic.json" />
-    <None Remove="Resources\Computers\FullAdder.json" />
-    <None Remove="Resources\Computers\HX_PhaseFlip.json" />
-    <None Remove="Resources\Computers\HX_Swap.json" />
-    <None Remove="Resources\Computers\OR_Gate.json" />
-    <None Remove="Resources\Computers\QFT 2 Qubits.json" />
-    <None Remove="Resources\Computers\RxyzCnot_Test.json" />
-    <None Remove="Resources\Computers\Rxyz_Test.json" />
-    <None Remove="Resources\Computers\Swap using CNOT.json" />
-    <None Remove="Resources\Computers\SX_Test.json" />
-    <None Remove="Resources\Computers\Teleport.json" />
-    <None Remove="Resources\Computers\Tests\All Gates.json" />
-    <None Remove="Resources\Computers\Tests\Double_Ent_Five_Stages.json" />
-    <None Remove="Resources\Computers\Tests\Double_Ent_Three_Stages.json" />
-    <None Remove="Resources\Computers\Toffoli_Basic.json" />
-    <None Remove="Resources\Entanglement.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\Computers\QFT 2 Qubits.json" />
-    <EmbeddedResource Include="Resources\Computers\DenseCoding.json" />
-    <EmbeddedResource Include="Resources\Computers\Swap using CNOT.json" />
-    <EmbeddedResource Include="Resources\Computers\Double Superposition.json" />
-    <EmbeddedResource Include="Resources\Computers\Teleport.json" />
-    <EmbeddedResource Include="Resources\Computers\OR_Gate.json" />
-    <EmbeddedResource Include="Resources\Computers\Deutsch_Balanced.json" />
-    <EmbeddedResource Include="Resources\Computers\Deutsch_Constant.json" />
-    <EmbeddedResource Include="Resources\Computers\FullAdder.json" />
-    <EmbeddedResource Include="Resources\Computers\RxyzCnot_Test.json" />
-    <EmbeddedResource Include="Resources\Computers\Rxyz_Test.json" />
-    <EmbeddedResource Include="Resources\Computers\SX_Test.json" />
-    <EmbeddedResource Include="Resources\Computers\HX_PhaseFlip.json" />
-    <EmbeddedResource Include="Resources\Computers\Fredkin_Basic.json" />
-    <EmbeddedResource Include="Resources\Computers\Tests\All Gates.json" />
-    <EmbeddedResource Include="Resources\Computers\Tests\Double_Ent_Five_Stages.json" />
-    <EmbeddedResource Include="Resources\Computers\Tests\Double_Ent_Three_Stages.json" />
-    <EmbeddedResource Include="Resources\Computers\Tests\Rotations_Dual_Stage.json" />
-    <EmbeddedResource Include="Resources\Computers\Tests\Rotations_Single_Stage.json" />
-    <EmbeddedResource Include="Resources\Computers\Tests\Toffoli_Basic.json" />
-    <EmbeddedResource Include="Resources\Computers\HX_Swap.json" />
-    <EmbeddedResource Include="Resources\Computers\EntanglementFlipped.json" />
-    <EmbeddedResource Include="Resources\Computers\EntanglementNot.json" />
-    <EmbeddedResource Include="Resources\Computers\Entanglement.json" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="MathNet.Numerics" Version="5.0.0" />
