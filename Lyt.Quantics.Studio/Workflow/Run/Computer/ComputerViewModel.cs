@@ -534,7 +534,7 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
 
     private void UpdateQubit(int index, QuState newState)
     {
-        if ((index <= QsModel.MaxQubits) || (index < 0))
+        if ((index <= QuRegister.MaxQubits) || (index < 0))
         {
             if (!this.quanticsStudioModel.UpdateQubit(index, newState, out string message))
             {
@@ -553,7 +553,7 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
 
     private void AddQubit(int count)
     {
-        if (count < QsModel.MaxQubits)
+        if (count < QuRegister.MaxQubits)
         {
             if (!this.quanticsStudioModel.AddQubit(count, out string message))
             {
@@ -564,8 +564,8 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
         {
             // message 
             this.toaster.Show(
-                string.Format("Add Qubit: Max {0}!", QsModel.MaxQubits),
-                string.Format("This Quantum Computer implementation is limited to {0} Qubits...", QsModel.MaxQubits),
+                string.Format("Add Qubit: Max {0}!", QuRegister.MaxQubits),
+                string.Format("This Quantum Computer implementation is limited to {0} Qubits...", QuRegister.MaxQubits),
                 4_000, InformationLevel.Error);
         }
     }

@@ -10,6 +10,8 @@ using MathNet.Numerics.LinearAlgebra;
 /// <summary> Result of Combining QuBit's </summary>
 public sealed class QuRegister
 {
+    public const int MaxQubits = 10; // For now ~ 10 could be doable ? 
+
     private Vector<Complex> state;
 
     public QuRegister(List<QuState> initialStates)

@@ -4,8 +4,6 @@ using static FileManagerModel;
 
 public sealed partial class QsModel : ModelBase
 {
-    public const int MaxQubits = 10; // For now ~ 10 could be doable ? 
-
     public static Dictionary<string, QuComputer> BuiltInComputers { get; private set; } = [];
 
     public static List<Gate> Gates { get; private set; } = [];

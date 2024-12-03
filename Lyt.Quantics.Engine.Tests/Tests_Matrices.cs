@@ -151,6 +151,13 @@ public sealed class Tests_Matrices
 
             Debug.WriteLine(registerSource.State);
             Debug.WriteLine(newState);
+
+            var mm1 = MatricesUtilities.SingleStageSwapMatrix(3, 0);
+            Debug.WriteLine(mm1);
+            Assert.IsTrue( mm1.AlmostEqual (m1, MathUtilities.Epsilon)); 
+            var mm2 = MatricesUtilities.SingleStageSwapMatrix(3, 1);
+            Debug.WriteLine(mm2);
+            Assert.IsTrue(mm2.AlmostEqual(m2, MathUtilities.Epsilon));
         }
         catch (Exception ex)
         {

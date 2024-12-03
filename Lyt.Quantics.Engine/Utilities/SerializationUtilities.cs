@@ -6,10 +6,15 @@ public static class SerializationUtilities
 
     private const string ResourcesPath = "Lyt.Quantics.Engine.Resources.Computers.";
 
+    private static readonly Assembly engineAssembly;
+    private static string[]? engineResourceNames;
+
     private static readonly JsonSerializerOptions jsonSerializerOptions;
 
     static SerializationUtilities()
     {
+        engineAssembly = Assembly.GetExecutingAssembly();
+
         jsonSerializerOptions =
             new JsonSerializerOptions
             {
@@ -28,16 +33,18 @@ public static class SerializationUtilities
         jsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     }
 
-    public static string? GetFullResourceName(string name, Assembly assembly)
-        => assembly.GetManifestResourceNames().Single(str => str.EndsWith(name));
+    public static string? GetFullResourceName(string name)
+    {
+        engineResourceNames ??= engineAssembly.GetManifestResourceNames();
+        return engineResourceNames.Single(str => str.EndsWith(name));
+    }
 
     public static string LoadEmbeddedTextResource(string name, out string? resourceName)
-    {
-        var assembly = Assembly.GetExecutingAssembly();
-        resourceName = SerializationUtilities.GetFullResourceName(name, assembly);
+    {        
+        resourceName = SerializationUtilities.GetFullResourceName(name);
         if (!string.IsNullOrEmpty(resourceName))
         {
-            var stream = assembly.GetManifestResourceStream(resourceName);
+            var stream = engineAssembly.GetManifestResourceStream(resourceName);
             if (stream is not null)
             {
                 using (stream)
