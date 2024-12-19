@@ -19,7 +19,7 @@
 			<ColumnDefinition Width="24" />
 			<ColumnDefinition Width="140" />
 			<ColumnDefinition Width="40" />
-			<ColumnDefinition Width="140" />
+			<ColumnDefinition Width="260" />
 			<ColumnDefinition Width="40" />
 		</Grid.ColumnDefinitions>
 
@@ -41,12 +41,12 @@
 			Style="{StaticResource ToolbarIconButton}"
 			Behaviour="Tap"
 			HorizontalAlignment="Center" VerticalAlignment="Center"
-			Width="120" Height="48"
+			Width="260" Height="48"
 			Margin="4"
 			GlyphSource="next"
 			ButtonBackground="BorderlessRectangle"
 			GlyphStrokeThickness="0"
-			Text="I Agree, Continue"
+			Text="I Agree with the MIT Licence Terms, Continue"
 			Command="{Binding NextCommand}"
 	    	/>
 	</Grid>

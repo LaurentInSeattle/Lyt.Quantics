@@ -63,6 +63,9 @@ public sealed partial class QuComputer
     [JsonIgnore]
     public Vector<float> Result { get; private set; } = Vector<float>.Build.Dense(1);
 
+    [JsonIgnore]
+    public bool RunSingleStage { get; private set; } = true; // For now 
+
     // TODO:
     // Use a finite state machine instead of all those potentially overlapping
     // and potentially inconsistent states.

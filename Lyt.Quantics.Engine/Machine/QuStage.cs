@@ -4,6 +4,8 @@ using MathNet.Numerics.LinearAlgebra;
 
 public sealed class QuStage
 {
+    private readonly List<SubStage> subStages = [];
+
     public QuStage() { /* Required for deserialization */ }
 
     public List<QuStageOperator> Operators { get; set; } = [];
@@ -164,6 +166,56 @@ public sealed class QuStage
 
     public bool Build(QuComputer computer, out string message)
     {
+        try
+        {
+            if (!this.Prebuild(computer, out message))
+            {
+                return false;
+            }
+
+            if (computer.RunSingleStage)
+            {
+                return this.BuildSingleStage(computer, out message);
+            }
+            else
+            {
+                return this.BuildSubStages(computer, out message);
+            }
+        }
+        catch (Exception ex)
+        {
+            message = string.Concat("Exception thrown: " + ex.Message);
+            return false;
+        }
+    }
+
+    public bool Calculate(QuRegister sourceRegister, out string message)
+    {
+        message = string.Empty;
+        try
+        {
+            // Single Step
+            if (this.IsEmpty())
+            {
+                this.StageRegister.State = sourceRegister.State.Clone();
+            }
+            else
+            {
+                this.StageRegister.State = this.StageMatrix.Multiply(sourceRegister.State);
+                // Debug.WriteLine("Step Result: " + this.StageRegister.State.ToString());
+            }
+        }
+        catch (Exception ex)
+        {
+            message = string.Concat("Step: Exception thrown: " + ex.Message);
+            return false;
+        }
+
+        return true;
+    }
+
+    private bool Prebuild(QuComputer computer, out string message)
+    {
         message = string.Empty;
 
         try
@@ -219,6 +271,25 @@ public sealed class QuStage
                 }
             }
 
+            // Finally create a register for future calculations 
+            this.StageRegister = new QuRegister(length);
+        }
+        catch (Exception ex)
+        {
+            message = string.Concat("Exception thrown: " + ex.Message);
+            return false;
+        }
+
+        return true;
+    }
+
+    private bool BuildSingleStage (QuComputer computer, out string message)
+    {
+        try
+        {
+            message = string.Empty;
+            int length = computer.QuBitsCount;
+
             // Combine all operator matrices to create the stage matrix using the Knonecker product
             int powTwo = MathUtilities.TwoPower(length);
             var stageMatrix = this.Operators[0].StageOperatorMatrix;
@@ -249,9 +320,6 @@ public sealed class QuStage
                 Debug.WriteLine("trueIdentity: " + trueIdentity);
                 return false;
             }
-
-            // Finally create a register for future calculations 
-            this.StageRegister = new QuRegister(length);
         }
         catch (Exception ex)
         {
@@ -262,25 +330,19 @@ public sealed class QuStage
         return true;
     }
 
-    public bool Calculate(QuRegister sourceRegister, out string message)
+    private bool BuildSubStages(QuComputer computer, out string message)
     {
-        message = string.Empty;
         try
         {
-            // Single Step
-            if (this.IsEmpty())
-            {
-                this.StageRegister.State = sourceRegister.State.Clone();
-            }
-            else
-            {
-                this.StageRegister.State = this.StageMatrix.Multiply(sourceRegister.State);
-                // Debug.WriteLine("Step Result: " + this.StageRegister.State.ToString());
-            }
+            message = string.Empty;
+            this.subStages.Clear();
+            int length = computer.QuBitsCount;
+
+            // TODO 
         }
         catch (Exception ex)
         {
-            message = string.Concat("Step: Exception thrown: " + ex.Message);
+            message = string.Concat("Exception thrown: " + ex.Message);
             return false;
         }
 
