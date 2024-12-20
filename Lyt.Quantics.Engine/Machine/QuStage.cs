@@ -1,5 +1,6 @@
 ﻿namespace Lyt.Quantics.Engine.Machine;
 
+using Lyt.Quantics.Engine.Matrices;
 using MathNet.Numerics.LinearAlgebra;
 
 public sealed class QuStage
@@ -189,29 +190,24 @@ public sealed class QuStage
         }
     }
 
-    public bool Calculate(QuRegister sourceRegister, out string message)
+    public bool Calculate(QuComputer computer, QuRegister sourceRegister, out string message)
     {
-        message = string.Empty;
         try
         {
-            // Single Step
-            if (this.IsEmpty())
+            if (computer.RunSingleStage)
             {
-                this.StageRegister.State = sourceRegister.State.Clone();
+                return this.CalculateSingleStage(sourceRegister, out message);
             }
             else
             {
-                this.StageRegister.State = this.StageMatrix.Multiply(sourceRegister.State);
-                // Debug.WriteLine("Step Result: " + this.StageRegister.State.ToString());
+                return this.CalculateSubStages(sourceRegister, out message);
             }
         }
         catch (Exception ex)
         {
-            message = string.Concat("Step: Exception thrown: " + ex.Message);
+            message = string.Concat("Exception thrown: " + ex.Message);
             return false;
         }
-
-        return true;
     }
 
     private bool Prebuild(QuComputer computer, out string message)
@@ -307,19 +303,7 @@ public sealed class QuStage
                 this.StageMatrix = stageMatrix;
             }
 
-            int dimension = this.StageMatrix.RowCount;
-            // Debug.WriteLine(this.StageMatrix);
-            var dagger = this.StageMatrix.ConjugateTranspose();
-            var shouldBeIdentity = this.StageMatrix.Multiply(dagger);
-            var trueIdentity = Matrix<Complex>.Build.DenseIdentity(dimension, dimension);
-            double tolerance = MathUtilities.Epsilon;
-            if (!shouldBeIdentity.AlmostEqual(trueIdentity, tolerance))
-            {
-                message = string.Concat("Stage matrix is not unitary.");
-                Debug.WriteLine("shouldBeIdentity: " + shouldBeIdentity);
-                Debug.WriteLine("trueIdentity: " + trueIdentity);
-                return false;
-            }
+            MatricesUtilities.VerifyMatrix(stageMatrix);
         }
         catch (Exception ex)
         {
@@ -335,14 +319,72 @@ public sealed class QuStage
         try
         {
             message = string.Empty;
-            this.subStages.Clear();
             int length = computer.QuBitsCount;
 
-            // TODO 
+            // Create one substage for each non-identity operator, add to list
+            this.subStages.Clear();
+            foreach (var stageOperator in this.Operators)
+            {
+                if (stageOperator.IsIdentity)
+                {
+                    continue ;
+                }
+
+                var subStage = new SubStage(stageOperator);
+                this.subStages.Add(subStage);
+            }
         }
         catch (Exception ex)
         {
             message = string.Concat("Exception thrown: " + ex.Message);
+            return false;
+        }
+
+        return true;
+    }
+
+    private bool CalculateSingleStage(QuRegister sourceRegister, out string message)
+    {
+        message = string.Empty;
+        try
+        {
+            // Single Step
+            if (this.IsEmpty())
+            {
+                this.StageRegister.State = sourceRegister.State.Clone();
+            }
+            else
+            {
+                this.StageRegister.State = this.StageMatrix.Multiply(sourceRegister.State);
+                // Debug.WriteLine("Step Result: " + this.StageRegister.State.ToString());
+            }
+        }
+        catch (Exception ex)
+        {
+            message = string.Concat("Step: Exception thrown: " + ex.Message);
+            return false;
+        }
+
+        return true;
+    }
+
+    private bool CalculateSubStages(QuRegister sourceRegister, out string message)
+    {
+        message = string.Empty;
+        try
+        {
+            if (this.subStages.Count == 0)
+            {
+                this.StageRegister.State = sourceRegister.State.Clone();
+            }
+            else
+            {
+                // TODO 
+            }
+        }
+        catch (Exception ex)
+        {
+            message = string.Concat("Step: Exception thrown: " + ex.Message);
             return false;
         }
 

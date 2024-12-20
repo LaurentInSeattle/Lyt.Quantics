@@ -43,6 +43,25 @@ public sealed class Tests_Gates
 
     #endregion Fixtures 
 
+    private static void VerifyMatrix(Matrix<Complex> matrix)
+    {
+        // Debug.WriteLine(matrix);
+        int dimension = matrix.RowCount;
+        var dagger = matrix.ConjugateTranspose();
+        var shouldBeIdentity = matrix.Multiply(dagger);
+        var trueIdentity = Matrix<Complex>.Build.DenseIdentity(dimension, dimension);
+        double tolerance = MathUtilities.Epsilon;
+        if (!shouldBeIdentity.AlmostEqual(trueIdentity, tolerance))
+        {
+            Debug.WriteLine("Matrix is not unitary.");
+            Debug.WriteLine(matrix);
+            Debug.WriteLine("shouldBeIdentity: " + shouldBeIdentity);
+            Debug.WriteLine("trueIdentity: " + trueIdentity);
+            if( Debugger.IsAttached ) { Debugger.Break(); }
+            Assert.Fail();
+        }
+    }
+
     [TestMethod]
     public void Test_GateDefinitions()
     {
@@ -59,17 +78,8 @@ public sealed class Tests_Gates
                 int dimension = gate.MatrixDimension;
                 Debug.WriteLine(gate.CaptionKey + ":  " + gate.Name + "  Dim: " + dimension.ToString());
                 Assert.IsTrue(gate.QuBitsTransformed == gate.ControlQuBits + gate.TargetQuBits);
-                var dagger = gate.Matrix.ConjugateTranspose();
-                var shouldBeIdentity = gate.Matrix.Multiply(dagger);
-                var trueIdentity = Matrix<Complex>.Build.DenseIdentity(dimension, dimension);
-                double tolerance = MathUtilities.Epsilon;
-                if (!shouldBeIdentity.AlmostEqual(trueIdentity, tolerance))
-                {
-                    Debug.WriteLine("Unitary Test");
-                    Debug.WriteLine("shouldBeIdentity: " + shouldBeIdentity);
-                    Debug.WriteLine("trueIdentity: " + trueIdentity);
-                    Assert.Fail();
-                }
+
+                VerifyMatrix(gate.Matrix); 
             }
         }
         catch (Exception ex)
@@ -96,18 +106,8 @@ public sealed class Tests_Gates
                     };
                     var gate = new RotationGate(parameters);
                     int dimension = gate.MatrixDimension;
-                    var dagger = gate.Matrix.ConjugateTranspose();
-                    var shouldBeIdentity = gate.Matrix.Multiply(dagger);
-                    var trueIdentity = Matrix<Complex>.Build.DenseIdentity(dimension, dimension);
-                    double tolerance = MathUtilities.Epsilon;
-                    if (!shouldBeIdentity.AlmostEqual(trueIdentity, tolerance))
-                    {
-                        Debug.WriteLine("Unitary Test");
-                        Debug.WriteLine(gate.CaptionKey + ":  " + gate.Name + "  Dim: " + dimension.ToString());
-                        Debug.WriteLine("shouldBeIdentity: " + shouldBeIdentity);
-                        Debug.WriteLine("trueIdentity: " + trueIdentity);
-                        Assert.Fail();
-                    }
+
+                    VerifyMatrix(gate.Matrix);
 
                     parameters = new GateParameters()
                     {
@@ -116,9 +116,10 @@ public sealed class Tests_Gates
                         IsPiDivisor = false,
                     };
                     var rotatedGate = new RotationGate(parameters);
-                    shouldBeIdentity = gate.Matrix.Multiply(rotatedGate.Matrix);
+                    var trueIdentity = Matrix<Complex>.Build.DenseIdentity(dimension, dimension);
+                    var shouldBeIdentity = gate.Matrix.Multiply(rotatedGate.Matrix);
                     shouldBeIdentity = shouldBeIdentity.Multiply(-1);
-                    if (!shouldBeIdentity.AlmostEqual(trueIdentity, tolerance))
+                    if (!shouldBeIdentity.AlmostEqual(trueIdentity, MathUtilities.Epsilon))
                     {
                         Debug.WriteLine("Rotated Test");
                         Debug.WriteLine("shouldBeIdentity: " + shouldBeIdentity);
@@ -149,18 +150,8 @@ public sealed class Tests_Gates
                 };
                 var gate = new PhaseGate(parameters);
                 int dimension = gate.MatrixDimension;
-                var dagger = gate.Matrix.ConjugateTranspose();
-                var shouldBeIdentity = gate.Matrix.Multiply(dagger);
-                var trueIdentity = Matrix<Complex>.Build.DenseIdentity(dimension, dimension);
-                double tolerance = MathUtilities.Epsilon;
-                if (!shouldBeIdentity.AlmostEqual(trueIdentity, tolerance))
-                {
-                    Debug.WriteLine("Unitary Test");
-                    Debug.WriteLine(gate.CaptionKey + ":  " + gate.Name + "  Dim: " + dimension.ToString());
-                    Debug.WriteLine("shouldBeIdentity: " + shouldBeIdentity);
-                    Debug.WriteLine("trueIdentity: " + trueIdentity);
-                    Assert.Fail();
-                }
+
+                VerifyMatrix(gate.Matrix); 
             }
 
             // Verify that:
@@ -239,19 +230,7 @@ public sealed class Tests_Gates
                 new string[] { "I", "X", "Y", "Z", "H", "T", "S", "SX", "Swap", "CX", "CZ" })
             {
                 var gate = new ControlledGate(baseGateCaptionKey);
-                int dimension = gate.MatrixDimension;
-                var dagger = gate.Matrix.ConjugateTranspose();
-                var shouldBeIdentity = gate.Matrix.Multiply(dagger);
-                var trueIdentity = Matrix<Complex>.Build.DenseIdentity(dimension, dimension);
-                double tolerance = MathUtilities.Epsilon;
-                if (!shouldBeIdentity.AlmostEqual(trueIdentity, tolerance))
-                {
-                    Debug.WriteLine("Unitary Test");
-                    Debug.WriteLine(gate.CaptionKey + ":  " + gate.Name + "  Dim: " + dimension.ToString());
-                    Debug.WriteLine("shouldBeIdentity: " + shouldBeIdentity);
-                    Debug.WriteLine("trueIdentity: " + trueIdentity);
-                    Assert.Fail();
-                }
+                VerifyMatrix(gate.Matrix);
             }
 
             // Verify that:

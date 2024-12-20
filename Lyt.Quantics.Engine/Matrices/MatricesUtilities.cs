@@ -71,8 +71,6 @@ public static class MatricesUtilities
         return product;
     }
 
-
-
     /// <summary>
     /// Generates the matrix for a swap operation on a register of quBits qubits 
     /// between indices a and a + 1.  
@@ -102,5 +100,24 @@ public static class MatricesUtilities
         }
 
         return kroneckerProduct;
+    }
+
+    [Conditional("DEBUG")]
+    public static void VerifyMatrix (Matrix<Complex> matrix)
+    {
+        // Debug.WriteLine(matrix);
+        int dimension = matrix.RowCount;
+        var dagger = matrix.ConjugateTranspose();
+        var shouldBeIdentity = matrix.Multiply(dagger);
+        var trueIdentity = Matrix<Complex>.Build.DenseIdentity(dimension, dimension);
+        double tolerance = MathUtilities.Epsilon;
+        if (!shouldBeIdentity.AlmostEqual(trueIdentity, tolerance))
+        {            
+            Debug.WriteLine("Matrix is not unitary.");
+            Debug.WriteLine(matrix);
+            Debug.WriteLine("shouldBeIdentity: " + shouldBeIdentity);
+            Debug.WriteLine("trueIdentity: " + trueIdentity);
+            if( Debugger.IsAttached ) { Debugger.Break(); }
+        }
     }
 }

@@ -12,12 +12,14 @@ public sealed class QuStageOperator
     {
         this.GateKey = gateKey;
         this.GateParameters = new();
+        this.IsIdentity = this.GateKey == IdentityGate.Key ; 
     }
 
     public QuStageOperator(Gate gate, QubitsIndices qubitsIndices, bool isDrop)
     {
         this.GateKey = gate.CaptionKey;
         this.GateParameters = new(gate);
+        this.IsIdentity = this.GateKey == IdentityGate.Key;
 
         if (isDrop)
         {
@@ -50,6 +52,9 @@ public sealed class QuStageOperator
     public List<int> TargetQuBitIndices { get; set; } = [];
 
     #endregion Public (get+set) Serialized Properties 
+
+    [JsonIgnore]
+    public bool IsIdentity { get; private set; }
 
     [JsonIgnore]
     public List<int> AllQuBitIndicesSorted
