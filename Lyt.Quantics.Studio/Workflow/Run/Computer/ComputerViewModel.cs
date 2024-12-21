@@ -460,7 +460,7 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
     {
         try
         {
-            if (this.quanticsStudioModel.Run())
+            if (this.quanticsStudioModel.Run(runSingleStage: true))
             {
                 this.toaster.Show("Complete!", "Successful single Run! ", 4_000, InformationLevel.Success);
             }

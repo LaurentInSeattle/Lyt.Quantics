@@ -64,7 +64,7 @@ public sealed partial class QuComputer
     public Vector<float> Result { get; private set; } = Vector<float>.Build.Dense(1);
 
     [JsonIgnore]
-    public bool RunSingleStage { get; set; } = true; // For now 
+    public bool RunSingleStage { get; set; } 
 
     #region Machine states 
 

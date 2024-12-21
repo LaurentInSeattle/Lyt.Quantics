@@ -135,8 +135,9 @@ public sealed partial class QsModel : ModelBase
         return false;
     }
 
-    public bool Run()
+    public bool Run(bool runSingleStage)
     {
+        this.QuComputer.RunSingleStage = runSingleStage;
         bool status = this.QuComputer.Validate(out string message);
         if (status)
         {

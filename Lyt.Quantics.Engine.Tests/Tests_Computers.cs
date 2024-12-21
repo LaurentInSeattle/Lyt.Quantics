@@ -48,6 +48,42 @@ public sealed class Tests_Computers
     {
         try
         {
+            static void BuildAndRun(
+                QuComputer computer, bool runSingleStage, QuRegister? initialState = null)
+            {
+                string message; 
+                computer.RunSingleStage = runSingleStage;
+                bool isBuilt = computer.Build(out message);
+                if (!string.IsNullOrWhiteSpace(message))
+                {
+                    Debug.WriteLine(message);
+                }
+                Assert.IsTrue(isBuilt);
+
+                bool isPrepared = computer.Prepare(out message);
+                if (!string.IsNullOrWhiteSpace(message))
+                {
+                    Debug.WriteLine(message);
+                }
+                Assert.IsTrue(isPrepared);
+
+                if (initialState is not null)
+                {
+                    computer.Initialize(initialState);
+                }
+
+                bool isComplete = computer.Run(checkExpected: true, out message);
+                if (!string.IsNullOrWhiteSpace(message))
+                {
+                    Debug.WriteLine(message);
+                }
+                Assert.IsTrue(isComplete);
+                Debug.WriteLine(
+                    computer.Name +
+                    "\n   Final Register: " + computer.FinalRegister.ToString() +
+                    "\n   Measure: " + computer.Result);
+            }
+
             static QuComputer ValidateBuildAndRun(string resourceFileName, QuRegister? initialState = null)
             {
                 Assert.IsFalse(string.IsNullOrWhiteSpace(resourceFileName));
@@ -66,37 +102,15 @@ public sealed class Tests_Computers
                 }
                 Assert.IsTrue(isValid);
 
-                computer.RunSingleStage = false;
+                BuildAndRun(computer, runSingleStage:true , initialState);
+                var result1 = computer.FinalRegister.DeepClone();
+                BuildAndRun(computer, runSingleStage: false, initialState);
+                var result2 = computer.FinalRegister.DeepClone();
 
-                bool isBuilt = computer.Build(out message);
-                if (!string.IsNullOrWhiteSpace(message))
+                if (!result1.IsAlmostEqualTo(result2))
                 {
-                    Debug.WriteLine(message);
-                }
-                Assert.IsTrue(isBuilt);
-
-                bool isPrepared = computer.Prepare(out message);
-                if (!string.IsNullOrWhiteSpace(message))
-                {
-                    Debug.WriteLine(message);
-                }
-                Assert.IsTrue(isPrepared);
-
-                if (initialState is not null)
-                {
-                    computer.Initialize(initialState); 
-                }
-
-                bool isComplete = computer.Run(checkExpected: true, out message);
-                if (!string.IsNullOrWhiteSpace(message))
-                {
-                    Debug.WriteLine(message);
-                }
-                Assert.IsTrue(isComplete);
-                Debug.WriteLine(
-                    computer.Name + 
-                    "\n   Final Register: " + computer.FinalRegister.ToString() + 
-                    "\n   Measure: "  + computer.Result);
+                    Assert.Fail();
+                } 
 
                 return computer;
             }

@@ -30,12 +30,11 @@ public sealed class SubStage(QuStageOperator stageOperator)
                 }
             }
 
-            // BROKEN ! FIX ME !!! 
             // Combine this operator matrix with identity matrices to create the sub-stage
             // matrix using the Knonecker product.
             var stageMatrix = SelectMatrix(0);
             int step = dimension - 1;
-            int startIndex = 0;
+            int startIndex = 1;
             if (0 == this.stageOperator.SmallestQubitIndex)
             {
                 startIndex += step;
@@ -51,8 +50,6 @@ public sealed class SubStage(QuStageOperator stageOperator)
                     i += step;
                 }
             }
-
-            // BROKEN ! FIX ME !!! 
 
             this.SubStageMatrix = stageMatrix;
             MatricesUtilities.VerifyMatrix(stageMatrix);
