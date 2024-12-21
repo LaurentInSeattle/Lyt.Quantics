@@ -1,4 +1,5 @@
 ﻿using Lyt.Quantics.Engine.Matrices;
+using System;
 
 namespace Lyt.Quantics.Engine.Machine;
 
@@ -14,7 +15,6 @@ public sealed class SubStage(QuStageOperator stageOperator)
         {
             message = string.Empty;
             int length = computer.QuBitsCount;
-            int powTwo = MathUtilities.TwoPower(length);
             int dimension = MathUtilities.IntegerLog2(this.stageOperator.StageOperatorMatrix.RowCount);
             var identity = Matrix<Complex>.Build.DenseIdentity(2, 2);
 
@@ -30,17 +30,29 @@ public sealed class SubStage(QuStageOperator stageOperator)
                 }
             }
 
+            // BROKEN ! FIX ME !!! 
             // Combine this operator matrix with identity matrices to create the sub-stage
             // matrix using the Knonecker product.
             var stageMatrix = SelectMatrix(0);
-            int step = dimension - 1; 
-            for (int i = 1; i < length; ++i) // Must start at ONE!
+            int step = dimension - 1;
+            int startIndex = 0;
+            if (0 == this.stageOperator.SmallestQubitIndex)
+            {
+                startIndex += step;
+            }
+
+            for (int i = startIndex; i < length; ++i) // Must start at at least ONE!
             {
                 var currentMatrix = SelectMatrix(i);
                 stageMatrix = stageMatrix.KroneckerProduct(currentMatrix);
 
-                i += step; 
+                if (i == this.stageOperator.SmallestQubitIndex)
+                {
+                    i += step;
+                }
             }
+
+            // BROKEN ! FIX ME !!! 
 
             this.SubStageMatrix = stageMatrix;
             MatricesUtilities.VerifyMatrix(stageMatrix);
@@ -53,5 +65,4 @@ public sealed class SubStage(QuStageOperator stageOperator)
 
         return true;
     }
-
 }

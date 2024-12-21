@@ -64,7 +64,9 @@ public sealed partial class QuComputer
     public Vector<float> Result { get; private set; } = Vector<float>.Build.Dense(1);
 
     [JsonIgnore]
-    public bool RunSingleStage { get; private set; } = true; // For now 
+    public bool RunSingleStage { get; set; } = true; // For now 
+
+    #region Machine states 
 
     // TODO:
     // Use a finite state machine instead of all those potentially overlapping
@@ -136,6 +138,8 @@ public sealed partial class QuComputer
     }
 
     // TODO: END 
+
+    #endregion Machine states 
 
     [JsonIgnore]
     public int StepIndex { get; private set; }

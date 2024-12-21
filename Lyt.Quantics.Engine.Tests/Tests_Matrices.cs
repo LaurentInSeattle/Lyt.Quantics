@@ -43,82 +43,6 @@ public sealed class Tests_Matrices
 
     #endregion Fixtures 
 
-    // BROKEN ; Do not run ! 
-    // [TestMethod]
-    //public void Test_IdentityTensorProduct()
-    //{
-    //    try
-    //    {
-    //        //for (int i = 0; i < 10; i++)
-    //        //{
-    //        //    for (int quBits = 2; quBits <= 8; ++quBits)
-    //        //    {
-    //        //        for (int step = 1; step < quBits - 1; ++step)
-    //        //        {
-    //        //            var identities = new Matrix<Complex>[step];
-    //        //            for (int k = 0; k < step; ++k)
-    //        //            {
-    //        //                identities[k] = CreateIdentityMatrix(2);
-    //        //            }
-
-    //        //            var randoms = new Matrix<Complex>[quBits - step];
-    //        //            for (int k = 0; k < quBits - step; ++k)
-    //        //            {
-    //        //                randoms[k] = CreateRandomMatrix(2);
-    //        //            }
-
-    //        //            // Combine all operator matrices to create the stage matrix
-    //        //            // using the Knonecker product
-    //        //            Matrix<Complex> classic = identities[0];
-    //        //            for (int ident = 1; ident < step; ++ident) // Must start at ONE!
-    //        //            {
-    //        //                var matrix = identities[ident];
-    //        //                classic = classic.KroneckerProduct(matrix);
-    //        //            }
-
-    //        //            for (int rand = 0; rand < quBits - step; ++rand) // Must start at ZERO!
-    //        //            {
-    //        //                var matrix = randoms[rand];
-    //        //                classic = classic.KroneckerProduct(matrix);
-    //        //            }
-
-
-    //        //            var registerSource = new QuRegister(quBits);
-    //        //            var registerClone = registerSource.DeepClone();
-
-    //        //            Debug.WriteLine(registerSource.State);
-    //        //            Debug.WriteLine(classic);
-
-    //        //            var classicNewState = classic.Multiply(registerSource.State);
-    //        //            Debug.WriteLine(classicNewState);
-
-    //        //            // Verify that for the first steps we have equality 
-    //        //            for (int istep = 0; istep < 2 * step; ++istep)
-    //        //            {
-    //        //                Complex r = registerClone.State[istep];
-    //        //                Complex c = classicNewState[istep];
-    //        //                // Fail here 
-    //        //                // Assert.AreEqual(r, c);
-    //        //            }
-
-    //        //            Matrix<Complex> optimized = randoms[0];
-    //        //            for (int rand = 1; rand < quBits - step; ++rand) // Must start at ONE!
-    //        //            {
-    //        //                var matrix = randoms[rand];
-    //        //                optimized = optimized.KroneckerProduct(matrix);
-    //        //            }
-
-    //        //        }
-    //        //    }
-    //        //}
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        Debug.WriteLine(ex);
-    //        Assert.Fail();
-    //    }
-    //}
-
     [TestMethod]
     public void Test_SwapTensorProduct()
     {
@@ -313,3 +237,81 @@ M2
 
 
 */
+
+
+// BROKEN ; Do not run ! 
+// [TestMethod]
+//public void Test_IdentityTensorProduct()
+//{
+//    try
+//    {
+//        //for (int i = 0; i < 10; i++)
+//        //{
+//        //    for (int quBits = 2; quBits <= 8; ++quBits)
+//        //    {
+//        //        for (int step = 1; step < quBits - 1; ++step)
+//        //        {
+//        //            var identities = new Matrix<Complex>[step];
+//        //            for (int k = 0; k < step; ++k)
+//        //            {
+//        //                identities[k] = CreateIdentityMatrix(2);
+//        //            }
+
+//        //            var randoms = new Matrix<Complex>[quBits - step];
+//        //            for (int k = 0; k < quBits - step; ++k)
+//        //            {
+//        //                randoms[k] = CreateRandomMatrix(2);
+//        //            }
+
+//        //            // Combine all operator matrices to create the stage matrix
+//        //            // using the Knonecker product
+//        //            Matrix<Complex> classic = identities[0];
+//        //            for (int ident = 1; ident < step; ++ident) // Must start at ONE!
+//        //            {
+//        //                var matrix = identities[ident];
+//        //                classic = classic.KroneckerProduct(matrix);
+//        //            }
+
+//        //            for (int rand = 0; rand < quBits - step; ++rand) // Must start at ZERO!
+//        //            {
+//        //                var matrix = randoms[rand];
+//        //                classic = classic.KroneckerProduct(matrix);
+//        //            }
+
+
+//        //            var registerSource = new QuRegister(quBits);
+//        //            var registerClone = registerSource.DeepClone();
+
+//        //            Debug.WriteLine(registerSource.State);
+//        //            Debug.WriteLine(classic);
+
+//        //            var classicNewState = classic.Multiply(registerSource.State);
+//        //            Debug.WriteLine(classicNewState);
+
+//        //            // Verify that for the first steps we have equality 
+//        //            for (int istep = 0; istep < 2 * step; ++istep)
+//        //            {
+//        //                Complex r = registerClone.State[istep];
+//        //                Complex c = classicNewState[istep];
+//        //                // Fail here 
+//        //                // Assert.AreEqual(r, c);
+//        //            }
+
+//        //            Matrix<Complex> optimized = randoms[0];
+//        //            for (int rand = 1; rand < quBits - step; ++rand) // Must start at ONE!
+//        //            {
+//        //                var matrix = randoms[rand];
+//        //                optimized = optimized.KroneckerProduct(matrix);
+//        //            }
+
+//        //        }
+//        //    }
+//        //}
+//    }
+//    catch (Exception ex)
+//    {
+//        Debug.WriteLine(ex);
+//        Assert.Fail();
+//    }
+//}
+

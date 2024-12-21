@@ -279,7 +279,7 @@ public sealed class QuStage
         return true;
     }
 
-    private bool BuildSingleStage (QuComputer computer, out string message)
+    private bool BuildSingleStage(QuComputer computer, out string message)
     {
         try
         {
@@ -327,10 +327,15 @@ public sealed class QuStage
             {
                 if (stageOperator.IsIdentity)
                 {
-                    continue ;
+                    continue;
                 }
 
                 var subStage = new SubStage(stageOperator);
+                if (!subStage.Build(computer, out message))
+                {
+                    throw new Exception(message);
+                }
+
                 this.subStages.Add(subStage);
             }
         }
@@ -379,7 +384,13 @@ public sealed class QuStage
             }
             else
             {
-                // TODO 
+                var register = sourceRegister.State.Clone();
+                foreach (var subStage in this.subStages)
+                {
+                    register = subStage.SubStageMatrix.Multiply(register);
+                }
+
+                this.StageRegister.State = register.Clone();
             }
         }
         catch (Exception ex)
