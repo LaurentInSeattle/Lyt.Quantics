@@ -51,9 +51,8 @@ public sealed class Tests_Computers
             static void BuildAndRun(
                 QuComputer computer, bool runSingleStage, QuRegister? initialState = null)
             {
-                string message; 
                 computer.RunSingleStage = runSingleStage;
-                bool isBuilt = computer.Build(out message);
+                bool isBuilt = computer.Build(out string message);
                 if (!string.IsNullOrWhiteSpace(message))
                 {
                     Debug.WriteLine(message);

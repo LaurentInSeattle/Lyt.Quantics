@@ -11,7 +11,7 @@ public static class MatricesUtilities
     /// Generates the matrix for a swap operation on a register of quBits qubits 
     /// between indices a and b.  
     /// </summary>
-    /// <returns> THe swap matrix. </returns>
+    /// <returns> The swap matrix. </returns>
     public static Matrix<Complex> SwapMatrix(int quBits, int a, int b)
     {
         if ((quBits < 0) || (quBits > QuRegister.MaxQubits))
@@ -46,10 +46,11 @@ public static class MatricesUtilities
         }
 
         int stages = 2 * delta + 1;
+        var reserveSpace = Matrix<Complex>.Build.Dense(1, 1);
         List<Matrix<Complex>> stageMatrices = new(stages);
         for (int i = 0; i < stages; i++)
         {
-            stageMatrices[i] = Matrix<Complex>.Build.Dense(1, 1);
+            stageMatrices.Add(reserveSpace);
         }
 
         for (int i = 0; i < delta - 1; ++i)

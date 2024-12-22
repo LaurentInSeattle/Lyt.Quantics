@@ -1,11 +1,10 @@
-﻿using Lyt.Quantics.Engine.Matrices;
-using System;
+﻿namespace Lyt.Quantics.Engine.Machine;
 
-namespace Lyt.Quantics.Engine.Machine;
+using Lyt.Quantics.Engine.Matrices;
 
 public sealed class SubStage(QuStageOperator stageOperator)
 {
-    private readonly QuStageOperator stageOperator = stageOperator;
+    public readonly QuStageOperator StageOperator = stageOperator;
 
     public Matrix<Complex> SubStageMatrix { get; private set; } = Matrix<Complex>.Build.Dense(1, 1);
 
@@ -15,14 +14,14 @@ public sealed class SubStage(QuStageOperator stageOperator)
         {
             message = string.Empty;
             int length = computer.QuBitsCount;
-            int dimension = MathUtilities.IntegerLog2(this.stageOperator.StageOperatorMatrix.RowCount);
+            int dimension = MathUtilities.IntegerLog2(this.StageOperator.StageOperatorMatrix.RowCount);
             var identity = Matrix<Complex>.Build.DenseIdentity(2, 2);
 
             Matrix<Complex> SelectMatrix(int index)
             {
-                if (index == this.stageOperator.SmallestQubitIndex)
+                if (index == this.StageOperator.SmallestQubitIndex)
                 {
-                    return this.stageOperator.StageOperatorMatrix;
+                    return this.StageOperator.StageOperatorMatrix;
                 }
                 else
                 {
@@ -35,7 +34,7 @@ public sealed class SubStage(QuStageOperator stageOperator)
             var stageMatrix = SelectMatrix(0);
             int step = dimension - 1;
             int startIndex = 1;
-            if (0 == this.stageOperator.SmallestQubitIndex)
+            if (0 == this.StageOperator.SmallestQubitIndex)
             {
                 startIndex += step;
             }
@@ -45,7 +44,7 @@ public sealed class SubStage(QuStageOperator stageOperator)
                 var currentMatrix = SelectMatrix(i);
                 stageMatrix = stageMatrix.KroneckerProduct(currentMatrix);
 
-                if (i == this.stageOperator.SmallestQubitIndex)
+                if (i == this.StageOperator.SmallestQubitIndex)
                 {
                     i += step;
                 }

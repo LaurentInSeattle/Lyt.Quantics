@@ -12,7 +12,7 @@ public sealed class QuStageOperator
     {
         this.GateKey = gateKey;
         this.GateParameters = new();
-        this.IsIdentity = this.GateKey == IdentityGate.Key ; 
+        this.IsIdentity = this.GateKey == IdentityGate.Key;
     }
 
     public QuStageOperator(Gate gate, QubitsIndices qubitsIndices, bool isDrop)
@@ -57,6 +57,13 @@ public sealed class QuStageOperator
     public bool IsIdentity { get; private set; }
 
     [JsonIgnore]
+    public int QuBitsTransformed => MathUtilities.IntegerLog2(this.StageOperatorMatrix.RowCount);
+
+    [JsonIgnore]
+    public bool HasSwap =>
+        (this.QuBitsTransformed == 2) && (this.LargestQubitIndex - this.SmallestQubitIndex > 1);
+
+    [JsonIgnore]
     public List<int> AllQuBitIndicesSorted
     {
         get
@@ -76,6 +83,9 @@ public sealed class QuStageOperator
 
     [JsonIgnore]
     public Matrix<Complex> StageOperatorMatrix { get; private set; } = Matrix<Complex>.Build.Dense(1, 1);
+
+    [JsonIgnore]
+    public Matrix<Complex> SwapMatrix { get; private set; } = Matrix<Complex>.Build.Dense(1, 1);
 
     public QuStageOperator DeepClone()
     {
@@ -165,13 +175,21 @@ public sealed class QuStageOperator
         return true;
     }
 
-    public bool Build(QuComputer _, out string message)
+    public bool Build(QuComputer computer, out string message)
     {
         message = string.Empty;
         try
         {
             this.StageOperatorMatrix =
                 GateFactory.Produce(this.GateKey, this.GateParameters).Matrix;
+            if (this.HasSwap)
+            {
+                // 'Move' most distant qubit next to smallest   
+                this.SwapMatrix =
+                    MatricesUtilities.SwapMatrix(
+                        computer.QuBitsCount,
+                        1 + this.SmallestQubitIndex, this.LargestQubitIndex);
+            }
         }
         catch (Exception ex)
         {

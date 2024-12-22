@@ -285,6 +285,12 @@ public sealed class QuStage
         {
             message = string.Empty;
             int length = computer.QuBitsCount;
+            bool notSupported = 
+                (from op in this.Operators where op.HasSwap select op.HasSwap).FirstOrDefault();
+            if (notSupported)
+            {
+                throw new Exception("Swaps not supported in this calculation mode.");
+            } 
 
             // Combine all operator matrices to create the stage matrix using the Knonecker product
             int powTwo = MathUtilities.TwoPower(length);
@@ -387,7 +393,21 @@ public sealed class QuStage
                 var register = sourceRegister.State.Clone();
                 foreach (var subStage in this.subStages)
                 {
+                    var stageOperator = subStage.StageOperator;
+
+                    // Swap if required 
+                    if (stageOperator.HasSwap)
+                    {
+                        register = stageOperator.SwapMatrix.Multiply(register);
+                    }
+
                     register = subStage.SubStageMatrix.Multiply(register);
+
+                    // Un-Swap if we did swap 
+                    if (stageOperator.HasSwap)
+                    {
+                        register = stageOperator.SwapMatrix.Multiply(register);
+                    }
                 }
 
                 this.StageRegister.State = register.Clone();
