@@ -45,7 +45,7 @@ public static class MatricesUtilities
             return SingleStageSwapMatrix(quBits, a);
         }
 
-        int stages = 2 * delta + 1;
+        int stages = 2 * ( delta - 1 ) + 1;
         var reserveSpace = Matrix<Complex>.Build.Dense(1, 1);
         List<Matrix<Complex>> stageMatrices = new(stages);
         for (int i = 0; i < stages; i++)
@@ -60,8 +60,8 @@ public static class MatricesUtilities
             stageMatrices[stages - 1 - i] = swap;
         }
 
-        var lastSwap = SingleStageSwapMatrix(quBits, b);
-        stageMatrices[delta] = lastSwap;
+        var lastSwap = SingleStageSwapMatrix(quBits, b-1);
+        stageMatrices[delta-1] = lastSwap;
 
         var product = stageMatrices[0];
         for (int i = 1; i < stages; ++i)
@@ -93,7 +93,7 @@ public static class MatricesUtilities
         }
 
         // - Loop starts at one.
-        // - note: i < quBits - 1 , again because swap is double dimenesion
+        // - note: i < quBits - 1 , again because swap is double dimension
         var kroneckerProduct = matrices[0];
         for (int i = 1; i < quBits - 1; i++)
         {

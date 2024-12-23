@@ -40,7 +40,7 @@ public static class MathUtilities
     public static bool IsAlmostEqual(this double x, double y)
         => Math.Abs(x - y) <= MathUtilities.Epsilon;
 
-    public static Complex RandomComplex()
+    public static Complex RandomUnitComplex()
     {
         double angle = Math.Tau * RandomUtility.NextDouble();
         return new(Math.Cos(angle), Math.Sin(angle));

@@ -16,6 +16,12 @@ public sealed class QuRegister
 
     public QuRegister(List<QuState> initialStates)
     {
+        int count = initialStates.Count;
+        if ((count <= 0) || (count > MaxQubits))
+        {
+            throw new Exception("Invalid qubit count");
+        }
+
         this.state = Vector<Complex>.Build.Dense(2 * initialStates.Count);
         List<Vector<Complex>> vectors = new(initialStates.Count);
         for (int i = 0; i < initialStates.Count; ++i)
@@ -32,11 +38,16 @@ public sealed class QuRegister
 
     public QuRegister(int quBits)
     {
+        if ((quBits <= 0) || (quBits > MaxQubits))
+        {
+            throw new Exception("Invalid qubit count");
+        }
+
         this.state = Vector<Complex>.Build.Dense(2 * quBits);
         List<Vector<Complex>> vectors = new(quBits);
         for (int i = 0; i < quBits; ++i)
         {
-            Complex[] rand = [MathUtilities.RandomComplex(), MathUtilities.RandomComplex()];
+            Complex[] rand = [MathUtilities.RandomUnitComplex(), MathUtilities.RandomUnitComplex()];
             vectors.Add(rand.ToVector());
         }
 
@@ -51,8 +62,7 @@ public sealed class QuRegister
     {
         for (int i = 0; i < this.state.Count; ++i)
         {
-            state[i] = MathUtilities.RandomComplex();
-
+            state[i] = MathUtilities.RandomUnitComplex();
         }
     }
 
@@ -209,7 +219,7 @@ public sealed class QuRegister
 
     public override string ToString()
     {
-        StringBuilder sb = new (this.State.Count *8 );
+        StringBuilder sb = new(this.State.Count * 8);
         sb.AppendLine("");
         for (int i = 0; i < this.State.Count; ++i)
         {
@@ -224,7 +234,7 @@ public sealed class QuRegister
         return sb.ToString();
     }
 
-    public bool IsAlmostEqualTo ( QuRegister other )
+    public bool IsAlmostEqualTo(QuRegister other)
     {
         for (int i = 0; i < this.State.Count; ++i)
         {
