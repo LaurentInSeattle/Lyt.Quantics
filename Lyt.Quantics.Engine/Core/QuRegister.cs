@@ -19,7 +19,7 @@ public sealed class QuRegister
         int count = initialStates.Count;
         if ((count <= 0) || (count > MaxQubits))
         {
-            throw new Exception("Invalid qubit count");
+            throw new ArgumentException("Invalid qubit count");
         }
 
         this.state = Vector<Complex>.Build.Dense(2 * initialStates.Count);
@@ -40,7 +40,7 @@ public sealed class QuRegister
     {
         if ((quBits <= 0) || (quBits > MaxQubits))
         {
-            throw new Exception("Invalid qubit count");
+            throw new ArgumentException("Invalid qubit count");
         }
 
         this.state = Vector<Complex>.Build.Dense(2 * quBits);

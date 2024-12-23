@@ -100,6 +100,8 @@ public static class MatricesUtilities
             kroneckerProduct = kroneckerProduct.KroneckerProduct(matrices[i]);
         }
 
+        Debug.WriteLine(string.Format("Swap {0} {1}", a, a + 1));
+
         return kroneckerProduct;
     }
 

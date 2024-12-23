@@ -377,7 +377,7 @@ public sealed partial class QuComputer
         {
             // Single Step
             var stage = this.Stages[this.StepIndex];
-            // Debug.WriteLine(string.Format("Step: {0}  {1}", this.StepIndex, stage.Operations));
+            Debug.WriteLine(string.Format("Step: {0}  {1}", this.StepIndex, stage.Operations));
             QuRegister sourceRegister =
                 this.StepIndex == 0 ? this.InitialRegister : this.Stages[this.StepIndex - 1].StageRegister;
             stage.Calculate(this, sourceRegister, out message);
