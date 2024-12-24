@@ -137,6 +137,27 @@ public sealed class Tests_Matrices
         }
     }
 
+    [TestMethod]
+    public void Test_Swaps()
+    {
+        for (int i = 2; i < 8; i++)
+        {
+            for (int j = 0; j < i; j++)
+            {
+                for (int k = j + 1; k < i; k++)
+                {
+                    Debug.WriteLine(string.Format("Qubits {0} Swap {1} - {2}", i, j, k));
+                    var registerSource = new QuRegister(i);
+                    var swap = MatricesUtilities.SwapMatrix(i, j, k);
+                    var newState = swap.Multiply(registerSource.State);
+                    var finalState = swap.Multiply(newState);
+                    Assert.IsTrue(finalState.IsAlmostEqualTo(registerSource.State));
+                }
+            }
+        }
+    }
+
+
     //private static Matrix<Complex> CreateIdentityMatrix(int dimension)
     //    => Matrix<Complex>.Build.DenseIdentity(dimension, dimension);
 

@@ -235,15 +235,5 @@ public sealed class QuRegister
     }
 
     public bool IsAlmostEqualTo(QuRegister other)
-    {
-        for (int i = 0; i < this.State.Count; ++i)
-        {
-            if (!this.state[i].AlmostEqual(other.state[i], MathUtilities.Epsilon))
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
+        => this.state.IsAlmostEqualTo( other.state);
 }

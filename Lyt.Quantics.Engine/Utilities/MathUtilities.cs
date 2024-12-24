@@ -169,4 +169,22 @@ public static class MathUtilities
 
         return resultMatrix;
     }
+
+    public static bool IsAlmostEqualTo(this Vector<Complex> left, Vector<Complex> other)
+    {
+        if (left.Count != other.Count)
+        {
+            return false;
+        }
+
+        for (int i = 0; i < left.Count; ++i)
+        {
+            if (!left[i].AlmostEqual(other[i], MathUtilities.Epsilon))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
