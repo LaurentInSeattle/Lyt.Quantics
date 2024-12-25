@@ -156,24 +156,6 @@ public sealed class Tests_Matrices
             }
         }
     }
-
-
-    //private static Matrix<Complex> CreateIdentityMatrix(int dimension)
-    //    => Matrix<Complex>.Build.DenseIdentity(dimension, dimension);
-
-    //private static Matrix<Complex> CreateRandomMatrix(int dimension)
-    //{
-    //    var matrix = Matrix<Complex>.Build.Dense(dimension, dimension);
-    //    for (int row = 0; row < dimension; ++row)
-    //    {
-    //        for (int col = 0; col < dimension; ++col)
-    //        {
-    //            matrix.At(row, col, MathUtilities.RandomComplex());
-    //        }
-    //    }
-
-    //    return matrix;
-    //}
 }
 
 /*

@@ -6,15 +6,13 @@ public sealed class IdentityGate : Gate
 {
     public const string Key = "I"; 
 
-    private static readonly Matrix<Complex> IdentityGateMatrix ; 
+    public static readonly Matrix<Complex> IdentityGateMatrix ; 
 
     static IdentityGate()
     {
         //  { 1, 0 },
         //  { 0, 1 }
-        IdentityGateMatrix = Matrix<Complex>.Build.Sparse(2, 2, Complex.One);
-        IdentityGateMatrix.At(1, 0, Complex.Zero);
-        IdentityGateMatrix.At(0, 1, Complex.Zero);
+        IdentityGate.IdentityGateMatrix = Matrix<Complex>.Build.DenseIdentity(2, 2);
     }
 
     public override Matrix<Complex> Matrix => IdentityGate.IdentityGateMatrix;

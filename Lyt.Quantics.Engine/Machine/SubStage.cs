@@ -51,7 +51,7 @@ public sealed class SubStage(QuStageOperator stageOperator)
             }
 
             this.SubStageMatrix = stageMatrix;
-            MatricesUtilities.VerifyMatrix(stageMatrix);
+            MatricesUtilities.VerifyMatrixIsUnitary(stageMatrix);
         }
         catch (Exception ex)
         {

@@ -7,7 +7,7 @@ public sealed class SwapGate : Gate
     // The swap gate swaps two qubits. 
     public const string Key = "Swap";
 
-    private static readonly Matrix<Complex> SwapMatrix;
+    public static readonly Matrix<Complex> SwapMatrix;
 
     static SwapGate()
     {

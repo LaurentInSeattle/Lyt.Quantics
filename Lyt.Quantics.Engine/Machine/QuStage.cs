@@ -1,6 +1,5 @@
 ﻿namespace Lyt.Quantics.Engine.Machine;
 
-using Lyt.Quantics.Engine.Matrices;
 using MathNet.Numerics.LinearAlgebra;
 
 public sealed class QuStage
@@ -309,7 +308,7 @@ public sealed class QuStage
                 this.StageMatrix = stageMatrix;
             }
 
-            MatricesUtilities.VerifyMatrix(stageMatrix);
+            MatricesUtilities.VerifyMatrixIsUnitary(stageMatrix);
         }
         catch (Exception ex)
         {
