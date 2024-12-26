@@ -33,6 +33,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lyt.Avalonia.Mvvm", "..\Lyt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lyt.Quantics.Studio.Model", "Lyt.Quantics.Studio.Model\Lyt.Quantics.Studio.Model.csproj", "{280C7EE1-3644-4D5C-914F-77A3C7038CC6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lyt.Search", "..\Lyt.Avalonia.Framework\Lyt.Search\Lyt.Search.csproj", "{4EE4BC05-FDAD-4FE5-A8FA-1E9E3ACA9605}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,6 +81,10 @@ Global
 		{280C7EE1-3644-4D5C-914F-77A3C7038CC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{280C7EE1-3644-4D5C-914F-77A3C7038CC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{280C7EE1-3644-4D5C-914F-77A3C7038CC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4EE4BC05-FDAD-4FE5-A8FA-1E9E3ACA9605}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EE4BC05-FDAD-4FE5-A8FA-1E9E3ACA9605}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EE4BC05-FDAD-4FE5-A8FA-1E9E3ACA9605}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EE4BC05-FDAD-4FE5-A8FA-1E9E3ACA9605}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -91,6 +97,7 @@ Global
 		{0451750E-7E02-406A-B23C-307C18C65119} = {E78947C0-7E1C-49D7-84AB-FF115B07F512}
 		{9A96C84F-5971-4E88-A2FD-48EF49BA187B} = {E78947C0-7E1C-49D7-84AB-FF115B07F512}
 		{83B3912D-DE0F-47D5-AA86-22C55ABADDE1} = {E78947C0-7E1C-49D7-84AB-FF115B07F512}
+		{4EE4BC05-FDAD-4FE5-A8FA-1E9E3ACA9605} = {E78947C0-7E1C-49D7-84AB-FF115B07F512}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AE3F677D-2838-47EE-8DB0-77930CEA80A9}
