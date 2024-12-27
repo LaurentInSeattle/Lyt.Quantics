@@ -31,5 +31,13 @@ public sealed record class ToolbarCommandMessage(
         ShowAll, 
         ShowByBitOrder,
         ShowStage,
+
+        // Builtin Projects toolbar 
+        BuiltInClearSearch,
+        BuiltInSearch,
+        ShowRegular,
+
+        // Saved Projects toolbar 
+        Mru,
     }
 }

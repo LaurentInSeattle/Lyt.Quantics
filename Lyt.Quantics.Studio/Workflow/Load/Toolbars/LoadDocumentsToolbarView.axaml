@@ -15,25 +15,21 @@
         Height="56" MinWidth="40"
         >
 		<Grid.ColumnDefinitions>
-			<!-- ????  -->
-			<ColumnDefinition Width="84" />
+			<!-- MRU  -->
+			<ColumnDefinition Width="160" />
 			<!-- Spacer -->
-			<ColumnDefinition Width="72" />
+			<ColumnDefinition Width="4" />
 		</Grid.ColumnDefinitions>
-		<!--
-		<glyphs:GlyphButton
-			Style="{StaticResource ToolbarIconButton}"
-			Grid.Column="0" Grid.Row="0"
-			Behaviour="Tap"
-			HorizontalAlignment="Center" VerticalAlignment="Center"
-			Width="80" Height="48"
+		<toggle:ToggleSwitch
+			x:Name="ShowMruSwitch"
+			Grid.Column="0"
 			Margin="4"
-			GlyphSource="document"
-			ButtonBackground="BorderlessRectangle"
-			GlyphStrokeThickness="0"
-			Text="Create New"
-			Command="{Binding CreateBlankCommand}"
-	    	/>
-		-->
-		</Grid>
+			Style="{StaticResource StandardToggleSwitch}"
+			TrueText="MRU"
+			FalseText="All"
+			Height="30" Width="160"
+			HorizontalAlignment="Center" VerticalAlignment="Center"
+			Value="{Binding ShowMru}"
+			/>
+	</Grid>
 </UserControl>

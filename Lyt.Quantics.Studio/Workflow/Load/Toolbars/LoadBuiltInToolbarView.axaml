@@ -15,25 +15,47 @@
         Height="56" 
         >
 		<Grid.ColumnDefinitions>
-			<!-- ????  -->
-			<ColumnDefinition Width="84" />
+			<!-- Search Box  -->
+			<ColumnDefinition Width="200" />
+			<!-- Clear Search Button-->
+			<ColumnDefinition Width="92" />
+			<!-- Switch  -->
+			<ColumnDefinition Width="220" />
 			<!-- Spacer -->
-			<ColumnDefinition Width="72" />
+			<ColumnDefinition Width="32" />
 		</Grid.ColumnDefinitions>
-		<!--
+		<TextBox
+			x:Name="FilterTextBox"
+			Grid.Row="0"
+			VerticalAlignment="Center" HorizontalAlignment="Right"
+			Watermark="Filter list..."
+			Width="180"
+			MaxLength="24"
+			Margin="0"
+			/>
 		<glyphs:GlyphButton
+			Grid.Column="1"
 			Style="{StaticResource ToolbarIconButton}"
-			Grid.Column="0" Grid.Row="0"
 			Behaviour="Tap"
 			HorizontalAlignment="Center" VerticalAlignment="Center"
-			Width="80" Height="48"
+			Width="72" Height="32"
 			Margin="4"
-			GlyphSource="document"
+			GlyphSource="dismiss"
 			ButtonBackground="BorderlessRectangle"
 			GlyphStrokeThickness="0"
-			Text="Create New"
-			Command="{Binding CreateBlankCommand}"
+			Text="Clear Search"
+			Command="{Binding ClearSearchCommand}"
 	    	/>
-		-->
+		<toggle:ToggleSwitch
+			x:Name="ShowRegularSwitch"
+			Grid.Column="2"
+			Margin="4"
+			Style="{StaticResource StandardToggleSwitch}"
+			TrueText="Regular"
+			FalseText="Tests"
+			Height="30" Width="200"
+			HorizontalAlignment="Center" VerticalAlignment="Center"
+			Value="{Binding ShowRegular}"
+			/>
 		</Grid>
 </UserControl>
