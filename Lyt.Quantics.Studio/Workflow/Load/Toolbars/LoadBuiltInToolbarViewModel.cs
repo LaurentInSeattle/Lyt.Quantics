@@ -3,7 +3,7 @@
 using static ToolbarCommandMessage;
 using static MessagingExtensions;
 
-public sealed class LoadBuiltInToolbarViewModel : Bindable<LoadBuiltInToolbarView> 
+public sealed class LoadBuiltInToolbarViewModel : Bindable<LoadBuiltInToolbarView>
 {
     public LoadBuiltInToolbarViewModel() { }
 
@@ -15,7 +15,7 @@ public sealed class LoadBuiltInToolbarViewModel : Bindable<LoadBuiltInToolbarVie
 
 #pragma warning disable IDE0051 // Remove unused private members
 #pragma warning disable CA1822 // Mark members as static
-    
+
     private void OnClearSearch(object? _) => Command(ToolbarCommand.BuiltInClearSearch);
 
 #pragma warning restore CA1822 // Mark members as static
@@ -26,7 +26,7 @@ public sealed class LoadBuiltInToolbarViewModel : Bindable<LoadBuiltInToolbarVie
         if (this.View is null)
         {
             return;
-        } 
+        }
 
         string? filter = this.View.FilterTextBox.Text;
         if (string.IsNullOrWhiteSpace(filter) || (filter.Length <= 2))
@@ -34,7 +34,20 @@ public sealed class LoadBuiltInToolbarViewModel : Bindable<LoadBuiltInToolbarVie
             return;
         }
 
-        Command(ToolbarCommand.BuiltInSearch, filter);
+        string[] tokens = filter.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        List<string> filters = new(tokens.Length);
+        foreach (string token in tokens)
+        {
+            if (!string.IsNullOrWhiteSpace(token) && token.Length >= 3)
+            {
+                filters.Add(token);
+            }
+        }
+
+        if (filters.Count > 0)
+        {
+            Command(ToolbarCommand.BuiltInSearch, filters);
+        }
     }
 
     public bool ShowRegular

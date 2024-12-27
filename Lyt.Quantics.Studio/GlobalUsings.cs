@@ -78,6 +78,8 @@ global using Lyt.Avalonia.Localizer;
 global using Lyt.Avalonia.Model;
 global using Lyt.Avalonia.Persistence;
 
+global using Lyt.Search;
+
 #endregion Framework 
 
 #region Engine 

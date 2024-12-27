@@ -8,11 +8,14 @@ public sealed class BuiltInViewModel : Bindable<BuiltInView>
     public BuiltInViewModel(QuComputer quComputer)
     {
         base.DisablePropertyChangedLogging = true;
-        base.DisableAutomaticBindingsLogging = true; 
+        base.DisableAutomaticBindingsLogging = true;
 
+        this.IsUnitTest = quComputer.IsUnitTest; 
         this.Name = quComputer.Name;
         this.Description = quComputer.Description;
     }
+
+    public bool IsUnitTest { get; private set; }
 
     #region Methods invoked by the Framework using reflection 
 #pragma warning disable IDE0051 // Remove unused private members
