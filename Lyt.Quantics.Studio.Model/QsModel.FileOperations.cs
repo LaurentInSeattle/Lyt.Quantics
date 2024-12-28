@@ -82,6 +82,11 @@ public sealed partial class QsModel : ModelBase
             }
 
             this.QuComputer = computer;
+
+            // Save the opening time so that we can later filter by MRU 
+            this.QuComputer.LastOpened = DateTime.Now;
+            this.SaveComputerToFile(withOverwrite: true, out message);
+
             this.IsDirty = false;
             this.Messenger.Publish(MakeModelLoaded());
             return true;

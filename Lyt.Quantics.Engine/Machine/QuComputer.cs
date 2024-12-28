@@ -27,6 +27,8 @@ public sealed partial class QuComputer
 
     public DateTime Created { get; set; } = DateTime.Now;
 
+    public DateTime LastOpened { get; set; } = DateTime.Now;
+
     public DateTime LastModified { get; set; } = DateTime.Now;
 
     public bool IsUnitTest { get; set; } = false;

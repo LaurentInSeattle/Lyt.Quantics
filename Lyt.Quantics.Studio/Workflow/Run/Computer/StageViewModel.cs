@@ -189,7 +189,7 @@ public sealed class StageViewModel : Bindable<StageView>
             var computer = this.quanticsStudioModel.QuComputer;
             if (!computer.IsComplete)
             {
-                Debug.WriteLine("Cant update minibars: computer not complete");
+                // Debug.WriteLine("Cant update minibars: computer not complete");
                 return;
             }
 

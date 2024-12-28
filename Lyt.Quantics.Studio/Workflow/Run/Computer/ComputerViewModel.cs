@@ -3,6 +3,7 @@
 using static ViewActivationMessage;
 using static MessagingExtensions;
 using static ToolbarCommandMessage;
+using System.Numerics;
 
 public sealed partial class ComputerViewModel : Bindable<ComputerView>
 {

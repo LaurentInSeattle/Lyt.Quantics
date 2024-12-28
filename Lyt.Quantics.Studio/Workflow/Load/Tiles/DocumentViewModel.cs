@@ -16,9 +16,12 @@ public sealed class DocumentViewModel : Bindable<DocumentView>
         this.quComputer = quComputer;
         this.Name = quComputer.Name;
         this.Description = quComputer.Description;
+        this.IsRecent = (DateTime.Now - this.quComputer.LastOpened) < TimeSpan.FromDays(3);
     }
 
     public QuComputer QuComputer => this.quComputer;
+
+    public bool IsRecent { get; private set; }
 
     #region Methods invoked by the Framework using reflection 
 #pragma warning disable IDE0051 // Remove unused private members

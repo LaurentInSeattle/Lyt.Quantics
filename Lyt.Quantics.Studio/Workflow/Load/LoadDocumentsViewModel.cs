@@ -7,6 +7,7 @@ public sealed class LoadDocumentsViewModel : Bindable<LoadDocumentsView>
     private readonly QsModel quanticsStudioModel;
     private readonly List<DocumentViewModel> documentViews;
 
+    private SearchEngine<DocumentViewModel>? searchEngine;
     private DocumentViewModel? documentToDelete;
 
     public LoadDocumentsViewModel()
@@ -20,7 +21,7 @@ public sealed class LoadDocumentsViewModel : Bindable<LoadDocumentsView>
     protected override void OnViewLoaded()
     {
         base.OnViewLoaded();
-        this.DocumentViews = new(documentViews);
+        this.DocumentViews = new(this.documentViews);
     }
 
     public override void Activate(object? activationParameters)
@@ -46,6 +47,8 @@ public sealed class LoadDocumentsViewModel : Bindable<LoadDocumentsView>
                     continue;
                 }
             }
+
+            this.searchEngine = new(this.documentViews, this.Logger);
         }
         catch (Exception ex)
         {
@@ -62,6 +65,14 @@ public sealed class LoadDocumentsViewModel : Bindable<LoadDocumentsView>
                 if (message.CommandParameter is DocumentViewModel documentViewModel)
                 {
                     this.OnDelete(documentViewModel);
+                }
+
+                break;
+
+            case ToolbarCommand.Mru:
+                if (message.CommandParameter is bool mostRecent)
+                {
+                    this.ShowMostRecent(mostRecent);
                 }
 
                 break;
@@ -121,6 +132,34 @@ public sealed class LoadDocumentsViewModel : Bindable<LoadDocumentsView>
         {
             // TODO: Toast message 
             Debug.WriteLine(message);
+        }
+    }
+
+    private void ShowMostRecent(bool mostRecent)
+    {
+        if (this.searchEngine is null)
+        {
+            return;
+        }
+
+        if (mostRecent)
+        {
+            var filter =
+                new FilterPredicate(PropertyName: "IsRecent", PropertyValue: true);
+            var searchResults = this.searchEngine.Filter([filter]);
+            if (searchResults.Success)
+            {
+                this.DocumentViews = new(searchResults.Result);
+            }
+            else
+            {
+                this.Logger.Warning("Search failed: " + searchResults.Message);
+                this.DocumentViews = new(this.searchEngine.All);
+            }
+        }
+        else
+        {
+            this.DocumentViews = new(this.searchEngine.All);
         }
     }
 

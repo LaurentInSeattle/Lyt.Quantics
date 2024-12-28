@@ -11,6 +11,7 @@ public sealed class LoadBuiltInToolbarViewModel : Bindable<LoadBuiltInToolbarVie
     {
         base.OnViewLoaded();
         this.View.FilterTextBox.Text = string.Empty;
+        this.ShowRegular = true; 
     }
 
 #pragma warning disable IDE0051 // Remove unused private members

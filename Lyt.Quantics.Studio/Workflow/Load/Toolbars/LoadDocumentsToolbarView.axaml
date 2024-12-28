@@ -25,7 +25,7 @@
 			Grid.Column="0"
 			Margin="4"
 			Style="{StaticResource StandardToggleSwitch}"
-			TrueText="MRU"
+			TrueText="Recent"
 			FalseText="All"
 			Height="30" Width="160"
 			HorizontalAlignment="Center" VerticalAlignment="Center"

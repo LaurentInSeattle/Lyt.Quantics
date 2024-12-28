@@ -84,7 +84,8 @@ public sealed class LoadBuiltInViewModel : Bindable<LoadBuiltInView>
             return;
         }
 
-        this.filterPredicate = new(PropertyName: IsUnitTestProperty, PropertyValue: value);
+        // value is true for regular, flip it to check regular (non UT) circuits 
+        this.filterPredicate = new(PropertyName: IsUnitTestProperty, PropertyValue: !value);
         this.DoFilter();
     }
 
