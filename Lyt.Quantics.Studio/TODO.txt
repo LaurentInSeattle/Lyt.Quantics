@@ -54,10 +54,6 @@ TODO: Studio :
 	
 	Warning for slow computations at 9 and 10 qubits
 
-	Toolbar: Filters for projects (Recent, etc) 
-	
-	Toolbar: Filters for built-in projects  (Unit tests, etc)
-	
 	Move a gate using Drag/drop
 		
 	Nicer app icon 
