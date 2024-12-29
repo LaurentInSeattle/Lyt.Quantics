@@ -156,6 +156,31 @@ public sealed class Tests_Matrices
             }
         }
     }
+
+    [TestMethod]
+    public void Test_IdentityKron()
+    {
+        var identityGate = GateFactory.Produce(IdentityGate.Key, new GateParameters());
+        var identity = identityGate.Matrix;
+        var m = identity;
+        Debug.WriteLine(m);
+        for (int i = 0; i < 3; i++)
+        {
+            m = m.KroneckerProduct(identity);
+            Debug.WriteLine(m);
+        }
+
+        var hGate = GateFactory.Produce(HadamardGate.Key, new GateParameters());
+        var h = hGate.Matrix;
+        m = h;
+        Debug.WriteLine(m);
+        for (int i = 0; i < 3; i++)
+        {
+            m = m.KroneckerProduct(identity);
+            Debug.WriteLine(m);
+        }
+    }
+
 }
 
 /*

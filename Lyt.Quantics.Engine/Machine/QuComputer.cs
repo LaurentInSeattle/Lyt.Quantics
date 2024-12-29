@@ -447,7 +447,9 @@ public sealed partial class QuComputer
             QuRegister lastRegister = this.Stages[^1].StageRegister;
             this.FinalRegister = lastRegister.DeepClone(); 
             Vector<float> measure = Vector<float>.Build.Dense([.. lastRegister.Measure()]);
-            //Debug.WriteLine("Last stage, measure: " + measure.ToString());
+
+            Debug.WriteLine("Last stage, last register: " + lastRegister.ToString());
+            Debug.WriteLine("Last stage, measure: " + measure.ToString());
             this.Result = measure;
         }
         catch (Exception ex)

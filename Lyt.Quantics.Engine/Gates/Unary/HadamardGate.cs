@@ -12,6 +12,8 @@ public sealed class HadamardGate : Gate
     // In both cases of qubit |0> or qubit |1>, applying a Hadamard Gate gives an equal chance
     // for the qubit to be 0 or 1 when measured.
 
+    public const string Key = "H"; 
+
     private static readonly Matrix<Complex> HadamardGateMatrix; 
 
     static HadamardGate()
@@ -29,7 +31,7 @@ public sealed class HadamardGate : Gate
 
     public override string AlternateName => "Hadamard";
 
-    public override string CaptionKey { get; set; } = "H";
+    public override string CaptionKey { get; set; } = Key;
 
     public override GateCategory Category => GateCategory.A_HadamardAndT;
 }
