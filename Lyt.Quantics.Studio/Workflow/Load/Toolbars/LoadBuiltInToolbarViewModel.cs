@@ -17,7 +17,11 @@ public sealed class LoadBuiltInToolbarViewModel : Bindable<LoadBuiltInToolbarVie
 #pragma warning disable IDE0051 // Remove unused private members
 #pragma warning disable CA1822 // Mark members as static
 
-    private void OnClearSearch(object? _) => Command(ToolbarCommand.BuiltInClearSearch);
+    private void OnClearSearch(object? _)
+    {
+        this.View.FilterTextBox.Text = string.Empty;
+        Command(ToolbarCommand.BuiltInClearSearch);
+    } 
 
 #pragma warning restore CA1822 // Mark members as static
 #pragma warning restore IDE0051 // Remove unused private members

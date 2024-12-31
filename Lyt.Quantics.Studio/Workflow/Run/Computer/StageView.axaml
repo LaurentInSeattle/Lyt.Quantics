@@ -4,7 +4,7 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+	mc:Ignorable="d" d:DesignWidth="86" d:DesignHeight="660"
     xmlns:vm="clr-namespace:Lyt.Quantics.Studio.Workflow.Run.Computer"
     x:DataType="vm:StageViewModel"
     xmlns:theme="clr-namespace:Lyt.Quantics.Studio"
@@ -15,7 +15,7 @@
 	>
 	<Grid
 		Background="#80101020"
-		Height="640" Width="86"
+		Height="660" Width="86"
 		VerticalAlignment="Top"
 		>
 		<Grid.ColumnDefinitions>
@@ -24,12 +24,13 @@
 			<ColumnDefinition Width="2" />
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
+			<RowDefinition Height="20" />
 			<RowDefinition Height="*" />
 			<RowDefinition Height="20" />
 			<RowDefinition Height="20" />
 		</Grid.RowDefinitions>
 		<Rectangle
-			Grid.Column="2"
+			Grid.Column="2" Grid.Row="1"
 			Fill="Transparent"
 			Stroke="{StaticResource ResourceKey= LightAqua_1_100}"
 			StrokeThickness="2"
@@ -39,7 +40,15 @@
 			/>
 		<TextBlock
 			Text="{Binding Name}"
-			Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1"
+			Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"
+			VerticalAlignment="Center" HorizontalAlignment="Center"
+			FontSize="16"
+			Foreground="{StaticResource ResourceKey= LightAqua_0_120}"
+			Opacity="1.0"
+			/>
+		<TextBlock
+			Text="{Binding Name}"
+			Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2"
 			VerticalAlignment="Center" HorizontalAlignment="Center"
 			FontSize="16"
 			Foreground="{StaticResource ResourceKey= LightAqua_0_120}"
@@ -48,14 +57,14 @@
 		<PathIcon
 			IsVisible="{Binding IsMarkerVisible}"
 			Data="{StaticResource path_caret_up}"
-			Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2"
+			Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3"
 			VerticalAlignment="Center" HorizontalAlignment="Center"
 			Foreground="{StaticResource ResourceKey= LightAqua_0_120}"
 			Opacity="1.0"
 			/>
 		<Grid
 			x:Name="GatesGrid"
-			Grid.Row="0" Grid.Column="0"
+			Grid.Row="1" Grid.Column="0"
 			DragDrop.AllowDrop="True"
 			Background="Transparent"
 			>
@@ -77,7 +86,7 @@
 		</Grid>
 		<Grid
 			x:Name="MinibarsGrid"
-			Grid.Row="0" Grid.Column="1"
+			Grid.Row="1" Grid.Column="1"
 			>
 			<!-- 10 rows: one for each qubits -->			
 			<Grid.RowDefinitions>

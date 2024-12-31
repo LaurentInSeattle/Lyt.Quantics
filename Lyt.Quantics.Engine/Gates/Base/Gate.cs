@@ -53,6 +53,12 @@ public class Gate
     /// <summary> How qubits this gate will transform. </summary>
     public int QuBitsTransformed => MathUtilities.IntegerLog2(this.Matrix.RowCount);
 
+    public bool IsUnary => this.QuBitsTransformed == 1;
+
+    public bool IsBinary => this.QuBitsTransformed == 2;
+
+    public bool IsTernary => this.QuBitsTransformed == 3;
+
     /// <summary> Matrix of the gate, can be dense or sparse, Math.Net handles that for us. </summary>
     public virtual Matrix<Complex> Matrix { get; set; } = Matrix<Complex>.Build.Dense(1, 1);
 

@@ -316,11 +316,9 @@ public sealed partial class QuComputer
         return true;
     }
 
-    public void Randomize ()
-        => this.InitialRegister.Randomize();
+    public void Randomize () => this.InitialRegister.Randomize();
 
-    public void Initialize(QuRegister initialState)
-        => this.InitialRegister = initialState;
+    public void Initialize(QuRegister initialState) => this.InitialRegister = initialState;
 
     public bool Reset(out string message)
     {

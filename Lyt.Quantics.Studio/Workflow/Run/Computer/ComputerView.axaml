@@ -20,7 +20,7 @@
 		<ItemsControl
 			Grid.Row="0"
 			ItemsSource="{Binding Qubits}"
-			Margin="0" Padding="0"
+			Margin="0 20 0 0" Padding="0"
 			HorizontalAlignment="Stretch"
 			>
 			<ItemsControl.ItemsPanel>

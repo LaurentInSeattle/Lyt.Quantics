@@ -16,9 +16,9 @@
         >
 		<Grid.ColumnDefinitions>
 			<!-- Search Box  -->
-			<ColumnDefinition Width="200" />
+			<ColumnDefinition Width="220" />
 			<!-- Clear Search Button-->
-			<ColumnDefinition Width="92" />
+			<ColumnDefinition Width="4" />
 			<!-- Switch  -->
 			<ColumnDefinition Width="220" />
 			<!-- Spacer -->
@@ -29,21 +29,22 @@
 			Grid.Row="0"
 			VerticalAlignment="Center" HorizontalAlignment="Right"
 			Watermark="Filter list..."
-			Width="180"
+			Width="210"
 			MaxLength="24"
 			Margin="0"
 			/>
 		<glyphs:GlyphButton
-			Grid.Column="1"
+			Grid.Column="0"
 			Style="{StaticResource ToolbarIconButton}"
+			Layout="IconOnly"
 			Behaviour="Tap"
-			HorizontalAlignment="Center" VerticalAlignment="Center"
-			Width="72" Height="32"
+			HorizontalAlignment="Right" VerticalAlignment="Center"
+			Width="20" Height="20"
 			Margin="4"
 			GlyphSource="dismiss"
 			ButtonBackground="BorderlessRectangle"
 			GlyphStrokeThickness="0"
-			Text="Clear Search"
+			Text=""
 			Command="{Binding ClearSearchCommand}"
 	    	/>
 		<toggle:ToggleSwitch

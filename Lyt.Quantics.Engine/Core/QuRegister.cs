@@ -10,9 +10,15 @@ using MathNet.Numerics.LinearAlgebra;
 /// <summary> Result of Combining QuBit's </summary>
 public sealed class QuRegister
 {
-    public const int MaxQubits = 10; // For now ~ 10 could be doable ? 
+    public const int MaxQubits = 10; // For now ~ 10, more could be doable ? 
 
     private Vector<Complex> state;
+
+    public QuRegister(Vector<Complex> state) => this.state = state;
+
+    // For unit tests 
+    public QuRegister(QuBit quBit1, QuBit quBit2)
+        => this.state = MathUtilities.TensorProduct(quBit1.State, quBit2.State);
 
     public QuRegister(List<QuState> initialStates)
     {
@@ -66,25 +72,13 @@ public sealed class QuRegister
         }
     }
 
-    public QuRegister DeepClone()
-    {
-        var clone = new QuRegister(this.state.Count / 2)
-        {
-            State = this.State.Clone()
-        };
-
-        return clone;
-    }
+    public QuRegister DeepClone() => new(this.State.Clone()); 
 
     public Vector<Complex> State
     {
         get => this.state;
         set => this.state = value;
     }
-
-    // For unit tests 
-    public QuRegister(QuBit quBit1, QuBit quBit2)
-        => this.state = MathUtilities.TensorProduct(quBit1.State, quBit2.State);
 
     // For unit tests 
     public void Apply(Gate gate) => this.state = gate.Matrix.Multiply(this.state);

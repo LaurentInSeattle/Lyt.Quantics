@@ -22,7 +22,7 @@
 		<Grid.ColumnDefinitions>
 			<!-- Stage Slider -->
 			<ColumnDefinition Width="90" />
-			<ColumnDefinition Width="180" />
+			<ColumnDefinition Width="280" />
 			<!-- Spacer -->
 			<ColumnDefinition Width="12" />
 			<!-- Prob. Toggle -->

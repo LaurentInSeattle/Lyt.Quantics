@@ -5,7 +5,8 @@ TODO: Framework:
 
 	Ability to drag modal dialogs 
 
-	Annoying flash when replacing a modal dialog by a new one, need some kind of dismiss and run API
+	Annoying flash when replacing a modal dialog by a new one
+		(need some kind of dismiss and replace/run API) 
 
 TODO: Engine: 
 
@@ -16,41 +17,28 @@ TODO: Engine:
 
 	Process gates linearly  
 
-	Process swap gates as just swapping qubits 
+	Process swap gates as just swapping qubits (Doable?) 
 
 	Optimize Identity gates 
-
-	Document gates, so that there's always something to show when hovering 
 	
-	Review all circuits for names and descriptions to display when hovering the toolbox
+	Review all circuits for names and descriptions to display on UI 
+		(when hovering on the toolbox) 
 	
-	Improve Stepping 
-
 	??? Include Author in computer metadata
 
 TODO: Studio : 
 
 	Priority:	
-	=> Move a gate using Drag/drop
+		Finalize support for creation of controlled gates from unary ones 
+		BUG: Can't dismiss toasts in Computer view 
+		Document gates, so that there's always something to show when hovering 
+		Ghost view or some hint when hovering on a valid drop location 
 
-	Finalize support for creation of controlled gates from unary ones 
-
-	Amplitudes histogram shows up after loading another model.
+	BUG: Amplitudes histogram shows up after loading another model.
 
 	"Frameworkization" of drag/drop (Almost done)
 
-	Ghost view on valid drop location 
-
-	Flag model as NOT dirty if OK to discard changes on close
 	
-	Wider slider in Amplitudes view 
-
-	Duplicate stage indices at the top 
-
-	Figure out the optimal height of a Slider, update dialogs accordingly (currently == 60) 
-
-	BUG: Can't dismiss toasts in Computer view 
-
 	Turn off measure on some qubits like QRyd is doing, use in amplitude histogram 
 		
 	Spinner for 9 or 10 qubits 
@@ -61,7 +49,7 @@ TODO: Studio :
 	
 	Measure icon 
 	
-	Implement Stepping 
+	Implement Stepping on UI 
 	
 	Monospaced font for labels in the Amplitudes view
 
@@ -72,7 +60,6 @@ TODO: Studio :
 	??? Help Window
 
 	??? Settings Window
-
 
 	---
 

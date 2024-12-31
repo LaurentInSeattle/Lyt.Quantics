@@ -41,12 +41,6 @@ public sealed class StageViewModel : Bindable<StageView>
 
     public bool CanDrop(Point point, IGateInfoProvider gateInfoProvider)
     {
-        // TODO: This prevents moving a gate in the circuit view !
-        if (!gateInfoProvider.IsToolbox)
-        {
-            return false;
-        }
-
         // 600 pixels for 10 qubits ~ Magic numbers !
         double offset = point.Y / 60.0;
         if ((offset < 0.0) || (offset >= 10.0))
@@ -56,7 +50,7 @@ public sealed class StageViewModel : Bindable<StageView>
         }
 
         // Can't drop a binary or ternary gate on last qubit 
-        if (gateInfoProvider.Gate.MatrixDimension > 2)
+        if (!gateInfoProvider.Gate.IsUnary)
         {
             var computer = this.quanticsStudioModel.QuComputer;
             int qubitIndex = (int)Math.Floor(offset);
@@ -78,7 +72,26 @@ public sealed class StageViewModel : Bindable<StageView>
 
         // 600 pixels for 10 qubits ~ Magic numbers !
         int qubitIndex = (int)Math.Floor(point.Y / 60.0);
-        this.AddGateAt(new QubitsIndices(qubitIndex), gateInfoProvider.Gate, isDrop: true);
+        if (gateInfoProvider.IsToolbox)
+        {
+            this.AddGateAt(new QubitsIndices(qubitIndex), gateInfoProvider.Gate, isDrop: true);
+        }
+        else 
+        {
+            // We are moving a gate in the circuit view !
+            // Debug.WriteLine("Removing gate: " + gateInfoProvider.Gate.CaptionKey);
+            if (!this.quanticsStudioModel.RemoveGate(
+                gateInfoProvider.StageIndex, gateInfoProvider.QubitsIndices, gateInfoProvider.Gate, out string message))
+            {
+                this.toaster.Show(
+                    "Failed to Remove gate: " + gateInfoProvider.Gate.CaptionKey, message,
+                    4_000, InformationLevel.Error);
+            }
+            else
+            {
+                this.AddGateAt(new QubitsIndices(qubitIndex), gateInfoProvider.Gate, isDrop: true);
+            }
+        }
     }
 
     public void AddGateAt(QubitsIndices qubitsIndices, Gate gate, bool isDrop)
