@@ -115,7 +115,7 @@
 				>
 				<ItemsControl.ItemsPanel>
 					<ItemsPanelTemplate>
-						<StackPanel Orientation="Horizontal" Margin="0" />
+						<VirtualizingStackPanel Orientation="Horizontal" Margin="0" />
 					</ItemsPanelTemplate>
 				</ItemsControl.ItemsPanel>	
 				<ItemsControl.ItemTemplate>

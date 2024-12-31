@@ -38,12 +38,17 @@ TODO: Studio :
 
 	"Frameworkization" of drag/drop (Almost done)
 
+	Long press to remove a gate 
+
+	Ability to give names to qubits (Alice, Bob,...)
 	
 	Turn off measure on some qubits like QRyd is doing, use in amplitude histogram 
 		
 	Spinner for 9 or 10 qubits 
 	
 	Warning for slow computations at 9 and 10 qubits
+
+	Ability to cancel a run at 9 and 10 qubits
 		
 	Nicer app icon 
 	

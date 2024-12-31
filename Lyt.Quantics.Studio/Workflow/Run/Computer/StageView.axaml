@@ -4,7 +4,7 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	mc:Ignorable="d" d:DesignWidth="86" d:DesignHeight="660"
+	mc:Ignorable="d" d:DesignWidth="86" d:DesignHeight="670"
     xmlns:vm="clr-namespace:Lyt.Quantics.Studio.Workflow.Run.Computer"
     x:DataType="vm:StageViewModel"
     xmlns:theme="clr-namespace:Lyt.Quantics.Studio"
@@ -15,7 +15,7 @@
 	>
 	<Grid
 		Background="#80101020"
-		Height="660" Width="86"
+		Height="670" Width="86"
 		VerticalAlignment="Top"
 		>
 		<Grid.ColumnDefinitions>
@@ -24,7 +24,7 @@
 			<ColumnDefinition Width="2" />
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
-			<RowDefinition Height="20" />
+			<RowDefinition Height="30" />
 			<RowDefinition Height="*" />
 			<RowDefinition Height="20" />
 			<RowDefinition Height="20" />
