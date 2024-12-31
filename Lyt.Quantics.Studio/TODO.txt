@@ -11,12 +11,12 @@ TODO: Engine:
 
 	Priority:	
 	=>	Support for variable control and target qubits for gates, such as : 
-			Binary Gates with non consecutive qubits (Ex: swap 0 and 2)
-			Ternary Gates with non consecutive qubits 
+			(DONE) Binary Gates with non consecutive qubits (Ex: swap 0 and 2)
+			( => ) Ternary Gates with non consecutive qubits 
 
 	Process gates linearly  
 
-	Process swap gates as just swappig qubits 
+	Process swap gates as just swapping qubits 
 
 	Optimize Identity gates 
 
@@ -29,6 +29,9 @@ TODO: Engine:
 	??? Include Author in computer metadata
 
 TODO: Studio : 
+
+	Priority:	
+	=> Move a gate using Drag/drop
 
 	Finalize support for creation of controlled gates from unary ones 
 
@@ -53,8 +56,6 @@ TODO: Studio :
 	Spinner for 9 or 10 qubits 
 	
 	Warning for slow computations at 9 and 10 qubits
-
-	Move a gate using Drag/drop
 		
 	Nicer app icon 
 	

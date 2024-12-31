@@ -8,7 +8,9 @@ public sealed class PauliXGate : Gate
     // Equivalent to a π radian rotation about the X axis.
     // The gate is equivalent to a classical bit flip.
 
-    private static readonly Matrix<Complex> PauliXGateMatrix; 
+    private static readonly Matrix<Complex> PauliXGateMatrix;
+
+    public const string Key = "X";
 
     static PauliXGate()
     {
@@ -25,7 +27,7 @@ public sealed class PauliXGate : Gate
 
     public override string AlternateName => "Negate";
 
-    public override string CaptionKey { get; set; } = "X";
+    public override string CaptionKey { get; set; } = Key;
 
     public override GateCategory Category => GateCategory.B_Pauli;
 }

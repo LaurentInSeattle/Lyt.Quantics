@@ -170,17 +170,23 @@ public sealed class Tests_Matrices
             Debug.WriteLine(m);
         }
 
-        var hGate = GateFactory.Produce(HadamardGate.Key, new GateParameters());
-        var h = hGate.Matrix;
-        m = h;
-        Debug.WriteLine(m);
-        for (int i = 0; i < 3; i++)
+        var xGate = GateFactory.Produce(PauliXGate.Key, new GateParameters());
+        var x = xGate.Matrix;
+        for (int qubits = 2; qubits < 5; qubits++)
         {
-            m = m.KroneckerProduct(identity);
+            var registerSource = new QuRegister(qubits);
+            Debug.WriteLine(registerSource.State.ToString());
+            m = x;
+            for (int i = 1; i < qubits; i++)
+            {
+                m = m.KroneckerProduct(identity);
+            }
+
             Debug.WriteLine(m);
+            var newState = m.Multiply(registerSource.State);
+            Debug.WriteLine(newState.ToString());
         }
     }
-
 }
 
 /*
