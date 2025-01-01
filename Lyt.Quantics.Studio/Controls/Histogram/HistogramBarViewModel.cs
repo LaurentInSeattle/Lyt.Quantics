@@ -5,7 +5,7 @@ public sealed class HistogramBarViewModel : Bindable<HistogramBarView>
     public HistogramBarViewModel(double value, string label, double multiplier)
     {
         this.DisablePropertyChangedLogging = true;
-        this.Value = string.Format("{0:F1}", 100.0 * value);
+        this.Value = string.Format("{0:F2}", 100.0 * value);
         this.Height = 2 * 100.0 * value * multiplier;
         if (label.Length > 4)
         {

@@ -44,6 +44,8 @@ TODO: Studio :
 	Ability to give names to qubits (Alice, Bob,...)
 	
 	Turn off measure on some qubits like QRyd is doing, use in amplitude histogram 
+
+	Insert a stage 
 		
 	Spinner for 9 or 10 qubits 
 	

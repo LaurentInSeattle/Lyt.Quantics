@@ -25,13 +25,22 @@ public sealed class HistogramViewModel : Bindable<HistogramView>
             this.Value25 = "12.5 %";
             this.Value0 = "  0.0 %";
         }
-        else
+        else if (max > 0.125)
         {
             multiplier = 4.0;
             this.Value100 = "25.00 %";
             this.Value75 = "18.75 %";
             this.Value50 = "12.50 %";
             this.Value25 = " 6.25 %";
+            this.Value0 = " 0.00 %";
+        }
+        else
+        {
+            multiplier = 8.0;
+            this.Value100 = "12.50 %";
+            this.Value75 = "9.275 %";
+            this.Value50 = "6.25 %";
+            this.Value25 = "3.125 %";
             this.Value0 = " 0.00 %";
         }
 

@@ -11,7 +11,6 @@
     xmlns:theme="clr-namespace:Lyt.Quantics.Studio"
 	>
 	<Grid
-		ShowGridLines="False"
 		>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*" />

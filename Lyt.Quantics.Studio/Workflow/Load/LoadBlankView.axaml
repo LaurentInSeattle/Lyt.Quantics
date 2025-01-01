@@ -10,7 +10,7 @@
 		Margin="16"
 		>
 		<TextBlock
-			Margin="130 0 0 0"
+			Margin="100 0 0 0"
 			Text="Creates an empty quantum computer circuit with two qubits initialized at the ground state zero."
 			VerticalAlignment="Top" HorizontalAlignment="Left"
 			TextAlignment="Left"

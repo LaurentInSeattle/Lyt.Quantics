@@ -15,9 +15,9 @@
 		ClipToBounds="False"
 		>
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="8" />
+			<ColumnDefinition Width="4" />
 			<ColumnDefinition Width="44" />
-			<ColumnDefinition Width="8" />
+			<ColumnDefinition Width="4" />
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="30" />
@@ -28,18 +28,19 @@
 			Grid.Row="0" Grid.RowSpan="3" Grid.Column="1"
 			Fill="{StaticResource ResourceKey= LightAqua_2_100}"
 			Opacity="0.15"
+			Margin="0"
 			VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
 			/>
 		<Rectangle
 			Grid.Row="1" Grid.Column="1"
 			Fill="{StaticResource ResourceKey= OrangePeel_0_100}"
-			Margin="0 0 0 0"
+			Margin="8 0 8 0"
 			Opacity="0.9"
 			Height="{Binding Height}"
 			VerticalAlignment="Bottom" HorizontalAlignment="Stretch"
 			/>
 		<TextBlock
-			Grid.Row="0" Grid.Column="1"
+			Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
 			Margin="0"
 			Text="{Binding Value}"
 			VerticalAlignment="Center" HorizontalAlignment="Center"
@@ -47,7 +48,7 @@
 			Opacity="1.0"
 			/>
 		<TextBlock
-			Grid.Row="2" Grid.Column="1" 
+			Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3"
 			Margin="0"
 			Text="{Binding Label}"
 			TextWrapping="Wrap"

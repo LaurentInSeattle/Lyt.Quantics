@@ -12,16 +12,16 @@ public sealed class LoadViewModel : Bindable<LoadView>
     {
         this.Blank =
             CreateContent<LoadBlankViewModel, LoadBlankView, LoadBlankToolbarViewModel, LoadBlankToolbarView>(
-                "Start an Empty Blank New Project", canCollapse: false);
+                "Blank New Project", canCollapse: false);
 
         this.BuiltIn =
             CreateContent<LoadBuiltInViewModel, LoadBuiltInView, LoadBuiltInToolbarViewModel, LoadBuiltInToolbarView>(
-                "Ready to Use Built-in Projects", canCollapse: false);
+                "Built-in Projects", canCollapse: false);
         this.loadBuiltInViewModel = this.BuiltIn.ViewModel<LoadBuiltInViewModel>();
 
         this.Documents =
             CreateContent<LoadDocumentsViewModel, LoadDocumentsView, LoadDocumentsToolbarViewModel, LoadDocumentsToolbarView>(
-                "Your Saved Projects", canCollapse: true, CollapseStyle.Right, createCollapsed: false);
+                "Saved Projects", canCollapse: true, CollapseStyle.Right, createCollapsed: false);
         this.loadDocumentsViewModel = this.Documents.ViewModel<LoadDocumentsViewModel>();
     }
 
