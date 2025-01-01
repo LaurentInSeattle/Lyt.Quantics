@@ -58,8 +58,14 @@ public sealed class QuStageOperator
     public int QuBitsTransformed => MathUtilities.IntegerLog2(this.StageOperatorMatrix.RowCount);
 
     [JsonIgnore]
-    public bool HasSwap =>
+    public bool HasBinarySwap =>
         (this.QuBitsTransformed == 2) && (this.LargestQubitIndex - this.SmallestQubitIndex > 1);
+
+    [JsonIgnore]
+    public bool HasTernarySwap =>
+        (this.QuBitsTransformed == 3) &&
+            ((this.LargestQubitIndex - this.SmallestQubitIndex > 2) ||
+             (this.MiddleQubitIndex - this.SmallestQubitIndex > 1));
 
     [JsonIgnore]
     public List<int> AllQuBitIndicesSorted
@@ -77,13 +83,25 @@ public sealed class QuStageOperator
     public int SmallestQubitIndex => this.AllQuBitIndicesSorted[0];
 
     [JsonIgnore]
+    public int MiddleQubitIndex =>
+        this.QuBitsTransformed != 3 ?
+            throw new InvalidOperationException("Not a ternary gate") :
+            this.AllQuBitIndicesSorted[1];
+
+    [JsonIgnore]
     public int LargestQubitIndex => this.AllQuBitIndicesSorted[^1];
 
     [JsonIgnore]
     public Matrix<Complex> StageOperatorMatrix { get; private set; } = Matrix<Complex>.Build.Dense(1, 1);
 
     [JsonIgnore]
-    public Matrix<Complex> SwapMatrix { get; private set; } = Matrix<Complex>.Build.Dense(1, 1);
+    public Matrix<Complex> BinarySwapMatrix { get; private set; } = Matrix<Complex>.Build.Dense(1, 1);
+
+    [JsonIgnore]
+    public Matrix<Complex> FirstTernarySwapMatrix { get; private set; } = Matrix<Complex>.Build.Dense(1, 1);
+
+    [JsonIgnore]
+    public Matrix<Complex> SecondTernarySwapMatrix { get; private set; } = Matrix<Complex>.Build.Dense(1, 1);
 
     public QuStageOperator DeepClone()
     {
@@ -180,13 +198,40 @@ public sealed class QuStageOperator
         {
             this.StageOperatorMatrix =
                 GateFactory.Produce(this.GateKey, this.GateParameters).Matrix;
-            if (this.HasSwap)
+            if (this.HasBinarySwap)
             {
                 // 'Move' most distant qubit next to smallest   
-                this.SwapMatrix =
+                this.BinarySwapMatrix =
                     MatricesUtilities.SwapMatrix(
                         computer.QuBitsCount,
                         1 + this.SmallestQubitIndex, this.LargestQubitIndex);
+            }
+            else if ( this.HasTernarySwap)
+            {
+                int order = MathUtilities.TwoPower(computer.QuBitsCount);
+                if (this.MiddleQubitIndex - this.SmallestQubitIndex > 1)
+                {
+                    this.FirstTernarySwapMatrix =
+                        MatricesUtilities.SwapMatrix(
+                            computer.QuBitsCount,
+                            1 + this.SmallestQubitIndex, this.MiddleQubitIndex);
+                }
+                else
+                {
+                    this.FirstTernarySwapMatrix = Matrix<Complex>.Build.SparseIdentity(order);
+                }
+
+                if (this.LargestQubitIndex - this.SmallestQubitIndex > 2)
+                {
+                    this.SecondTernarySwapMatrix =
+                        MatricesUtilities.SwapMatrix(
+                            computer.QuBitsCount,
+                            2 + this.SmallestQubitIndex, this.LargestQubitIndex);
+                }
+                else
+                {
+                    this.SecondTernarySwapMatrix = Matrix<Complex>.Build.SparseIdentity(order);
+                }
             }
         }
         catch (Exception ex)

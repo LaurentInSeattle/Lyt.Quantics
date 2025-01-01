@@ -43,11 +43,27 @@ public sealed class QubitViewModel : Bindable<QubitView>
     private void OnKet(object? _)
 #pragma warning restore IDE0051 
     {
-        int maxStates = Enum.GetValues(typeof(QuState)).Length;
-        int index = 1 + (int)this.quState;
-        if (index >= maxStates)
+        var keyboard = App.GetRequiredService<Keyboard>();
+        bool isShifted = keyboard.Modifiers.HasFlag(KeyModifiers.Shift);
+
+        int index;
+        int maxStates = Enum.GetValues<QuState>().Length;
+        if (isShifted)
         {
-            index = 0;
+            index = (int)this.quState - 1;
+            if (index < 0)
+            {
+                index = maxStates - 1;
+            }
+        }
+        else
+        {
+
+            index = 1 + (int)this.quState;
+            if (index >= maxStates)
+            {
+                index = 0;
+            }
         }
 
         this.quState = (QuState)index;

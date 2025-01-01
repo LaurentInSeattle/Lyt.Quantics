@@ -34,8 +34,9 @@ TODO: Studio :
 	Priority:	
 		Finalize support for creation of controlled gates from unary ones 
 		BUG: Can't dismiss toasts in Computer view 
-		Document gates, so that there's always something to show when hovering 
 		Ghost view or some hint when hovering on a valid drop location 
+
+	BUG: Incorrect behaviour of the "regular/Test" switch after closing a circuit.
 
 	BUG: Amplitudes histogram shows up after loading another model.
 
@@ -46,6 +47,8 @@ TODO: Studio :
 	Turn off measure on some qubits like QRyd is doing, use in amplitude histogram 
 
 	Insert a stage 
+
+	Open Folder in Saved Projects view 
 		
 	Spinner for 9 or 10 qubits 
 	

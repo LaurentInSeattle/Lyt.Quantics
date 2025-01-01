@@ -285,7 +285,7 @@ public sealed class QuStage
             message = string.Empty;
             int length = computer.QuBitsCount;
             bool notSupported = 
-                (from op in this.Operators where op.HasSwap select op.HasSwap).FirstOrDefault();
+                (from op in this.Operators where op.HasBinarySwap select op.HasBinarySwap).FirstOrDefault();
             if (notSupported)
             {
                 throw new Exception("Swaps not supported in this calculation mode.");
@@ -395,17 +395,28 @@ public sealed class QuStage
                     var stageOperator = subStage.StageOperator;
 
                     // Swap if required 
-                    if (stageOperator.HasSwap)
+                    if (stageOperator.HasBinarySwap)
                     {
-                        register = stageOperator.SwapMatrix.Multiply(register);
+                        register = stageOperator.BinarySwapMatrix.Multiply(register);
+                    }
+                    else if ( stageOperator.HasTernarySwap)
+                    {
+                        register = stageOperator.FirstTernarySwapMatrix.Multiply(register);
+                        register = stageOperator.SecondTernarySwapMatrix.Multiply(register);
                     }
 
                     register = subStage.SubStageMatrix.Multiply(register);
 
                     // Un-Swap if we did swap 
-                    if (stageOperator.HasSwap)
+                    if (stageOperator.HasBinarySwap)
                     {
-                        register = stageOperator.SwapMatrix.Multiply(register);
+                        register = stageOperator.BinarySwapMatrix.Multiply(register);
+                    }
+                    else if (stageOperator.HasTernarySwap)
+                    {
+                        // Reverse order of swaps 
+                        register = stageOperator.SecondTernarySwapMatrix.Multiply(register);
+                        register = stageOperator.FirstTernarySwapMatrix.Multiply(register);
                     }
                 }
 

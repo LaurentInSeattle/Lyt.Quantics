@@ -20,6 +20,8 @@ public partial class App : ApplicationBase
             typeof(QsModel),
         ],
         [
+           typeof(Keyboard),
+
            // Singletons
            typeof(ShellViewModel),
            typeof(IntroViewModel),
@@ -59,11 +61,19 @@ public partial class App : ApplicationBase
             new FileManagerConfiguration(
                 App.Organization, App.Application, App.RootNamespace, App.AssemblyName, App.AssetsFolder));
 
+        // Start monitoring the keyboard 
+        var keyboard = App.GetRequiredService<Keyboard>();
+        keyboard.Start(App.MainWindow); 
+
         logger.Debug("OnStartupBegin complete");
     }
 
     protected override Task OnShutdownComplete()
     {
+        // Stop monitoring the keyboard 
+        var keyboard = App.GetRequiredService<Keyboard>();
+        keyboard.Stop();
+
         var logger = App.GetRequiredService<ILogger>();
         logger.Debug("On Shutdown Complete");
 

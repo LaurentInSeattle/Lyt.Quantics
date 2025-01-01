@@ -1,7 +1,5 @@
 ﻿namespace Lyt.Quantics.Engine.Machine;
 
-using Lyt.Quantics.Engine.Matrices;
-
 public sealed class SubStage(QuStageOperator stageOperator)
 {
     public readonly QuStageOperator StageOperator = stageOperator;
