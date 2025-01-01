@@ -1,10 +1,7 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Gates;
 
-public sealed class ConstructedGateViewModel 
-    : Bindable<ConstructedGateView>, IDraggableBindable, IGateInfoProvider
+public sealed class ConstructedGateViewModel : GateViewModelBase<ConstructedGateView>
 {
-    public const string CustomDragAndDropFormat = "GateViewModel";
-
     private const string BlueBrush = "LightAqua_0_100";
     private const string OrangeBrush = "OrangePeel_2_100";
     private const double gateSize = 48.0;
@@ -19,8 +16,6 @@ public sealed class ConstructedGateViewModel
     private readonly SolidColorBrush transparentBrush;
     private readonly string gateKey;
     private readonly List<int> allQuBitIndicesSorted;
-    private readonly QsModel quanticsStudioModel;
-    private readonly IToaster toaster;
 
     private static readonly Dictionary<string, string> supportedGates =
         new()
@@ -44,24 +39,12 @@ public sealed class ConstructedGateViewModel
 
     private readonly Grid contentGrid;
 
-    public ConstructedGateViewModel(string gateKey, int stageIndex, QubitsIndices qubitsIndices, bool isGhost = false)
+    public ConstructedGateViewModel(
+        string gateKey, int stageIndex, QubitsIndices qubitsIndices, bool isGhost = false)
+        : base(GateFactory.Produce(gateKey, new GateParameters()),
+            qubitsIndices, isGhost, isToolBox: false, stageIndex)
     {
-        if (!ConstructedGateViewModel.supportedGates.ContainsKey(gateKey))
-        {
-            throw new NotSupportedException("Not supported gate: " + gateKey);
-        }
-
         this.gateKey = gateKey;
-        this.Gate = GateFactory.Produce(gateKey, new GateParameters());
-        this.StageIndex = stageIndex;
-        this.QubitsIndices = qubitsIndices;
-        this.IsGhost = isGhost;
-        this.IsToolbox = false;
-
-        // Do not use Injection directly as this is loaded programmatically by the RunView 
-        this.quanticsStudioModel = App.GetRequiredService<QsModel>();
-        this.toaster = App.GetRequiredService<IToaster>();
-
         this.backgroundBrush = new SolidColorBrush(color: 0x30406080);
         this.transparentBrush = new SolidColorBrush(color: 0);
         Utilities.TryFindResource(BlueBrush, out SolidColorBrush? maybeBlueBrush);
@@ -108,76 +91,15 @@ public sealed class ConstructedGateViewModel
         }
     }
 
-    #region IGateInfoProvider Implementation 
-
-    public Gate Gate { get; private set; }
-
-    /// <summary> True when this is a ghost gate view model. </summary>
-    public bool IsGhost { get; private set; }
-
-    /// <summary> True when this is a toolbox gate view model. </summary>
-    public bool IsToolbox { get; private set; }
-
-    /// <summary> Only valid when this is NOT a toolbox gate view model. </summary>
-    public int StageIndex { get; private set; }
-
-    /// <summary> Only valid when this is NOT a toolbox gate view model. </summary>
-    public QubitsIndices QubitsIndices { get; private set; }
-
-    #endregion IGateInfoProvider Implementation 
-
-    public static bool IsGateSupported(string gateKey) 
+    public static bool IsGateSupported(string gateKey)
         => ConstructedGateViewModel.supportedGates.ContainsKey(gateKey);
 
     private int SmallestQubitIndex => this.allQuBitIndicesSorted[0];
 
     private int LargestQubitIndex => this.allQuBitIndicesSorted[^1];
 
-    #region Draggable Bindable Implementation 
-
-    public Draggable? Draggable { get; private set; }
-
-    public string DragDropFormat => ConstructedGateViewModel.CustomDragAndDropFormat;
-
-    public bool OnBeginDrag()  => true;  // For now 
-
-    public void OnEntered() 
-        => this.Messenger.Publish(new GateHoverMessage(IsEnter: true, this.gateKey));    
-
-    public void OnExited() => this.Messenger.Publish(new GateHoverMessage());
-
-    public void OnLongPress()
-    {
-        if (this.IsGhost || this.IsToolbox)
-        {
-            return;
-        }
-
-        this.Remove();
-    }
-
-    public void OnClicked(bool isRightClick) 
-    {
-        if (this.Gate.IsEditable)
-        {
-            // Launch edit gate dialog 
-            this.Messenger.Publish(new GateEditMessage(this, isRightClick));
-        }
-    }
-
-    public void Remove()
-    {
-        Debug.WriteLine("Removing gate: " + this.Gate.CaptionKey);
-        if (!this.quanticsStudioModel.RemoveGate(
-            this.StageIndex, this.QubitsIndices, this.Gate, out string message))
-        {
-            this.toaster.Show(
-                "Failed to Remove gate: " + this.Gate.CaptionKey, message,
-                4_000, InformationLevel.Error);
-        }
-    }
-
-    public UserControl CreateGhostView()
+    // Draggable Bindable Implementation 
+    public override UserControl CreateGhostView()
     {
         var ghostViewModel = new ConstructedGateViewModel(
             this.gateKey, this.StageIndex, this.QubitsIndices, isGhost: true);
@@ -191,8 +113,6 @@ public sealed class ConstructedGateViewModel
         view.InvalidateVisual();
         return view;
     }
-
-    #endregion Draggable Bindable Implementation 
 
     #region Creating Gates 
 
@@ -515,9 +435,5 @@ public sealed class ConstructedGateViewModel
 
     #endregion Gate Elements 
 
-    #region Bound Properties 
-
     public double GateHeight { get => this.Get<double>(); set => this.Set(value); }
-
-    #endregion Bound Properties 
 }

@@ -1,31 +1,19 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Gates;
 
-public sealed class GateViewModel 
-    : Bindable<GateView>, IDraggableBindable, IGateInfoProvider
+public sealed class GateViewModel : GateViewModelBase<GateView>
 {
-    private readonly QsModel quanticsStudioModel;
-    private readonly IToaster toaster;
-
     public GateViewModel(
-        Gate gate, bool isGhost = false, bool isToolbox = false, int stageIndex = -1, int qubitIndex = -1)
+        Gate gate, 
+        bool isGhost = false, bool isToolbox = false, int stageIndex = -1, 
+        int qubitIndex = -1)
+        : base ( gate, new QubitsIndices(qubitIndex), isGhost, isToolbox, stageIndex)
+
     {
-        // Too many properties here and too many gates !
-        this.DisablePropertyChangedLogging = true;
-
-        // Do not use Injection directly as this is loaded programmatically by the RunView 
-        this.quanticsStudioModel = App.GetRequiredService<QsModel>();
-        this.toaster = App.GetRequiredService<IToaster>();
-
-        this.Gate = gate;
-        this.IsGhost = isGhost;
         if (!this.IsGhost)
         {
             this.Draggable = new Draggable();
         }
 
-        this.IsToolbox = isToolbox;
-        this.StageIndex = stageIndex;
-        this.QubitsIndices = new QubitsIndices (qubitIndex);
         this.Name = gate.CaptionKey.Replace("dg", "\u2020");
         this.FontSize = Name.Length switch
         {
@@ -112,24 +100,6 @@ public sealed class GateViewModel
             _ => null,
         };
 
-    #region IGateInfoProvider Implementation 
-
-    public Gate Gate { get; private set; }
-
-    /// <summary> True when this is a ghost gate view model. </summary>
-    public bool IsGhost { get; private set; }
-
-    /// <summary> True when this is a toolbox gate view model. </summary>
-    public bool IsToolbox { get; private set; }
-
-    /// <summary> Only valid when this is NOT a toolbox gate view model. </summary>
-    public int StageIndex { get; private set; }
-
-    /// <summary> Only valid when this is NOT a toolbox gate view model. </summary>
-    public QubitsIndices QubitsIndices { get; private set; }
-
-    #endregion IGateInfoProvider Implementation 
-
     protected override void OnViewLoaded()
     {
         base.OnViewLoaded();
@@ -141,56 +111,8 @@ public sealed class GateViewModel
         }
     }
 
-    public void Remove()
-    {
-        Debug.WriteLine("Removing gate: " + this.Gate.CaptionKey);
-        if (!this.quanticsStudioModel.RemoveGate(
-            this.StageIndex, this.QubitsIndices, this.Gate, out string message))
-        {
-            this.toaster.Show(
-                "Failed to Remove gate: " + this.Gate.CaptionKey, message,
-                4_000, InformationLevel.Error);
-        }
-    }
-
-    #region IDraggableBindable Implementation 
-
-    public Draggable? Draggable { get; private set; }
-
-    public string DragDropFormat => ConstructedGateViewModel.CustomDragAndDropFormat;
-
-    public void OnEntered()
-        => this.Messenger.Publish(new GateHoverMessage(IsEnter: true, this.Gate.CaptionKey));
-
-    public void OnExited() => this.Messenger.Publish(new GateHoverMessage());
-
-    public void OnLongPress()
-    {
-        if (this.IsGhost || this.IsToolbox)
-        {
-            return;
-        } 
-
-        this.Remove();
-    }
-
-    public void OnClicked(bool isRightClick)
-    {
-        if (this.IsToolbox)
-        {
-            return;
-        }
-
-        if (this.Gate.IsEditable)
-        {
-            // Launch edit gate dialog 
-            this.Messenger.Publish(new GateEditMessage(this, isRightClick));
-        }
-    }
-
-    public bool OnBeginDrag() => true;
-
-    public UserControl CreateGhostView()
+    // IDraggableBindable Implementation 
+    public override UserControl CreateGhostView()
     {
         var ghostViewModel = new GateViewModel(this.Gate, isGhost:true,  isToolbox: true);
         ghostViewModel.CreateViewAndBind();
@@ -207,8 +129,6 @@ public sealed class GateViewModel
         view.InvalidateVisual();
         return view;
     }
-
-    #endregion IDraggableBindable Implementation 
 
     #region Bound properties 
 

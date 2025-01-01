@@ -1,5 +1,6 @@
 ﻿
 TODO: Framework: 
+----------------
 
 	Disabling / Enabling Glyph buttons fails via data binding. (Error in property?) 
 
@@ -9,27 +10,28 @@ TODO: Framework:
 		(need some kind of dismiss and replace/run API) 
 
 TODO: Engine: 
+-------------
 
 	Priority:	
 	=>	Support for variable control and target qubits for gates, such as : 
 			(DONE) Binary Gates with non consecutive qubits (Ex: swap 0 and 2)
 			( => ) Ternary Gates with non consecutive qubits 
 
-	Process gates linearly  
-
-	Process swap gates as just swapping qubits (Doable?) 
-
-	Optimize Identity gates 
-	
 	Review all circuits for names and descriptions to display on UI 
 		(when hovering on the toolbox) 
 	
 	??? Include Author in computer metadata
 
+	Process gates linearly  (Doable?) 
+
+	Process swap gates as just swapping qubits (Doable?) 
+
+	Optimize Identity gates (Doable?) 
+	
 TODO: Studio : 
+--------------
 
 	Priority:	
-		Create base class for Gates View Models 
 		Finalize support for creation of controlled gates from unary ones 
 		BUG: Can't dismiss toasts in Computer view 
 		Document gates, so that there's always something to show when hovering 
@@ -38,8 +40,6 @@ TODO: Studio :
 	BUG: Amplitudes histogram shows up after loading another model.
 
 	"Frameworkization" of drag/drop (Almost done)
-
-	Long press to remove a gate 
 
 	Ability to give names to qubits (Alice, Bob,...)
 	
