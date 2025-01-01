@@ -164,6 +164,16 @@ public sealed class GateViewModel
 
     public void OnExited() => this.Messenger.Publish(new GateHoverMessage());
 
+    public void OnLongPress()
+    {
+        if (this.IsGhost || this.IsToolbox)
+        {
+            return;
+        } 
+
+        this.Remove();
+    }
+
     public void OnClicked(bool isRightClick)
     {
         if (this.IsToolbox)

@@ -19,6 +19,8 @@ public sealed class ConstructedGateViewModel
     private readonly SolidColorBrush transparentBrush;
     private readonly string gateKey;
     private readonly List<int> allQuBitIndicesSorted;
+    private readonly QsModel quanticsStudioModel;
+    private readonly IToaster toaster;
 
     private static readonly Dictionary<string, string> supportedGates =
         new()
@@ -55,6 +57,10 @@ public sealed class ConstructedGateViewModel
         this.QubitsIndices = qubitsIndices;
         this.IsGhost = isGhost;
         this.IsToolbox = false;
+
+        // Do not use Injection directly as this is loaded programmatically by the RunView 
+        this.quanticsStudioModel = App.GetRequiredService<QsModel>();
+        this.toaster = App.GetRequiredService<IToaster>();
 
         this.backgroundBrush = new SolidColorBrush(color: 0x30406080);
         this.transparentBrush = new SolidColorBrush(color: 0);
@@ -140,6 +146,16 @@ public sealed class ConstructedGateViewModel
 
     public void OnExited() => this.Messenger.Publish(new GateHoverMessage());
 
+    public void OnLongPress()
+    {
+        if (this.IsGhost || this.IsToolbox)
+        {
+            return;
+        }
+
+        this.Remove();
+    }
+
     public void OnClicked(bool isRightClick) 
     {
         if (this.Gate.IsEditable)
@@ -148,7 +164,19 @@ public sealed class ConstructedGateViewModel
             this.Messenger.Publish(new GateEditMessage(this, isRightClick));
         }
     }
-    
+
+    public void Remove()
+    {
+        Debug.WriteLine("Removing gate: " + this.Gate.CaptionKey);
+        if (!this.quanticsStudioModel.RemoveGate(
+            this.StageIndex, this.QubitsIndices, this.Gate, out string message))
+        {
+            this.toaster.Show(
+                "Failed to Remove gate: " + this.Gate.CaptionKey, message,
+                4_000, InformationLevel.Error);
+        }
+    }
+
     public UserControl CreateGhostView()
     {
         var ghostViewModel = new ConstructedGateViewModel(

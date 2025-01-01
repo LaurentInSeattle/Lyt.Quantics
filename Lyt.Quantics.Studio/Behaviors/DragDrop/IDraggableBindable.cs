@@ -6,6 +6,8 @@ public interface IDraggableBindable
 
     void OnExited();
 
+    void OnLongPress();
+
     void OnClicked(bool isRightClick);
 
     bool OnBeginDrag();

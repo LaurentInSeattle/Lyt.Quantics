@@ -29,6 +29,7 @@ TODO: Engine:
 TODO: Studio : 
 
 	Priority:	
+		Create base class for Gates View Models 
 		Finalize support for creation of controlled gates from unary ones 
 		BUG: Can't dismiss toasts in Computer view 
 		Document gates, so that there's always something to show when hovering 

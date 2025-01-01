@@ -4,11 +4,14 @@ using global::Avalonia.Input;
 
 public sealed class Draggable : BehaviorBase<BehaviorEnabledUserControl>
 {
+    private const int LongPressDelay = 777; // milliseconds
+
     private bool isPointerPressed;
     private bool isDragging;
     private PointerPoint pointerPressedPoint;
     private UserControl? ghostView;
     private IDraggableBindable? draggableBindable;
+    private DispatcherTimer? timer;
 
     protected override void OnAttached()
     {
@@ -88,6 +91,7 @@ public sealed class Draggable : BehaviorBase<BehaviorEnabledUserControl>
         BehaviorEnabledUserControl userControl = this.UserControl;
         this.isPointerPressed = true;
         this.pointerPressedPoint = pointerPressedEventArgs.GetCurrentPoint(userControl);
+        this.StartTimer();
     }
 
     private void OnPointerMoved(object? sender, PointerEventArgs pointerEventArgs)
@@ -100,6 +104,8 @@ public sealed class Draggable : BehaviorBase<BehaviorEnabledUserControl>
 
         if (this.isDragging)
         {
+            this.StopTimer();
+
             // Debug.WriteLine("Dragging...");
             this.AdjustGhostPosition(pointerEventArgs);
             return;
@@ -122,6 +128,7 @@ public sealed class Draggable : BehaviorBase<BehaviorEnabledUserControl>
 
     private void OnPointerReleased(object? sender, PointerReleasedEventArgs args)
     {
+        this.StopTimer();
         // Debug.WriteLine("Released");
         if (this.isDragging || !this.isPointerPressed)
         {
@@ -264,4 +271,42 @@ public sealed class Draggable : BehaviorBase<BehaviorEnabledUserControl>
         Point position = dragEventArgs.GetPosition(canvas!);
         this.AdjustGhostPosition(position);
     }
+
+    #region Timer
+
+    private void StartTimer()
+    {
+        this.StopTimer();
+        this.timer = new DispatcherTimer()
+        {
+            Interval = TimeSpan.FromMilliseconds(LongPressDelay),
+            IsEnabled = true,
+        };
+        this.timer.Tick += this.OnTimerTick;
+    }
+
+    private void StopTimer()
+    {
+        if (this.timer is not null)
+        {
+            this.timer.IsEnabled = false;
+            this.timer.Stop();
+            this.timer.Tick -= this.OnTimerTick;
+            this.timer = null;
+        }
+    }
+
+    private void OnTimerTick(object? sender, EventArgs e)
+    {
+        this.StopTimer();
+        if( (this.draggableBindable is not null ) &&
+            (this.isPointerPressed) && 
+            (! this.isDragging))
+        {
+            this.draggableBindable.OnLongPress(); 
+        }
+    }
+
+    #endregion Timer
+
 }
