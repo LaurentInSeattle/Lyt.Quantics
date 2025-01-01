@@ -61,8 +61,6 @@ TODO: Studio :
 	
 	Monospaced font for labels in the Amplitudes view
 
-	??? Introduce one more lower level for amplitudes
-
 	??? Export circuits to Q# or other languges 
 
 	??? Help Window
