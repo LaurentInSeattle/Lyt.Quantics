@@ -9,6 +9,8 @@ TODO: Framework:
 	Annoying flash when replacing a modal dialog by a new one
 		(need some kind of dismiss and replace/run API) 
 
+	Add sorts to the 'search engine' 
+
 TODO: Engine: 
 -------------
 
@@ -43,6 +45,10 @@ TODO: Studio :
 	"Frameworkization" of drag/drop (Almost done)
 
 	Ability to give names to qubits (Alice, Bob,...)
+
+	Show last opened date/time in documents tiles
+
+	Sorting documents tiles
 	
 	Turn off measure on some qubits like QRyd is doing, use in amplitude histogram 
 

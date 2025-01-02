@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Computers\Tests\Test Long Swaps.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <EmbeddedResource Include="Resources\Computers\DenseCoding.json" />
     <EmbeddedResource Include="Resources\Computers\Deutsch_Balanced.json" />
     <EmbeddedResource Include="Resources\Computers\Deutsch_Constant.json" />
@@ -31,6 +35,7 @@
     <EmbeddedResource Include="Resources\Computers\Tests\Double_Ent_Three_Stages.json" />
     <EmbeddedResource Include="Resources\Computers\Tests\Rotations_Dual_Stage.json" />
     <EmbeddedResource Include="Resources\Computers\Tests\Rotations_Single_Stage.json" />
+    <EmbeddedResource Include="Resources\Computers\Tests\Test Long Swaps.json" />
     <EmbeddedResource Include="Resources\Computers\Tests\Toffoli_Basic.json" />
   </ItemGroup>
 
