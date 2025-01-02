@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Computers\Grover Search.json" />
     <None Remove="Resources\Computers\Tests\Test Long Swaps.json" />
   </ItemGroup>
 
@@ -21,6 +22,7 @@
     <EmbeddedResource Include="Resources\Computers\EntanglementNot.json" />
     <EmbeddedResource Include="Resources\Computers\Fredkin_Basic.json" />
     <EmbeddedResource Include="Resources\Computers\FullAdder.json" />
+    <EmbeddedResource Include="Resources\Computers\Grover Search.json" />
     <EmbeddedResource Include="Resources\Computers\HX_PhaseFlip.json" />
     <EmbeddedResource Include="Resources\Computers\HX_Swap.json" />
     <EmbeddedResource Include="Resources\Computers\OR_Gate.json" />
