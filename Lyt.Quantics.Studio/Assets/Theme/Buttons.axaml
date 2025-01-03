@@ -49,6 +49,22 @@
 		Hot="{StaticResource      LightAqua_0_040}"
 		/>
 
+	<glyphs:VisualState x:Key="ToggleOnGeneralVisualState"
+		Normal="{StaticResource LightAqua_1_100}"
+		Disabled="{StaticResource LightAqua_2_040}"
+		Selected="{StaticResource FreshGreen_2_100}"
+		Pressed="{StaticResource OrangePeel_1_100}"
+		Hot="{StaticResource OrangePeel_0_100}"
+		/>
+	
+	<glyphs:VisualState x:Key="ToggleOffGeneralVisualState"
+		Normal="{StaticResource LightAqua_2_040}"
+		Disabled="{StaticResource LightAqua_2_040}"
+		Selected="{StaticResource FreshGreen_2_100}"
+		Pressed="{StaticResource OrangePeel_1_100}"
+		Hot="{StaticResource OrangePeel_0_100}"
+		/>
+
 	<ControlTheme x:Key="ToolbarIconButton" TargetType="glyphs:GlyphButton">
 		<Setter Property="Layout" Value="IconTextBelow"/>
 		<Setter Property="ButtonBackground" Value="BorderOnly"/>

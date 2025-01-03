@@ -17,8 +17,7 @@ public sealed partial class QsModel : ModelBase
                 status = this.QuComputer.AddQubit(1, out message);
                 if (status)
                 {
-                    this.IsDirty = false;
-                    this.Messenger.Publish(MakeModelLoaded());
+                    this.FinalizeModelCreation();
                     return true;
                 }
             }
@@ -45,8 +44,7 @@ public sealed partial class QsModel : ModelBase
             bool status = this.QuComputer.Validate(out message);
             if (status)
             {
-                this.IsDirty = false;
-                this.Messenger.Publish(MakeModelLoaded());
+                this.FinalizeModelCreation();
                 return true;
             }
 
@@ -87,8 +85,7 @@ public sealed partial class QsModel : ModelBase
             this.QuComputer.LastOpened = DateTime.Now;
             this.SaveComputerToFile(withOverwrite: true, out message);
 
-            this.IsDirty = false;
-            this.Messenger.Publish(MakeModelLoaded());
+            this.FinalizeModelCreation();
             return true;
         }
         catch (Exception ex)
@@ -97,6 +94,13 @@ public sealed partial class QsModel : ModelBase
             message = "Create from Document: Exception thrown: " + ex.Message;
             return false;
         }
+    }
+
+    private void FinalizeModelCreation ()
+    {
+        this.InitializeMeasureStates();
+        this.IsDirty = false;
+        this.Messenger.Publish(MakeModelLoaded());
     }
 
     public bool ValidateComputerMetadata(

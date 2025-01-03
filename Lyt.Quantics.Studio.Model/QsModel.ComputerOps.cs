@@ -14,11 +14,15 @@ public sealed partial class QsModel : ModelBase
     [JsonIgnore]
     public QuComputer QuComputer { get; private set; }
 
+    [JsonIgnore]
+    public List<bool> QuBitMeasureStates { get; private set; } = [];
+
     public bool AddQubit(int count, out string message)
     {
         bool status = this.QuComputer.AddQubit(count, out message);
         if (status)
         {
+            this.QuBitMeasureStates.Add(true);
             this.IsDirty = true;
             this.Messenger.Publish(MakeQubitsChanged());
         }
@@ -35,6 +39,7 @@ public sealed partial class QsModel : ModelBase
         bool status = this.QuComputer.RemoveQubit(count, out message);
         if (status)
         {
+            this.QuBitMeasureStates.RemoveAt(this.QuBitMeasureStates.Count - 1);
             this.IsDirty = true;
             this.Messenger.Publish(MakeQubitsChanged());
         }
@@ -44,6 +49,17 @@ public sealed partial class QsModel : ModelBase
         }
 
         return status;
+    }
+
+    public void UpdateQubitMeasureState(int index, bool value , out string message)
+    {
+        message = string.Empty;
+        if ((index < 0) || (index >= this.QuBitMeasureStates.Count))
+        {
+            message = "Invalid qubit index"; 
+        } 
+
+        this.QuBitMeasureStates[index] = value;
     }
 
     public bool PackStages(out string message)
@@ -164,4 +180,12 @@ public sealed partial class QsModel : ModelBase
     private void PublishError(string message)
         => this.Messenger.Publish(new ModelUpdateErrorMessage(message));
 
+    private void InitializeMeasureStates()
+    {
+        this.QuBitMeasureStates.Clear();
+        for (int i = 0; i < this.QuComputer.QuBitsCount; i++)
+        {
+            this.QuBitMeasureStates.Add(true);
+        }
+    }
 }

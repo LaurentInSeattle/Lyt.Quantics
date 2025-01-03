@@ -24,7 +24,7 @@
 			Margin="0"			
 			>
 			<Grid.RowDefinitions>
-				<RowDefinition Height="4" />
+				<RowDefinition Height="3" />
 				<RowDefinition Height="*" />
 			</Grid.RowDefinitions>
 			<Rectangle 
