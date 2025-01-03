@@ -130,7 +130,7 @@ public sealed class LoadBuiltInViewModel : Bindable<LoadBuiltInView>
             this.boolFilters.Add(this.filterPredicate);
         }
 
-        var filteredResults = this.searchEngine.Filter(this.stringFilters, this.boolFilters);
+        var filteredResults = this.searchEngine.Filter(this.stringFilters, this.boolFilters, []);
         if (filteredResults.Success)
         {
             this.BuiltInViews = filteredResults.Result;

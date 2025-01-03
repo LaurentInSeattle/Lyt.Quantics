@@ -146,7 +146,9 @@ public sealed class LoadDocumentsViewModel : Bindable<LoadDocumentsView>
         {
             var filter =
                 new FilterPredicate(PropertyName: "IsRecent", PropertyValue: true);
-            var searchResults = this.searchEngine.Filter([filter]);
+            var sort = 
+                new FilterSort(PropertyName: "LastOpened", IsAscending: false);
+            var searchResults = this.searchEngine.Filter([filter], [sort]);
             if (searchResults.Success)
             {
                 this.DocumentViews = new(searchResults.Result);

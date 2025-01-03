@@ -4,7 +4,7 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+	mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="92"
     xmlns:vm="clr-namespace:Lyt.Quantics.Studio.Workflow.Load.Tiles"
     x:DataType="vm:DocumentViewModel" 
 	xmlns:glyphs="clr-namespace:Lyt.Avalonia.Controls.Glyphs;assembly=Lyt.Avalonia.Controls"
@@ -13,6 +13,7 @@
 	<Border
         x:Name="outerBorder"
         Height="92" MaxHeight="92"
+        HorizontalAlignment="Stretch"
         Background="Transparent"
         BorderBrush="{StaticResource LightAqua_1_040}"
         BorderThickness="1"
@@ -21,7 +22,7 @@
 		<Grid
             Background="Transparent"
             Height="92" MaxHeight="92"
-            VerticalAlignment="Center"
+            VerticalAlignment="Center" HorizontalAlignment="Stretch"
             >
 			<Grid.RowDefinitions>
 				<RowDefinition Height="*" />
@@ -29,18 +30,12 @@
 			</Grid.RowDefinitions>
 			<Grid.ColumnDefinitions >
 				<ColumnDefinition Width="*" />
-				<ColumnDefinition Width="2" />
-				<ColumnDefinition Width="2" />
+				<ColumnDefinition Width="84" />
+				<ColumnDefinition Width="4" />
 				<ColumnDefinition Width="72" />
 				<ColumnDefinition Width="36" />
 				<ColumnDefinition Width="4" />
 			</Grid.ColumnDefinitions>
-			<Rectangle
-                x:Name="SizingRectangle"
-                Grid.Column="0" Grid.Row="0"
-                VerticalAlignment="Center" HorizontalAlignment="Stretch"
-                Fill="Transparent"
-                />
 			<Rectangle
                 Grid.Column="0" Grid.Row="0"
                 Grid.ColumnSpan="999" Grid.RowSpan="999"
@@ -61,9 +56,20 @@
                 IsHitTestVisible="False"
                 />
 			<TextBlock
+                Grid.Column="1" Grid.Row="0"
+                VerticalAlignment="Center" HorizontalAlignment="Right"
+                TextAlignment="Right"
+                Text="{Binding Opened}"
+                Foreground="{StaticResource LightAqua_0_100}"
+                FontStyle="Normal"
+                FontSize="10"
+				FontWeight="Regular"
+                Margin="0"
+                IsHitTestVisible="False"
+                />
+			<TextBlock
                 Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
-                Width="{Binding Width, ElementName=SizingRectangle}"
                 TextAlignment="Left"
                 Text="{Binding Description}"
                 Foreground="{StaticResource LightAqua_0_080}"

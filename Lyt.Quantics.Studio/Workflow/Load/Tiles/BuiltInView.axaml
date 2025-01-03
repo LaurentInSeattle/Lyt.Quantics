@@ -32,7 +32,7 @@
 				<ColumnDefinition Width="2" />
 				<ColumnDefinition Width="2" />
 				<ColumnDefinition Width="72" />
-				<ColumnDefinition Width="36" />
+				<ColumnDefinition Width="4" />
 			</Grid.ColumnDefinitions>
 			<Rectangle
                 x:Name="SizingRectangle"
