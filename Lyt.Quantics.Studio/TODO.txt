@@ -9,8 +9,6 @@ TODO: Framework:
 	Annoying flash when replacing a modal dialog by a new one
 		(need some kind of dismiss and replace/run API) 
 
-	Add sorts to the 'search engine' 
-
 TODO: Engine: 
 -------------
 
@@ -26,14 +24,13 @@ TODO: Engine:
 
 	Process gates linearly  (Doable?) 
 
-	Process swap gates as just swapping qubits (Doable?) 
-
 	Optimize Identity gates (Doable?) 
 	
 TODO: Studio : 
 --------------
 
 	Priority:	
+		Turn off measure on some qubits like QRyd is doing, use in amplitude histogram 
 		Finalize support for creation of controlled gates from unary ones 
 		BUG: Can't dismiss toasts in Computer view 
 		Ghost view or some hint when hovering on a valid drop location 
@@ -45,12 +42,6 @@ TODO: Studio :
 	"Frameworkization" of drag/drop (Almost done)
 
 	Ability to give names to qubits (Alice, Bob,...)
-
-	Show last opened date/time in documents tiles
-
-	Sorting documents tiles
-	
-	Turn off measure on some qubits like QRyd is doing, use in amplitude histogram 
 
 	Insert a stage 
 
@@ -64,7 +55,7 @@ TODO: Studio :
 		
 	Nicer app icon 
 	
-	Measure icon 
+	Nicer Measure icon 
 	
 	Implement Stepping on UI 
 	
