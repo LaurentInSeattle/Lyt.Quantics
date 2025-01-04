@@ -1,4 +1,4 @@
-﻿namespace Lyt.Quantics.Studio.Messaging;
+﻿namespace Lyt.Quantics.Studio.Model.Messaging;
 
 public sealed record class ModelStructureUpdateMessage(
     bool QubitsChanged,

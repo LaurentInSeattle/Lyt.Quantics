@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d" d:DesignWidth="1080" d:DesignHeight="640"
-    Icon="/Assets/Images/ket.ico"
+    Icon="/Assets/Images/qstudio.ico"
     Title="Quantics Studio"
 	Width="1680" Height="980"
 	MinWidth="400" MinHeight="360"

@@ -102,7 +102,12 @@ public sealed class QubitViewModel : Bindable<QubitView>
     {
         this.IsSelected = !this.IsSelected;
         this.VisualState = this.IsSelected ? OnVisualState : OffVisualState;
-        this.quanticsStudioModel.UpdateQubitMeasureState(this.qubitIndex, this.IsSelected, out string _);
+        if ( ! this.quanticsStudioModel.UpdateQubitMeasureState(this.qubitIndex, this.IsSelected, out string message))
+        {
+            this.Logger.Warning(message);
+            var toaster = App.GetRequiredService<IToaster>();
+            toaster.Show("Unexpected Error", message, 5_000, InformationLevel.Error);
+        }
     }
 
 #pragma warning restore IDE0051 

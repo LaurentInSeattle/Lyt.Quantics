@@ -5,6 +5,19 @@ using static ToolbarCommandMessage;
 
 public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
 {
+    private static readonly SolidColorBrush pastelOrchidBrush; 
+
+    static AmplitudesViewModel()
+    {
+        TryFindResource("PastelOrchid_1_100", out SolidColorBrush? brush);
+        if (brush is null)
+        {
+            throw new Exception("Failed to retrieve brush");
+        }
+
+        pastelOrchidBrush = brush; 
+    }
+
     private readonly QsModel quanticsStudioModel;
 
     private HistogramViewModel? histogramViewModel;
@@ -20,6 +33,7 @@ public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
         this.Messenger.Subscribe<ToolbarCommandMessage>(this.OnToolbarCommandMessage);
         this.Messenger.Subscribe<ModelResultsUpdateMessage>(this.OnModelResultsUpdateMessage);
         this.Messenger.Subscribe<ModelStructureUpdateMessage>(this.OnModelStructureUpdateMessage);
+        this.Messenger.Subscribe<ModelMeasureStatesUpdateMessage>(this.ModelMeasureStatesUpdateMessage);
     }
 
     protected override void OnViewLoaded()
@@ -126,11 +140,6 @@ public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
         this.histogramViewModel = null;
         this.histogramEntries = [];
         this.View.AmplitudesGrid.Children.Clear();
-        TryFindResource("PastelOrchid_1_100", out SolidColorBrush? brush);
-        if (brush is null)
-        {
-            throw new Exception("Failed to retrieve brush");
-        }
 
         var textBlock = new TextBlock()
         {
@@ -139,10 +148,16 @@ public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
             VerticalAlignment = VerticalAlignment.Center,
             HorizontalAlignment = HorizontalAlignment.Center,
             Margin = new Thickness(32),
-            Foreground = brush,
+            Foreground = pastelOrchidBrush,
         };
 
         this.View.AmplitudesGrid.Children.Add(textBlock);
+    }
+
+    private void ModelMeasureStatesUpdateMessage(ModelMeasureStatesUpdateMessage message)
+    {
+        Debug.WriteLine("Amplitudes: ModelMeasureStatesUpdateMessage");
+        this.UpdateProbabilities(this.quanticsStudioModel.QuComputer.Stages.Count);
     }
 
     private void UpdateProbabilities(int rank)
@@ -153,7 +168,10 @@ public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
         if (computer.IsComplete)
         {
             QuRegister lastRegister = computer.Stages[rank - 1].StageRegister;
-            List<Tuple<string, double>> bitValuesProbabilities = lastRegister.BitValuesProbabilities();
+            var measureStates = this.quanticsStudioModel.QuBitMeasureStates;
+            DumpMeasureStates(measureStates);
+
+            List <Tuple<string, double>> bitValuesProbabilities = lastRegister.BitValuesProbabilities();
             var vm = new HistogramViewModel();
             this.View.AmplitudesGrid.Children.Add(vm.CreateViewAndBind());
             this.histogramEntries = new List<HistogramEntry>(bitValuesProbabilities.Count);
@@ -166,5 +184,16 @@ public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
             this.histogramViewModel = vm;
             this.FilterAndUpdate();
         }
+    }
+
+    [Conditional("DEBUG")]
+    private static void DumpMeasureStates (List<bool> measureStates )
+    {
+        Debug.Write("Measure States: ");
+        foreach (var measureState in measureStates)
+        {
+            Debug.Write(measureState ? " * " : " . ");
+        }
+        Debug.WriteLine(" ");
     }
 }

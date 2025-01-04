@@ -48,7 +48,7 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
     {
         if (count < QuRegister.MaxQubits)
         {
-            if (!this.quanticsStudioModel.AddQubit(count, out string message))
+            if (!this.quanticsStudioModel.AddQubitAtEnd(count, out string message))
             {
                 this.toaster.Show("Failed to Add Qubit!", message, 4_000, InformationLevel.Error);
             }
@@ -73,7 +73,7 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
         }
         else if (count > 1)
         {
-            if (this.quanticsStudioModel.RemoveQubit(count, out string message))
+            if (this.quanticsStudioModel.RemoveLastQubit(count, out string message))
             {
             }
             else
@@ -169,8 +169,13 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
     {
         try
         {
-            if (this.quanticsStudioModel.IsDirty)
+            var keyboard = App.GetRequiredService<Keyboard>();
+            bool isShifted = keyboard.Modifiers.HasFlag(KeyModifiers.Shift);
+
+            // No confirmation if we "shift close" 
+            if ((!isShifted) && this.quanticsStudioModel.IsDirty)
             {
+                // ( NOT shifted ) AND ( dirty ) 
                 var confirmActionParameters = new ConfirmActionParameters
                 {
                     Title = "Unsaved Changes!",
@@ -184,7 +189,7 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
             }
             else
             {
-                // No UI confirmation needed if no changes made
+                // No UI confirmation needed if shifted - OR - if no changes made
                 ActivateView(ActivatedView.Load);
             }
         }

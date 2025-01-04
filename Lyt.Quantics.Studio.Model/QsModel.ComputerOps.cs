@@ -1,7 +1,6 @@
 ﻿namespace Lyt.Quantics.Studio.Model;
 
 using static ModelStructureUpdateMessage;
-using static FileManagerModel;
 
 public sealed partial class QsModel : ModelBase
 {
@@ -17,7 +16,7 @@ public sealed partial class QsModel : ModelBase
     [JsonIgnore]
     public List<bool> QuBitMeasureStates { get; private set; } = [];
 
-    public bool AddQubit(int count, out string message)
+    public bool AddQubitAtEnd(int count, out string message)
     {
         bool status = this.QuComputer.AddQubit(count, out message);
         if (status)
@@ -34,7 +33,7 @@ public sealed partial class QsModel : ModelBase
         return status;
     }
 
-    public bool RemoveQubit(int count, out string message)
+    public bool RemoveLastQubit(int count, out string message)
     {
         bool status = this.QuComputer.RemoveQubit(count, out message);
         if (status)
@@ -51,15 +50,18 @@ public sealed partial class QsModel : ModelBase
         return status;
     }
 
-    public void UpdateQubitMeasureState(int index, bool value , out string message)
+    public bool UpdateQubitMeasureState(int index, bool value , out string message)
     {
         message = string.Empty;
         if ((index < 0) || (index >= this.QuBitMeasureStates.Count))
         {
-            message = "Invalid qubit index"; 
+            message = "Invalid qubit index";
+            return false;
         } 
 
         this.QuBitMeasureStates[index] = value;
+        this.Messenger.Publish(new ModelMeasureStatesUpdateMessage());
+        return true;
     }
 
     public bool PackStages(out string message)

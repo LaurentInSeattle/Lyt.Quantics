@@ -106,6 +106,7 @@ global using Lyt.Quantics.Studio.Controls;
 global using Lyt.Quantics.Studio.Controls.Histogram;
 global using Lyt.Quantics.Studio.Messaging;
 global using Lyt.Quantics.Studio.Model;
+global using Lyt.Quantics.Studio.Model.Messaging;
 global using Lyt.Quantics.Studio.Shell;
 //global using Lyt.Quantics.Studio.Utilities;
 global using Lyt.Quantics.Studio.Workflow.Intro;

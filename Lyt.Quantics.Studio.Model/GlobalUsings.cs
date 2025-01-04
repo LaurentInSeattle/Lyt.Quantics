@@ -52,4 +52,4 @@ global using Lyt.Quantics.Engine.Utilities;
 
 #endregion Engine 
 
-global using Lyt.Quantics.Studio.Messaging;
+global using Lyt.Quantics.Studio.Model.Messaging;
