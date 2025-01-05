@@ -5,7 +5,7 @@ using static ToolbarCommandMessage;
 
 public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
 {
-    private static readonly SolidColorBrush pastelOrchidBrush; 
+    private static readonly SolidColorBrush pastelOrchidBrush;
 
     static AmplitudesViewModel()
     {
@@ -15,7 +15,7 @@ public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
             throw new Exception("Failed to retrieve brush");
         }
 
-        pastelOrchidBrush = brush; 
+        pastelOrchidBrush = brush;
     }
 
     private readonly QsModel quanticsStudioModel;
@@ -109,7 +109,7 @@ public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
 
         if (filtered.Count == 0)
         {
-            MessagingExtensions.Command(ToolbarCommand.ShowAll); 
+            MessagingExtensions.Command(ToolbarCommand.ShowAll);
             return;
         }
 
@@ -142,7 +142,7 @@ public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
     {
         Debug.WriteLine("Amplitudes: ModelMeasureStatesUpdateMessage");
 
-        this.UpdateOrClearProbabilities(this.quanticsStudioModel.QuComputer.Stages.Count); 
+        this.UpdateOrClearProbabilities(this.quanticsStudioModel.QuComputer.Stages.Count);
     }
 
     private void ClearView()
@@ -150,7 +150,6 @@ public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
         // Clear the view: Show nothing, but a "no data" indication  
         this.histogramViewModel = null;
         this.histogramEntries = [];
-        this.View.AmplitudesGrid.Children.Clear();
 
         var textBlock = new TextBlock()
         {
@@ -162,7 +161,7 @@ public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
             Foreground = pastelOrchidBrush,
         };
 
-        this.View.AmplitudesGrid.Children.Add(textBlock);
+        this.UpdateContent(textBlock);
     }
 
     private void UpdateOrClearProbabilities(int rank)
@@ -180,15 +179,15 @@ public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
     private void UpdateProbabilities(int rank)
     {
         // Update probabilities 
-        this.View.AmplitudesGrid.Children.Clear();
         var computer = this.quanticsStudioModel.QuComputer;
         if (computer.IsComplete)
         {
             QuRegister register = computer.Stages[rank - 1].StageRegister;
-            List<Tuple<string, double>> bitValuesProbabilities = 
-                this.FilterBitValuesProbabilities(register);
+            List<Tuple<string, double>> bitValuesProbabilities =
+                this.quanticsStudioModel.FilteredBitValuesProbabilities(register);
             var vm = new HistogramViewModel();
-            this.View.AmplitudesGrid.Children.Add(vm.CreateViewAndBind());
+            var view = vm.CreateViewAndBind();
+            this.UpdateContent(view);
             this.histogramEntries = new List<HistogramEntry>(bitValuesProbabilities.Count);
             foreach (var bitValue in bitValuesProbabilities)
             {
@@ -201,28 +200,9 @@ public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
         }
     }
 
-    private List<Tuple<string, double>> FilterBitValuesProbabilities (QuRegister register)
+    private void UpdateContent(Control content)
     {
-        var measureStates = this.quanticsStudioModel.QuBitMeasureStates;
-        DumpMeasureStates(measureStates);
-        List<Tuple<string, double>> bitValuesProbabilities = register.BitValuesProbabilities();
-        if (this.quanticsStudioModel.ShouldMeasureAllQubits)
-        {
-            return bitValuesProbabilities;
-        }
-
-        // TODO 
-        return bitValuesProbabilities;
-    }
-
-    [Conditional("DEBUG")]
-    private static void DumpMeasureStates (List<bool> measureStates )
-    {
-        Debug.Write("Measure States: ");
-        foreach (var measureState in measureStates)
-        {
-            Debug.Write(measureState ? " * " : " . ");
-        }
-        Debug.WriteLine(" ");
+        this.View.AmplitudesGrid.Children.Clear();
+        this.View.AmplitudesGrid.Children.Add(content);
     }
 }

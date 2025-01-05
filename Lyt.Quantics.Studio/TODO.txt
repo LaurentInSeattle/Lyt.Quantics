@@ -42,7 +42,11 @@ TODO: Studio :
 
 	BUG: Amplitudes histogram shows up after loading another model.
 
+	Save view (because it's a view) cannot be cancelled with Escape.
+
 	Show "wave function" in Amplitude view (See in QRyd)
+
+	Adjust height of circuit depending on qubit count. Implement scroller.
 
 	Ability to give names to qubits (Alice, Bob,...)
 

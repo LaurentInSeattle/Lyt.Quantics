@@ -21,12 +21,12 @@ public sealed partial class QsModel : ModelBase
         get
         {
             int total = this.QuBitMeasureStates.Count;
-            if ( total != this.QuComputer.QuBitsCount)
+            if (total != this.QuComputer.QuBitsCount)
             {
                 return false;
             }
 
-            int countMeasured = 
+            int countMeasured =
                 (from state in this.QuBitMeasureStates where state select state).Count();
             return countMeasured == total;
         }
@@ -46,6 +46,81 @@ public sealed partial class QsModel : ModelBase
                 (from state in this.QuBitMeasureStates where state select state).Count();
             return countMeasured == 0;
         }
+    }
+
+    public HashSet<int> NonMeasuredQubitsIndices
+    {
+        get
+        {
+            HashSet<int> indices = [];
+            for (int i = 0; i < this.QuBitMeasureStates.Count; ++i)
+            {
+                if (!this.QuBitMeasureStates[i])
+                {
+                    indices.Add(i);
+                }
+            }
+
+            return indices;
+        }
+    }
+
+    public List<Tuple<string, double>> FilteredBitValuesProbabilities(QuRegister register)
+    {
+        var measureStates = this.QuBitMeasureStates;
+        DumpMeasureStates(measureStates);
+        List<Tuple<string, double>> bitValuesProbabilities = register.BitValuesProbabilities();
+        if (this.ShouldMeasureAllQubits)
+        {
+            // All qubits measured, return the full list 
+            return bitValuesProbabilities;
+        }
+
+        HashSet<int> nonMeasured = this.NonMeasuredQubitsIndices;
+
+        string ReduceBitString(string source)
+        {
+            StringBuilder sb = new();
+            for (int i = 0; i < source.Length; ++i)
+            {
+                if (!nonMeasured.Contains(i))
+                {
+                    sb.Append(source[i]);
+                }
+            }
+
+            return sb.ToString();
+        }
+
+        Dictionary<string, double> reducedBitValuesProbabilities = [];
+        foreach (var bitValue in bitValuesProbabilities)
+        {
+            string reduced = ReduceBitString(bitValue.Item1);
+            if (reducedBitValuesProbabilities.TryGetValue(reduced, out double value))
+            {
+                reducedBitValuesProbabilities[reduced] = value + bitValue.Item2;
+            }
+            else
+            {
+                reducedBitValuesProbabilities.Add(reduced, bitValue.Item2);
+            }
+        }
+
+        List<string> keys = []; 
+        foreach (var kvp in reducedBitValuesProbabilities)
+        {
+            keys.Add(kvp.Key);
+        }
+        
+        keys.Sort();
+        List<Tuple<string, double>> filteredBitValuesProbabilities = [];
+        foreach (string key in keys)
+        {
+            double value = reducedBitValuesProbabilities[key];
+            filteredBitValuesProbabilities.Add(new Tuple<string, double>(key, value));
+        }
+
+        return filteredBitValuesProbabilities;
     }
 
     public bool AddQubitAtEnd(int count, out string message)
@@ -82,14 +157,14 @@ public sealed partial class QsModel : ModelBase
         return status;
     }
 
-    public bool UpdateQubitMeasureState(int index, bool value , out string message)
+    public bool UpdateQubitMeasureState(int index, bool value, out string message)
     {
         message = string.Empty;
         if ((index < 0) || (index >= this.QuBitMeasureStates.Count))
         {
             message = "Invalid qubit index";
             return false;
-        } 
+        }
 
         this.QuBitMeasureStates[index] = value;
         this.Messenger.Publish(new ModelMeasureStatesUpdateMessage());
@@ -221,5 +296,16 @@ public sealed partial class QsModel : ModelBase
         {
             this.QuBitMeasureStates.Add(true);
         }
+    }
+
+    [Conditional("DEBUG")]
+    private static void DumpMeasureStates(List<bool> measureStates)
+    {
+        Debug.Write("Measure States: ");
+        foreach (bool measureState in measureStates)
+        {
+            Debug.Write(measureState ? " * " : " . ");
+        }
+        Debug.WriteLine(" ");
     }
 }
