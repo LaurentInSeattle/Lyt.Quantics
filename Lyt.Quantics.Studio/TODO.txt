@@ -9,6 +9,9 @@ TODO: Framework:
 	Annoying flash when replacing a modal dialog by a new one
 		(need some kind of dismiss and replace/run API) 
 
+	"Frameworkization" of drag/drop (Almost done)
+
+
 TODO: Engine: 
 -------------
 
@@ -39,7 +42,7 @@ TODO: Studio :
 
 	BUG: Amplitudes histogram shows up after loading another model.
 
-	"Frameworkization" of drag/drop (Almost done)
+	Show "wave function" in Amplitude view (See in QRyd)
 
 	Ability to give names to qubits (Alice, Bob,...)
 

@@ -16,6 +16,38 @@ public sealed partial class QsModel : ModelBase
     [JsonIgnore]
     public List<bool> QuBitMeasureStates { get; private set; } = [];
 
+    public bool ShouldMeasureAllQubits
+    {
+        get
+        {
+            int total = this.QuBitMeasureStates.Count;
+            if ( total != this.QuComputer.QuBitsCount)
+            {
+                return false;
+            }
+
+            int countMeasured = 
+                (from state in this.QuBitMeasureStates where state select state).Count();
+            return countMeasured == total;
+        }
+    }
+
+    public bool ShouldMeasureNoQubits
+    {
+        get
+        {
+            int total = this.QuBitMeasureStates.Count;
+            if (total != this.QuComputer.QuBitsCount)
+            {
+                return false;
+            }
+
+            int countMeasured =
+                (from state in this.QuBitMeasureStates where state select state).Count();
+            return countMeasured == 0;
+        }
+    }
+
     public bool AddQubitAtEnd(int count, out string message)
     {
         bool status = this.QuComputer.AddQubit(count, out message);

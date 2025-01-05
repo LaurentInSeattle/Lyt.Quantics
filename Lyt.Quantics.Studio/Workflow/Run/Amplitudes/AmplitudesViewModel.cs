@@ -69,7 +69,7 @@ public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
         {
             if (message.Command == ToolbarCommand.ShowStage)
             {
-                this.UpdateProbabilities(rank);
+                this.UpdateOrClearProbabilities(rank);
             }
         }
     }
@@ -135,7 +135,18 @@ public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
     private void OnModelStructureUpdateMessage(ModelStructureUpdateMessage _)
     {
         Debug.WriteLine("Amplitudes: OnModelStructureUpdateMessage");
+        this.ClearView();
+    }
 
+    private void ModelMeasureStatesUpdateMessage(ModelMeasureStatesUpdateMessage message)
+    {
+        Debug.WriteLine("Amplitudes: ModelMeasureStatesUpdateMessage");
+
+        this.UpdateOrClearProbabilities(this.quanticsStudioModel.QuComputer.Stages.Count); 
+    }
+
+    private void ClearView()
+    {
         // Clear the view: Show nothing, but a "no data" indication  
         this.histogramViewModel = null;
         this.histogramEntries = [];
@@ -154,10 +165,16 @@ public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
         this.View.AmplitudesGrid.Children.Add(textBlock);
     }
 
-    private void ModelMeasureStatesUpdateMessage(ModelMeasureStatesUpdateMessage message)
+    private void UpdateOrClearProbabilities(int rank)
     {
-        Debug.WriteLine("Amplitudes: ModelMeasureStatesUpdateMessage");
-        this.UpdateProbabilities(this.quanticsStudioModel.QuComputer.Stages.Count);
+        if (this.quanticsStudioModel.ShouldMeasureNoQubits)
+        {
+            this.ClearView();
+        }
+        else
+        {
+            this.UpdateProbabilities(rank);
+        }
     }
 
     private void UpdateProbabilities(int rank)
@@ -167,11 +184,9 @@ public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
         var computer = this.quanticsStudioModel.QuComputer;
         if (computer.IsComplete)
         {
-            QuRegister lastRegister = computer.Stages[rank - 1].StageRegister;
-            var measureStates = this.quanticsStudioModel.QuBitMeasureStates;
-            DumpMeasureStates(measureStates);
-
-            List <Tuple<string, double>> bitValuesProbabilities = lastRegister.BitValuesProbabilities();
+            QuRegister register = computer.Stages[rank - 1].StageRegister;
+            List<Tuple<string, double>> bitValuesProbabilities = 
+                this.FilterBitValuesProbabilities(register);
             var vm = new HistogramViewModel();
             this.View.AmplitudesGrid.Children.Add(vm.CreateViewAndBind());
             this.histogramEntries = new List<HistogramEntry>(bitValuesProbabilities.Count);
@@ -184,6 +199,20 @@ public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
             this.histogramViewModel = vm;
             this.FilterAndUpdate();
         }
+    }
+
+    private List<Tuple<string, double>> FilterBitValuesProbabilities (QuRegister register)
+    {
+        var measureStates = this.quanticsStudioModel.QuBitMeasureStates;
+        DumpMeasureStates(measureStates);
+        List<Tuple<string, double>> bitValuesProbabilities = register.BitValuesProbabilities();
+        if (this.quanticsStudioModel.ShouldMeasureAllQubits)
+        {
+            return bitValuesProbabilities;
+        }
+
+        // TODO 
+        return bitValuesProbabilities;
     }
 
     [Conditional("DEBUG")]

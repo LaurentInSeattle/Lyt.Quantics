@@ -100,13 +100,18 @@ public sealed class QubitViewModel : Bindable<QubitView>
 
     private void OnMeasure(object? _)
     {
+        var toaster = App.GetRequiredService<IToaster>();
         this.IsSelected = !this.IsSelected;
         this.VisualState = this.IsSelected ? OnVisualState : OffVisualState;
         if ( ! this.quanticsStudioModel.UpdateQubitMeasureState(this.qubitIndex, this.IsSelected, out string message))
         {
             this.Logger.Warning(message);
-            var toaster = App.GetRequiredService<IToaster>();
             toaster.Show("Unexpected Error", message, 5_000, InformationLevel.Error);
+        }
+
+        if ( this.quanticsStudioModel.ShouldMeasureNoQubits)
+        {
+            toaster.Show("No Measures", "Amplitude view will remain empty.", 3_000, InformationLevel.Warning);
         }
     }
 
