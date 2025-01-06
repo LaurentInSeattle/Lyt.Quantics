@@ -6,6 +6,7 @@ using static ToolbarCommandMessage;
 public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
 {
     private static readonly SolidColorBrush pastelOrchidBrush;
+    private static readonly TextBlock noDataTextBlock;
 
     static AmplitudesViewModel()
     {
@@ -16,6 +17,17 @@ public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
         }
 
         pastelOrchidBrush = brush;
+
+        noDataTextBlock = new TextBlock()
+        {
+            Text = "< No Data >",
+            FontSize = 16,
+            VerticalAlignment = VerticalAlignment.Center,
+            HorizontalAlignment = HorizontalAlignment.Center,
+            Margin = new Thickness(32),
+            Foreground = pastelOrchidBrush,
+        };
+
     }
 
     private readonly QsModel quanticsStudioModel;
@@ -61,8 +73,7 @@ public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
 
                 case ToolbarCommand.ShowByBitOrder: this.ShowByBitOrder(value); break;
 
-                default:
-                    break;
+                default: break;
             }
         }
         else if (message.CommandParameter is int rank)
@@ -141,7 +152,6 @@ public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
     private void ModelMeasureStatesUpdateMessage(ModelMeasureStatesUpdateMessage message)
     {
         Debug.WriteLine("Amplitudes: ModelMeasureStatesUpdateMessage");
-
         this.UpdateOrClearProbabilities(this.quanticsStudioModel.QuComputer.Stages.Count);
     }
 
@@ -150,18 +160,7 @@ public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
         // Clear the view: Show nothing, but a "no data" indication  
         this.histogramViewModel = null;
         this.histogramEntries = [];
-
-        var textBlock = new TextBlock()
-        {
-            Text = "< No Data >",
-            FontSize = 16,
-            VerticalAlignment = VerticalAlignment.Center,
-            HorizontalAlignment = HorizontalAlignment.Center,
-            Margin = new Thickness(32),
-            Foreground = pastelOrchidBrush,
-        };
-
-        this.UpdateContent(textBlock);
+        this.UpdateContent(noDataTextBlock);
     }
 
     private void UpdateOrClearProbabilities(int rank)

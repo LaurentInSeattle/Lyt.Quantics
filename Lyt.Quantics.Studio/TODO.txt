@@ -33,7 +33,6 @@ TODO: Studio :
 --------------
 
 	Priority:	
-		Turn off measure on some qubits like QRyd is doing, use in amplitude histogram 
 		Finalize support for creation of controlled gates from unary ones 
 		BUG: Can't dismiss toasts in Computer view 
 		Ghost view or some hint when hovering on a valid drop location 
@@ -50,7 +49,7 @@ TODO: Studio :
 
 	Ability to give names to qubits (Alice, Bob,...)
 
-	Insert a stage 
+	Ability to Insert a stage 
 
 	Open Folder in Saved Projects view 
 		
