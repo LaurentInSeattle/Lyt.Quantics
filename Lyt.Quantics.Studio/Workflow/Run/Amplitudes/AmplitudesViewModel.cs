@@ -184,7 +184,7 @@ public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
         {
             QuRegister register = computer.Stages[rank - 1].StageRegister;
             List<Tuple<string, double>> bitValuesProbabilities =
-                this.quanticsStudioModel.FilteredBitValuesProbabilities(register);
+                this.quanticsStudioModel.ReducedBitValuesProbabilities(register);
             var vm = new HistogramViewModel();
             var view = vm.CreateViewAndBind();
             this.UpdateContent(view);

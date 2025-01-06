@@ -42,7 +42,7 @@ TODO: Studio :
 
 	BUG: Amplitudes histogram shows up after loading another model.
 
-	Save view (because it's a view) cannot be cancelled with Escape.
+	Save view (because it's a view, not a dialog) cannot be cancelled with Escape.
 
 	Show "wave function" in Amplitude view (See in QRyd)
 

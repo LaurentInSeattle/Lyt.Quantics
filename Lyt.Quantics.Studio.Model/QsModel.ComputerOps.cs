@@ -65,7 +65,7 @@ public sealed partial class QsModel : ModelBase
         }
     }
 
-    public List<Tuple<string, double>> FilteredBitValuesProbabilities(QuRegister register)
+    public List<Tuple<string, double>> ReducedBitValuesProbabilities(QuRegister register)
     {
         var measureStates = this.QuBitMeasureStates;
         DumpMeasureStates(measureStates);
@@ -83,13 +83,16 @@ public sealed partial class QsModel : ModelBase
             StringBuilder sb = new();
             for (int i = 0; i < source.Length; ++i)
             {
+                int j = source.Length - 1 - i;
                 if (!nonMeasured.Contains(i))
                 {
-                    sb.Append(source[i]);
+                    sb.Append(source[j]);
                 }
             }
 
-            return sb.ToString();
+            string result = sb.ToString();
+            result = result.Reverse(); 
+            return result;
         }
 
         Dictionary<string, double> reducedBitValuesProbabilities = [];
@@ -113,6 +116,7 @@ public sealed partial class QsModel : ModelBase
         }
         
         keys.Sort();
+        keys.Reverse();
         List<Tuple<string, double>> filteredBitValuesProbabilities = [];
         foreach (string key in keys)
         {
