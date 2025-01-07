@@ -2,6 +2,9 @@
 
 public sealed class StageViewModel : Bindable<StageView>
 {
+    private const double QuBitHeight = 60;
+    private const double OtherHeights = 70;
+
     public readonly int stageIndex;
     public readonly QsModel quanticsStudioModel;
     public readonly IToaster toaster;
@@ -17,9 +20,38 @@ public sealed class StageViewModel : Bindable<StageView>
         this.toaster = App.GetRequiredService<IToaster>();
     }
 
+    protected override void OnViewLoaded() 
+    {
+        base.OnViewLoaded();
+        this.UpdateQubitCount();
+    }
+
+    private static GridLength FromQuBitsCount(int quBitsCount)
+        => new(OtherHeights + QuBitHeight * quBitsCount, GridUnitType.Pixel);
+
     public bool IsEmpty => this.activeGates == 0;
 
     public bool IsSelected { get; private set; }
+
+    public void UpdateQubitCount()
+    {
+        var view = this.View ;
+        if (view is null)
+        {
+            return;
+        }
+
+        int qubitCount = this.quanticsStudioModel.QuComputer.QuBitsCount;
+        this.GridHeight = FromQuBitsCount(qubitCount);
+        for (int rowIndex = 0; rowIndex < 16; ++ rowIndex)
+        {
+            var gateRow = view.GatesGrid.RowDefinitions[rowIndex];
+            var barRow = view.MinibarsGrid.RowDefinitions[rowIndex];
+            GridLength rowHeight = new(rowIndex < qubitCount ? QuBitHeight : 0.0, GridUnitType.Pixel);
+            gateRow.Height = rowHeight;
+            barRow.Height = rowHeight;
+        }
+    } 
 
     public void UpdateGatesAndMinibars()
     {
@@ -247,4 +279,6 @@ public sealed class StageViewModel : Bindable<StageView>
     public string Name { get => this.Get<string>()!; set => this.Set(value); }
 
     public bool IsMarkerVisible { get => this.Get<bool>(); set => this.Set(value); }
+
+    public GridLength GridHeight { get => this.Get<GridLength>(); set => this.Set(value); }
 }

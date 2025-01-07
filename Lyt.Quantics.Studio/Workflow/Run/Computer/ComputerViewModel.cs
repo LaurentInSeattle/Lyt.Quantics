@@ -89,6 +89,11 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
                 }
                 break;
         }
+
+        foreach (var stage in this.Stages)
+        {
+            stage.UpdateQubitCount();
+        }
     }
 
     private void CreateBlank()
@@ -254,6 +259,12 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
             }
             else if (message.QubitsChanged)
             {
+                // All stages need to resize 
+                foreach (var stage in this.Stages)
+                {
+                    stage.UpdateQubitCount();
+                }
+
                 if (this.Qubits.Count < qubitCount)
                 {
                     // Create the very first empty stage when the first qubit is created

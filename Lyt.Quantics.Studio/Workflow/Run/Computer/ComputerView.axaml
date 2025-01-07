@@ -17,49 +17,58 @@
 			<RowDefinition Height="*" />
 			<RowDefinition Height="30" />
 		</Grid.RowDefinitions>
-		<ItemsControl
-			Grid.Row="0"
-			ItemsSource="{Binding Qubits}"
-			Margin="0 30 0 0" Padding="0"
-			HorizontalAlignment="Stretch"
-			>
-			<ItemsControl.ItemsPanel>
-				<ItemsPanelTemplate>
-					<StackPanel Orientation="Vertical" Margin="0" />
-				</ItemsPanelTemplate>
-			</ItemsControl.ItemsPanel>
-			<ItemsControl.ItemTemplate>
-				<DataTemplate>
-					<vm:QubitView Margin="2" />
-				</DataTemplate>
-			</ItemsControl.ItemTemplate>
-		</ItemsControl>
-
 		<ScrollViewer
 			Grid.Row="0"
-			Margin="120 0 90 0" Padding="0"
-			HorizontalScrollBarVisibility="Auto"
-			VerticalScrollBarVisibility="Disabled"
+			Margin="0 0 0 0" Padding="0"
+			HorizontalScrollBarVisibility="Disabled"
+			VerticalScrollBarVisibility="Auto"
 			>
-			<ItemsControl
-				Grid.Row="0"
-				Margin="0 0 0 0" Padding="0"
-				ItemsSource="{Binding Stages}"
-				HorizontalAlignment="Stretch"
+			<Grid
+				Margin="0 0 24 0" 
 				>
-				<ItemsControl.ItemsPanel>
-					<ItemsPanelTemplate>
-						<StackPanel Orientation="Horizontal" Margin="0" />
-					</ItemsPanelTemplate>
-				</ItemsControl.ItemsPanel>
-				<ItemsControl.ItemTemplate>
-					<DataTemplate>
-						<vm:StageView Margin="2" />
-					</DataTemplate>
-				</ItemsControl.ItemTemplate>
-			</ItemsControl>
+				<ItemsControl
+					ItemsSource="{Binding Qubits}"
+					Margin="0 30 0 0" Padding="0"
+					HorizontalAlignment="Stretch"
+					>
+					<ItemsControl.ItemsPanel>
+						<ItemsPanelTemplate>
+							<StackPanel Orientation="Vertical" Margin="0" />
+						</ItemsPanelTemplate>
+					</ItemsControl.ItemsPanel>
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<vm:QubitView Margin="2" />
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+
+				<ScrollViewer
+					Margin="120 0 90 0" Padding="0"
+					HorizontalScrollBarVisibility="Auto"
+					VerticalScrollBarVisibility="Disabled"
+					>
+					<ItemsControl
+						Margin="0 0 0 0" Padding="0"
+						ItemsSource="{Binding Stages}"
+						HorizontalAlignment="Stretch"
+						>
+						<ItemsControl.ItemsPanel>
+							<ItemsPanelTemplate>
+								<StackPanel Orientation="Horizontal" Margin="0" />
+							</ItemsPanelTemplate>
+						</ItemsControl.ItemsPanel>
+						<ItemsControl.ItemTemplate>
+							<DataTemplate>
+								<vm:StageView Margin="2" />
+							</DataTemplate>
+						</ItemsControl.ItemTemplate>
+					</ItemsControl>
+				</ScrollViewer>
+			</Grid>
 		</ScrollViewer>
 
+		<!-- Title and description -->
 		<Rectangle
 			Grid.Row="1"
 			Fill="#80202040"
@@ -91,6 +100,7 @@
                 IsHitTestVisible="False"
                 />
 		</StackPanel>
+		
 		<!-- Panel should be on top -->
 		<Panel
 			x:Name="ToasterHost"

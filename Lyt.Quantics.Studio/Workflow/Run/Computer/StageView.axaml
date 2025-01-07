@@ -13,9 +13,12 @@
 	DragDrop.AllowDrop="True"
 	Background="Transparent"
 	>
+	<!-- Grid Height shall be 70 + 60 x qubits count-->
 	<Grid
+		x:Name="OuterGrid"
 		Background="#80101020"
-		Height="670" Width="86"
+		Height="{Binding GridHeight}" 
+		Width="86"
 		VerticalAlignment="Top"
 		>
 		<Grid.ColumnDefinitions>
@@ -68,7 +71,7 @@
 			DragDrop.AllowDrop="True"
 			Background="Transparent"
 			>
-			<!-- 10 rows: one for each qubits -->
+			<!-- 16 rows: one for each qubits -->
 			<Grid.RowDefinitions>
 				<RowDefinition Height="60" />
 				<RowDefinition Height="60" />
@@ -81,14 +84,19 @@
 				<RowDefinition Height="60" />
 				<RowDefinition Height="60" />
 
-				<RowDefinition Height="*" />
+				<RowDefinition Height="60" />
+				<RowDefinition Height="60" />
+				<RowDefinition Height="60" />
+				<RowDefinition Height="60" />
+				<RowDefinition Height="60" />
+				<RowDefinition Height="60" />
 			</Grid.RowDefinitions>
 		</Grid>
 		<Grid
 			x:Name="MinibarsGrid"
 			Grid.Row="1" Grid.Column="1"
 			>
-			<!-- 10 rows: one for each qubits -->			
+			<!-- 16 rows: one for each qubits -->			
 			<Grid.RowDefinitions>
 				<RowDefinition Height="60" />
 				<RowDefinition Height="60" />
@@ -101,7 +109,12 @@
 				<RowDefinition Height="60" />
 				<RowDefinition Height="60" />
 
-				<RowDefinition Height="*" />
+				<RowDefinition Height="60" />
+				<RowDefinition Height="60" />
+				<RowDefinition Height="60" />
+				<RowDefinition Height="60" />
+				<RowDefinition Height="60" />
+				<RowDefinition Height="60" />
 			</Grid.RowDefinitions>
 		</Grid>
 	</Grid>
