@@ -14,10 +14,6 @@ TODO: Framework:
 TODO: Engine: 
 -------------
 
-	Priority:	
-		Review all circuits for names and descriptions to display on UI 
-		(when hovering on the toolbox) 
-	
 	??? Include Author in computer metadata
 
 	Process gates linearly  (Doable?) 
@@ -31,12 +27,11 @@ TODO: Studio :
 		Finalize support for creation of controlled gates from unary ones 
 		BUG: Can't dismiss toasts in Computer view 
 		Ghost view or some hint when hovering on a valid drop location 
-	
+		Save view (because it's a view, not a dialog) cannot be cancelled with Escape.
+
 	BUG: Incorrect behaviour of the "regular/Test" switch after closing a circuit.
 
 	BUG: Amplitudes histogram shows up after loading another model.
-
-	Save view (because it's a view, not a dialog) cannot be cancelled with Escape.
 
 	Show "wave function" in Amplitude view (See in QRyd)
 

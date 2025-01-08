@@ -65,6 +65,9 @@ public class Gate
     /// <summary> Convenience human readable info.</summary>
     public virtual string Name { get; set; } = string.Empty;
 
+    /// <summary> Basic info to show on the UI about the gate </summary>
+    public virtual string Description { get; set; } = string.Empty;
+
     /// <summary> Convenience human readable info.</summary>
     public virtual string AlternateName { get; set; } = string.Empty;
 

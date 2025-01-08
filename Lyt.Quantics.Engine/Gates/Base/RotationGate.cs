@@ -97,6 +97,9 @@ public class RotationGate : Gate
 
     public override Matrix<Complex> Matrix => this.matrix;
 
+    public override string Description => 
+        string.Format ( "The {0} Rotation Gate. (rotation angle editable)", this.Axis.ToString());
+
     public override string Name => "Rotation Gate";
 
     public override string AlternateName => "Rotation Operator";

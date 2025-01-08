@@ -18,7 +18,7 @@
 		>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
-			<RowDefinition Height="30" />
+			<RowDefinition Height="40" />
 			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
 		<ItemsControl
@@ -43,21 +43,22 @@
 			Text="{Binding GateTitle}"		
 			Width="220" 
 			Grid.Row="1"
-			FontSize="24"
+			FontSize="30"
+			FontWeight="DemiBold"
 			VerticalAlignment="Center" HorizontalAlignment="Center"
 			TextAlignment="Center"
 			Foreground="{StaticResource LightAqua_0_080}"
 			/>
 		<TextBlock
 			Text="{Binding GateDescription}"
-			Width="200" 
+			Width="220" 
 			Grid.Row="2"
-			FontSize="15"
-			Margin="8"
+			FontSize="18"
+			Margin="4"
 			TextWrapping="WrapWithOverflow"
 			Foreground="{StaticResource LightAqua_0_080}"
-			VerticalAlignment="Stretch" HorizontalAlignment="Left"
-			TextAlignment="Left"
+			VerticalAlignment="Stretch" HorizontalAlignment="Center"
+			TextAlignment="Center"
 			/>
 	</Grid>
 </UserControl>

@@ -38,6 +38,8 @@ public sealed class FredkinGate : Gate
 
     public override Matrix<Complex> Matrix => FredkinGate.FredkinMatrix;
 
+    public override string Description => "The Controlled SWAP Gate, aka Fredkin Gate";
+
     public override string Name => "Fredkin";
 
     public override string AlternateName => "CSWAP";

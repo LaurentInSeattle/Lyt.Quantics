@@ -57,7 +57,7 @@ public sealed class GatesViewModel : Bindable<GatesView>
         if (message.IsEnter)
         {
             this.GateTitle = message.GateCaptionKey;
-            this.GateDescription = "Yolo: List<GateViewModel>? Gates { get => this.Get<List<GateViewModel>?>(); set => this.Set(value); }";
+            this.GateDescription = message.GateDescription;
         }
         else
         {

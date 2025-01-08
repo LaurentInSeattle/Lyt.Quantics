@@ -23,6 +23,8 @@ public sealed class S_Gate : Gate
 
     public override Matrix<Complex> Matrix => S_Gate.S_GateMatrix;
 
+    public override string Description => "The S Gate, aka Phase π/2";
+
     public override string Name => "Phase";
 
     public override string AlternateName => "Z 90";

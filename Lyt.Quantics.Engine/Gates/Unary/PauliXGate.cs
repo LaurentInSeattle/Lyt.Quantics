@@ -23,6 +23,8 @@ public sealed class PauliXGate : Gate
 
     public override Matrix<Complex> Matrix => PauliXGate.PauliXGateMatrix;
 
+    public override string Description => "The Pauli X Gate, aka Negate";
+
     public override string Name => "Pauli X";
 
     public override string AlternateName => "Negate";

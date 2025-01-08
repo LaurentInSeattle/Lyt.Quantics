@@ -29,6 +29,8 @@ public sealed class SwapGate : Gate
 
     public override int TargetQuBits => 2;
 
+    public override string Description => "The Swap Gate.";
+
     public override string Name => "Swap";
 
     public override string AlternateName => "Swap";

@@ -21,6 +21,8 @@ public sealed class PauliYGate : Gate
 
     public override Matrix<Complex> Matrix => PauliYGate.PauliYGateMatrix;
 
+    public override string Description => "The Pauli Y Gate";
+
     public override string Name => "Pauli Y";
 
     public override string AlternateName => "Y Gate";

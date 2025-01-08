@@ -32,6 +32,8 @@ public sealed class SX_Gate : Gate
 
     public override Matrix<Complex> Matrix => SX_Gate.sX_GateMatrix;
 
+    public override string Description => "The SX Gate, aka Square Root of X";
+
     public override string Name => "SX Gate";
 
     public override string AlternateName => "SQRT of X";

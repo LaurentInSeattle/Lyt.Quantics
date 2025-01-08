@@ -20,6 +20,8 @@ public sealed class T_DaggerGate : Gate
 
     public override Matrix<Complex> Matrix => T_DaggerGate.T_DaggerGateMatrix;
 
+    public override string Description => "The T Dagger Gate.";
+
     public override string Name => "T Dagger";
 
     public override string AlternateName => "Minus Pi Over 8";

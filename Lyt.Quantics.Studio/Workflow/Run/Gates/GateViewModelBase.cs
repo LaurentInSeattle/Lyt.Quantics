@@ -52,7 +52,8 @@ public abstract class GateViewModelBase<TView>
     public string DragDropFormat => GateViewModelBase<TView>.CustomDragAndDropFormat;
 
     public void OnEntered()
-        => this.Messenger.Publish(new GateHoverMessage(IsEnter: true, this.Gate.CaptionKey));
+        => this.Messenger.Publish(
+            new GateHoverMessage(IsEnter: true, this.Gate.CaptionKey, this.Gate.Description));
 
     public void OnExited() => this.Messenger.Publish(new GateHoverMessage());
 

@@ -26,6 +26,8 @@ public sealed class ControlledSGate : Gate
 
     public override Matrix<Complex> Matrix => ControlledSGate.ControlledSMatrix;
 
+    public override string Description => "The Controlled S Gate, aka Controlled Phase.";
+
     public override int ControlQuBits => 1;
 
     public override int TargetQuBits => 1;

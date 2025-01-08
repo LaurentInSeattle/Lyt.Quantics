@@ -27,6 +27,8 @@ public sealed class FlippedControlledNotGate : Gate
 
     public override int TargetQuBits => 1;
 
+    public override string Description => "The 'Flipped' Controlled NOT Gate.";
+
     public override string Name => "Flipped Controlled Not";
 
     public override string AlternateName => "FCNOT";

@@ -24,6 +24,8 @@ public sealed class ControlledNotGate : Gate
 
     public override Matrix<Complex> Matrix => ControlledNotGate.ControlledNotMatrix;
 
+    public override string Description => "The Controlled Not Gate, CNOT.";
+
     public override int ControlQuBits => 1;
 
     public override int TargetQuBits => 1;

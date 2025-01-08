@@ -53,6 +53,8 @@ public sealed class PhaseGate : Gate
 
     public override Matrix<Complex> Matrix => this.matrix;
 
+    public override string Description => "The Phase Gate. (phase angle editable)";
+
     public override string Name => "Phase";
 
     public override string AlternateName => "Phase Gate";

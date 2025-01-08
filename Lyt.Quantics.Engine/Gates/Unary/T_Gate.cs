@@ -33,6 +33,8 @@ public sealed class T_Gate : Gate
 
     public override Matrix<Complex> Matrix => T_Gate.T_GateMatrix;
 
+    public override string Description => "The T Gate, aka π/4 Phase Gate";
+
     public override string Name => "T Gate";
 
     public override string AlternateName => "Pi Over 8";

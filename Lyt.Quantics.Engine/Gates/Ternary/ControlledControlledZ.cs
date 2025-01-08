@@ -17,6 +17,8 @@ public sealed class ControlledControlledZ : Gate
 
     public override int TargetQuBits => 3;
 
+    public override string Description => "The Controlled Controlled-Z Gate.";
+
     public override string Name => "Controlled Controlled Z";
 
     public override string AlternateName => "CCZ";

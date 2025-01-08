@@ -41,6 +41,8 @@ public sealed class ToffoliGate : Gate
 
     public override int TargetQuBits => 1;
 
+    public override string Description => "The Controlled Controlled NOT Gate, aka Toffoli Gate";
+
     public override string Name => "Toffoli";
 
     public override string AlternateName => "CCNOT";

@@ -33,6 +33,8 @@ public sealed class ControlledZGate : Gate
 
     public override int TargetQuBits => 2;
 
+    public override string Description => "The Controlled Z Gate, aka Controlled Phase Flip.";
+
     public override string Name => "Controlled Z";
 
     public override string AlternateName => "Controlled Phase Flip";

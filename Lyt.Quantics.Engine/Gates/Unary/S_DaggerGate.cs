@@ -20,6 +20,8 @@ public sealed class S_DaggerGate : Gate
 
     public override Matrix<Complex> Matrix => S_DaggerGate.S_DaggerGateMatrix;
 
+    public override string Description => "The S Dagger Gate.";
+
     public override string Name => "Phase Dagger";
 
     public override string AlternateName => "S Dagger";

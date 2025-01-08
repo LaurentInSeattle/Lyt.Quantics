@@ -21,6 +21,8 @@ public sealed class PauliZGate : Gate
 
     public override Matrix<Complex> Matrix => PauliZGate.PauliZGateMatrix;
 
+    public override string Description => "The Pauli Z Gate, aka Phase Flip";
+
     public override string Name => "Pauli Z";
 
     public override string AlternateName => "Z Gate";

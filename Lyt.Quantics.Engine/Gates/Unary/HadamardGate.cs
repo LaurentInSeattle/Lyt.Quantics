@@ -27,6 +27,8 @@ public sealed class HadamardGate : Gate
 
     public override Matrix<Complex> Matrix => HadamardGate.HadamardGateMatrix;
 
+    public override string Description => "The Hadamard Gate";
+
     public override string Name => "Hadamard";
 
     public override string AlternateName => "Hadamard";
