@@ -6,6 +6,9 @@ public sealed class Draggable : BehaviorBase<BehaviorEnabledUserControl>
 {
     private const int LongPressDelay = 777; // milliseconds
 
+    /// <summary> Minimal drag distance triggering the drag abd drop operation.</summary>
+    private const double MinimalDragDistance = 4.5; // pixels
+
     private bool isPointerPressed;
     private bool isDragging;
     private PointerPoint pointerPressedPoint;
@@ -116,12 +119,14 @@ public sealed class Draggable : BehaviorBase<BehaviorEnabledUserControl>
             BehaviorEnabledUserControl userControl = this.UserControl;
             Point currentPosition = pointerEventArgs.GetPosition(userControl);
             var distance = Point.Distance(currentPosition, pointerPressedPoint.Position);
-            if (distance <= 4.2)
+            if (distance <= MinimalDragDistance)
             {
                 // Debug.WriteLine("Too close.");
                 return;
             }
 
+            // Drag and drop begins, it's not going to be a long press, therfore stop the timer.
+            this.StopTimer();
             this.BeginDrag(pointerEventArgs);
         }
     }
