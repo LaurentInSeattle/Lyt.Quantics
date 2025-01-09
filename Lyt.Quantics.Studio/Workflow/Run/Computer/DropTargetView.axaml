@@ -1,0 +1,21 @@
+<UserControl 
+	x:Class="Lyt.Quantics.Studio.Workflow.Run.Computer.DropTargetView"
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d" 
+	d:DesignWidth="48" d:DesignHeight="48"
+	>
+	<Grid 
+		Background="Transparent"
+		>
+		<Rectangle 
+			Opacity="0.5"
+			StrokeDashArray="2, 1" 
+			Stroke="{StaticResource FreshGreen_0_100}" 
+			StrokeThickness="1" RadiusX="4" RadiusY="4"  
+			Fill="Transparent"
+			/>
+	</Grid>
+</UserControl>

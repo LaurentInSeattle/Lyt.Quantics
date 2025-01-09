@@ -32,6 +32,8 @@ public partial class ComputerView : UserControl
                 }
             }
         }
+
+        StageView.HideDropTarget();
     }
 
     private void OnDrop(object? sender, DragEventArgs dragEventArgs)

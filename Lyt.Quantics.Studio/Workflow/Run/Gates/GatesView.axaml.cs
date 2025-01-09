@@ -18,5 +18,7 @@ public partial class GatesView : UserControl
             var draggable = draggableBindable.Draggable;
             draggable?.OnParentDragOver(dragEventArgs);
         }
+
+        StageView.HideDropTarget();
     }
 }

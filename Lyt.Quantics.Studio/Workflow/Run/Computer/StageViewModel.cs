@@ -20,7 +20,7 @@ public sealed class StageViewModel : Bindable<StageView>
         this.toaster = App.GetRequiredService<IToaster>();
     }
 
-    protected override void OnViewLoaded() 
+    protected override void OnViewLoaded()
     {
         base.OnViewLoaded();
         this.UpdateQubitCount();
@@ -35,15 +35,15 @@ public sealed class StageViewModel : Bindable<StageView>
 
     public void UpdateQubitCount()
     {
-        var view = this.View ;
-        if (view is null)
+        if (!this.IsBound)
         {
             return;
         }
 
+        var view = this.View;
         int qubitCount = this.quanticsStudioModel.QuComputer.QuBitsCount;
         this.GridHeight = FromQuBitsCount(qubitCount);
-        for (int rowIndex = 0; rowIndex < 16; ++ rowIndex)
+        for (int rowIndex = 0; rowIndex < 16; ++rowIndex)
         {
             var gateRow = view.GatesGrid.RowDefinitions[rowIndex];
             var barRow = view.MinibarsGrid.RowDefinitions[rowIndex];
@@ -51,7 +51,7 @@ public sealed class StageViewModel : Bindable<StageView>
             gateRow.Height = rowHeight;
             barRow.Height = rowHeight;
         }
-    } 
+    }
 
     public void UpdateGatesAndMinibars()
     {
@@ -73,9 +73,10 @@ public sealed class StageViewModel : Bindable<StageView>
 
     public bool CanDrop(Point point, IGateInfoProvider gateInfoProvider)
     {
-        // 600 pixels for 10 qubits ~ Magic numbers !
+        // 60 pixels for each qubits ~ Magic number!
+        var computer = this.quanticsStudioModel.QuComputer;
         double offset = point.Y / 60.0;
-        if ((offset < 0.0) || (offset >= 10.0))
+        if ((offset < 0.0) || (offset >= computer.QuBitsCount))
         {
             // outside qubit area: reject
             return false;
@@ -84,7 +85,6 @@ public sealed class StageViewModel : Bindable<StageView>
         // Can't drop a binary or ternary gate on last qubit 
         if (!gateInfoProvider.Gate.IsUnary)
         {
-            var computer = this.quanticsStudioModel.QuComputer;
             int qubitIndex = (int)Math.Floor(offset);
             if (qubitIndex >= computer.QuBitsCount - 1)
             {
@@ -108,7 +108,7 @@ public sealed class StageViewModel : Bindable<StageView>
         {
             this.AddGateAt(new QubitsIndices(qubitIndex), gateInfoProvider.Gate, isDrop: true);
         }
-        else 
+        else
         {
             // We are moving a gate in the circuit view !
             // Debug.WriteLine("Removing gate: " + gateInfoProvider.Gate.CaptionKey);
@@ -123,6 +123,48 @@ public sealed class StageViewModel : Bindable<StageView>
             {
                 this.AddGateAt(new QubitsIndices(qubitIndex), gateInfoProvider.Gate, isDrop: true);
             }
+        }
+    }
+
+    public void HideDropTarget(DropTargetView dropTargetView)
+    {
+        if (!this.IsBound)
+        {
+            return;
+        }
+
+        var children = this.View.GatesGrid.Children;
+        if (children.Contains(dropTargetView))
+        {
+            children.Remove(dropTargetView);
+        }
+    }
+
+    public void ShowDropTarget(DropTargetView dropTargetView, Point point)
+    {
+        if (!this.IsBound)
+        {
+            return;
+        }
+
+        var parent = dropTargetView.Parent;
+        if ((parent is not null) && (parent != this.View.GatesGrid))
+        {
+            // Debug.WriteLine("Abort: not our target view");
+            return;
+        }
+
+        // 60 pixels for each qubits ~ Magic number!
+        var children = this.View.GatesGrid.Children;
+        int qubitIndex = (int)Math.Floor(point.Y / 60.0);
+
+        // Debug.WriteLine("Drop View at index: " + qubitIndex.ToString());
+        dropTargetView.SetValue(Grid.RowProperty, qubitIndex);
+
+        if (!children.Contains(dropTargetView))
+        {
+            // Debug.WriteLine("Drop View Added");
+            children.Add(dropTargetView);
         }
     }
 

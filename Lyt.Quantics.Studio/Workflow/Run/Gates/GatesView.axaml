@@ -18,7 +18,7 @@
 		>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
-			<RowDefinition Height="40" />
+			<RowDefinition Height="26" />
 			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
 		<ItemsControl
@@ -43,7 +43,7 @@
 			Text="{Binding GateTitle}"		
 			Width="220" 
 			Grid.Row="1"
-			FontSize="30"
+			FontSize="28"
 			FontWeight="DemiBold"
 			VerticalAlignment="Center" HorizontalAlignment="Center"
 			TextAlignment="Center"

@@ -83,7 +83,7 @@ public abstract class GateViewModelBase<TView>
 
     public bool OnBeginDrag() => true;
 
-    public abstract UserControl CreateGhostView(); 
+    public abstract UserControl CreateGhostView();
 
     #endregion IDraggableBindable Implementation 
 

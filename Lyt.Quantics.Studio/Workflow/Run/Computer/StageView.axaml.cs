@@ -2,6 +2,24 @@ namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
 
 public partial class StageView : UserControl
 {
+    private static readonly DropTargetView dropTargetView;
+    private static StageView? dropTargetViewOwner;
+
+    static StageView() => dropTargetView = new DropTargetView();
+
+    public static void HideDropTarget()
+    {
+        if (dropTargetViewOwner is not null)
+        {
+            if (dropTargetViewOwner.DataContext is StageViewModel stageViewModel)
+            {
+                stageViewModel.HideDropTarget(dropTargetView);
+            }
+        }
+
+        dropTargetViewOwner = null;
+    }
+
     public StageView()
     {
         this.InitializeComponent();
@@ -22,6 +40,7 @@ public partial class StageView : UserControl
     {
         // Debug.WriteLine("Dragging over stage view");
 
+        bool addedDropTarget = false; 
         dragEventArgs.DragEffects = DragDropEffects.None;
         var data = dragEventArgs.Data;
         object? dragDropObject = data.Get(ConstructedGateViewModel.CustomDragAndDropFormat); 
@@ -35,23 +54,37 @@ public partial class StageView : UserControl
                 if (dragDropObject is IGateInfoProvider gateInfoProvider)
                 {
                     // Debug.WriteLine("Drag object is IGateInfoProvider");
-                    if (stageViewModel.CanDrop(dragEventArgs.GetPosition(this), gateInfoProvider))
+                    var position = dragEventArgs.GetPosition(this);
+                    if (stageViewModel.CanDrop(position, gateInfoProvider))
                     {
                         // Debug.WriteLine("Drag object can be dropped ");
                         dragEventArgs.DragEffects = DragDropEffects.Move;
+
+                        if (dropTargetViewOwner is not null && dropTargetViewOwner != this)
+                        {
+                            HideDropTarget();
+                        } 
+                            
+                        this.ShowDropTarget(stageViewModel, position);
+                        addedDropTarget = true; 
                     }
                     else
                     {
                         // Debug.WriteLine("Drop rejected ");
                     }
                 }
+
+            }
+
+            if ( ! addedDropTarget)
+            {
+                HideDropTarget();
             }
 
             // Must do this below so that the computer view is not corrupting the effect
             dragEventArgs.Handled = true;
             // Debug.WriteLine("Event handled: Dragging over stage view");
         }
-
     }
 
     private void OnDrop(object? sender, DragEventArgs dragEventArgs)
@@ -65,5 +98,13 @@ public partial class StageView : UserControl
                 dragEventArgs.Handled = true;
             }
         }
+
+        HideDropTarget();
+    }
+
+    private void ShowDropTarget(StageViewModel stageViewModel, Point position)
+    {
+        stageViewModel.ShowDropTarget(dropTargetView, position);
+        dropTargetViewOwner = this;
     }
 }
