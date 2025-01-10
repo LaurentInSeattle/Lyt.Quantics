@@ -6,13 +6,17 @@ using global::Avalonia.Input;
 /// Behaviour for controls and views that should support visualising the 'ghost' view of 
 /// 'DragAble' objects that are dragged around. 
 /// </summary>
-public class DragOverAble(Action hideDropTarget) : BehaviorBase<BehaviorEnabledUserControl>
+public class DragOverAble(
+    Action? hideDropTarget = null, 
+    Func<IDropTarget, Point, bool>? showDropTarget = null)
+        : BehaviorBase<BehaviorEnabledUserControl>
 {
-    private readonly Action hideDropTarget = hideDropTarget;
+    private readonly Action? hideDropTarget = hideDropTarget;
+    private readonly Func<IDropTarget, Point, bool>? showDropTarget = showDropTarget;
 
     protected override void OnAttached()
     {
-        BehaviorEnabledUserControl userControl = this.GuardAssociatedObject();
+        BehaviorEnabledUserControl userControl = base.GuardAssociatedObject();
         DragDrop.SetAllowDrop(userControl, true);
         userControl.AddHandler(DragDrop.DragOverEvent, this.OnDragOver);
     }
@@ -23,32 +27,7 @@ public class DragOverAble(Action hideDropTarget) : BehaviorBase<BehaviorEnabledU
         {
             DragDrop.SetAllowDrop(userControl, false);
             userControl.RemoveHandler(DragDrop.DragOverEvent, this.OnDragOver);
-        } 
-    }
-
-    private BehaviorEnabledUserControl GuardAssociatedObject()
-    {
-        if (this.AssociatedObject is null)
-        {
-            throw new InvalidOperationException("Not attached.");
         }
-
-        if (!this.AssociatedObject.GetType().DerivesFrom<BehaviorEnabledUserControl>())
-        {
-            throw new InvalidOperationException("Invalid asociated object.");
-        }
-
-#pragma warning disable IDE0019 // Use pattern matching
-        // VS BUG => Turns out that pattern matching cannot be used here !
-        var userControl = this.AssociatedObject as BehaviorEnabledUserControl;
-        if ((userControl is null) ||
-            (userControl.DataContext is null))
-        {
-            throw new InvalidOperationException("Not attached or invalid asociated object.");
-        }
-#pragma warning restore IDE0019 
-
-        return userControl;
     }
 
     private void OnDragOver(object? sender, DragEventArgs dragEventArgs)
@@ -56,14 +35,15 @@ public class DragOverAble(Action hideDropTarget) : BehaviorBase<BehaviorEnabledU
         dragEventArgs.DragEffects = DragDropEffects.None;
         if (this.AssociatedObject is not UserControl userControl)
         {
-            return; 
+            return;
         }
 
+        bool showedDropTarget = false;
         var data = dragEventArgs.Data;
         var formats = data.GetDataFormats().ToList();
-        if ( formats is not null && formats.Count > 0)
+        if (formats is not null && formats.Count > 0)
         {
-            foreach (var format  in formats)
+            foreach (var format in formats)
             {
                 object? dragDropObject = data.Get(format);
                 if (dragDropObject is IDragAbleBindable draggableBindable)
@@ -71,16 +51,20 @@ public class DragOverAble(Action hideDropTarget) : BehaviorBase<BehaviorEnabledU
                     var draggable = draggableBindable.DragAble;
                     if (draggable is null)
                     {
-                        break; 
-                    } 
+                        break;
+                    }
 
                     draggable.OnParentDragOver(dragEventArgs);
-
                     if (userControl.DataContext is IDropTarget dropTarget)
                     {
-                        if (dropTarget.CanDrop(dragEventArgs.GetPosition(userControl), dragDropObject))
+                        Point position = dragEventArgs.GetPosition(userControl);
+                        if (dropTarget.CanDrop(position, dragDropObject))
                         {
                             dragEventArgs.DragEffects = DragDropEffects.Move;
+                            if (this.showDropTarget is not null)
+                            {
+                                showedDropTarget = this.showDropTarget.Invoke(dropTarget, position);
+                            }
                         }
                     }
 
@@ -89,6 +73,11 @@ public class DragOverAble(Action hideDropTarget) : BehaviorBase<BehaviorEnabledU
             }
         }
 
-        this.hideDropTarget?.Invoke();
+        if (!showedDropTarget)
+        {
+            this.hideDropTarget?.Invoke();
+        }
+
+        dragEventArgs.Handled = true; 
     }
 }

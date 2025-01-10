@@ -19,7 +19,7 @@ public sealed class DragAble : BehaviorBase<BehaviorEnabledUserControl>
 
     protected override void OnAttached()
     {
-        _ = this.GuardAssociatedObject();
+        _ = this.Guard();
         this.HookPointerEvents();
         //Debug.WriteLine("On attached to: " + this.DraggableBindable.GetType().Name);
     }
@@ -36,28 +36,14 @@ public sealed class DragAble : BehaviorBase<BehaviorEnabledUserControl>
         private set => this.draggableBindable = value;
     }
 
-    private BehaviorEnabledUserControl GuardAssociatedObject()
-    {
-        if (this.AssociatedObject is null)
-        {
-            throw new InvalidOperationException("Not attached.");
-        }
-
-        if (!this.AssociatedObject.GetType().DerivesFrom<BehaviorEnabledUserControl>())
-        {
-            throw new InvalidOperationException("Invalid asociated object.");
-        }
-
-#pragma warning disable IDE0019 // Use pattern matching
-        // VS BUG => Turns out that pattern matching cannot be used here !
-        var userControl = this.AssociatedObject as BehaviorEnabledUserControl;
-        if ((userControl is null) ||
-            (userControl.DataContext is null) ||
+    private BehaviorEnabledUserControl Guard()
+    {        
+        var userControl = base.GuardAssociatedObject();
+        if ((userControl.DataContext is null) ||
             (userControl.DataContext is not IDragAbleBindable iDraggableBindable))
         {
             throw new InvalidOperationException("Not attached or invalid asociated object.");
         }
-#pragma warning restore IDE0019 
 
         DraggableBindable = iDraggableBindable;
         return userControl;
@@ -314,5 +300,4 @@ public sealed class DragAble : BehaviorBase<BehaviorEnabledUserControl>
     }
 
     #endregion Timer
-
 }

@@ -12,7 +12,7 @@ public class DropAble(Action hideDropTarget) : BehaviorBase<BehaviorEnabledUserC
 
     protected override void OnAttached()
     {
-        BehaviorEnabledUserControl userControl = this.GuardAssociatedObject();
+        BehaviorEnabledUserControl userControl = GuardAssociatedObject();
         DragDrop.SetAllowDrop(userControl, true);
         userControl.AddHandler(DragDrop.DropEvent, this.OnDrop);
     }
@@ -24,31 +24,6 @@ public class DropAble(Action hideDropTarget) : BehaviorBase<BehaviorEnabledUserC
             DragDrop.SetAllowDrop(userControl, false);
             userControl.RemoveHandler(DragDrop.DropEvent, this.OnDrop);
         }
-    }
-
-    private BehaviorEnabledUserControl GuardAssociatedObject()
-    {
-        if (this.AssociatedObject is null)
-        {
-            throw new InvalidOperationException("Not attached.");
-        }
-
-        if (!this.AssociatedObject.GetType().DerivesFrom<BehaviorEnabledUserControl>())
-        {
-            throw new InvalidOperationException("Invalid asociated object.");
-        }
-
-#pragma warning disable IDE0019 // Use pattern matching
-        // VS BUG => Turns out that pattern matching cannot be used here !
-        var userControl = this.AssociatedObject as BehaviorEnabledUserControl;
-        if ((userControl is null) ||
-            (userControl.DataContext is null))
-        {
-            throw new InvalidOperationException("Not attached or invalid asociated object.");
-        }
-#pragma warning restore IDE0019 
-
-        return userControl;
     }
 
     private void OnDrop(object? sender, DragEventArgs dragEventArgs)
@@ -84,5 +59,6 @@ public class DropAble(Action hideDropTarget) : BehaviorBase<BehaviorEnabledUserC
         }
 
         this.hideDropTarget?.Invoke();
+        dragEventArgs.Handled = true;
     }
 }

@@ -1,9 +1,10 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
 
-public sealed class StageViewModel : Bindable<StageView>
+public sealed class StageViewModel : Bindable<StageView>, IDropTarget
 {
-    private const double QuBitHeight = 60;
-    private const double OtherHeights = 70;
+    private const double MarginHeight = 30.0;
+    private const double QuBitHeight = 60.0;
+    private const double OtherHeights = 70.0;
 
     public readonly int stageIndex;
     public readonly QsModel quanticsStudioModel;
@@ -71,12 +72,16 @@ public sealed class StageViewModel : Bindable<StageView>
         this.IsMarkerVisible = select;
     }
 
-    public bool CanDrop(Point point, IGateInfoProvider gateInfoProvider)
+    public bool CanDrop(Point point, object droppedObject)
     {
-        // 60 pixels for each qubits ~ Magic number!
-        var computer = this.quanticsStudioModel.QuComputer;
-        double offset = point.Y / 60.0;
-        if ((offset < 0.0) || (offset >= computer.QuBitsCount))
+        if (droppedObject is not IGateInfoProvider gateInfoProvider)
+        {
+            Debug.WriteLine("Invalid drop object");
+            return false;
+        }
+
+        int quBitIndex = this.ToQuBitIndex(point); 
+        if (quBitIndex == -1 )
         {
             // outside qubit area: reject
             return false;
@@ -85,8 +90,8 @@ public sealed class StageViewModel : Bindable<StageView>
         // Can't drop a binary or ternary gate on last qubit 
         if (!gateInfoProvider.Gate.IsUnary)
         {
-            int qubitIndex = (int)Math.Floor(offset);
-            if (qubitIndex >= computer.QuBitsCount - 1)
+            var computer = this.quanticsStudioModel.QuComputer;
+            if (quBitIndex >= computer.QuBitsCount - 1)
             {
                 return false;
             }
@@ -95,18 +100,28 @@ public sealed class StageViewModel : Bindable<StageView>
         return true;
     }
 
-    public void OnDrop(Point point, IGateInfoProvider gateInfoProvider)
+    public void OnDrop(Point point, object droppedObject)
     {
+        if (droppedObject is not IGateInfoProvider gateInfoProvider)
+        {
+            return;
+        }
+
         if (!this.CanDrop(point, gateInfoProvider))
         {
             return;
         }
 
-        // 600 pixels for 10 qubits ~ Magic numbers !
-        int qubitIndex = (int)Math.Floor(point.Y / 60.0);
+        int quBitIndex = this.ToQuBitIndex(point);
+        if (quBitIndex == -1)
+        {
+            // outside qubit area: reject
+            return;
+        }
+
         if (gateInfoProvider.IsToolbox)
         {
-            this.AddGateAt(new QubitsIndices(qubitIndex), gateInfoProvider.Gate, isDrop: true);
+            this.AddGateAt(new QubitsIndices(quBitIndex), gateInfoProvider.Gate, isDrop: true);
         }
         else
         {
@@ -121,7 +136,7 @@ public sealed class StageViewModel : Bindable<StageView>
             }
             else
             {
-                this.AddGateAt(new QubitsIndices(qubitIndex), gateInfoProvider.Gate, isDrop: true);
+                this.AddGateAt(new QubitsIndices(quBitIndex), gateInfoProvider.Gate, isDrop: true);
             }
         }
     }
@@ -156,10 +171,16 @@ public sealed class StageViewModel : Bindable<StageView>
 
         // 60 pixels for each qubits ~ Magic number!
         var children = this.View.GatesGrid.Children;
-        int qubitIndex = (int)Math.Floor(point.Y / 60.0);
+        int quBitIndex = this.ToQuBitIndex(point);
+        if (quBitIndex == -1)
+        {
+            // outside qubit area: reject
+            return;
+        }
+
 
         // Debug.WriteLine("Drop View at index: " + qubitIndex.ToString());
-        dropTargetView.SetValue(Grid.RowProperty, qubitIndex);
+        dropTargetView.SetValue(Grid.RowProperty, quBitIndex);
 
         if (!children.Contains(dropTargetView))
         {
@@ -315,6 +336,22 @@ public sealed class StageViewModel : Bindable<StageView>
             Debug.WriteLine(ex);
             string uiMessage = "UI Minibars Update: Exception thrown: " + ex.Message;
             this.toaster.Show("Unexpected Error", uiMessage, 4_000, InformationLevel.Error);
+        }
+    }
+
+    private int ToQuBitIndex (Point point)
+    {
+        double y = point.Y - MarginHeight;
+        int qubitIndex = (int)Math.Floor(y / QuBitHeight);
+        var computer = this.quanticsStudioModel.QuComputer;
+        if ((qubitIndex < 0) || (qubitIndex >= computer.QuBitsCount))
+        {
+            // outside qubit area: reject
+            return -1;
+        }
+        else
+        {
+            return qubitIndex;
         }
     }
 

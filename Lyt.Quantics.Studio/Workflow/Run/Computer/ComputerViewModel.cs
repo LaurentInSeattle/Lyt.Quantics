@@ -1,6 +1,6 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
 
-public sealed partial class ComputerViewModel : Bindable<ComputerView>
+public sealed partial class ComputerViewModel : Bindable<ComputerView> , IDropTarget
 {
     private readonly QsModel quanticsStudioModel;
     private readonly IToaster toaster;
@@ -394,12 +394,36 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
     }
 
 #pragma warning disable CA1822 // Mark members as static
-    public bool CanDrop(Point _, IGateInfoProvider gateInfoProvider)
-        => !gateInfoProvider.IsToolbox;
-#pragma warning restore CA1822 
+    //public bool CanDrop(Point _, IGateInfoProvider gateInfoProvider)
+    //    => !gateInfoProvider.IsToolbox;
 
-    public void OnDrop(Point _, IGateInfoProvider gateInfoProvider)
+    //public void OnDrop(Point _, IGateInfoProvider gateInfoProvider)
+    //{
+    //    if (gateInfoProvider.IsToolbox)
+    //    {
+    //        return;
+    //    }
+
+    //    this.Remove(gateInfoProvider);
+    //}
+
+    public bool CanDrop(Point point, object droppedObject)
     {
+        if (droppedObject is not IGateInfoProvider gateInfoProvider)
+        {
+            return false;
+        }
+
+        return !gateInfoProvider.IsToolbox;
+    }
+
+    public void OnDrop(Point point, object droppedObject)
+    {
+        if (droppedObject is not IGateInfoProvider gateInfoProvider)
+        {
+            return;
+        }
+
         if (gateInfoProvider.IsToolbox)
         {
             return;
@@ -407,6 +431,9 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
 
         this.Remove(gateInfoProvider);
     }
+
+#pragma warning restore CA1822 
+
 
     private void Remove(IGateInfoProvider gateInfoProvider)
     {

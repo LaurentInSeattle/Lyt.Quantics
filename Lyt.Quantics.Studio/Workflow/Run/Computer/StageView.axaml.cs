@@ -1,6 +1,6 @@
 namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
 
-public partial class StageView : UserControl
+public partial class StageView : BehaviorEnabledUserControl
 {
     private static readonly DropTargetView dropTargetView;
     private static StageView? dropTargetViewOwner;
@@ -20,91 +20,39 @@ public partial class StageView : UserControl
         dropTargetViewOwner = null;
     }
 
+    public static bool ShowDropTarget(IDropTarget dropTarget, Point position)
+    {
+        if ((dropTarget is not StageViewModel stageViewModel) || !stageViewModel.IsBound)
+        {
+            return false;
+        } 
+
+        var stageView = stageViewModel.View;
+        if (dropTargetViewOwner is not null && dropTargetViewOwner != stageView)
+        {
+            HideDropTarget();
+        }
+
+        stageViewModel.ShowDropTarget(dropTargetView, position);
+        dropTargetViewOwner = stageView;
+
+        return true;
+    }
+
     public StageView()
     {
         this.InitializeComponent();
-        this.DataContextChanged += this.OnStageViewDataContextChanged;
-        this.AddHandler(DragDrop.DragOverEvent, this.OnDragOver);
-        this.AddHandler(DragDrop.DropEvent, this.OnDrop);
-    }
 
-    private void OnStageViewDataContextChanged(object? sender, EventArgs e)
-    {
-        if (this.DataContext is StageViewModel stageViewModel)
-        {
-            stageViewModel.BindOnDataContextChanged(this);
-        }
-    }
-
-    private void OnDragOver(object? sender, DragEventArgs dragEventArgs)
-    {
-        // Debug.WriteLine("Dragging over stage view");
-
-        bool addedDropTarget = false; 
-        dragEventArgs.DragEffects = DragDropEffects.None;
-        var data = dragEventArgs.Data;
-        object? dragDropObject = data.Get(ConstructedGateViewModel.CustomDragAndDropFormat); 
-        if (dragDropObject is IDragAbleBindable draggableBindable)
-        {
-            // Debug.WriteLine("Drag object is IDraggableBindable");
-            var draggable = draggableBindable.DragAble;
-            draggable?.OnParentDragOver(dragEventArgs);
-            if (this.DataContext is StageViewModel stageViewModel)
+        this.DataContextChanged +=
+            (s, e) =>
             {
-                if (dragDropObject is IGateInfoProvider gateInfoProvider)
+                if (this.DataContext is StageViewModel stageViewModel)
                 {
-                    // Debug.WriteLine("Drag object is IGateInfoProvider");
-                    var position = dragEventArgs.GetPosition(this);
-                    if (stageViewModel.CanDrop(position, gateInfoProvider))
-                    {
-                        // Debug.WriteLine("Drag object can be dropped ");
-                        dragEventArgs.DragEffects = DragDropEffects.Move;
-
-                        if (dropTargetViewOwner is not null && dropTargetViewOwner != this)
-                        {
-                            HideDropTarget();
-                        } 
-                            
-                        this.ShowDropTarget(stageViewModel, position);
-                        addedDropTarget = true; 
-                    }
-                    else
-                    {
-                        // Debug.WriteLine("Drop rejected ");
-                    }
+                    stageViewModel.BindOnDataContextChanged(this);
                 }
 
-            }
-
-            if ( ! addedDropTarget)
-            {
-                HideDropTarget();
-            }
-
-            // Must do this below so that the computer view is not corrupting the effect
-            dragEventArgs.Handled = true;
-            // Debug.WriteLine("Event handled: Dragging over stage view");
-        }
-    }
-
-    private void OnDrop(object? sender, DragEventArgs dragEventArgs)
-    {
-        var data = dragEventArgs.Data.Get(ConstructedGateViewModel.CustomDragAndDropFormat);
-        if (data is IGateInfoProvider gateInfoProvider)
-        {
-            if (this.DataContext is StageViewModel stageViewModel)
-            {
-                stageViewModel.OnDrop(dragEventArgs.GetPosition(this), gateInfoProvider);
-                dragEventArgs.Handled = true;
-            }
-        }
-
-        HideDropTarget();
-    }
-
-    private void ShowDropTarget(StageViewModel stageViewModel, Point position)
-    {
-        stageViewModel.ShowDropTarget(dropTargetView, position);
-        dropTargetViewOwner = this;
+                new DragOverAble(StageView.HideDropTarget, StageView.ShowDropTarget).Attach(this);
+                new DropAble(StageView.HideDropTarget).Attach(this);
+            };
     }
 }
