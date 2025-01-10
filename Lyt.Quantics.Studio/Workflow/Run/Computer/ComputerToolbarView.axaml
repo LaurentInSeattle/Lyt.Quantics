@@ -23,7 +23,7 @@
 			<ColumnDefinition Width="190" />
 			<!-- Run Control -->
 			<ColumnDefinition Width="72" />
-			<ColumnDefinition Width="72" />
+			<ColumnDefinition Width="0" />
 			<ColumnDefinition Width="72" />
 			<!-- Spacer -->
 			<ColumnDefinition Width="24" />
@@ -69,8 +69,6 @@
 			Text="Pack Stages"
 			Command="{Binding PackStagesCommand}"
 	    	/>
-		
-
 		<toggle:ToggleSwitch
 			x:Name="IsHiddenSwitch"
 			Grid.Column="3"
@@ -94,19 +92,6 @@
 			GlyphStrokeThickness="0"
 			Text="Reset"
 			Command="{Binding ResetCommand}"
-	    	/>
-		<glyphs:GlyphButton
-			Grid.Column="5"
-			Style="{StaticResource ToolbarIconButton}"
-			Behaviour="Tap"
-			HorizontalAlignment="Center" VerticalAlignment="Center"
-			Width="64" Height="48"
-			Margin="4"
-			GlyphSource="step"
-			ButtonBackground="BorderlessRectangle"
-			GlyphStrokeThickness="0"
-			Text="Step"
-			Command="{Binding StepCommand}"
 	    	/>
 		<glyphs:GlyphButton
 			Grid.Column="6"

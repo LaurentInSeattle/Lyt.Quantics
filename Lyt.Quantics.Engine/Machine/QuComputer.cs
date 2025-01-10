@@ -11,7 +11,6 @@ public sealed partial class QuComputer
     private bool isValid;
     private bool isBuilt;
     private bool isPrepared;
-    private bool isStepping;
     private bool isRunning;
     private bool isComplete;
 
@@ -111,18 +110,10 @@ public sealed partial class QuComputer
             this.isPrepared = value;
             if (!value)
             {
-                this.IsStepping = false;
                 this.IsRunning = false;
                 this.IsComplete = false;
             }
         }
-    }
-
-    [JsonIgnore]
-    public bool IsStepping
-    {
-        get => this.isStepping;
-        private set => this.isStepping = value;
     }
 
     [JsonIgnore]
@@ -329,46 +320,6 @@ public sealed partial class QuComputer
         }
 
         return this.Validate(out message);
-    }
-
-    public bool Step(out string message)
-    {
-        if (this.IsRunning)
-        {
-            message = "Step: Machine is running: Can't Step.";
-            return false;
-        }
-
-        if (this.IsComplete)
-        {
-            message = "Step: Machine is in Complete State: Invoke Prepare before Stepping";
-            return false;
-        }
-
-        if (!this.IsPrepared)
-        {
-            message = "Step: Machine has not been prepared: Invoke Prepare before Stepping";
-            return false;
-        }
-
-        this.IsStepping = true;
-        message = string.Empty;
-        try
-        {
-            // stepping
-            this.DoStep(out message);
-        }
-        catch (Exception ex)
-        {
-            message = string.Concat("Step: Exception thrown: " + ex.Message);
-            return false;
-        }
-        finally
-        {
-            this.IsStepping = false;
-        }
-
-        return true;
     }
 
     private bool DoStep(out string message)

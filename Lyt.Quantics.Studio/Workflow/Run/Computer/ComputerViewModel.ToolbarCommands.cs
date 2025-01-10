@@ -27,8 +27,6 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
 
             case ToolbarCommand.Reset: this.OnReset(); break;
 
-            case ToolbarCommand.Step: this.OnRun(); break;
-
             case ToolbarCommand.Run: this.OnRun(); break;
 
             case ToolbarCommand.Save: this.OnSave(); break;

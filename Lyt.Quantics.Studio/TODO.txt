@@ -54,9 +54,7 @@ TODO: Studio :
 	Nicer app icon 
 	
 	Nicer Measure icon 
-	
-	Implement Stepping on UI 
-	
+		
 	Monospaced font for labels in the Amplitudes view
 
 	??? Export circuits to Q# or other languges 

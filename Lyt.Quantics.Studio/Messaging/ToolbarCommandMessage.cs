@@ -11,7 +11,6 @@ public sealed record class ToolbarCommandMessage(
         PackStages,
         HideProbabilities, 
         Reset,
-        Step,
         Run,
         Save,
         SaveToFile,

@@ -16,8 +16,6 @@ public sealed class ComputerToolbarViewModel : Bindable<ComputerToolbarView>
 
     private void OnReset(object? _) => Command(ToolbarCommand.Reset);
 
-    private void OnStep(object? _) => Command(ToolbarCommand.Step);
-
     private void OnRun(object? _) => Command(ToolbarCommand.Run);
 
     private void OnSave(object? _) => Command(ToolbarCommand.Save);
@@ -34,8 +32,6 @@ public sealed class ComputerToolbarViewModel : Bindable<ComputerToolbarView>
 
     public ICommand ResetCommand { get => this.Get<ICommand>()!; set => this.Set(value); }
 
-    public ICommand StepCommand { get => this.Get<ICommand>()!; set => this.Set(value); }
-
     public ICommand RunCommand { get => this.Get<ICommand>()!; set => this.Set(value); }
 
     public ICommand SaveCommand { get => this.Get<ICommand>()!; set => this.Set(value); }
@@ -51,5 +47,4 @@ public sealed class ComputerToolbarViewModel : Bindable<ComputerToolbarView>
             Command(ToolbarCommand.HideProbabilities, value);
         }
     }
-
 }
