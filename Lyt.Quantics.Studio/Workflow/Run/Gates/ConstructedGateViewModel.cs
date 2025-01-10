@@ -84,8 +84,8 @@ public sealed class ConstructedGateViewModel : GateViewModelBase<ConstructedGate
 
         if (!this.IsGhost)
         {
-            this.Draggable = new Draggable();
-            this.Draggable.Attach(this.View);
+            this.DragAble = new DragAble();
+            this.DragAble.Attach(this.View);
             this.View.Content = this.contentGrid;
             this.View.InvalidateVisual();
         }

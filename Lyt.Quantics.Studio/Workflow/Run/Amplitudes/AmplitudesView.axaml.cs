@@ -13,9 +13,9 @@ public partial class AmplitudesView : UserControl
     {
         dragEventArgs.DragEffects = DragDropEffects.None;
         var data = dragEventArgs.Data;
-        if (data.Get(ConstructedGateViewModel.CustomDragAndDropFormat) is IDraggableBindable draggableBindable)
+        if (data.Get(ConstructedGateViewModel.CustomDragAndDropFormat) is IDragAbleBindable draggableBindable)
         {
-            var draggable = draggableBindable.Draggable; 
+            var draggable = draggableBindable.DragAble; 
             draggable?.OnParentDragOver(dragEventArgs);
         }
 

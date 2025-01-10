@@ -44,10 +44,10 @@ public partial class StageView : UserControl
         dragEventArgs.DragEffects = DragDropEffects.None;
         var data = dragEventArgs.Data;
         object? dragDropObject = data.Get(ConstructedGateViewModel.CustomDragAndDropFormat); 
-        if (dragDropObject is IDraggableBindable draggableBindable)
+        if (dragDropObject is IDragAbleBindable draggableBindable)
         {
             // Debug.WriteLine("Drag object is IDraggableBindable");
-            var draggable = draggableBindable.Draggable;
+            var draggable = draggableBindable.DragAble;
             draggable?.OnParentDragOver(dragEventArgs);
             if (this.DataContext is StageViewModel stageViewModel)
             {

@@ -2,7 +2,8 @@
 
 using global::Avalonia.Input;
 
-public sealed class Draggable : BehaviorBase<BehaviorEnabledUserControl>
+/// <summary> Behaviour for objects that are dragged around. </summary>
+public sealed class DragAble : BehaviorBase<BehaviorEnabledUserControl>
 {
     private const int LongPressDelay = 777; // milliseconds
 
@@ -13,7 +14,7 @@ public sealed class Draggable : BehaviorBase<BehaviorEnabledUserControl>
     private bool isDragging;
     private PointerPoint pointerPressedPoint;
     private UserControl? ghostView;
-    private IDraggableBindable? draggableBindable;
+    private IDragAbleBindable? draggableBindable;
     private DispatcherTimer? timer;
 
     protected override void OnAttached()
@@ -27,7 +28,7 @@ public sealed class Draggable : BehaviorBase<BehaviorEnabledUserControl>
 
     public BehaviorEnabledUserControl UserControl => this.GuardAssociatedObject();
 
-    public IDraggableBindable DraggableBindable
+    public IDragAbleBindable DraggableBindable
     {
         get => this.draggableBindable is not null ?
             this.draggableBindable :
@@ -52,7 +53,7 @@ public sealed class Draggable : BehaviorBase<BehaviorEnabledUserControl>
         var userControl = this.AssociatedObject as BehaviorEnabledUserControl;
         if ((userControl is null) ||
             (userControl.DataContext is null) ||
-            (userControl.DataContext is not IDraggableBindable iDraggableBindable))
+            (userControl.DataContext is not IDragAbleBindable iDraggableBindable))
         {
             throw new InvalidOperationException("Not attached or invalid asociated object.");
         }

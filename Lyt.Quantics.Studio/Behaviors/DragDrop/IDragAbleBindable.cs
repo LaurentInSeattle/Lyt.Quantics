@@ -1,6 +1,7 @@
 ﻿namespace Lyt.Quantics.Studio.Behaviors.DragDrop; 
 
-public interface IDraggableBindable
+/// <summary> Interface contract for bindables (VM) that have a view that can be dragged </summary>
+public interface IDragAbleBindable
 {
     void OnEntered();
 
@@ -16,5 +17,5 @@ public interface IDraggableBindable
 
     string DragDropFormat { get; }
 
-    Draggable? Draggable { get; }
+    DragAble? DragAble { get; }
 }

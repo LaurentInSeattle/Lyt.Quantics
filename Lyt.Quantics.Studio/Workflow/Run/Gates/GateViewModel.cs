@@ -11,7 +11,7 @@ public sealed class GateViewModel : GateViewModelBase<GateView>
     {
         if (!this.IsGhost)
         {
-            this.Draggable = new Draggable();
+            this.DragAble = new DragAble();
         }
 
         this.Name = gate.CaptionKey.Replace("dg", "\u2020");
@@ -104,9 +104,9 @@ public sealed class GateViewModel : GateViewModelBase<GateView>
     {
         base.OnViewLoaded();
 
-        if (!this.IsGhost && this.Draggable is not null)
+        if (!this.IsGhost && this.DragAble is not null)
         {
-            this.Draggable.Attach(this.View);
+            this.DragAble.Attach(this.View);
             this.View.InvalidateVisual();
         }
     }

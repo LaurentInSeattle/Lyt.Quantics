@@ -1,7 +1,7 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Gates;
 
 public abstract class GateViewModelBase<TView> 
-    : Bindable<TView>, IDraggableBindable, IGateInfoProvider
+    : Bindable<TView>, IDragAbleBindable, IGateInfoProvider
     where TView : Control, new()
 {
     public const string CustomDragAndDropFormat = "GateViewModel";
@@ -47,7 +47,7 @@ public abstract class GateViewModelBase<TView>
 
     #region IDraggableBindable Implementation 
 
-    public Draggable? Draggable { get; protected set; }
+    public DragAble? DragAble { get; protected set; }
 
     public string DragDropFormat => GateViewModelBase<TView>.CustomDragAndDropFormat;
 
