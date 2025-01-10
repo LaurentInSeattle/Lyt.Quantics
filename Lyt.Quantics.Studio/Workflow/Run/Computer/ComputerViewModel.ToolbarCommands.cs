@@ -63,21 +63,28 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
 
     private void RemoveQubit(int count)
     {
+        if (this.quanticsStudioModel.QuComputer.Stages.Count == 0)
+        {
+            this.toaster.Show(
+                "Empty Computer", "No stages, Qubit cannot be removed.",
+                4_000, InformationLevel.Warning);
+            return;
+        }
+
         if (count == 1)
         {
             this.toaster.Show(
                 "Last Qubit!", "The last Qubit cannot be removed.",
                 4_000, InformationLevel.Warning);
+            return;
         }
-        else if (count > 1)
+
+        if (this.quanticsStudioModel.RemoveLastQubit(count, out string message))
         {
-            if (this.quanticsStudioModel.RemoveLastQubit(count, out string message))
-            {
-            }
-            else
-            {
-                this.toaster.Show("Failed to Remove last Qubit!", message, 4_000, InformationLevel.Error);
-            }
+        }
+        else
+        {
+            this.toaster.Show("Failed to Remove last Qubit!", message, 4_000, InformationLevel.Error);
         }
     }
 
@@ -89,7 +96,6 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
             this.quanticsStudioModel.HideMinibarsUserOption = hideMinibars;
             stage.UpdateUiMinibars();
         }
-
     }
 
     private void OnPackStages()

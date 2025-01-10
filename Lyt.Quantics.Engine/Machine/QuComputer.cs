@@ -176,7 +176,7 @@ public sealed partial class QuComputer
             return false;
         }
 
-        if (this.QuBitsCount > 10)
+        if (this.QuBitsCount > QuRegister.MaxQubits)
         {
             message = "Validate: Intractable QuBit count. (>10)";
             return false;
