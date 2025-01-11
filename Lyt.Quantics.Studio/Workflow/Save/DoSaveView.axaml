@@ -40,6 +40,7 @@
                 />
 		<TextBox
 			x:Name="NameTextBox"
+			FontFeatures="-calt" 
 			Grid.Row="1"
 			VerticalAlignment="Center" HorizontalAlignment="Stretch"
 			Watermark="A name for this computer"
@@ -57,9 +58,10 @@
 			FontSize="14"
 			Margin="6 0 0 0"
 			IsHitTestVisible="False"
-                />
+            />
 		<TextBox
 			x:Name="DescriptionTextBox"
+			FontFeatures="-calt" 
 			Grid.Row="3"
 			VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
 			Watermark="What this this computer is doing? "
