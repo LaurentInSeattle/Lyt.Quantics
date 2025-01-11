@@ -7,7 +7,6 @@ public sealed record class ViewActivationMessage(
     {
         Intro,
         Load, 
-        Save, 
         Run,
 
         GoBack,

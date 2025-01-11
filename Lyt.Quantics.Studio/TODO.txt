@@ -23,7 +23,6 @@ TODO: Studio :
 
 	Priorities:	
 		Finalize support for creation of controlled gates from unary ones 
-		Save view (because it's a view, not a dialog) cannot be cancelled with Escape.
 
 	BUG: Can't dismiss toasts in Computer view 
 
@@ -32,8 +31,6 @@ TODO: Studio :
 	BUG: Incorrect behaviour of the "Regular/Test" switch after closing a circuit.
 
 	BUG: Amplitudes histogram shows up after loading another model.
-
-	Ability to add or remove qubits at index 0 with shift key 
 
 	Show "wave function" in Amplitude view (See in QRyd)
 
@@ -54,6 +51,8 @@ TODO: Studio :
 	Nicer Measure icon 
 		
 	Monospaced font for labels in the Amplitudes view
+
+	??? Ability to add or remove qubits at index 0 with shift key 
 
 	??? Export circuits to Q# or other languges 
 

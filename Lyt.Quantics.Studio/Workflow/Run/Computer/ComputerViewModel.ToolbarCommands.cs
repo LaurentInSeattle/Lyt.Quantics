@@ -159,7 +159,11 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
     {
         try
         {
-            ActivateView(ActivatedView.Save);
+            // Run modal dialog to save computer model - no parameters, no closing action  
+            if (this.dialogService is DialogService modalService)
+            {
+                modalService.RunModal(this.View.ToasterHost, new SaveDialogModel());
+            }
         }
         catch (Exception ex)
         {
@@ -209,8 +213,12 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
     {
         if (!confirmed)
         {
-            // Move to save view 
-            ActivateView(ActivatedView.Save);
+            // Run modal dialog to save computer model - no parameters, no closing action  
+            if (this.dialogService is DialogService modalService)
+            {
+                modalService.RunModal(this.View.ToasterHost, new SaveDialogModel());
+            }
+
             return;
         }
 

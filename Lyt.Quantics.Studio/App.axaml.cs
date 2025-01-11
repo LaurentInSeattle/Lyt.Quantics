@@ -27,7 +27,6 @@ public partial class App : ApplicationBase
            typeof(IntroViewModel),
            typeof(LoadViewModel),
            typeof(RunViewModel),
-           typeof(SaveViewModel),
         ],
         [
             // Services 

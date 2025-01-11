@@ -92,8 +92,12 @@ public sealed class ShellViewModel : Bindable<ShellView>
     {
         if (!confirmed)
         {
-            // Move to save view 
-            ActivateView(ActivatedView.Save);
+            // Run modal dialog to save computer model - no parameters, no closing action  
+            if (this.dialogService is DialogService modalService)
+            {
+                modalService.RunModal(this.View.ToasterHost, new SaveDialogModel());
+            }
+
             return;
         }
 
@@ -136,10 +140,6 @@ public sealed class ShellViewModel : Bindable<ShellView>
 
             case ActivatedView.Run:
                 this.Activate<RunViewModel, RunView>(isFirstActivation, parameter);
-                break;
-
-            case ActivatedView.Save:
-                this.Activate<SaveViewModel, SaveView>(isFirstActivation, null);
                 break;
         }
     }
@@ -185,7 +185,6 @@ public sealed class ShellViewModel : Bindable<ShellView>
         }
 
         CreateAndBind<IntroViewModel, IntroView>();
-        CreateAndBind<SaveViewModel, SaveView>();
         CreateAndBind<LoadViewModel, LoadView>();
         CreateAndBind<RunViewModel, RunView>();
     }
@@ -198,7 +197,9 @@ public sealed class ShellViewModel : Bindable<ShellView>
 /*
  *
 
- Could be useful later... For now: Do not delete  
+    Could be useful later... 
+
+    For now: Do not delete just yet 
 
     //private void OnModelUpdated(ModelUpdateMessage message)
     //{
