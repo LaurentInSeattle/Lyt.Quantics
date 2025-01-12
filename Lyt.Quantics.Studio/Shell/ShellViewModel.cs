@@ -102,6 +102,7 @@ public sealed class ShellViewModel : Bindable<ShellView>
             // Run modal dialog to save computer model - no parameters, no closing action  
             if (this.dialogService is DialogService modalService)
             {
+                modalService.Dismiss();
                 modalService.RunModal(this.View.ToasterHost, new SaveDialogModel());
             }
 

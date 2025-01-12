@@ -1,4 +1,4 @@
-﻿namespace Lyt.Quantics.Studio.Workflow.Run.Gates;
+﻿namespace Lyt.Quantics.Studio.Workflow.Run.Toolbox;
 
 public sealed class GatesViewModel : Bindable<GatesView>
 {
@@ -10,8 +10,8 @@ public sealed class GatesViewModel : Bindable<GatesView>
         this.DisablePropertyChangedLogging = true;
 
         // Do not use Injection directly as this is loaded programmatically by the RunView 
-        this.quanticsStudioModel = App.GetRequiredService<QsModel>();
-        this.toaster = App.GetRequiredService<IToaster>();
+        this.quanticsStudioModel = ApplicationBase.GetRequiredService<QsModel>();
+        this.toaster = ApplicationBase.GetRequiredService<IToaster>();
         this.Messenger.Subscribe<GateHoverMessage>(this.OnGateHover);
     }
 
@@ -22,11 +22,11 @@ public sealed class GatesViewModel : Bindable<GatesView>
         // Load the gates symbols in the 'toolbox' 
         // Sort and reorder by categories skipping the X special ones
         var gates =
-            (from gate in QsModel.Gates
-             where (gate.Category != GateCategory.X_Special) && (gate.CaptionKey != "I")
+            from gate in QsModel.Gates
+             where gate.Category != GateCategory.X_Special && gate.CaptionKey != "I"
              orderby gate.Category.ToString() ascending,
              gate.CaptionKey ascending
-             select gate);
+             select gate;
         var list = new List<GateViewModel>(gates.Count());
         foreach (var gate in gates)
         {
@@ -37,7 +37,7 @@ public sealed class GatesViewModel : Bindable<GatesView>
     }
 
 #pragma warning disable CA1822 // Mark members as static
-    public bool CanDrop(Point _, IGateInfoProvider gateInfoProvider) 
+    public bool CanDrop(Point _, IGateInfoProvider gateInfoProvider)
         => !gateInfoProvider.IsToolbox;
 #pragma warning restore CA1822 
 

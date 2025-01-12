@@ -57,6 +57,9 @@ public sealed class GateEditAngleDialogModel
         var stageOperator = stage.StageOperatorAt(this.GateInfoProvider.QubitsIndices);
         this.GateParameters = stageOperator.GateParameters;
 
+        this.IsMakeControlled = false;
+        this.MakeControlledButtonIsEnabled = gate.IsMutable; 
+
         bool isRotation = false;
         if (gate is RotationGate rotationGate)
         {
@@ -247,6 +250,16 @@ public sealed class GateEditAngleDialogModel
         {
             this.Set(value);
             this.View.SaveButton.IsDisabled = !value;
+        }
+    }
+
+    public bool MakeControlledButtonIsEnabled
+    {
+        get => this.Get<bool>();
+        set
+        {
+            this.Set(value);
+            this.View.MakeControlledButton.IsDisabled = !value;
         }
     }
 }

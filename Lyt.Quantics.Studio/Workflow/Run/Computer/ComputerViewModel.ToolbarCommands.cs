@@ -216,6 +216,8 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
             // Run modal dialog to save computer model - no parameters, no closing action  
             if (this.dialogService is DialogService modalService)
             {
+                // Need to dismiss in some cases
+                modalService.Dismiss();
                 modalService.RunModal(this.View.ToasterHost, new SaveDialogModel());
             }
 

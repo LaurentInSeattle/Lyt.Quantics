@@ -1,4 +1,4 @@
-namespace Lyt.Quantics.Studio.Workflow.Run.Gates;
+namespace Lyt.Quantics.Studio.Workflow.Run.Toolbox;
 
 public partial class GatesToolbarView : UserControl
 {

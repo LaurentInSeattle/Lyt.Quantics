@@ -24,21 +24,20 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
 
             var gateInfoProvider = message.GateInfoProvider;
             var gate = gateInfoProvider.Gate;
-            bool isUnary = gate.QuBitsTransformed == 1;
             bool isBinary = gate.QuBitsTransformed == 2;
             bool isTernary = gate.QuBitsTransformed == 3;
-            bool isNotControlled = !gate.IsControlled;
+            bool isMutable = gate.IsMutable;
             bool launchQubitEditor =
                 // Edit Targets for swap 
                 (isBinary && gate.TargetQuBits == 2) ||
                 // Edit control and target for binary 
-                (isBinary && !isNotControlled) ||
+                (isBinary && !isMutable) ||
                 // All ternary gates are controlled or can be edited 
                 isTernary;
             if (gate.HasAngleParameter)
             {
                 // Special click: Go direct to the controlled gate dialog, if possible 
-                if (message.WithModifier && isUnary && isNotControlled)
+                if (message.WithModifier && isMutable)
                 {
                     this.LaunchGateEditControlDialog(gateInfoProvider);
                 }
@@ -48,7 +47,7 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
                     this.LaunchGateEditAngleDialog(gateInfoProvider);
                 }
             }
-            else if (isUnary && isNotControlled)
+            else if (isMutable)
             {
                 // Create a controlled gate
                 this.LaunchGateEditControlDialog(gateInfoProvider);
