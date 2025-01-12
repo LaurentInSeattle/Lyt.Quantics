@@ -61,6 +61,13 @@ public sealed class ShellViewModel : Bindable<ShellView>
     /// <returns> True to close immediately </returns>
     public bool CanClose ()
     {
+        var keyboard = App.GetRequiredService<Keyboard>();
+        if (keyboard.Modifiers.HasFlag(KeyModifiers.Shift))
+        {
+            // Do not check for dirtiness when "shifting" 
+            return true;
+        } 
+
         if (this.quanticsStudioModel.IsDirty)
         {
             if (this.dialogService.IsModal)

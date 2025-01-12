@@ -84,6 +84,10 @@ public sealed class GateViewModel : GateViewModelBase<GateView>
             _ => Brushes.DarkRed,
         };
 
+    // The special gates are here only for display in the toolbox
+    // We use ConstructedGate in the circuit view 
+    // CS is the exception that should disappear when Constructed Gate is able to 
+    // display a more general Controlled Gate 
     public static Control? SpecialGateToControl(string gateCaptionKey)
         => gateCaptionKey switch
         {
