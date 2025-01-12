@@ -1,4 +1,4 @@
-﻿namespace Lyt.Quantics.Engine.Gates.Base;
+﻿namespace Lyt.Quantics.Engine.Gates.UnaryParametrized;
 
 public class ControlledGate : Gate
 {
@@ -67,11 +67,13 @@ public class ControlledGate : Gate
 
     public override Matrix<Complex> Matrix => this.matrix;
 
-    public override string Name => "Controlled " + this.baseCaptionKey;
+    public override string Description => "Controlled " + this.BaseGate.Description;
+
+    public override string Name => "Controlled " + this.BaseGate.Name;
 
     public override string AlternateName => this.Name;
 
-    public override string CaptionKey => "C_" + this.baseCaptionKey;
+    public override string CaptionKey => "C" + this.baseCaptionKey;
 
     public override GateCategory Category => GateCategory.X_Special;
 }

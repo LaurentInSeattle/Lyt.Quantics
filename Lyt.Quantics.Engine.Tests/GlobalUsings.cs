@@ -24,19 +24,14 @@ global using System.Windows.Input;
 
 #endregion System 
 
-global using System.Numerics.Tensors;
-
-global using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
-
 global using MathNet.Numerics;
 global using MathNet.Numerics.LinearAlgebra;
 
-
-// LATER: global using Lyt.Quantics.Engine.Algorithms;
 global using Lyt.Quantics.Engine.Core;
 global using Lyt.Quantics.Engine.Gates;
 global using Lyt.Quantics.Engine.Gates.Base;
 global using Lyt.Quantics.Engine.Gates.Unary;
+global using Lyt.Quantics.Engine.Gates.UnaryParametrized;
 global using Lyt.Quantics.Engine.Gates.Binary;
 global using Lyt.Quantics.Engine.Gates.Ternary;
 global using Lyt.Quantics.Engine.Machine;

@@ -25,6 +25,8 @@ public sealed class HadamardGate : Gate
         HadamardGateMatrix = matrix.Divide(SqrtOfTwo);
     }
 
+    public override bool IsMutable => true;
+
     public override Matrix<Complex> Matrix => HadamardGate.HadamardGateMatrix;
 
     public override string Description => "The Hadamard Gate";

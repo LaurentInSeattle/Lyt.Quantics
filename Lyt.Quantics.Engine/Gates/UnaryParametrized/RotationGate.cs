@@ -1,4 +1,4 @@
-﻿namespace Lyt.Quantics.Engine.Gates.Base;
+﻿namespace Lyt.Quantics.Engine.Gates.UnaryParametrized;
 
 public class RotationGate : Gate
 {
@@ -19,7 +19,8 @@ public class RotationGate : Gate
     //  exp(iAx)=cos⁡(x)I+isin⁡(x)A exp(iAx)=cos(x)I+isin(x)A  where A is one of the three
     //  Pauli Matrices.
 
-    private readonly Matrix<Complex> matrix = Matrix<Complex>.Build.Dense(1,1);
+    private readonly Matrix<Complex> matrix = Matrix<Complex>.Build.Dense(1, 1);
+
     private readonly string captionKey = string.Empty;
 
     public RotationGate(GateParameters parameters)
@@ -41,7 +42,7 @@ public class RotationGate : Gate
         {
             this.AngleParameterCaption = this.Angle.ToString("F2");
         }
-         
+
 
         double half = this.Angle / 2.0;
         double sinReal = Math.Sin(half);
@@ -81,6 +82,8 @@ public class RotationGate : Gate
         }
     }
 
+    public override bool IsMutable => true;
+
     public override Axis Axis { get; set; }
 
     public override double Angle { get; set; }
@@ -97,8 +100,8 @@ public class RotationGate : Gate
 
     public override Matrix<Complex> Matrix => this.matrix;
 
-    public override string Description => 
-        string.Format ( "The {0} Rotation Gate. (rotation angle editable)", this.Axis.ToString());
+    public override string Description =>
+        string.Format("The {0} Rotation Gate. (rotation angle editable)", this.Axis.ToString());
 
     public override string Name => "Rotation Gate";
 

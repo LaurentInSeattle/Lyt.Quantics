@@ -19,6 +19,8 @@ public sealed class PauliYGate : Gate
         PauliYGateMatrix.At(1, 0, Complex.ImaginaryOne);
     }
 
+    public override bool IsMutable => true;
+
     public override Matrix<Complex> Matrix => PauliYGate.PauliYGateMatrix;
 
     public override string Description => "The Pauli Y Gate";

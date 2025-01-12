@@ -31,6 +31,8 @@ public sealed class T_Gate : Gate
         T_GateMatrix.At(1, 1, complex);
     }
 
+    public override bool IsMutable => true;
+
     public override Matrix<Complex> Matrix => T_Gate.T_GateMatrix;
 
     public override string Description => "The T Gate, aka π/4 Phase Gate";

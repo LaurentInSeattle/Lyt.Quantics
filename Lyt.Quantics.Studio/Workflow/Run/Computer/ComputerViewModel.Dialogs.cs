@@ -1,4 +1,6 @@
-﻿namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
+﻿using Lyt.Quantics.Engine.Gates.UnaryParametrized;
+
+namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
 
 public sealed partial class ComputerViewModel : Bindable<ComputerView>
 {

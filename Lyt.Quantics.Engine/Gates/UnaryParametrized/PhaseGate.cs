@@ -1,4 +1,4 @@
-﻿namespace Lyt.Quantics.Engine.Gates.Base;
+﻿namespace Lyt.Quantics.Engine.Gates.UnaryParametrized;
 
 using MathNet.Numerics.LinearAlgebra;
 

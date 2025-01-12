@@ -19,6 +19,9 @@ public sealed class PauliZGate : Gate
         PauliZGateMatrix.At(1, 1, -Complex.One);
     }
 
+    /// <summary> Stays false because we have a built-in CZ gate </summary>
+    public override bool IsMutable => false;
+
     public override Matrix<Complex> Matrix => PauliZGate.PauliZGateMatrix;
 
     public override string Description => "The Pauli Z Gate, aka Phase Flip";

@@ -21,6 +21,9 @@ public sealed class S_Gate : Gate
         S_GateMatrix.At(1, 1, Complex.ImaginaryOne);
     }
 
+    /// <summary> Stays false because we have a built-in CS gate </summary>
+    public override bool IsMutable => false;
+
     public override Matrix<Complex> Matrix => S_Gate.S_GateMatrix;
 
     public override string Description => "The S Gate, aka Phase π/2";

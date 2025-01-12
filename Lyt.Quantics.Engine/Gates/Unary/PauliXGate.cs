@@ -21,6 +21,9 @@ public sealed class PauliXGate : Gate
         PauliXGateMatrix.At(1, 1, Complex.Zero);
     }
 
+    /// <summary> Stays false because we have a built-in CNOT gate </summary>
+    public override bool IsMutable => false;
+
     public override Matrix<Complex> Matrix => PauliXGate.PauliXGateMatrix;
 
     public override string Description => "The Pauli X Gate, aka Negate";

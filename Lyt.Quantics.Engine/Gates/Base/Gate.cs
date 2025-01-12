@@ -43,6 +43,9 @@ public class Gate
         }
     }
 
+    /// <summary> True for Unary gates that can be used to create a controlled gate.</summary>
+    public virtual bool IsMutable => false;
+
     /// <summary> True if the gate is controlling, if control and target qubit indices can be edited </summary>
     /// <remarks> Always false for now. </remarks>
     public virtual bool IsControlling => false;

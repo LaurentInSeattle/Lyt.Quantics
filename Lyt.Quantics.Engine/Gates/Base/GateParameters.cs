@@ -1,4 +1,6 @@
-﻿namespace Lyt.Quantics.Engine.Gates.Base;
+﻿using Lyt.Quantics.Engine.Gates.UnaryParametrized;
+
+namespace Lyt.Quantics.Engine.Gates.Base;
 
 public sealed class GateParameters
 {

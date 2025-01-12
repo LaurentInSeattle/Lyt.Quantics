@@ -18,6 +18,8 @@ public sealed class T_DaggerGate : Gate
         T_DaggerGateMatrix = t_matrix.ConjugateTranspose(); 
     }
 
+    public override bool IsMutable => true;
+
     public override Matrix<Complex> Matrix => T_DaggerGate.T_DaggerGateMatrix;
 
     public override string Description => "The T Dagger Gate.";

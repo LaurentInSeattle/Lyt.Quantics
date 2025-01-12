@@ -30,6 +30,8 @@ public sealed class SX_Gate : Gate
         sX_GateMatrix.At(1, 1, OnePlusIota);
     }
 
+    public override bool IsMutable => true;
+
     public override Matrix<Complex> Matrix => SX_Gate.sX_GateMatrix;
 
     public override string Description => "The SX Gate, aka Square Root of X";
