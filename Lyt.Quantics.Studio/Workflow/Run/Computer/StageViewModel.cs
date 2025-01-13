@@ -80,8 +80,8 @@ public sealed class StageViewModel : Bindable<StageView>, IDropTarget
             return false;
         }
 
-        int quBitIndex = this.ToQuBitIndex(point); 
-        if (quBitIndex == -1 )
+        int quBitIndex = this.ToQuBitIndex(point);
+        if (quBitIndex == -1)
         {
             // outside qubit area: reject
             return false;
@@ -339,7 +339,7 @@ public sealed class StageViewModel : Bindable<StageView>, IDropTarget
         }
     }
 
-    private int ToQuBitIndex (Point point)
+    private int ToQuBitIndex(Point point)
     {
         double y = point.Y - MarginHeight;
         int qubitIndex = (int)Math.Floor(y / QuBitHeight);

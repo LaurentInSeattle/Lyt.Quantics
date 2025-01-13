@@ -1,6 +1,4 @@
-﻿using Lyt.Quantics.Engine.Gates.UnaryParametrized;
-
-namespace Lyt.Quantics.Engine.Gates.Base;
+﻿namespace Lyt.Quantics.Engine.Gates.Base;
 
 public sealed class GateParameters
 {
@@ -25,12 +23,39 @@ public sealed class GateParameters
             this.PiDivisor = phaseGate.PiDivisor;
             this.IsPositive = phaseGate.IsPositive;
         }
+
+        if ( gate is ControlledGate controlledGate)
+        {
+            Gate baseGate = controlledGate.BaseGate;
+            this.BaseGateKey = baseGate.CaptionKey;
+
+            if (baseGate is RotationGate baseRotationGate)
+            {
+                this.Axis = baseRotationGate.Axis;
+
+                this.Angle = baseRotationGate.Angle;
+                this.IsPiDivisor = baseRotationGate.IsPiDivisor;
+                this.PiDivisor = baseRotationGate.PiDivisor;
+                this.IsPositive = baseRotationGate.IsPositive;
+            }
+
+            if (baseGate is PhaseGate basePhaseGate)
+            {
+                this.Angle = basePhaseGate.Angle;
+                this.IsPiDivisor = basePhaseGate.IsPiDivisor;
+                this.PiDivisor = basePhaseGate.PiDivisor;
+                this.IsPositive = basePhaseGate.IsPositive;
+            }
+        }
     }
+
+    /// <summary> Parameter for Controlled Gates </summary>
+    public string BaseGateKey { get; set; } = string.Empty;
 
     /// <summary> Parameter for Rotation Gates </summary>
     public Axis Axis { get; set; } = Axis.X;
 
-    /// <summary> Parameter for Phase Gate and Rotation Gates </summary>
+    /// <summary> Parameters for Phase Gate and Rotation Gates </summary>
     public double Angle { get; set; } = 0.0;
 
     public bool IsPiDivisor { get; set; } = true;

@@ -5,5 +5,5 @@ public interface IDropTarget
 {
     bool CanDrop(Point point, object droppedObject);
 
-    void OnDrop(Point point, object droppedObject); 
+    void OnDrop(Point point, object droppedObject);
 }

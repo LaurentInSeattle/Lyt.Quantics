@@ -7,7 +7,7 @@ public sealed class HistogramViewModel : Bindable<HistogramView>
     public void Update(List<HistogramEntry> entries)
     {
         double max = (from entry in entries select entry.Value).Max();
-        double multiplier = 1.0; 
+        double multiplier = 1.0;
         if (max > 0.50)
         {
             this.Value100 = "100 %";
@@ -64,5 +64,8 @@ public sealed class HistogramViewModel : Bindable<HistogramView>
 
     public string? Value100 { get => this.Get<string?>(); set => this.Set(value); }
 
-    public List<HistogramBarViewModel>? HistogramBars { get => this.Get<List<HistogramBarViewModel>?>(); set => this.Set(value); }
+    public List<HistogramBarViewModel>? HistogramBars
+    {
+        get => this.Get<List<HistogramBarViewModel>?>(); set => this.Set(value);
+    }
 }

@@ -1,7 +1,4 @@
-﻿using Lyt.Quantics.Engine.Gates.UnaryParametrized;
-using Lyt.Quantics.Studio.Workflow.Run.Dialogs;
-
-namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
+﻿namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
 
 public sealed partial class ComputerViewModel : Bindable<ComputerView>
 {
@@ -61,7 +58,7 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
             else
             {
                 // Cannot edit: should rarely happen 
-                this.Logger.Warning("Cannot edit: " + gate.CaptionKey );
+                this.Logger.Warning("Cannot edit: " + gate.CaptionKey);
             }
         }
     }

@@ -2,8 +2,8 @@
 
 public static class BinaryStringUtilities
 {
-    public static string ToBinary(this int number, int bitsLength = 32) 
-        =>  NumberToBinary(number, bitsLength);
+    public static string ToBinary(this int number, int bitsLength = 32)
+        => NumberToBinary(number, bitsLength);
 
     public static string NumberToBinary(int number, int bitsLength = 32)
         => Convert.ToString(number, 2).PadLeft(bitsLength, '0');

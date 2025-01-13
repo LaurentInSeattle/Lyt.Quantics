@@ -19,7 +19,7 @@ public sealed class GateEditControlDialogModel : DialogBindable<GateEditControlD
         base.OnViewLoaded();
 
         var gate = this.GateInfoProvider.Gate;
-        this.Title = string.Format("Mutate '{0}' to Controlled Gate", gate.CaptionKey) ;
+        this.Title = string.Format("Mutate '{0}' to Controlled Gate", gate.CaptionKey);
 
         // Retrieve GateParameters for the existing gate
         var quanticsStudioModel = App.GetRequiredService<QsModel>();

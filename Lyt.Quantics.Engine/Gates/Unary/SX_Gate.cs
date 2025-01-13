@@ -1,7 +1,6 @@
 ﻿namespace Lyt.Quantics.Engine.Gates.Unary;
 
 using MathNet.Numerics.LinearAlgebra;
-using System.Numerics;
 
 public sealed class SX_Gate : Gate
 {

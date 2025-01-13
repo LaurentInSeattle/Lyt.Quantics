@@ -21,7 +21,6 @@ public sealed class DragAble : BehaviorBase<BehaviorEnabledUserControl>
     {
         _ = this.Guard();
         this.HookPointerEvents();
-        //Debug.WriteLine("On attached to: " + this.DraggableBindable.GetType().Name);
     }
 
     protected override void OnDetaching() => this.UnhookPointerEvents();
@@ -37,7 +36,7 @@ public sealed class DragAble : BehaviorBase<BehaviorEnabledUserControl>
     }
 
     private BehaviorEnabledUserControl Guard()
-    {        
+    {
         var userControl = base.GuardAssociatedObject();
         if ((userControl.DataContext is null) ||
             (userControl.DataContext is not IDragAbleBindable iDraggableBindable))
@@ -291,11 +290,11 @@ public sealed class DragAble : BehaviorBase<BehaviorEnabledUserControl>
     private void OnTimerTick(object? sender, EventArgs e)
     {
         this.StopTimer();
-        if( (this.draggableBindable is not null ) &&
-            (this.isPointerPressed) && 
-            (! this.isDragging))
+        if ((this.draggableBindable is not null) &&
+            (this.isPointerPressed) &&
+            (!this.isDragging))
         {
-            this.draggableBindable.OnLongPress(); 
+            this.draggableBindable.OnLongPress();
         }
     }
 

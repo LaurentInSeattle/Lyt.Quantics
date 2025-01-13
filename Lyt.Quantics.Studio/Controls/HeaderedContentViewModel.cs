@@ -4,8 +4,8 @@ public sealed class HeaderedContentViewModel : Bindable<HeaderedContentView>
 {
     public enum CollapseStyle
     {
-        Left, 
-        Right, 
+        Left,
+        Right,
         Top,
         Bottom,
     }
@@ -13,7 +13,7 @@ public sealed class HeaderedContentViewModel : Bindable<HeaderedContentView>
     private readonly CollapseStyle collapseStyle;
 
     public HeaderedContentViewModel(
-        string title, bool canCollapse, 
+        string title, bool canCollapse,
         Control contentView, Control? toolbar,
         CollapseStyle collapseStyle)
     {
@@ -54,14 +54,14 @@ public sealed class HeaderedContentViewModel : Bindable<HeaderedContentView>
 
         // Attach the behavior on the toolbar view model
         var behavior = new DisabledOnModal();
-        behavior.Attach(toolbarVm); 
+        behavior.Attach(toolbarVm);
 
         return headerVm.View;
     }
 
     public void Collapse(bool collapse = true)
     {
-        if ((this.collapseStyle == CollapseStyle.Left)|| (this.collapseStyle == CollapseStyle.Right))
+        if ((this.collapseStyle == CollapseStyle.Left) || (this.collapseStyle == CollapseStyle.Right))
         {
             this.IsSideCollapsed = collapse;
         }
@@ -73,7 +73,7 @@ public sealed class HeaderedContentViewModel : Bindable<HeaderedContentView>
         this.IsExpanded = !collapse;
     }
 
-    private string CollapseIcon ()
+    private string CollapseIcon()
         => this.collapseStyle switch
         {
             CollapseStyle.Top => "chevron_up",

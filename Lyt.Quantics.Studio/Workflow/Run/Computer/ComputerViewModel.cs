@@ -1,6 +1,6 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
 
-public sealed partial class ComputerViewModel : Bindable<ComputerView> , IDropTarget
+public sealed partial class ComputerViewModel : Bindable<ComputerView>, IDropTarget
 {
     private readonly QsModel quanticsStudioModel;
     private readonly IToaster toaster;

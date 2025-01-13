@@ -6,8 +6,8 @@ using static ViewActivationMessage;
 public sealed class ShellViewModel : Bindable<ShellView>
 {
     private readonly IToaster toaster;
-    private readonly IDialogService dialogService; 
-    private readonly QsModel quanticsStudioModel; 
+    private readonly IDialogService dialogService;
+    private readonly QsModel quanticsStudioModel;
 
     public ShellViewModel(
         IDialogService dialogService, IToaster toaster, QsModel quanticsStudioModel)
@@ -59,14 +59,14 @@ public sealed class ShellViewModel : Bindable<ShellView>
 
     /// <summary> Invoked when closing from the application Close X button </summary>
     /// <returns> True to close immediately </returns>
-    public bool CanClose ()
+    public bool CanClose()
     {
         var keyboard = App.GetRequiredService<Keyboard>();
         if (keyboard.Modifiers.HasFlag(KeyModifiers.Shift))
         {
             // Do not check for dirtiness when "shifting" 
             return true;
-        } 
+        }
 
         if (this.quanticsStudioModel.IsDirty)
         {
@@ -117,7 +117,7 @@ public sealed class ShellViewModel : Bindable<ShellView>
     {
         this.TitleBarHeight = new GridLength(message.Show ? 42.0 : 0.0);
         this.IsTitleBarVisible = message.Show;
-    } 
+    }
 
     private void OnViewActivation(ViewActivationMessage message)
         => this.OnViewActivation(message.View, message.ActivationParameter, false);
@@ -199,7 +199,7 @@ public sealed class ShellViewModel : Bindable<ShellView>
 
     public GridLength TitleBarHeight { get => this.Get<GridLength>(); set => this.Set(value); }
 
-    public bool IsTitleBarVisible{ get => this.Get<bool>(); set => this.Set(value); }
+    public bool IsTitleBarVisible { get => this.Get<bool>(); set => this.Set(value); }
 }
 
 /*

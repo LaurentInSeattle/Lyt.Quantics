@@ -6,7 +6,7 @@ public sealed record class ViewActivationMessage(
     public enum ActivatedView
     {
         Intro,
-        Load, 
+        Load,
         Run,
 
         GoBack,

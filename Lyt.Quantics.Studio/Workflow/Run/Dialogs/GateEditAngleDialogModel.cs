@@ -1,6 +1,6 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Dialogs;
 
-public sealed class GateEditAngleDialogModel 
+public sealed class GateEditAngleDialogModel
     : DialogBindable<GateEditAngleDialog, IGateInfoProvider>
 {
     private const int DefaultPredefinedValue = 8;
@@ -58,7 +58,7 @@ public sealed class GateEditAngleDialogModel
         this.GateParameters = stageOperator.GateParameters;
 
         this.IsMakeControlled = false;
-        this.MakeControlledButtonIsEnabled = gate.IsMutable; 
+        this.MakeControlledButtonIsEnabled = gate.IsMutable;
 
         bool isRotation = false;
         if (gate is RotationGate rotationGate)
@@ -108,10 +108,10 @@ public sealed class GateEditAngleDialogModel
     {
         if (this.GateParameters.IsPiDivisor)
         {
-            return true ;
+            return true;
         }
 
-        return this.Validate(out string _); 
+        return this.Validate(out string _);
     }
 
     /// <summary> Called from the view whenever the content of a text box is changed.</summary>
@@ -133,7 +133,7 @@ public sealed class GateEditAngleDialogModel
         if (this.IsMakeControlled)
         {
             return true;
-        } 
+        }
 
         if (double.TryParse(this.CustomValue, out double value))
         {

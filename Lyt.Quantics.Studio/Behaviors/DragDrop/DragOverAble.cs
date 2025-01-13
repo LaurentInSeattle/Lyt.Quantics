@@ -7,7 +7,7 @@ using global::Avalonia.Input;
 /// 'DragAble' objects that are dragged around. 
 /// </summary>
 public class DragOverAble(
-    Action? hideDropTarget = null, 
+    Action? hideDropTarget = null,
     Func<IDropTarget, Point, bool>? showDropTarget = null)
         : BehaviorBase<BehaviorEnabledUserControl>
 {
@@ -78,6 +78,6 @@ public class DragOverAble(
             this.hideDropTarget?.Invoke();
         }
 
-        dragEventArgs.Handled = true; 
+        dragEventArgs.Handled = true;
     }
 }

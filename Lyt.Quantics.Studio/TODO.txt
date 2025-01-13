@@ -12,6 +12,8 @@ TODO: Framework:
 TODO: Engine: 
 -------------
 
+	Finalize support for controlled gates from unary ones 
+	
 	??? Include Author in computer metadata
 
 	Process gates linearly  (Doable?) 
@@ -22,6 +24,7 @@ TODO: Studio :
 --------------
 
 	Priorities:	
+		Gate Height : 48 !
 		Finalize support for creation of controlled gates from unary ones 
 
 	BUG: Can't dismiss toasts in Computer view 

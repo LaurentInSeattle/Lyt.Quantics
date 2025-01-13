@@ -13,7 +13,7 @@ public static class MessagingExtensions
         MessagingExtensions.dialogService = App.GetRequiredService<IDialogService>();
     }
 
-    public static void ActivateView (
+    public static void ActivateView(
         ViewActivationMessage.ActivatedView view, object? activationParameter = null)
         => MessagingExtensions.messenger.Publish(
             new ViewActivationMessage(view, activationParameter));
@@ -24,7 +24,7 @@ public static class MessagingExtensions
         // another type of message, provided by the Modal Dialog management in the framework
         if (MessagingExtensions.dialogService.IsModal)
         {
-            return; 
+            return;
         }
 
         MessagingExtensions.messenger.Publish(new ToolbarCommandMessage(command, parameter));

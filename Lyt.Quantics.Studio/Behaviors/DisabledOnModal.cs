@@ -1,4 +1,4 @@
-﻿namespace Lyt.Quantics.Studio.Behaviors; 
+﻿namespace Lyt.Quantics.Studio.Behaviors;
 
 public sealed class DisabledOnModal : BehaviorBase<Bindable>
 {
@@ -11,9 +11,8 @@ public sealed class DisabledOnModal : BehaviorBase<Bindable>
             return;
         }
 
-        // Debug.WriteLine("On attched to: " + this.AssociatedObject.GetType().Name);
         this.messenger = App.GetRequiredService<IMessenger>();
-        this.messenger.Subscribe<ModalMessage>(this.OnModalChanged);     
+        this.messenger.Subscribe<ModalMessage>(this.OnModalChanged);
     }
 
     protected override void OnDetaching()
@@ -24,17 +23,17 @@ public sealed class DisabledOnModal : BehaviorBase<Bindable>
             (this.AssociatedObject.Control is Control control))
         {
             control.IsEnabled = true;
-            control.Opacity = 1.0; 
+            control.Opacity = 1.0;
         }
     }
 
     private void OnModalChanged(ModalMessage message)
     {
-        if ((this.AssociatedObject is not null) && 
+        if ((this.AssociatedObject is not null) &&
             (this.AssociatedObject.Control is Control control))
         {
             control.IsEnabled = message.State == ModalMessage.Modal.Leave;
-            control.Opacity = message.State == ModalMessage.Modal.Leave ? 1.0: 0.5;
+            control.Opacity = message.State == ModalMessage.Modal.Leave ? 1.0 : 0.5;
         }
     }
 }

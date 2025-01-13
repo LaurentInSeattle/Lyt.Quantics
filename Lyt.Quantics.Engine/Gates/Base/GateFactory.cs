@@ -1,6 +1,4 @@
-﻿using Lyt.Quantics.Engine.Gates.UnaryParametrized;
-
-namespace Lyt.Quantics.Engine.Gates.Base;
+﻿namespace Lyt.Quantics.Engine.Gates.Base;
 
 public static class GateFactory
 {
@@ -58,7 +56,7 @@ public static class GateFactory
             // Add the phase gate with a Pi / 2 angle 
             AddGate(new PhaseGate(defaultGateParameters));
         }
-        catch ( Exception ex)
+        catch (Exception ex)
         {
             Debug.WriteLine("First Chance Exception");
             Debug.WriteLine(ex);
@@ -92,11 +90,17 @@ public static class GateFactory
 
                 if (gateType.FullName == typeof(PhaseGate).FullName)
                 {
-                    return new PhaseGate(gateParameters); 
+                    return new PhaseGate(gateParameters);
                 }
 
-                throw new NotSupportedException("Unsupported gate type: " + gateType.FullName); 
+                throw new NotSupportedException("Unsupported gate type: " + gateType.FullName);
             }
+        }
+        else if (caption.StartsWith(ControlledGate.Key))
+        {
+            ArgumentNullException.ThrowIfNull(gateParameters);
+            var baseGate = Produce(gateParameters.BaseGateKey, gateParameters);
+            return new ControlledGate(baseGate);
         }
 
         throw new Exception("No such gate type: " + caption);

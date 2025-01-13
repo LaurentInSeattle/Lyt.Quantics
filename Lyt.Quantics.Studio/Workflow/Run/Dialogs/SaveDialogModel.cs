@@ -1,8 +1,8 @@
-﻿namespace Lyt.Quantics.Studio.Workflow.Run.Dialogs; 
+﻿namespace Lyt.Quantics.Studio.Workflow.Run.Dialogs;
 
 public sealed class SaveDialogModel : DialogBindable<SaveDialog, object>
 {
-    private readonly QsModel quanticsStudioModel; 
+    private readonly QsModel quanticsStudioModel;
 
     public SaveDialogModel()
     {
@@ -16,12 +16,12 @@ public sealed class SaveDialogModel : DialogBindable<SaveDialog, object>
         // Force property changed 
         this.SaveButtonIsEnabled = true;
         this.SaveButtonIsEnabled = false;
-    
+
         var computer = this.quanticsStudioModel.QuComputer;
         this.Name = computer.Name;
         this.Description = computer.Description;
         this.ValidationMessage = string.Empty;
-        this.Validate(withOverwrite: true, out string _); 
+        this.Validate(withOverwrite: true, out string _);
     }
 
 #pragma warning disable IDE0051 // Remove unused private members
@@ -43,14 +43,14 @@ public sealed class SaveDialogModel : DialogBindable<SaveDialog, object>
     }
 
     private void OnCancel(object? _) => this.dialogService.Dismiss();
-    
+
 #pragma warning restore IDE0051 // Remove unused private members
 
     private bool TrySave(bool withOverwrite)
     {
         if (!this.Validate(withOverwrite, out string _))
         {
-            return false ;
+            return false;
         }
 
         // Save to model 
@@ -66,7 +66,7 @@ public sealed class SaveDialogModel : DialogBindable<SaveDialog, object>
             {
                 // Fail: 
                 this.ValidationMessage = message;
-                return false ;
+                return false;
             }
 
             // Success: Toast Happy 
@@ -74,7 +74,7 @@ public sealed class SaveDialogModel : DialogBindable<SaveDialog, object>
             toaster.Show("Saved", "Saved as: " + pathName, 4_000, InformationLevel.Success);
 
             // Go back 
-            return true ;
+            return true;
         }
         else
         {
@@ -86,7 +86,7 @@ public sealed class SaveDialogModel : DialogBindable<SaveDialog, object>
 
     private bool Validate(bool withOverwrite, out string message)
     {
-        bool validated = 
+        bool validated =
             this.quanticsStudioModel.ValidateComputerMetadata(
             this.Name, this.Description, withOverwrite, out message);
         this.SaveButtonIsEnabled = validated;

@@ -43,7 +43,7 @@ public static class SerializationUtilities
     }
 
     public static string LoadEmbeddedTextResource(string name, out string? resourceName)
-    {        
+    {
         resourceName = SerializationUtilities.GetFullResourceName(name);
         if (!string.IsNullOrEmpty(resourceName))
         {
@@ -121,15 +121,15 @@ public static class SerializationUtilities
         try
         {
             string resourceFileName = name + ResourcesExtension;
-            string serialized = 
+            string serialized =
                 SerializationUtilities.LoadEmbeddedTextResource(resourceFileName, out string? resourceFullName);
             var computer = SerializationUtilities.Deserialize<QuComputer>(serialized);
             bool isValid = computer.Validate(out message);
             if (isValid)
             {
-                if ( !string.IsNullOrEmpty(resourceFullName))
+                if (!string.IsNullOrEmpty(resourceFullName))
                 {
-                    if ( resourceFileName.Contains("Test"))
+                    if (resourceFileName.Contains("Test"))
                     {
                         computer.IsUnitTest = true;
                     }

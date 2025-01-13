@@ -22,6 +22,8 @@ public class ControlledGate : Gate
     //          [ 0   0   u00 u01 ]
     //          [ 0   0   u10 u11 ].
 
+    public const string Key = "Co";
+
     private readonly Matrix<Complex> matrix;
     private readonly string baseCaptionKey;
 
@@ -73,7 +75,7 @@ public class ControlledGate : Gate
 
     public override string AlternateName => this.Name;
 
-    public override string CaptionKey => "C" + this.baseCaptionKey;
+    public override string CaptionKey => "Co" + this.baseCaptionKey;
 
     public override GateCategory Category => GateCategory.X_Special;
 }

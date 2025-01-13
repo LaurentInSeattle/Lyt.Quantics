@@ -51,17 +51,6 @@ public sealed partial class QsModel : ModelBase
     {
         try
         {
-            //if (!this.fileManager.Exists(Area.User, Kind.Json, TemplatesModel.TemplatesModelFilename))
-            //{
-            //    this.fileManager.Save(Area.User, Kind.Json, TemplatesModel.TemplatesModelFilename, TemplatesModel.DefaultTemplate);
-            //}
-
-            //TemplatesModel model =
-            //    this.fileManager.Load<TemplatesModel>(Area.User, Kind.Json, TemplatesModel.TemplatesModelFilename);
-
-            //// Copy all properties with attribute [JsonRequired]
-            //base.CopyJSonRequiredProperties<TemplatesModel>(model);
-
             // This needs to complete BEFORE we reach the Load page,
             // so do NOT include in the "Fire and forget" thread below 
             this.EnumerateProjects(); 
@@ -75,11 +64,9 @@ public sealed partial class QsModel : ModelBase
 
             return Task.CompletedTask;
         }
-        catch (Exception /* ex */ )
+        catch (Exception ex)
         {
-            //string msg = "Failed to load TemplatesModel from " + TemplatesModel.TemplatesModelFilename;
-            //this.Logger.Fatal(msg);
-            //throw new Exception(msg, ex);
+            this.Logger.Fatal(ex.Message);
             throw;
         }
     }

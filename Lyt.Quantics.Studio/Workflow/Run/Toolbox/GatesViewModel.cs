@@ -23,10 +23,10 @@ public sealed class GatesViewModel : Bindable<GatesView>
         // Sort and reorder by categories skipping the X special ones
         var gates =
             from gate in QsModel.Gates
-             where gate.Category != GateCategory.X_Special && gate.CaptionKey != "I"
-             orderby gate.Category.ToString() ascending,
-             gate.CaptionKey ascending
-             select gate;
+            where gate.Category != GateCategory.X_Special && gate.CaptionKey != "I"
+            orderby gate.Category.ToString() ascending,
+            gate.CaptionKey ascending
+            select gate;
         var list = new List<GateViewModel>(gates.Count());
         foreach (var gate in gates)
         {
