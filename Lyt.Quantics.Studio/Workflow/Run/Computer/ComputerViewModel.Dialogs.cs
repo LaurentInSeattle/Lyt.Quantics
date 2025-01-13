@@ -1,4 +1,5 @@
 ﻿using Lyt.Quantics.Engine.Gates.UnaryParametrized;
+using Lyt.Quantics.Studio.Workflow.Run.Dialogs;
 
 namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
 
@@ -59,8 +60,8 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
             }
             else
             {
-                // Cannot edit: should never happen 
-                throw new Exception("Cannot edit: should never happen.");
+                // Cannot edit: should rarely happen 
+                this.Logger.Warning("Cannot edit: " + gate.CaptionKey );
             }
         }
     }
@@ -163,18 +164,25 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
 
         try
         {
-            // TODO !!! 
-
             // Grab the data 
             IGateInfoProvider gateInfoProvider = gateEditControlDialogModel.GateInfoProvider;
+            int stageIndex = gateInfoProvider.StageIndex;
+            var computer = this.quanticsStudioModel.QuComputer;
+            var computerStage = computer.Stages[stageIndex];
+
+            // Original qubits indices 
+            var stageOperator = computerStage.StageOperatorAt(gateInfoProvider.QubitsIndices);
+            var gateParameters = stageOperator.GateParameters;
             Gate oldGate = gateInfoProvider.Gate;
+            var newGate = new ControlledGate(oldGate);
 
-            // Gate view likely needs an update 
-            // gateViewModel.Update(gate); 
+            // Update the model. The gate view likely needs an update.
+            // It will be done later when the model will be messaging.
+            // No need to update the UI here
+            var uiStage = this.Stages[stageIndex];
 
-            // Update the model 
-
-            // TODO !!! 
+            // Here use modified qubits indices 
+            uiStage.AddGateAt(gateEditControlDialogModel.QubitsIndices, newGate, isDrop: false);
         }
         catch (Exception ex)
         {

@@ -1,22 +1,8 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Gates;
 
-public sealed class ConstructedGateViewModel : GateViewModelBase<ConstructedGateView>
+public sealed class ConstructedGateViewModel : CompositeGateViewModel<ConstructedGateView>
 {
-    private const string BlueBrush = "LightAqua_0_100";
-    private const string OrangeBrush = "OrangePeel_2_100";
-    private const double gateSize = 48.0;
-    private const double spacerSize = 12.0;
-    private const double largeSize = 16.0;
-    private const double smallSize = 12.0;
-    private const double lineSize = 2.0;
-
-    private readonly SolidColorBrush blueBrush;
-    private readonly SolidColorBrush orangeBrush;
-    private readonly SolidColorBrush backgroundBrush;
-    private readonly SolidColorBrush transparentBrush;
-    private readonly string gateKey;
-    private readonly List<int> allQuBitIndicesSorted;
-
+    // Controlled Gates are not supported here, they have their own class  
     private static readonly Dictionary<string, string> supportedGates =
         new()
         {
@@ -31,48 +17,17 @@ public sealed class ConstructedGateViewModel : GateViewModelBase<ConstructedGate
             { "CCX", "CreateCCxGate" } ,
             { "CSwap" , "CreateCSwapGate" },
             { "CCZ" , "CreateCCzGate" },
-
-            // LATER : Controlled Gate
-            // 
-            //"C_" , // Controlled Gate
         };
 
-    private readonly Grid contentGrid;
+    // This is the actual key for the gate
+    private readonly string gateKey;
 
     public ConstructedGateViewModel(
         string gateKey, int stageIndex, QubitsIndices qubitsIndices, bool isGhost = false)
         : base(GateFactory.Produce(gateKey, new GateParameters()),
-            qubitsIndices, isGhost, isToolBox: false, stageIndex)
+            stageIndex, qubitsIndices, isGhost)
     {
         this.gateKey = gateKey;
-        this.backgroundBrush = new SolidColorBrush(color: 0x30406080);
-        this.transparentBrush = new SolidColorBrush(color: 0);
-        Utilities.TryFindResource(BlueBrush, out SolidColorBrush? maybeBlueBrush);
-        if (maybeBlueBrush is null)
-        {
-#pragma warning disable CA2208 // Instantiate argument exceptions correctly
-            throw new ArgumentNullException("Could not find resource: " + BlueBrush);
-#pragma warning restore CA2208 
-        }
-        else
-        {
-            this.blueBrush = maybeBlueBrush;
-        }
-
-        Utilities.TryFindResource(OrangeBrush, out SolidColorBrush? maybeOrangeBrush);
-        if (maybeOrangeBrush is null)
-        {
-#pragma warning disable CA2208 // Instantiate argument exceptions correctly
-            throw new ArgumentNullException("Could not find resource: " + OrangeBrush);
-#pragma warning restore CA2208 
-        }
-        else
-        {
-            this.orangeBrush = maybeOrangeBrush;
-        }
-
-        this.allQuBitIndicesSorted = [.. this.QubitsIndices.AllQubitIndicesSorted()];
-        this.contentGrid = this.CreateContentGrid();
         Rectangle rectangle = this.CreateConnectingLine();
         this.contentGrid.Children.Add(rectangle);
         this.CreateGate();
@@ -93,10 +48,6 @@ public sealed class ConstructedGateViewModel : GateViewModelBase<ConstructedGate
 
     public static bool IsGateSupported(string gateKey)
         => ConstructedGateViewModel.supportedGates.ContainsKey(gateKey);
-
-    private int SmallestQubitIndex => this.allQuBitIndicesSorted[0];
-
-    private int LargestQubitIndex => this.allQuBitIndicesSorted[^1];
 
     // Draggable Bindable Implementation 
     public override UserControl CreateGhostView()
@@ -239,201 +190,4 @@ public sealed class ConstructedGateViewModel : GateViewModelBase<ConstructedGate
 #pragma warning restore IDE0051 
 
     #endregion Creating Gates 
-
-    #region Creating Gate Elements 
-
-    private Grid CreateContentGrid()
-    {
-        int spacerCount = this.LargestQubitIndex - this.SmallestQubitIndex;
-        int gateCount = 1 + spacerCount;
-        double height = gateCount * gateSize + spacerCount * spacerSize;
-        this.GateHeight = height;
-        var grid = new Grid()
-        {
-            Height = height,
-            Width = gateSize,
-#if DEBUG
-            // ShowGridLines = true,
-#endif
-        };
-
-        var border = new Border()
-        {
-            Margin = new Thickness(2.0),
-            CornerRadius = new CornerRadius(4.0),
-            Background = this.backgroundBrush,
-            VerticalAlignment = VerticalAlignment.Stretch,
-            HorizontalAlignment = HorizontalAlignment.Stretch,
-        };
-
-        var rowDefinitions = new RowDefinitions
-        {
-            new RowDefinition(gateSize, GridUnitType.Pixel)
-        };
-
-        for (int i = 0; i < spacerCount; i++)
-        {
-            rowDefinitions.Add(new RowDefinition(spacerSize, GridUnitType.Pixel));
-            rowDefinitions.Add(new RowDefinition(gateSize, GridUnitType.Pixel));
-        }
-
-        grid.RowDefinitions = rowDefinitions;
-        border.SetValue(Grid.RowSpanProperty, rowDefinitions.Count);
-        grid.Children.Add(border);
-
-        return grid;
-    }
-
-    private void PlaceGridAt(Grid grid, int qubitIndex)
-    {
-        int baseIndex = qubitIndex - this.SmallestQubitIndex;
-        int gridRow = baseIndex * 2;
-        grid.SetValue(Grid.RowProperty, gridRow);
-        this.contentGrid.Children.Add(grid);
-    }
-
-    private Rectangle CreateConnectingLine()
-    {
-        int spacerCount = this.LargestQubitIndex - this.SmallestQubitIndex;
-        int gateCount = 1 + spacerCount;
-        double height = gateCount * gateSize + spacerCount * spacerSize - gateSize;
-        var rectangle = new Rectangle()
-        {
-            Height = height,
-            Width = lineSize,
-            VerticalAlignment = VerticalAlignment.Center,
-            HorizontalAlignment = HorizontalAlignment.Center,
-            Fill = this.blueBrush,
-        };
-
-        int gridRows = gateCount + spacerCount;
-        rectangle.SetValue(Grid.RowSpanProperty, gridRows);
-        return rectangle;
-    }
-
-    private Grid CreateControlDot()
-    {
-        var ellipse = new Ellipse()
-        {
-            VerticalAlignment = VerticalAlignment.Center,
-            HorizontalAlignment = HorizontalAlignment.Center,
-            Height = smallSize,
-            Width = smallSize,
-            Fill = this.blueBrush,
-        };
-
-        var grid = new Grid()
-        {
-            Height = gateSize,
-            Width = gateSize,
-        };
-
-        grid.Children.Add(ellipse);
-        return grid;
-    }
-
-    private Grid CreateAntiControlDot()
-    {
-        var ellipse = new Ellipse()
-        {
-            VerticalAlignment = VerticalAlignment.Center,
-            HorizontalAlignment = HorizontalAlignment.Center,
-            Height = smallSize,
-            Width = smallSize,
-            Fill = this.orangeBrush,
-            Stroke = this.blueBrush,
-            StrokeThickness = 2.0,
-        };
-
-        var grid = new Grid()
-        {
-            Height = gateSize,
-            Width = gateSize,
-        };
-
-        grid.Children.Add(ellipse);
-        return grid;
-    }
-
-    private Grid CreateHalfSwap()
-    {
-        var rectangle1 = new Rectangle()
-        {
-            Height = largeSize,
-            Width = lineSize,
-            VerticalAlignment = VerticalAlignment.Center,
-            HorizontalAlignment = HorizontalAlignment.Center,
-            Fill = this.blueBrush,
-            Stroke = this.blueBrush,
-            RenderTransform = new RotateTransform(angle: 45.0),
-        };
-
-        var rectangle2 = new Rectangle()
-        {
-            Height = lineSize,
-            Width = largeSize,
-            VerticalAlignment = VerticalAlignment.Center,
-            HorizontalAlignment = HorizontalAlignment.Center,
-            Fill = this.blueBrush,
-            Stroke = this.blueBrush,
-            RenderTransform = new RotateTransform(angle: 45.0),
-        };
-
-        var grid = new Grid()
-        {
-            Height = gateSize,
-            Width = gateSize,
-        };
-
-        grid.Children.Add(rectangle1);
-        grid.Children.Add(rectangle2);
-        return grid;
-    }
-
-    private Grid CreateCNot()
-    {
-        var ellipse = new Ellipse()
-        {
-            VerticalAlignment = VerticalAlignment.Center,
-            HorizontalAlignment = HorizontalAlignment.Center,
-            Height = largeSize,
-            Width = largeSize,
-            Stroke = this.blueBrush,
-            StrokeThickness = lineSize,
-            Fill = this.transparentBrush,
-        };
-
-        var rectangle1 = new Rectangle()
-        {
-            Height = largeSize,
-            Width = lineSize,
-            VerticalAlignment = VerticalAlignment.Center,
-            HorizontalAlignment = HorizontalAlignment.Center,
-            Fill = this.blueBrush,
-        };
-
-        var rectangle2 = new Rectangle()
-        {
-            Height = lineSize,
-            Width = largeSize,
-            VerticalAlignment = VerticalAlignment.Center,
-            HorizontalAlignment = HorizontalAlignment.Center,
-            Fill = this.blueBrush,
-        };
-
-        var grid = new Grid()
-        {
-            Height = gateSize,
-            Width = gateSize,
-        };
-
-        grid.Children.Add(rectangle1);
-        grid.Children.Add(rectangle2);
-        grid.Children.Add(ellipse);
-        return grid;
-    }
-
-    #endregion Gate Elements 
-
-    public double GateHeight { get => this.Get<double>(); set => this.Set(value); }
 }
