@@ -1,5 +1,7 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Gates;
 
+using static GateUiConstants; 
+
 public sealed class GateViewModel : GateViewModelBase<GateView>
 {
     public GateViewModel(
@@ -41,14 +43,13 @@ public sealed class GateViewModel : GateViewModelBase<GateView>
         {
             this.GateBackground = Brushes.Black;
             int gateQubits = this.Gate.QuBitsTransformed;
-            this.GateHeight = 48 + 16 * (gateQubits - 1);
+            this.GateHeight = GateSize + 16 * (gateQubits - 1);
         }
         else
         {
             this.IsBorderVisible = false;
             this.GateBackground = Brushes.Transparent;
-            int rowMargin = 8 + 4;
-            this.GateHeight = 48 * gateRows + rowMargin * (gateRows - 1);
+            this.GateHeight = GateSize * gateRows + SpacerSize * (gateRows - 1);
             Debug.WriteLine("GateHeight: " + this.GateHeight);
         }
 

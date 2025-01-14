@@ -122,6 +122,7 @@ public sealed partial class QuComputer
                 message = "Add Gate: Invalid Stage index.";
                 return false;
             }
+
             var allIndices = qubitsIndices.AllQubitIndicesSorted();
             foreach (int qubitIndex in allIndices)
             {
@@ -142,13 +143,14 @@ public sealed partial class QuComputer
 
             // Remove operators at all qubit indices if any, then add the provided gate
             // Dont care how many removed 
-            foreach (int qubitIndex in allIndices)
+            int min = allIndices.Min();
+            int max = allIndices.Max();
+            for (int qubitIndex = min; qubitIndex  <= max; qubitIndex ++)
             {
                 _ = stage.ClearAtQubit(qubitIndex);
             }
 
             stage.AddAtQubit(this, qubitsIndices, gate, isDrop);
-
             return true;
         }
         catch (Exception ex)

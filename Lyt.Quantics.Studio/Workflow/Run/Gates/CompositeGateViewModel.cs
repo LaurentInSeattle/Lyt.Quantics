@@ -1,5 +1,7 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Gates;
 
+using static GateUiConstants; 
+
 /// <summary> Abstract base class for Controlled and Constructed gates  </summary>
 /// <typeparam name="TView">The corresponding view.</typeparam>
 public abstract class CompositeGateViewModel<TView> : GateViewModelBase<TView>
@@ -7,12 +9,6 @@ public abstract class CompositeGateViewModel<TView> : GateViewModelBase<TView>
 {
     protected const string BlueBrush = "LightAqua_0_100";
     protected const string OrangeBrush = "OrangePeel_2_100";
-
-    protected const double gateSize = 48.0;
-    protected const double spacerSize = 12.0;
-    protected const double largeSize = 16.0;
-    protected const double smallSize = 12.0;
-    protected const double lineSize = 2.0;
 
     protected static readonly SolidColorBrush blueBrush;
     protected static readonly SolidColorBrush orangeBrush;
@@ -70,12 +66,12 @@ public abstract class CompositeGateViewModel<TView> : GateViewModelBase<TView>
     {
         int spacerCount = this.LargestQubitIndex - this.SmallestQubitIndex;
         int gateCount = 1 + spacerCount;
-        double height = gateCount * gateSize + spacerCount * spacerSize;
+        double height = gateCount * GateSize + spacerCount * SpacerSize;
         this.GateHeight = height;
         var grid = new Grid()
         {
             Height = height,
-            Width = gateSize,
+            Width = GateSize,
 #if DEBUG
             // ShowGridLines = true,
 #endif
@@ -92,13 +88,13 @@ public abstract class CompositeGateViewModel<TView> : GateViewModelBase<TView>
 
         var rowDefinitions = new RowDefinitions
         {
-            new RowDefinition(gateSize, GridUnitType.Pixel)
+            new RowDefinition(GateSize, GridUnitType.Pixel)
         };
 
         for (int i = 0; i < spacerCount; i++)
         {
-            rowDefinitions.Add(new RowDefinition(spacerSize, GridUnitType.Pixel));
-            rowDefinitions.Add(new RowDefinition(gateSize, GridUnitType.Pixel));
+            rowDefinitions.Add(new RowDefinition(SpacerSize, GridUnitType.Pixel));
+            rowDefinitions.Add(new RowDefinition(GateSize, GridUnitType.Pixel));
         }
 
         grid.RowDefinitions = rowDefinitions;
@@ -120,11 +116,11 @@ public abstract class CompositeGateViewModel<TView> : GateViewModelBase<TView>
     {
         int spacerCount = this.LargestQubitIndex - this.SmallestQubitIndex;
         int gateCount = 1 + spacerCount;
-        double height = gateCount * gateSize + spacerCount * spacerSize - gateSize;
+        double height = gateCount * GateSize + spacerCount * SpacerSize - GateSize;
         var rectangle = new Rectangle()
         {
             Height = height,
-            Width = lineSize,
+            Width = ThinLineSize,
             VerticalAlignment = VerticalAlignment.Center,
             HorizontalAlignment = HorizontalAlignment.Center,
             Fill = blueBrush,
@@ -141,15 +137,15 @@ public abstract class CompositeGateViewModel<TView> : GateViewModelBase<TView>
         {
             VerticalAlignment = VerticalAlignment.Center,
             HorizontalAlignment = HorizontalAlignment.Center,
-            Height = smallSize,
-            Width = smallSize,
+            Height = DotSmallSize,
+            Width = DotSmallSize,
             Fill = blueBrush,
         };
 
         var grid = new Grid()
         {
-            Height = gateSize,
-            Width = gateSize,
+            Height = GateSize,
+            Width = GateSize,
         };
 
         grid.Children.Add(ellipse);
@@ -162,8 +158,8 @@ public abstract class CompositeGateViewModel<TView> : GateViewModelBase<TView>
         {
             VerticalAlignment = VerticalAlignment.Center,
             HorizontalAlignment = HorizontalAlignment.Center,
-            Height = smallSize,
-            Width = smallSize,
+            Height = DotSmallSize,
+            Width = DotSmallSize,
             Fill = orangeBrush,
             Stroke = blueBrush,
             StrokeThickness = 2.0,
@@ -171,8 +167,8 @@ public abstract class CompositeGateViewModel<TView> : GateViewModelBase<TView>
 
         var grid = new Grid()
         {
-            Height = gateSize,
-            Width = gateSize,
+            Height = GateSize,
+            Width = GateSize,
         };
 
         grid.Children.Add(ellipse);
@@ -183,8 +179,8 @@ public abstract class CompositeGateViewModel<TView> : GateViewModelBase<TView>
     {
         var rectangle1 = new Rectangle()
         {
-            Height = largeSize,
-            Width = lineSize,
+            Height = LargeSize,
+            Width = ThinLineSize,
             VerticalAlignment = VerticalAlignment.Center,
             HorizontalAlignment = HorizontalAlignment.Center,
             Fill = blueBrush,
@@ -194,8 +190,8 @@ public abstract class CompositeGateViewModel<TView> : GateViewModelBase<TView>
 
         var rectangle2 = new Rectangle()
         {
-            Height = lineSize,
-            Width = largeSize,
+            Height = ThinLineSize,
+            Width = LargeSize,
             VerticalAlignment = VerticalAlignment.Center,
             HorizontalAlignment = HorizontalAlignment.Center,
             Fill = blueBrush,
@@ -205,8 +201,8 @@ public abstract class CompositeGateViewModel<TView> : GateViewModelBase<TView>
 
         var grid = new Grid()
         {
-            Height = gateSize,
-            Width = gateSize,
+            Height = GateSize,
+            Width = GateSize,
         };
 
         grid.Children.Add(rectangle1);
@@ -220,17 +216,17 @@ public abstract class CompositeGateViewModel<TView> : GateViewModelBase<TView>
         {
             VerticalAlignment = VerticalAlignment.Center,
             HorizontalAlignment = HorizontalAlignment.Center,
-            Height = largeSize,
-            Width = largeSize,
+            Height = LargeSize,
+            Width = LargeSize,
             Stroke = blueBrush,
-            StrokeThickness = lineSize,
+            StrokeThickness = ThinLineSize,
             Fill = transparentBrush,
         };
 
         var rectangle1 = new Rectangle()
         {
-            Height = largeSize,
-            Width = lineSize,
+            Height = LargeSize,
+            Width = ThinLineSize,
             VerticalAlignment = VerticalAlignment.Center,
             HorizontalAlignment = HorizontalAlignment.Center,
             Fill = blueBrush,
@@ -238,8 +234,8 @@ public abstract class CompositeGateViewModel<TView> : GateViewModelBase<TView>
 
         var rectangle2 = new Rectangle()
         {
-            Height = lineSize,
-            Width = largeSize,
+            Height = ThinLineSize,
+            Width = LargeSize,
             VerticalAlignment = VerticalAlignment.Center,
             HorizontalAlignment = HorizontalAlignment.Center,
             Fill = blueBrush,
@@ -247,8 +243,8 @@ public abstract class CompositeGateViewModel<TView> : GateViewModelBase<TView>
 
         var grid = new Grid()
         {
-            Height = gateSize,
-            Width = gateSize,
+            Height = GateSize,
+            Width = GateSize,
         };
 
         grid.Children.Add(rectangle1);

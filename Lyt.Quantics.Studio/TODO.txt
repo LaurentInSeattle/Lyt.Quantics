@@ -4,36 +4,37 @@ TODO: Framework:
 
 	Disabling / Enabling Glyph buttons fails via data binding. (Error in property?) 
 
-	Ability to drag modal dialogs 
-
 	Annoying flash when replacing a modal dialog by a new one
 		(need some kind of dismiss and replace/run API) 
+
+	??? Ability to drag modal dialogs 
 
 TODO: Engine: 
 -------------
 
-	Finalize support for controlled gates from unary ones 
-	
+	Process gates linearly, optimizing Identity gates (Doable?) 
+
 	??? Include Author in computer metadata
-
-	Process gates linearly  (Doable?) 
-
-	Optimize Identity gates (Doable?) 
 	
 TODO: Studio : 
 --------------
 
 	Priorities:	
-		Gate Height : 48 !
-		Finalize support for creation of controlled gates from unary ones 
 
-	BUG: Can't dismiss toasts in Computer view 
+		Allow editing angles on controlled rotation and phase gates
 
-	BUG: Sometimes showing a toasted Error on dropping Swap gate : "overlapping targets"
+		BUG: Can't dismiss toasts in Computer view 
 
-	BUG: Incorrect behaviour of the "Regular/Test" switch after closing a circuit.
+		BUG: Sometimes showing a toasted Error on dropping Swap gate : "overlapping targets"
 
-	BUG: Amplitudes histogram shows up after loading another model.
+		BUG: Incorrect behaviour of the "Regular/Test" switch after closing a circuit.
+
+		BUG: Amplitudes histogram shows up after loading another model.
+
+	Show Bloch spheres (or their projections)
+		See: https://quantumcomputing.stackexchange.com/questions/10116/how-to-get-the-bloch-sphere-angles-given-an-arbitrary-qubit
+			Pitch => Theta = 2 ArcCos ( | Alpha | ) 
+			  Yaw => Phi = Phase ( Beta * Conjugate( Alpha ) / ( |Alpha| * |Beta| ) )
 
 	Show "wave function" in Amplitude view (See in QRyd)
 
@@ -42,6 +43,8 @@ TODO: Studio :
 	Ability to Insert a stage 
 
 	Open Folder in Saved Projects view 
+
+	Run computer in background thread. 
 		
 	Spinner for 9 or 10 qubits and above
 	

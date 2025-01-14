@@ -141,7 +141,7 @@ public sealed partial class QuComputer
 
     public QuComputer DeepClone()
     {
-        var clone = ReflectionUtilities.CreateAndCopyPropertiesFrom(this);
+        var clone = this.CreateAndCopyPropertiesFrom();
         foreach (var state in this.InitialStates)
         {
             clone.InitialStates.Add(state);

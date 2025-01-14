@@ -108,7 +108,7 @@ public sealed class QuStageOperator
         var clone = new QuStageOperator
         {
             GateKey = this.GateKey,
-            GateParameters = ReflectionUtilities.CreateAndCopyPropertiesFrom(this.GateParameters)
+            GateParameters = this.GateParameters.DeepClone(),
         };
 
         foreach (int index in this.TargetQuBitIndices)

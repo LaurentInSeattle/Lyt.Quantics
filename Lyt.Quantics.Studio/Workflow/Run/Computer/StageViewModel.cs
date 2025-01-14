@@ -244,7 +244,8 @@ public sealed class StageViewModel : Bindable<StageView>, IDropTarget
 
                 ++this.activeGates;
 
-                var gate = GateFactory.Produce(gateKey, stageOperator.GateParameters);
+                var gateParameters = stageOperator.GateParameters; 
+                var gate = GateFactory.Produce(gateKey, gateParameters);
                 int firstIndex = stageOperator.SmallestQubitIndex;
                 int lastIndex = stageOperator.LargestQubitIndex;
                 int gateRows = 1 + lastIndex - firstIndex;
@@ -253,9 +254,8 @@ public sealed class StageViewModel : Bindable<StageView>, IDropTarget
                 UserControl gateView; 
                 if (gate is ControlledGate controlledGate)
                 {
-                    string baseGateKey = stageOperator.GateParameters.BaseGateKey;
                     var gateVm =
-                        new ControlledGateViewModel(baseGateKey, this.stageIndex, qubitsIndices);
+                        new ControlledGateViewModel(gateParameters, this.stageIndex, qubitsIndices);
                     gateView = gateVm.CreateViewAndBind();
                 }
                 else if (ConstructedGateViewModel.IsGateSupported(gateKey))

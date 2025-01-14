@@ -63,4 +63,6 @@ public sealed class GateParameters
     public int PiDivisor { get; set; } = 2;
 
     public bool IsPositive { get; set; } = true;
+
+    public GateParameters DeepClone() => this.CreateAndCopyPropertiesFrom(); 
 }

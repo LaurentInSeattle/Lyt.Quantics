@@ -1,19 +1,23 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Gates;
 
+using static GateUiConstants; 
+
 public sealed class ControlledGateViewModel : CompositeGateViewModel<ControlledGateView>
 {
     // This is NOT the actual key for the gate
     // but the key of the base gate this gate is controlling
     private readonly string baseGateKey;
+    private readonly GateParameters gateParameters;
 
     public ControlledGateViewModel(
-        string gateKey, int stageIndex, 
+        GateParameters gateParameters, int stageIndex,
         QubitsIndices qubitsIndices, bool isGhost = false)
         : base(
-            new ControlledGate(GateFactory.Produce(gateKey, new GateParameters())),
+            new ControlledGate(GateFactory.Produce(gateParameters.BaseGateKey, gateParameters)),
             stageIndex, qubitsIndices, isGhost)
     {
-        this.baseGateKey = gateKey;
+        this.gateParameters = gateParameters.DeepClone();
+        this.baseGateKey = this.gateParameters.BaseGateKey;
         Rectangle rectangle = this.CreateConnectingLine();
         this.contentGrid.Children.Add(rectangle);
         this.CreateGate();
@@ -35,7 +39,7 @@ public sealed class ControlledGateViewModel : CompositeGateViewModel<ControlledG
     public override UserControl CreateGhostView()
     {
         var ghostViewModel = new ControlledGateViewModel(
-            this.baseGateKey, this.StageIndex, this.QubitsIndices, isGhost: true);
+            this.gateParameters, this.StageIndex, this.QubitsIndices, isGhost: true);
         ghostViewModel.CreateViewAndBind();
         var view = ghostViewModel.View;
 
@@ -56,15 +60,10 @@ public sealed class ControlledGateViewModel : CompositeGateViewModel<ControlledG
 
         Grid CreateBaseGate()
         {
-            var gate = GateFactory.Produce(this.baseGateKey);
+            var gate = GateFactory.Produce(this.baseGateKey, this.gateParameters);
             var vm = new GateViewModel(gate, isToolbox: true, isGhost: true);
             vm.CreateViewAndBind();
-            var grid = new Grid()
-            {
-                Height = gateSize,
-                Width = gateSize,
-            };
-
+            var grid = new Grid() { Height = GateSize, Width = GateSize };
             grid.Children.Add(vm.View);
             return grid;
         }
