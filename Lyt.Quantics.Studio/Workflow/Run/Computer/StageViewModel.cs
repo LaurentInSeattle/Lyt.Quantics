@@ -250,29 +250,31 @@ public sealed class StageViewModel : Bindable<StageView>, IDropTarget
                 int gateRows = 1 + lastIndex - firstIndex;
                 var qubitsIndices = new QubitsIndices(stageOperator);
 
-                if (ConstructedGateViewModel.IsGateSupported(gateKey))
+                UserControl gateView; 
+                if (gate is ControlledGate controlledGate)
+                {
+                    string baseGateKey = stageOperator.GateParameters.BaseGateKey;
+                    var gateVm =
+                        new ControlledGateViewModel(baseGateKey, this.stageIndex, qubitsIndices);
+                    gateView = gateVm.CreateViewAndBind();
+                }
+                else if (ConstructedGateViewModel.IsGateSupported(gateKey))
                 {
                     var gateVm =
                         new ConstructedGateViewModel(gateKey, this.stageIndex, qubitsIndices);
-                    var gateView = gateVm.CreateViewAndBind();
-                    gateView.SetValue(Grid.RowProperty, firstIndex);
-                    gateView.SetValue(Grid.RowSpanProperty, gateRows);
-                    this.View.GatesGrid.Children.Add(gateView);
+                    gateView = gateVm.CreateViewAndBind();
                 }
                 else
                 {
-                    // TODO ~ TODO : Take care of Control and Targets 
-
                     var gateViewModel =
                         new GateViewModel(
                             gate, isToolbox: false, stageIndex: this.stageIndex, qubitIndex: firstIndex);
-                    var view = gateViewModel.CreateViewAndBind();
-                    view.SetValue(Grid.RowProperty, firstIndex);
-                    view.SetValue(Grid.RowSpanProperty, gateRows);
-                    this.View.GatesGrid.Children.Add(view);
-
-                    // TODO ~ TODO : Take care of Control and Targets 
+                    gateView = gateViewModel.CreateViewAndBind();
                 }
+
+                gateView.SetValue(Grid.RowProperty, firstIndex);
+                gateView.SetValue(Grid.RowSpanProperty, gateRows);
+                this.View.GatesGrid.Children.Add(gateView);
             }
         }
         catch (Exception ex)

@@ -19,6 +19,19 @@ public sealed class ControlledGateViewModel : CompositeGateViewModel<ControlledG
         this.CreateGate();
     }
 
+    protected override void OnViewLoaded()
+    {
+        base.OnViewLoaded();
+
+        if (!this.IsGhost)
+        {
+            this.DragAble = new DragAble();
+            this.DragAble.Attach(this.View);
+            this.View.Content = this.contentGrid;
+            this.View.InvalidateVisual();
+        }
+    }
+
     public override UserControl CreateGhostView()
     {
         var ghostViewModel = new ControlledGateViewModel(

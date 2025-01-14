@@ -49,5 +49,5 @@ public sealed class ToffoliGate : Gate
 
     public override string CaptionKey => "CCX";
 
-    public override GateCategory Category => GateCategory.G_TernaryControlled;
+    public override GateCategory Category => GateCategory.TernaryControlled;
 }

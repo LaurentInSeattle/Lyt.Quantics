@@ -25,5 +25,5 @@ public sealed class ControlledControlledZ : Gate
 
     public override string CaptionKey => "CCZ";
 
-    public override GateCategory Category => GateCategory.G_TernaryControlled;
+    public override GateCategory Category => GateCategory.TernaryControlled;
 }

@@ -25,7 +25,7 @@ public class ControlledGate : Gate
     public const string Key = "Co";
 
     private readonly Matrix<Complex> matrix;
-    private readonly string baseCaptionKey;
+    // private readonly string baseCaptionKey;
 
     public ControlledGate(string captionKey) : this(GateFactory.Produce(captionKey)) { }
 
@@ -35,7 +35,7 @@ public class ControlledGate : Gate
     public ControlledGate(Gate baseGate)
     {
         this.BaseGate = baseGate;
-        this.baseCaptionKey = baseGate.CaptionKey;
+        // this.baseCaptionKey = baseGate.CaptionKey;
         int baseDimension = baseGate.MatrixDimension;
         int dimension = 2 * baseDimension;
         int delta = dimension - baseDimension;
@@ -75,7 +75,7 @@ public class ControlledGate : Gate
 
     public override string AlternateName => this.Name;
 
-    public override string CaptionKey => "Co" + this.baseCaptionKey;
+    public override string CaptionKey => "Co";
 
-    public override GateCategory Category => GateCategory.X_Special;
+    public override GateCategory Category => GateCategory.Special;
 }

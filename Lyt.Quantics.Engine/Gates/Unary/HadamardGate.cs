@@ -37,5 +37,5 @@ public sealed class HadamardGate : Gate
 
     public override string CaptionKey { get; set; } = Key;
 
-    public override GateCategory Category => GateCategory.A_HadamardAndT;
+    public override GateCategory Category => GateCategory.HadamardAndT;
 }

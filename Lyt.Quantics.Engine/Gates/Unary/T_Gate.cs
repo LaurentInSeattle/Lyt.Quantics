@@ -43,5 +43,5 @@ public sealed class T_Gate : Gate
 
     public override string CaptionKey => "T";
 
-    public override GateCategory Category => GateCategory.A_HadamardAndT;
+    public override GateCategory Category => GateCategory.HadamardAndT;
 }

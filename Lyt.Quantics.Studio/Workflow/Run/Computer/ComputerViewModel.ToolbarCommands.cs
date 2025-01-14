@@ -127,7 +127,7 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
         {
             if (this.quanticsStudioModel.Reset())
             {
-                this.toaster.Show("Ready!", "Ready to Run! (or Step...)", 4_000, InformationLevel.Success);
+                this.toaster.Show("Ready!", "Ready to Run!", 4_000, InformationLevel.Success);
             }
         }
         catch (Exception ex)

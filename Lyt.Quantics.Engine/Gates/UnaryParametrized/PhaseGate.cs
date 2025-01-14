@@ -71,5 +71,5 @@ public sealed class PhaseGate : Gate
 
     public override bool HasAngleParameter => true;
 
-    public override GateCategory Category => GateCategory.H_Phase;
+    public override GateCategory Category => GateCategory.PhaseParametrized;
 }

@@ -55,6 +55,9 @@ public static class GateFactory
 
             // Add the phase gate with a Pi / 2 angle 
             AddGate(new PhaseGate(defaultGateParameters));
+
+            // Add a controlled hadamard gate so that its key is in the dictionary 
+            AddGate(new ControlledGate(new HadamardGate()));
         }
         catch (Exception ex)
         {
@@ -93,14 +96,14 @@ public static class GateFactory
                     return new PhaseGate(gateParameters);
                 }
 
+                if (gateType.FullName == typeof(ControlledGate).FullName)
+                {
+                    var baseGate = Produce(gateParameters.BaseGateKey, gateParameters);
+                    return new ControlledGate(baseGate);
+                }
+
                 throw new NotSupportedException("Unsupported gate type: " + gateType.FullName);
             }
-        }
-        else if (caption.StartsWith(ControlledGate.Key))
-        {
-            ArgumentNullException.ThrowIfNull(gateParameters);
-            var baseGate = Produce(gateParameters.BaseGateKey, gateParameters);
-            return new ControlledGate(baseGate);
         }
 
         throw new Exception("No such gate type: " + caption);

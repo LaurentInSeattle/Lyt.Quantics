@@ -31,5 +31,5 @@ public sealed class PauliYGate : Gate
 
     public override string CaptionKey => "Y";
 
-    public override GateCategory Category => GateCategory.B_Pauli;
+    public override GateCategory Category => GateCategory.Pauli;
 }

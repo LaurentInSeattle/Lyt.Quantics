@@ -1,26 +1,26 @@
 ﻿namespace Lyt.Quantics.Engine.Gates.Base;
 
-// Gate categories in the QRyd simulator 
-// (Somewhat refined)
+// Gate categories similar to those in the QRyd simulator (Somewhat refined)
 // 
-// Categories are prefixed by alphebetical order in the UI toolbox
-public enum GateCategory
+// Categories are prefixed by numerical ical order in the UI toolbox
+
+public enum GateCategory : int 
 {
-    A_HadamardAndT, // H , T , T dagger
+    HadamardAndT, // H , T , T dagger
 
-    B_Pauli, // X Y Z , 
+    Pauli, // X Y Z , 
 
-    C_Phase, // Sqrt X (== SX) , Sqrt Z (== S)  S dagger
+    Phase, // Sqrt X (== SX) , Sqrt Z (== S)  S dagger
 
-    D_Rotation, // Rx Ry Rz 
+    Rotation, // Rx Ry Rz 
 
-    E_BinaryControlled, // CX, Swap, CZ , FCX, CS
+    PhaseParametrized,   // Phase , Later CP CPP ? 
 
-    F_Other, // I , 
+    BinaryControlled, // CX, Swap, CZ , FCX, CS
 
-    G_TernaryControlled,   // CCX,  CSwap , CCZ 
+    Other, // I , 
 
-    H_Phase,   // Phase , Later CP CPP ? 
+    TernaryControlled,   // CCX,  CSwap , CCZ 
 
-    X_Special, // Barrier (needed?) // P , CP , CCP 
+    Special, // Barrier (needed?) // P , CP , CCP 
 }

@@ -109,5 +109,5 @@ public class RotationGate : Gate
 
     public override string CaptionKey => this.captionKey;
 
-    public override GateCategory Category => GateCategory.D_Rotation;
+    public override GateCategory Category => GateCategory.Rotation;
 }

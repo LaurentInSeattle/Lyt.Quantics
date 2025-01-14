@@ -35,5 +35,5 @@ public sealed class FlippedControlledNotGate : Gate
 
     public override string CaptionKey => FlippedControlledNotGate.Key;
 
-    public override GateCategory Category => GateCategory.E_BinaryControlled;
+    public override GateCategory Category => GateCategory.BinaryControlled;
 }

@@ -73,13 +73,13 @@ public sealed class GateViewModel : GateViewModelBase<GateView>
     private static IBrush GateCategoryToBrush(GateCategory gateCategory)
         => gateCategory switch
         {
-            GateCategory.A_HadamardAndT => Brushes.DarkOrange,
-            GateCategory.B_Pauli => Brushes.DodgerBlue,
-            GateCategory.C_Phase => Brushes.MediumAquamarine,
-            GateCategory.D_Rotation => Brushes.DarkOrchid,
-            GateCategory.E_BinaryControlled => Brushes.DarkGreen,
-            GateCategory.F_Other => Brushes.DarkGray,
-            GateCategory.G_TernaryControlled => Brushes.MediumPurple,
+            GateCategory.HadamardAndT => Brushes.DarkOrange,
+            GateCategory.Pauli => Brushes.DodgerBlue,
+            GateCategory.Phase => Brushes.MediumAquamarine,
+            GateCategory.Rotation => Brushes.DarkOrchid,
+            GateCategory.BinaryControlled => Brushes.DarkGreen,
+            GateCategory.Other => Brushes.DarkGray,
+            GateCategory.TernaryControlled => Brushes.MediumPurple,
             /* default */
             _ => Brushes.DarkRed,
         };

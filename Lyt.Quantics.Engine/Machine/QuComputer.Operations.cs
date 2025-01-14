@@ -113,25 +113,25 @@ public sealed partial class QuComputer
     public bool AddGate(
         int stageIndex, QubitsIndices qubitsIndices, Gate gate, bool isDrop, out string message)
     {
-        message = string.Empty;
-        // Allow : stageIndex == this.Stages.Count
-        if ((stageIndex < 0) || (stageIndex > this.Stages.Count))
-        {
-            message = "Add Gate: Invalid Stage index.";
-            return false;
-        }
-        var allIndices = qubitsIndices.AllQubitIndicesSorted();
-        foreach (int qubitIndex in allIndices)
-        {
-            if ((qubitIndex < 0) || (qubitIndex >= this.QuBitsCount))
-            {
-                message = "Add Gate: Invalid Qubit index.";
-                return false;
-            }
-        }
-
         try
         {
+            message = string.Empty;
+            // Allow : stageIndex == this.Stages.Count
+            if ((stageIndex < 0) || (stageIndex > this.Stages.Count))
+            {
+                message = "Add Gate: Invalid Stage index.";
+                return false;
+            }
+            var allIndices = qubitsIndices.AllQubitIndicesSorted();
+            foreach (int qubitIndex in allIndices)
+            {
+                if ((qubitIndex < 0) || (qubitIndex >= this.QuBitsCount))
+                {
+                    message = "Add Gate: Invalid Qubit index.";
+                    return false;
+                }
+            }
+
             if (stageIndex == this.Stages.Count)
             {
                 // Create a new stage 

@@ -1,5 +1,6 @@
 ﻿namespace Lyt.Quantics.Studio.Model;
 
+using Lyt.Quantics.Engine.Gates.Base;
 using static FileManagerModel;
 
 public sealed partial class QsModel : ModelBase
@@ -94,6 +95,11 @@ public sealed partial class QsModel : ModelBase
                 continue ;
             }
 
+            if (gateType.Value == typeof(ControlledGate))
+            {
+                continue;
+            }
+
             // Phase gate (no axis) will also be created with defaults in the tool box
             var gate = GateFactory.Produce(gateType.Key, new GateParameters());
             list.Add(gate);
@@ -106,6 +112,9 @@ public sealed partial class QsModel : ModelBase
             defaultGateParameters.Axis = axis;
             list.Add(new RotationGate(defaultGateParameters));
         }
+
+        // Add a Controlled Hadamard gate 
+        list.Add (new ControlledGate(new HadamardGate()));
 
         Gates = list;
     }

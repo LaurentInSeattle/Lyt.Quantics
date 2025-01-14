@@ -46,5 +46,5 @@ public sealed class FredkinGate : Gate
 
     public override string CaptionKey => "CSwap";
 
-    public override GateCategory Category => GateCategory.G_TernaryControlled;
+    public override GateCategory Category => GateCategory.TernaryControlled;
 }

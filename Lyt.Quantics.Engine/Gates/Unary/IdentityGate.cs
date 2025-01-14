@@ -23,5 +23,5 @@ public sealed class IdentityGate : Gate
 
     public override string CaptionKey => IdentityGate.Key;
 
-    public override GateCategory Category => GateCategory.F_Other;
+    public override GateCategory Category => GateCategory.Other;
 }

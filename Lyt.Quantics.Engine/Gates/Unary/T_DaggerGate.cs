@@ -30,5 +30,5 @@ public sealed class T_DaggerGate : Gate
 
     public override string CaptionKey => "Tdg";
 
-    public override GateCategory Category => GateCategory.A_HadamardAndT;
+    public override GateCategory Category => GateCategory.HadamardAndT;
 }

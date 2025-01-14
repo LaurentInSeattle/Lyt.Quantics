@@ -38,5 +38,6 @@ public sealed class ControlledSGate : Gate
 
     public override string CaptionKey => "CS";
 
-    public override GateCategory Category => GateCategory.E_BinaryControlled;
+    // Will not show in the toolbox 
+    public override GateCategory Category => GateCategory.Special;
 }

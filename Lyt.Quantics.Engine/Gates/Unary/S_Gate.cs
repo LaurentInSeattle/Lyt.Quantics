@@ -21,8 +21,9 @@ public sealed class S_Gate : Gate
         S_GateMatrix.At(1, 1, Complex.ImaginaryOne);
     }
 
-    /// <summary> Stays false because we have a built-in CS gate </summary>
-    public override bool IsMutable => false;
+    /// <summary> Could Stays false because we have a built-in CS gate </summary>
+    /// <remarks> CS : Removed from toolbox </remarks> 
+    public override bool IsMutable => true;
 
     public override Matrix<Complex> Matrix => S_Gate.S_GateMatrix;
 
@@ -34,5 +35,5 @@ public sealed class S_Gate : Gate
 
     public override string CaptionKey => "S";
 
-    public override GateCategory Category => GateCategory.C_Phase;
+    public override GateCategory Category => GateCategory.Phase;
 }

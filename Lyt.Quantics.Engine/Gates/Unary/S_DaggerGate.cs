@@ -30,5 +30,5 @@ public sealed class S_DaggerGate : Gate
 
     public override string CaptionKey => "Sdg";
 
-    public override GateCategory Category => GateCategory.C_Phase;
+    public override GateCategory Category => GateCategory.Phase;
 }

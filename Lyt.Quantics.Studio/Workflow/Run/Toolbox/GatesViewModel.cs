@@ -20,11 +20,11 @@ public sealed class GatesViewModel : Bindable<GatesView>
         base.OnViewLoaded();
 
         // Load the gates symbols in the 'toolbox' 
-        // Sort and reorder by categories skipping the X special ones
+        // Sort and reorder by categories skipping identity and the X special ones
         var gates =
             from gate in QsModel.Gates
-            where gate.Category != GateCategory.X_Special && gate.CaptionKey != "I"
-            orderby gate.Category.ToString() ascending,
+            where gate.Category != GateCategory.Special && gate.CaptionKey != "I"
+            orderby (int) gate.Category ascending,
             gate.CaptionKey ascending
             select gate;
         var list = new List<GateViewModel>(gates.Count());
