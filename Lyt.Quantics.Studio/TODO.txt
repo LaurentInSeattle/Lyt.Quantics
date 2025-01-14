@@ -20,16 +20,17 @@ TODO: Studio :
 --------------
 
 	Priorities:	
+		"Flipped" Controlled Gates not working properly 
 
-		Allow editing angles on controlled rotation and phase gates
+	Allow editing angles on controlled rotation and phase gates
 
-		BUG: Can't dismiss toasts in Computer view 
+	BUG: Can't dismiss toasts in Computer view 
 
-		BUG: Sometimes showing a toasted Error on dropping Swap gate : "overlapping targets"
+	BUG: Sometimes showing a toasted Error on dropping Swap gate : "overlapping targets"
 
-		BUG: Incorrect behaviour of the "Regular/Test" switch after closing a circuit.
+	BUG: Incorrect behaviour of the "Regular/Test" switch after closing a circuit.
 
-		BUG: Amplitudes histogram shows up after loading another model.
+	BUG: Amplitudes histogram shows up after loading another model.
 
 	Show Bloch spheres (or their projections)
 		See: https://quantumcomputing.stackexchange.com/questions/10116/how-to-get-the-bloch-sphere-angles-given-an-arbitrary-qubit
