@@ -13,7 +13,17 @@
         public static AppBuilder BuildAvaloniaApp()
             => AppBuilder.Configure<App>()
                 .UsePlatformDetect()
-                .WithInterFont()
+                .WithInterFont()                
                 .LogToTrace();
+
+        //  Win32PlatformOption could accelerate rendering when doing drag and drop...
+        //  But sadly, no gain on "my machine"... 
+        //
+        //  public static AppBuilder BuildAvaloniaApp()
+        //      => AppBuilder.Configure<App>()
+        //      .UsePlatformDetect()
+        //      .WithInterFont()
+        //      .With(new Win32PlatformOptions { CompositionMode = [Win32CompositionMode.LowLatencyDxgiSwapChain] })
+        //      .LogToTrace();
     }
 }

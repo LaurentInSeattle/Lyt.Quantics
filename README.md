@@ -22,6 +22,8 @@ The User Interface is portable to various OS and is based on the Avalonia
 cross-platform UI framework for dotnet, available here: https://github.com/AvaloniaUI/Avalonia
 Avalonia supports running on the browser, therefore this app' will maybe have a browser version in some future.
 
+Matrix and tensor calculations are handled by Math.Net Numerics, available here: https://numerics.mathdotnet.com/
+
 Warning! This is still work in progress, and bugs are lurking...
 
 ## License 
