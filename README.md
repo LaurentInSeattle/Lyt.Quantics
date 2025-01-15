@@ -1,6 +1,6 @@
 Quantum Computing: Quantics Engine / Quantics Studio 
 
-<p align="left"><img src="QuanticsScreenshot.png" height="480"/>
+<p align="left"><img src="QuanticsScreenshot.png" height="520"/>
 
 A simple math engine for computations required by Quantum Computing along with a desktop based user interface to design and test quantum circuits. 
 Save and reload your circuits. 
@@ -20,10 +20,11 @@ Note: Work in progress, bugs are lurking...
 
 ## License 
 This software is free. 
-This software is proposed to you under the terms of the MIT license. For details, check out the LICENCSE document on this webpage.
+This software is proposed to you under the terms of the MIT license. 
+For details, check out the LICENSE document on this webpage.
 
 ## Install
-There is no installation "Wizard". You have to build it.
+For now there is no installation "Wizard". You have to build it.
 
 ## Build your own... Make changes, fix a bug...
 All you need is:
