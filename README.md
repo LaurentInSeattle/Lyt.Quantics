@@ -7,16 +7,21 @@ Save and reload your circuits.
 Analyse results and amplitude probabilities.
 Built-in circuits.
 
-The logic of computation engine is based on this design: 
-: https://www.stylewarning.com/posts/quantum-interpreter/
-
-Note: Work in progress, bugs are lurking...
 
 |    .Net 9.0    Supported platforms              |
 |-------------------------------------------------|
 | :heavy_check_mark: Windows - Visual Studio 2022 |
 | :heavy_check_mark: macOS   - Jet Brains Rider   |
 | :heavy_check_mark: Unix    - Jet Brains Rider   |
+
+## Notes
+The logic of the computation engine is based on this design: 
+: https://www.stylewarning.com/posts/quantum-interpreter/
+
+The User Interface is portable to various OS and is based on the Avalonia 
+cross-platform UI framework for dotnet, available here: https://github.com/AvaloniaUI/Avalonia
+
+Work in progress, bugs are lurking...
 
 ## License 
 This software is free. 
