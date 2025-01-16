@@ -1,51 +1,15 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Gates;
 
-using static GateUiConstants; 
+using static GateUiConstants;
+using static GateUiColors;
 
 /// <summary> Abstract base class for Controlled and Constructed gates  </summary>
 /// <typeparam name="TView">The corresponding view.</typeparam>
 public abstract class CompositeGateViewModel<TView> : GateViewModelBase<TView>
         where TView : Control, new()
 {
-    protected const string BlueBrush = "LightAqua_0_100";
-    protected const string OrangeBrush = "OrangePeel_2_100";
-
-    protected static readonly SolidColorBrush blueBrush;
-    protected static readonly SolidColorBrush orangeBrush;
-    protected static readonly SolidColorBrush backgroundBrush;
-    protected static readonly SolidColorBrush transparentBrush;
-
     protected readonly Grid contentGrid;
     protected readonly List<int> allQuBitIndicesSorted;
-
-    static CompositeGateViewModel()
-    {
-        backgroundBrush = new SolidColorBrush(color: 0x30406080);
-        transparentBrush = new SolidColorBrush(color: 0);
-        Utilities.TryFindResource(BlueBrush, out SolidColorBrush? maybeBlueBrush);
-        if (maybeBlueBrush is null)
-        {
-#pragma warning disable CA2208 // Instantiate argument exceptions correctly
-            throw new ArgumentNullException("Could not find resource: " + BlueBrush);
-#pragma warning restore CA2208 
-        }
-        else
-        {
-            blueBrush = maybeBlueBrush;
-        }
-
-        Utilities.TryFindResource(OrangeBrush, out SolidColorBrush? maybeOrangeBrush);
-        if (maybeOrangeBrush is null)
-        {
-#pragma warning disable CA2208 // Instantiate argument exceptions correctly
-            throw new ArgumentNullException("Could not find resource: " + OrangeBrush);
-#pragma warning restore CA2208 
-        }
-        else
-        {
-            orangeBrush = maybeOrangeBrush;
-        }
-    }
 
     public CompositeGateViewModel(
         Gate gate, int stageIndex, QubitsIndices qubitsIndices, bool isGhost = false)
@@ -81,7 +45,7 @@ public abstract class CompositeGateViewModel<TView> : GateViewModelBase<TView>
         {
             Margin = new Thickness(2.0),
             CornerRadius = new CornerRadius(4.0),
-            Background = backgroundBrush,
+            Background = BackgroundBrush,
             VerticalAlignment = VerticalAlignment.Stretch,
             HorizontalAlignment = HorizontalAlignment.Stretch,
         };
@@ -123,7 +87,7 @@ public abstract class CompositeGateViewModel<TView> : GateViewModelBase<TView>
             Width = ThinLineSize,
             VerticalAlignment = VerticalAlignment.Center,
             HorizontalAlignment = HorizontalAlignment.Center,
-            Fill = blueBrush,
+            Fill = BlueBrush,
         };
 
         int gridRows = gateCount + spacerCount;
@@ -139,7 +103,7 @@ public abstract class CompositeGateViewModel<TView> : GateViewModelBase<TView>
             HorizontalAlignment = HorizontalAlignment.Center,
             Height = DotSmallSize,
             Width = DotSmallSize,
-            Fill = blueBrush,
+            Fill = BlueBrush,
         };
 
         var grid = new Grid()
@@ -160,8 +124,8 @@ public abstract class CompositeGateViewModel<TView> : GateViewModelBase<TView>
             HorizontalAlignment = HorizontalAlignment.Center,
             Height = DotSmallSize,
             Width = DotSmallSize,
-            Fill = orangeBrush,
-            Stroke = blueBrush,
+            Fill = OrangeBrush,
+            Stroke = BlueBrush,
             StrokeThickness = 2.0,
         };
 
@@ -183,8 +147,8 @@ public abstract class CompositeGateViewModel<TView> : GateViewModelBase<TView>
             Width = ThinLineSize,
             VerticalAlignment = VerticalAlignment.Center,
             HorizontalAlignment = HorizontalAlignment.Center,
-            Fill = blueBrush,
-            Stroke = blueBrush,
+            Fill = BlueBrush,
+            Stroke = BlueBrush,
             RenderTransform = new RotateTransform(angle: 45.0),
         };
 
@@ -194,8 +158,8 @@ public abstract class CompositeGateViewModel<TView> : GateViewModelBase<TView>
             Width = LargeSize,
             VerticalAlignment = VerticalAlignment.Center,
             HorizontalAlignment = HorizontalAlignment.Center,
-            Fill = blueBrush,
-            Stroke = blueBrush,
+            Fill = BlueBrush,
+            Stroke = BlueBrush,
             RenderTransform = new RotateTransform(angle: 45.0),
         };
 
@@ -218,9 +182,9 @@ public abstract class CompositeGateViewModel<TView> : GateViewModelBase<TView>
             HorizontalAlignment = HorizontalAlignment.Center,
             Height = LargeSize,
             Width = LargeSize,
-            Stroke = blueBrush,
+            Stroke = BlueBrush,
             StrokeThickness = ThinLineSize,
-            Fill = transparentBrush,
+            Fill = TransparentBrush,
         };
 
         var rectangle1 = new Rectangle()
@@ -229,7 +193,7 @@ public abstract class CompositeGateViewModel<TView> : GateViewModelBase<TView>
             Width = ThinLineSize,
             VerticalAlignment = VerticalAlignment.Center,
             HorizontalAlignment = HorizontalAlignment.Center,
-            Fill = blueBrush,
+            Fill = BlueBrush,
         };
 
         var rectangle2 = new Rectangle()
@@ -238,7 +202,7 @@ public abstract class CompositeGateViewModel<TView> : GateViewModelBase<TView>
             Width = LargeSize,
             VerticalAlignment = VerticalAlignment.Center,
             HorizontalAlignment = HorizontalAlignment.Center,
-            Fill = blueBrush,
+            Fill = BlueBrush,
         };
 
         var grid = new Grid()

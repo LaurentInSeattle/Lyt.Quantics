@@ -1,6 +1,7 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Gates;
 
-using static GateUiConstants; 
+using static GateUiConstants;
+using static GateUiColors;
 
 public sealed class GateViewModel : GateViewModelBase<GateView>
 {
@@ -53,7 +54,7 @@ public sealed class GateViewModel : GateViewModelBase<GateView>
             Debug.WriteLine("GateHeight: " + this.GateHeight);
         }
 
-        this.GateCategoryBrush = GateViewModel.GateCategoryToBrush(gate.Category);
+        this.GateCategoryBrush = GateCategoryToBrush(gate.Category);
         var gateControl = GateViewModel.SpecialGateToControl(gate.CaptionKey);
         if (gateControl is Control control)
         {
@@ -70,20 +71,6 @@ public sealed class GateViewModel : GateViewModelBase<GateView>
         var disableOnModal = new DisabledOnModal();
         disableOnModal.Attach(this);
     }
-
-    private static IBrush GateCategoryToBrush(GateCategory gateCategory)
-        => gateCategory switch
-        {
-            GateCategory.HadamardAndT => Brushes.DarkOrange,
-            GateCategory.Pauli => Brushes.DodgerBlue,
-            GateCategory.Phase => Brushes.MediumAquamarine,
-            GateCategory.Rotation => Brushes.DarkOrchid,
-            GateCategory.BinaryControlled => Brushes.DarkGreen,
-            GateCategory.Other => Brushes.DarkGray,
-            GateCategory.TernaryControlled => Brushes.MediumPurple,
-            /* default */
-            _ => Brushes.DarkRed,
-        };
 
     // The special gates are here only for display in the toolbox
     // We use ConstructedGate in the circuit view 
