@@ -222,9 +222,9 @@ public sealed partial class QsModel : ModelBase
         return status;
     }
 
-    public bool RemoveGate(int stageIndex, QubitsIndices qubitsIndices, Gate gate, out string message)
+    public bool RemoveGate(int stageIndex, QubitsIndices qubitsIndices, out string message)
     {
-        bool status = this.QuComputer.RemoveGate(stageIndex, qubitsIndices, gate, out message);
+        bool status = this.QuComputer.RemoveGate(stageIndex, qubitsIndices, out message);
         if (status)
         {
             this.IsDirty = true;

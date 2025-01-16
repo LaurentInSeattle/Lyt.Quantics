@@ -91,7 +91,7 @@ public abstract class GateViewModelBase<TView>
     {
         Debug.WriteLine("Removing gate: " + this.Gate.CaptionKey);
         if (!this.quanticsStudioModel.RemoveGate(
-            this.StageIndex, this.QubitsIndices, this.Gate, out string message))
+            this.StageIndex, this.QubitsIndices, out string message))
         {
             this.toaster.Show(
                 "Failed to Remove gate: " + this.Gate.CaptionKey, message,

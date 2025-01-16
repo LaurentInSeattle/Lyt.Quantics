@@ -161,7 +161,7 @@ public sealed partial class QuComputer
         }
     }
 
-    public bool RemoveGate(int stageIndex, QubitsIndices qubitsIndices, Gate gate, out string message)
+    public bool RemoveGate(int stageIndex, QubitsIndices qubitsIndices, out string message)
     {
         message = string.Empty;
         // Do NOT Allow : stageIndex == this.Stages.Count

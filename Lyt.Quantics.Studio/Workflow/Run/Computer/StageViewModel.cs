@@ -128,7 +128,7 @@ public sealed class StageViewModel : Bindable<StageView>, IDropTarget
             // We are moving a gate in the circuit view !
             // Debug.WriteLine("Removing gate: " + gateInfoProvider.Gate.CaptionKey);
             if (!this.quanticsStudioModel.RemoveGate(
-                gateInfoProvider.StageIndex, gateInfoProvider.QubitsIndices, gateInfoProvider.Gate, out string message))
+                gateInfoProvider.StageIndex, gateInfoProvider.QubitsIndices, out string message))
             {
                 this.toaster.Show(
                     "Failed to Remove gate: " + gateInfoProvider.Gate.CaptionKey, message,
