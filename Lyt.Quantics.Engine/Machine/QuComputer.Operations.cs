@@ -26,7 +26,7 @@ public sealed partial class QuComputer
         }
     }
 
-    public bool AddQubit(int count, out string message)
+    public bool AddQubitAtEnd(out string message)
     {
         try
         {
@@ -50,11 +50,11 @@ public sealed partial class QuComputer
         }
     }
 
-    public bool RemoveQubit(int count, out string message)
+    public bool RemoveLastQubit(out string message)
     {
         try
         {
-            int qubitIndex = count - 1;
+            int qubitIndex = this.QuBitsCount - 1;
             this.InitialStates.RemoveAt(qubitIndex);
             this.QuBitsCount = this.InitialStates.Count;
 

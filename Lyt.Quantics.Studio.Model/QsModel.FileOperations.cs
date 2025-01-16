@@ -11,10 +11,10 @@ public sealed partial class QsModel : ModelBase
         {
             // Initialize a 'blank' computer , starting with two (empty) qubits 
             this.QuComputer = new("Untitled", "New quantum computer project.");
-            bool status = this.QuComputer.AddQubit(0, out message);
+            bool status = this.QuComputer.AddQubitAtEnd(out message);
             if (status)
             {
-                status = this.QuComputer.AddQubit(1, out message);
+                status = this.QuComputer.AddQubitAtEnd(out message);
                 if (status)
                 {
                     this.FinalizeModelCreation();

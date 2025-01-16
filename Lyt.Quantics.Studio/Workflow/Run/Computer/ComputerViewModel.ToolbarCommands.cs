@@ -46,7 +46,7 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
     {
         if (count < QuRegister.MaxQubits)
         {
-            if (!this.quanticsStudioModel.AddQubitAtEnd(count, out string message))
+            if (!this.quanticsStudioModel.AddQubitAtEnd(out string message))
             {
                 this.toaster.Show("Failed to Add Qubit!", message, 4_000, InformationLevel.Error);
             }
@@ -79,7 +79,7 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
             return;
         }
 
-        if (this.quanticsStudioModel.RemoveLastQubit(count, out string message))
+        if (this.quanticsStudioModel.RemoveLastQubit(out string message))
         {
         }
         else

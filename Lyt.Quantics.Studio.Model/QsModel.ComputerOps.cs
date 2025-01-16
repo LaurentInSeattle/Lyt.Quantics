@@ -127,9 +127,9 @@ public sealed partial class QsModel : ModelBase
         return filteredBitValuesProbabilities;
     }
 
-    public bool AddQubitAtEnd(int count, out string message)
+    public bool AddQubitAtEnd(out string message)
     {
-        bool status = this.QuComputer.AddQubit(count, out message);
+        bool status = this.QuComputer.AddQubitAtEnd(out message);
         if (status)
         {
             this.QuBitMeasureStates.Add(true);
@@ -144,9 +144,9 @@ public sealed partial class QsModel : ModelBase
         return status;
     }
 
-    public bool RemoveLastQubit(int count, out string message)
+    public bool RemoveLastQubit(out string message)
     {
-        bool status = this.QuComputer.RemoveQubit(count, out message);
+        bool status = this.QuComputer.RemoveLastQubit(out message);
         if (status)
         {
             this.QuBitMeasureStates.RemoveAt(this.QuBitMeasureStates.Count - 1);
