@@ -24,7 +24,7 @@
 				>
 				<Grid.RowDefinitions>
 					<RowDefinition Height="4"/>
-					<RowDefinition Height="56"/>
+					<RowDefinition Height="60"/>
 					<RowDefinition Height="*"/>
 				</Grid.RowDefinitions>
 				<Rectangle
@@ -49,7 +49,7 @@
 					Style="{StaticResource ToolbarIconButton}"
 					Behaviour="Tap"
 					HorizontalAlignment="Left" VerticalAlignment="Center"
-					Width="48" Height="48"
+					Width="52" Height="52"
 					Margin="4"
 					GlyphSource="{Binding CollapseIconSource}"
 					ButtonBackground="BorderlessRectangle"
@@ -89,13 +89,13 @@
 			BorderThickness="1.0"
 			BorderBrush="{StaticResource ResourceKey= LightAqua_2_100}"
 			Background="Transparent"
-			Width="56"
+			Width="60"
 			>
 			<Grid
 				>
 				<Grid.RowDefinitions>
 					<RowDefinition Height="4"/>
-					<RowDefinition Height="56"/>
+					<RowDefinition Height="60"/>
 					<RowDefinition Height="*"/>
 				</Grid.RowDefinitions>
 				<Rectangle
@@ -119,7 +119,7 @@
 					Style="{StaticResource ToolbarIconButton}"
 					Behaviour="Tap"
 					HorizontalAlignment="Center" VerticalAlignment="Center"
-					Width="48" Height="48"
+					Width="52" Height="52"
 					Margin="4"
 					GlyphSource="{Binding ExpandIconSource}"
 					ButtonBackground="BorderlessRectangle"
@@ -155,7 +155,7 @@
 				>
 				<Grid.RowDefinitions>
 					<RowDefinition Height="4"/>
-					<RowDefinition Height="56"/>
+					<RowDefinition Height="60"/>
 				</Grid.RowDefinitions>
 				<Rectangle
 					Grid.Row="0"
@@ -178,7 +178,7 @@
 					Style="{StaticResource ToolbarIconButton}"
 					Behaviour="Tap"
 					HorizontalAlignment="Left" VerticalAlignment="Center"
-					Width="48" Height="48"
+					Width="52" Height="52"
 					Margin="4"
 					GlyphSource="{Binding ExpandIconSource}"
 					ButtonBackground="BorderlessRectangle"
