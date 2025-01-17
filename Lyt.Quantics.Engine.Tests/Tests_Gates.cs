@@ -57,7 +57,7 @@ public sealed class Tests_Gates
             Debug.WriteLine(matrix);
             Debug.WriteLine("shouldBeIdentity: " + shouldBeIdentity);
             Debug.WriteLine("trueIdentity: " + trueIdentity);
-            if( Debugger.IsAttached ) { Debugger.Break(); }
+            if (Debugger.IsAttached) { Debugger.Break(); }
             Assert.Fail();
         }
     }
@@ -70,16 +70,20 @@ public sealed class Tests_Gates
             var gates = GateFactory.AvailableProducts;
             Assert.IsTrue(gates is not null);
             var defaultGateParameters = new GateParameters();
+            var controlledParameters = new GateParameters() { BaseGateKey = HadamardGate.Key };
             foreach (string gateKey in gates.Keys)
             {
-                var gate = GateFactory.Produce(gateKey, defaultGateParameters);
+                Gate gate =
+                    (gateKey == ControlledGate.Key) || (gateKey == FlippedControlledGate.Key) ?
+                        GateFactory.Produce(gateKey, controlledParameters) :
+                        GateFactory.Produce(gateKey, defaultGateParameters);
                 Assert.IsTrue(gate is not null);
                 Assert.IsTrue(gate.Name is not null);
                 int dimension = gate.MatrixDimension;
                 Debug.WriteLine(gate.CaptionKey + ":  " + gate.Name + "  Dim: " + dimension.ToString());
                 Assert.IsTrue(gate.QuBitsTransformed == gate.ControlQuBits + gate.TargetQuBits);
 
-                VerifyMatrix(gate.Matrix); 
+                VerifyMatrix(gate.Matrix);
             }
         }
         catch (Exception ex)
@@ -102,7 +106,7 @@ public sealed class Tests_Gates
                     {
                         Angle = theta,
                         Axis = axis,
-                        IsPiDivisor = false, 
+                        IsPiDivisor = false,
                     };
                     var gate = new RotationGate(parameters);
                     int dimension = gate.MatrixDimension;
@@ -151,7 +155,7 @@ public sealed class Tests_Gates
                 var gate = new PhaseGate(parameters);
                 int dimension = gate.MatrixDimension;
 
-                VerifyMatrix(gate.Matrix); 
+                VerifyMatrix(gate.Matrix);
             }
 
             // Verify that:

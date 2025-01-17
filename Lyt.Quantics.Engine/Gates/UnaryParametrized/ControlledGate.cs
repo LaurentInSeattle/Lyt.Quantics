@@ -34,8 +34,18 @@ public class ControlledGate : Gate
     /// <param name="captionKey"></param>
     public ControlledGate(Gate baseGate)
     {
+        // DONT do that: This code is also used to create CCX, CSWAP and CCZ
+        //if (!baseGate.IsUnary)
+        //{
+        //    throw new NotSupportedException("Only Controlled Gates based on Unary gates are supported");
+        //}
+
+        if (baseGate.IsTernary)
+        {
+            throw new NotSupportedException("Quaternary gates are not supported");
+        }
+
         this.BaseGate = baseGate;
-        // this.baseCaptionKey = baseGate.CaptionKey;
         int baseDimension = baseGate.MatrixDimension;
         int dimension = 2 * baseDimension;
         int delta = dimension - baseDimension;

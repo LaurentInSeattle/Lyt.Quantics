@@ -72,6 +72,11 @@ public static class GateFactory
 
     public static Gate Produce(string caption, GateParameters? gateParameters = null)
     {
+        if (string.IsNullOrWhiteSpace(caption))
+        {
+            throw new ArgumentException("No caption specified");
+        }
+
         if (AvailableProducts.TryGetValue(caption, out Type? gateType) && gateType is not null)
         {
             try
@@ -86,20 +91,26 @@ public static class GateFactory
             {
                 ArgumentNullException.ThrowIfNull(gateParameters);
 
-                if (gateType.FullName == typeof(RotationGate).FullName)
+                if (gateType == typeof(RotationGate))
                 {
                     return new RotationGate(gateParameters);
                 }
 
-                if (gateType.FullName == typeof(PhaseGate).FullName)
+                if (gateType == typeof(PhaseGate))
                 {
                     return new PhaseGate(gateParameters);
                 }
 
-                if (gateType.FullName == typeof(ControlledGate).FullName)
+                if (gateType == typeof(ControlledGate))
                 {
                     var baseGate = Produce(gateParameters.BaseGateKey, gateParameters);
                     return new ControlledGate(baseGate);
+                }
+
+                if (gateType == typeof(FlippedControlledGate))
+                {
+                    var baseGate = Produce(gateParameters.BaseGateKey, gateParameters);
+                    return new FlippedControlledGate(baseGate);
                 }
 
                 throw new NotSupportedException("Unsupported gate type: " + gateType.FullName);

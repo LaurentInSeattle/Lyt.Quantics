@@ -44,6 +44,34 @@ public sealed class Tests_Matrices
     #endregion Fixtures 
 
     [TestMethod]
+    public void Test_SwapControlled()
+    {
+        try
+        {
+            var defaultParameters = new GateParameters();
+            foreach (string key in new string[] { "H", "X", "S", "SX", "T", "Y", "Rx", "Ph" })
+            {
+                var testGate = GateFactory.Produce(key, defaultParameters);
+                var swapGate = GateFactory.Produce(SwapGate.Key, defaultParameters);
+                var controlledGate = new ControlledGate(testGate);
+                var flippedControlledGate = new FlippedControlledGate(testGate);
+                var swap = swapGate.Matrix;
+                var controlled = controlledGate.Matrix;
+                Debug.WriteLine(controlled);
+                var m1 = swap.Multiply(controlled);
+                var m2 = m1.Multiply(swap);
+                Debug.WriteLine(m2);
+                Assert.IsTrue(flippedControlledGate.Matrix.AlmostEqual(m2, MathUtilities.Epsilon));
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            Assert.Fail();
+        }
+    }
+
+    [TestMethod]
     public void Test_SwapTensorProduct()
     {
         try
@@ -79,7 +107,7 @@ public sealed class Tests_Matrices
 
             var mm1 = MatricesUtilities.SingleStageSwapMatrix(3, 0);
             Debug.WriteLine(mm1);
-            Assert.IsTrue( mm1.AlmostEqual (m1, MathUtilities.Epsilon)); 
+            Assert.IsTrue(mm1.AlmostEqual(m1, MathUtilities.Epsilon));
             var mm2 = MatricesUtilities.SingleStageSwapMatrix(3, 1);
             Debug.WriteLine(mm2);
             Assert.IsTrue(mm2.AlmostEqual(m2, MathUtilities.Epsilon));
