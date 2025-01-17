@@ -1,0 +1,50 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: .NET
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: windows-latest    
+    defaults:
+       run:
+         shell: bash
+         working-directory: ${{ github.workspace }}
+
+    steps:    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Checkout Lyt.Avalonia.Framework
+      uses: actions/checkout@v4
+      with:
+        repository: LaurentInSeattle/Lyt.Avalonia.Framework
+        ref: master
+        path: sauce\Lyt.Avalonia.Framework
+       
+    - name: Checkout Lyt.Quantics
+      uses: actions/checkout@v4
+      with:
+        repository: LaurentInSeattle/Lyt.Quantics
+        ref: master      
+        path: sauce\Lyt.Quantics
+         
+    - name: Restore dependencies
+      run: dotnet restore
+      working-directory: sauce\Lyt.Quantics
+
+    - name: Build
+      run: dotnet build --no-restore
+      working-directory: sauce\Lyt.Quantics
+      
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+      working-directory: sauce\Lyt.Quantics
