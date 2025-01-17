@@ -1,3 +1,5 @@
+[![.NET](https://github.com/LaurentInSeattle/Lyt.Quantics/actions/workflows/dotnet.yml/badge.svg)](https://github.com/LaurentInSeattle/Lyt.Quantics/actions/workflows/dotnet.yml)
+
 Quantum Computing: Quantics Engine / Quantics Studio 
 
 <p align="left"><img src="QuanticsScreenshot.png" height="520"/>
