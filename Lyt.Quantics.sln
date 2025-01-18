@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2BB989A8-0887-441E-8648-912042EE4F8D}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
 		FullAdderScreenshot.png = FullAdderScreenshot.png
 		LICENSE = LICENSE
 		QuanticsScreenshot.png = QuanticsScreenshot.png
