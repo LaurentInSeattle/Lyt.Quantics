@@ -20,10 +20,18 @@ TODO: Studio :
 --------------
 
 	Priorities:	
-		"Flipped" Controlled Gates not working properly 
+		BUG: "Flipped" Controlled Gates not working properly 
 
-	Allow editing angles on controlled rotation and phase gates
+	FEATURE: Allow editing angles on controlled rotation and phase gates
 
+	FEATURE: Run computer calculations in a background thread. 
+		
+	FEATURE: Spinner for 9 or 10 qubits and above
+	
+	FEATURE: Warning for slow computations at 9 and 10 qubits and above
+
+	FEATURE: Ability to cancel a run at 9 and 10 qubits
+		
 	BUG: Can't dismiss toasts in Computer view 
 
 	BUG: Sometimes showing a toasted Error on dropping Swap gate : "overlapping targets"
@@ -32,32 +40,24 @@ TODO: Studio :
 
 	BUG: Amplitudes histogram shows up after loading another model.
 
-	Show Bloch spheres (or their projections)
+	NTH: Show Bloch spheres (or their projections)
 		See: https://quantumcomputing.stackexchange.com/questions/10116/how-to-get-the-bloch-sphere-angles-given-an-arbitrary-qubit
 			Pitch => Theta = 2 ArcCos ( | Alpha | ) 
 			  Yaw => Phi = Phase ( Beta * Conjugate( Alpha ) / ( |Alpha| * |Beta| ) )
 
-	Show "wave function" in Amplitude view (See in QRyd)
+	NTH: Show "wave function" in Amplitude view (See in QRyd)
 
-	Ability to give names to qubits (Alice, Bob,...)
+	NTH: Ability to give names to qubits (Alice, Bob,...)
 
-	Ability to Insert a stage 
+	NTH: Ability to Insert a stage 
 
-	Open Folder in Saved Projects view 
+	NTH: Monospaced font for labels in the Amplitudes view
 
-	Run computer in background thread. 
-		
-	Spinner for 9 or 10 qubits and above
+	NTH: Nicer app icon 
 	
-	Warning for slow computations at 9 and 10 qubits and above
-
-	Ability to cancel a run at 9 and 10 qubits
+	NTH: Nicer Measure icon 
 		
-	Nicer app icon 
-	
-	Nicer Measure icon 
-		
-	Monospaced font for labels in the Amplitudes view
+	??? Open Folder in Saved Projects view (Not portable to browser)
 
 	??? Ability to add or remove qubits at index 0 with shift key 
 
@@ -82,3 +82,5 @@ N	Register	Reg Bytes	Matrix	Matrix bytes
 12	4 K			32 K		16 M	256 M   
 14	16 K		256 K		256 M	4 G     <=
 16	64 K		1 M			  4 G	64 G
+20  1 M         16 M        !!!     !!!
+24  16 M		256 M 

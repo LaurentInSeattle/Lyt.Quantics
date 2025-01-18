@@ -1,6 +1,7 @@
 ﻿namespace Lyt.Quantics.Engine.Machine;
 
 using MathNet.Numerics.LinearAlgebra;
+using System;
 
 public sealed partial class QuComputer
 {
@@ -13,6 +14,8 @@ public sealed partial class QuComputer
     private bool isPrepared;
     private bool isRunning;
     private bool isComplete;
+
+    private CancellationTokenSource? cancellationTokenSource;
 
     public QuComputer() { /* Required for deserialization */ }
 
@@ -65,7 +68,7 @@ public sealed partial class QuComputer
     public Vector<float> Result { get; private set; } = Vector<float>.Build.Dense(1);
 
     [JsonIgnore]
-    public bool RunSingleStage { get; set; } 
+    public bool RunSingleStage { get; set; }
 
     #region Machine states 
 
@@ -307,7 +310,7 @@ public sealed partial class QuComputer
         return true;
     }
 
-    public void Randomize () => this.InitialRegister.Randomize();
+    public void Randomize() => this.InitialRegister.Randomize();
 
     public void Initialize(QuRegister initialState) => this.InitialRegister = initialState;
 
@@ -322,34 +325,7 @@ public sealed partial class QuComputer
         return this.Validate(out message);
     }
 
-    private bool DoStep(out string message)
-    {
-        try
-        {
-            // Single Step
-            var stage = this.Stages[this.StepIndex];
-            Debug.WriteLine(string.Format("Step: {0}  {1}", this.StepIndex, stage.Operations));
-            QuRegister sourceRegister =
-                this.StepIndex == 0 ? this.InitialRegister : this.Stages[this.StepIndex - 1].StageRegister;
-            stage.Calculate(this, sourceRegister, out message);
-            if (!string.IsNullOrEmpty(message))
-            {
-                Debug.WriteLine(message);
-                return false;
-            }
-
-            //Debug.WriteLine(
-            //    string.Format("Step: {0} - Probabilities: {1}", this.StepIndex, stage.KetProbabilities));
-        }
-        catch (Exception ex)
-        {
-            message = string.Concat("Step: Exception thrown: " + ex.Message);
-            return false;
-        }
-
-        return true;
-    }
-
+    /// <summary> Non threaded version of running the machine, for Unit Tests only </summary>
     public bool Run(bool checkExpected, out string message)
     {
         if (this.IsRunning)
@@ -371,30 +347,201 @@ public sealed partial class QuComputer
         }
 
         this.IsRunning = true;
-        message = string.Empty;
+
         try
         {
+            Tuple<bool, string>? tuple = this.RunInternal(checkExpected, withCTS: false);
+            if (tuple is not null)
+            {
+                message = tuple.Item2;
+                return tuple.Item1;
+            }
+            else
+            {
+                message = "Unexpected error: null return";
+                Debug.WriteLine(message);
+                return false;
+            }
+        }
+        catch (OperationCanceledException e)
+        {
+            Debug.WriteLine("Cancelled " + e.Message);
+            message = "Cancelled";
+        }
+        catch (Exception e)
+        {
+            Debug.WriteLine("Exception thrown: " + e.Message);
+            message = "Exception thrown: " + e.Message;
+            return false;
+        }
+
+        return true;
+    }
+
+    /// <summary> Breaks a UI Run of the machine, awaitable </summary>
+    public async Task<Tuple<bool, string>> Break ()
+    {
+        string message = string.Empty;
+        if (!this.IsRunning)
+        {
+            message = "Run: Machine is not running.";
+            return new Tuple<bool, string>(false, message);
+        }
+
+        if (this.cancellationTokenSource is null)
+        {
+            message = "Run: Failed to cancel the Machine Run.";
+            return new Tuple<bool, string>(false, message);
+        }
+
+        this.cancellationTokenSource.Cancel();
+
+        await Task.Delay(200); 
+
+        // TODO: Check stopped 
+
+        return new Tuple<bool, string>(true, message);
+    }
+
+    /// <summary> Launch a UI Run of the machine, awaitable </summary>
+    public async Task<Tuple<bool, string>> Run(bool checkExpected)
+    {
+        string message = string.Empty;
+        if (this.IsRunning)
+        {
+            message = "Run: Machine is already running.";
+            return new Tuple<bool, string>(false, message);
+        }
+
+        if (this.IsComplete)
+        {
+            message = "Run: Machine is in Complete State: Invoke Prepare before running";
+            return new Tuple<bool, string>(false, message);
+        }
+
+        if (!this.IsPrepared)
+        {
+            message = "Run: Machine has not been prepared: Invoke Prepare before running";
+            return new Tuple<bool, string>(false, message);
+        }
+
+        this.cancellationTokenSource = new();
+
+        this.IsRunning = true;
+
+        try
+        {
+            Tuple<bool, string>? tuple = null ;             
+            await Task.Run(()=> 
+            {
+                tuple = this.RunInternal(checkExpected);
+            }, this.cancellationTokenSource.Token);
+
+            if (tuple is not null)
+            {
+                return tuple;
+            } 
+            else
+            {
+                message = "Unexpected error: null return";
+                Debug.WriteLine(message);
+                return new Tuple<bool, string>(false, message);
+            }
+        }
+        catch (OperationCanceledException e)
+        {
+            Debug.WriteLine("Cancelled " + e.Message);
+            message = "Cancelled";
+        }
+        catch (Exception e)
+        {
+            Debug.WriteLine("Exception thrown: " + e.Message);
+            message = "Exception thrown: " + e.Message;
+            return new Tuple<bool, string>(false, message);
+        }
+        finally
+        {
+            this.cancellationTokenSource.Dispose();
+            this.cancellationTokenSource = null ;
+        }
+
+        return new Tuple<bool, string>(true, message); 
+    }
+
+    /// <summary> Run the machine, used by both UI or UT 'worlds' </summary>
+    private Tuple<bool, string> RunInternal(bool checkExpected, bool withCTS = true)
+    {
+        bool Step(out string message)
+        {
+            try
+            {
+                // Single Step
+                var stage = this.Stages[this.StepIndex];
+                Debug.WriteLine(string.Format("Step: {0}  {1}", this.StepIndex, stage.Operations));
+                QuRegister sourceRegister =
+                    this.StepIndex == 0 ? this.InitialRegister : this.Stages[this.StepIndex - 1].StageRegister;
+                stage.Calculate(this, sourceRegister, out message);
+                if (!string.IsNullOrEmpty(message))
+                {
+                    Debug.WriteLine(message);
+                    return false;
+                }
+
+                //Debug.WriteLine(
+                //    string.Format("Step: {0} - Probabilities: {1}", this.StepIndex, stage.KetProbabilities));
+            }
+            catch (Exception ex)
+            {
+                message = string.Concat("Step: Exception thrown: " + ex.Message);
+                return false;
+            }
+
+            return true;
+        }
+
+        string message;
+        try
+        {
+            if (withCTS)
+            {
+                if (this.cancellationTokenSource is null)
+                {
+                    return new Tuple<bool, string>(false, "Run: Cannot run: No CTS.");
+                }
+
+                this.cancellationTokenSource.Token.ThrowIfCancellationRequested();
+            }
+
             // running the stages 
             for (int i = 0; i < this.Stages.Count; i++)
             {
-                if (this.DoStep(out message))
+                if (Step(out message))
                 {
                     ++this.StepIndex;
+                    if( withCTS)
+                    {
+                        if (this.cancellationTokenSource is null)
+                        {
+                            return new Tuple<bool, string>(false, "Run: Cannot run: No CTS.");
+                        }
+
+                        this.cancellationTokenSource?.Token.ThrowIfCancellationRequested();
+                    }
                 }
                 else
                 {
-                    return false;
+                    return new Tuple<bool, string>(false, message);
                 }
             }
 
             if (checkExpected && (!this.AsExpected(out message)))
             {
-                return false;
+                return new Tuple<bool, string>(false, message);
             }
 
             // Measure last register
             QuRegister lastRegister = this.Stages[^1].StageRegister;
-            this.FinalRegister = lastRegister.DeepClone(); 
+            this.FinalRegister = lastRegister.DeepClone();
             Vector<float> measure = Vector<float>.Build.Dense([.. lastRegister.Measure()]);
 
             Debug.WriteLine("Last stage, last register: " + lastRegister.ToString());
@@ -404,7 +551,7 @@ public sealed partial class QuComputer
         catch (Exception ex)
         {
             message = string.Concat("Step: Exception thrown: " + ex.Message);
-            return false;
+            return new Tuple<bool, string>(false, message);  
         }
         finally
         {
@@ -412,7 +559,7 @@ public sealed partial class QuComputer
             this.IsComplete = true;
         }
 
-        return true;
+        return new Tuple<bool, string>(true, string.Empty) ;
     }
 
     private bool AsExpected(out string message)
