@@ -13,6 +13,7 @@ TODO: Engine:
 -------------
 
 	Process gates linearly, optimizing Identity gates (Doable?) 
+		=> Done for SWAP gates 
 
 	??? Include Author in computer metadata
 	

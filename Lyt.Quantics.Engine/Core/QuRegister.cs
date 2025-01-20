@@ -230,7 +230,7 @@ public sealed class QuRegister
             if (areDifferent)
             {
                 // This index k1 needs to be swapped with another one, k2, so... Find k2 
-                int k2 = ketMap.Match(reducedKetMap, k1, i, j);
+                int k2 = ketMap.SwapMatch(reducedKetMap, k1, i, j);
                 bool alreadyThere = false;
                 foreach (var tuple in swaps)
                 {
@@ -252,8 +252,10 @@ public sealed class QuRegister
         {
             int i1 = swap.Item1;
             int i2 = swap.Item2;
-            
+
+#if VERBOSE            
             Debug.WriteLine(i1 + " <-> " + i2);
+#endif // VERBOSE            
 
             Complex state1 = this.State[i1];
             Complex state2 = this.State[i2];

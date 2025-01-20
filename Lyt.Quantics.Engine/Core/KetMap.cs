@@ -2,6 +2,38 @@
 
 namespace Lyt.Quantics.Engine.Core;
 
+/*
+ 
+Ket Map Example 
+
+Qubits 4 Swap 0 - 1
+
+0000    <0.222901; 0.974841>    <0.222901; 0.974841>  
+0001    <-0.955037; 0.296486>   <-0.955037; 0.296486>  
+0010    <-0.921024; -0.389505>   <-0.921024; -0.389505>  
+0011    <0.31824; -0.94801>      <0.31824; -0.94801>  
+
+0100    <0.948218; 0.317621>  <-0.939807; 0.341706>      *                   
+0101    <-0.244493; 0.969651>  <-0.412279; -0.911058>    * 
+0110    <-0.81231; 0.583226>  <0.272654; -0.962112>      *                
+0111    <-0.643388; -0.76554>     <0.980081; 0.1986>     *                   
+
+1000    <-0.939807; 0.341706>   <0.948218; 0.317621>     *                  
+1001    <-0.412279; -0.911058>  <-0.244493; 0.969651>    *                  
+1010    <0.272654; -0.962112>   <-0.81231; 0.583226>     *                  
+1011    <0.980081; 0.1986>  <-0.643388; -0.76554>        *                  
+
+1100    <-0.19796; 0.98021>   <-0.19796; 0.98021>      
+1101    <-0.992438; -0.122744>  <-0.992438; -0.122744>
+1110    <-0.679175; -0.733977>  <-0.679175; -0.733977>
+1111    <0.680128; -0.733093>  <0.680128; -0.733093>
+
+ */
+
+/// <summary> 
+/// Modelises a list of of lists of booleans providing the ket values for each index in a state vector. 
+/// In the example above, this is the first column, where each zero is false, and one is true. 
+/// </summary>
 public sealed class KetMap
 {
     private readonly int qubitCount;
@@ -10,6 +42,11 @@ public sealed class KetMap
 
     public KetMap(int qubitCount)
     {
+        if ((qubitCount < 0) || (qubitCount > QuRegister.MaxQubits))
+        {
+            throw new ArgumentException("Invalid ket index: ket1");
+        }
+
         this.qubitCount = qubitCount;
         this.length = MathUtilities.TwoPower(qubitCount);
         this.map = new List<List<bool>>(length);
@@ -34,8 +71,24 @@ public sealed class KetMap
         DumpMap(this.map);
     }
 
+    /// <summary> Create a new Ket Map by ignoring the values for the provided qubits indices. </summary>
     public KetMap Reduce(int ket1, int ket2)
     {
+        if ((ket1 < 0) || (ket1 >= qubitCount))
+        {
+            throw new ArgumentException("Invalid ket index: ket1");
+        }
+
+        if ((ket2 < 0) || (ket2 >= qubitCount))
+        {
+            throw new ArgumentException("Invalid ket index: ket2");
+        }
+
+        if (ket1 == ket2)
+        {
+            throw new ArgumentException("Invalid ket indices");
+        }
+
         var min = Math.Min(ket1, ket2);
         var max = Math.Max(ket1, ket2);
         KetMap reducedKetMap = this.DeepClone();
@@ -44,6 +97,7 @@ public sealed class KetMap
 
         foreach (var list in reducedMap)
         {
+            // The order of the Remove's is important to keep the list properly ordered
             list.RemoveAt(max);
             list.RemoveAt(min);
         }
@@ -55,6 +109,7 @@ public sealed class KetMap
 
     public KetMap DeepClone() => new(this.qubitCount);
 
+    /// <summary> Get the ket bit value in the state vector at the provided index </summary>
     public bool Get(int index, int ket)
     {
         if ((index < 0) || (index >= this.map.Count))
@@ -70,7 +125,8 @@ public sealed class KetMap
         return this.map[index][ket];
     }
 
-    public int Match(KetMap reducedKetMap, int index, int ket1, int ket2)
+    /// <summary> Returns the matching index in the state vector when swaping quBits </summary>
+    public int SwapMatch(KetMap reducedKetMap, int index, int ket1, int ket2)
     {
         if ((index < 0) || (index >= this.map.Count))
         {
@@ -128,34 +184,6 @@ public sealed class KetMap
 
         throw new Exception("Ket Match not found");
     }
-
-    /*
-     * 
-
-    Qubits 4 Swap 0 - 1
-
-    0000    <0.222901; 0.974841>    <0.222901; 0.974841>  
-    0001    <-0.955037; 0.296486>   <-0.955037; 0.296486>  
-    0010    <-0.921024; -0.389505>   <-0.921024; -0.389505>  
-    0011    <0.31824; -0.94801>      <0.31824; -0.94801>  
-
-    0100    <0.948218; 0.317621>  <-0.939807; 0.341706>      *                   
-    0101    <-0.244493; 0.969651>  <-0.412279; -0.911058>    * 
-    0110    <-0.81231; 0.583226>  <0.272654; -0.962112>      *                
-    0111    <-0.643388; -0.76554>     <0.980081; 0.1986>     *                   
-
-    1000    <-0.939807; 0.341706>   <0.948218; 0.317621>     *                  
-    1001    <-0.412279; -0.911058>  <-0.244493; 0.969651>    *                  
-    1010    <0.272654; -0.962112>   <-0.81231; 0.583226>     *                  
-    1011    <0.980081; 0.1986>  <-0.643388; -0.76554>        *                  
-
-    1100    <-0.19796; 0.98021>   <-0.19796; 0.98021>      
-    1101    <-0.992438; -0.122744>  <-0.992438; -0.122744>
-    1110    <-0.679175; -0.733977>  <-0.679175; -0.733977>
-    1111    <0.680128; -0.733093>  <0.680128; -0.733093>
-
-     * 
-     */
 
     [Conditional("DEBUG")]
     private static void DumpMap(List<List<bool>> map)
