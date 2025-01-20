@@ -59,6 +59,9 @@ public sealed partial class QuComputer
     #region Runtime Properties not serialized
 
     [JsonIgnore]
+    public KetMap KetMap { get; private set; } = new(1);
+
+    [JsonIgnore]
     public QuRegister InitialRegister { get; private set; } = new(1);
 
     [JsonIgnore]
@@ -229,6 +232,8 @@ public sealed partial class QuComputer
         message = string.Empty;
         try
         {
+            this.KetMap = new KetMap(this.QuBitsCount);
+
             // Build stages 
             int stageIndex = 0;
             foreach (QuStage stage in this.Stages)

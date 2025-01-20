@@ -219,15 +219,15 @@ public sealed class Tests_Matrices
     [TestMethod]
     public void Experimental_Swaps()
     {
-        for (int i = 4; i <= 4; i++)
+        for (int qubitCount = 4; qubitCount <= 4; qubitCount++)
         {
-            for (int j = 0; j < i; j++)
+            for (int j = 0; j < qubitCount; j++)
             {
-                for (int k = j + 1; k < i; k++)
+                for (int k = j + 1; k < qubitCount; k++)
                 {
-                    Debug.WriteLine(string.Format("Qubits {0} Swap {1} - {2}", i, j, k));
-                    var registerSource = new QuRegister(i);
-                    var swap = MatricesUtilities.SwapMatrix(i, j, k);
+                    Debug.WriteLine(string.Format("Qubits {0} Swap {1} - {2}", qubitCount, j, k));
+                    var registerSource = new QuRegister(qubitCount);
+                    var swap = MatricesUtilities.SwapMatrix(qubitCount, j, k);
                     var newState = swap.Multiply(registerSource.State);
                     var finalState = swap.Multiply(newState);
                     Assert.IsTrue(finalState.IsAlmostEqualTo(registerSource.State));
@@ -235,10 +235,11 @@ public sealed class Tests_Matrices
                     Debug.WriteLine(registerSource.State.ToString());
                     Debug.WriteLine(newState.ToString());
 
-                    // UNFINISHED ~ This below fails, the above is OK 
-                    //
+                    // UNFINISHED ~ This below fails, the above is OK
+
                     //var clone = registerSource.DeepClone();
-                    //clone.Swap(j,k);
+                    //var ketMap = new KetMap(qubitCount);
+                    //clone.Swap(ketMap, j, k);
                     //Debug.WriteLine(clone.ToString());
                     //Assert.IsTrue(clone.State.IsAlmostEqualTo(registerSource.State));
                 }
@@ -292,28 +293,11 @@ Bits 0 and 2 get swapped, bit string starting at zero
 110     g   <0.330961; 0.943644>       <-0.99399; 0.109469>     d   *
 111     h   <0.823723; 0.566992>       <0.823723; 0.566992>     h 
 
+ * 
+ */
 
-
-DenseVector 16-Complex
-  <0.222901; 0.974841>  
- <-0.955037; 0.296486>  
-<-0.921024; -0.389505>  
-   <0.31824; -0.94801>  
-
-  <0.948218; 0.317621>                        
- <-0.244493; 0.969651>                        
-  <-0.81231; 0.583226>                        
- <-0.643388; -0.76554>                        
-
- <-0.939807; 0.341706>                        
-<-0.412279; -0.911058>                        
- <0.272654; -0.962112>                        
-    <0.980081; 0.1986>                        
-
-   <-0.19796; 0.98021>
-<-0.992438; -0.122744>
-<-0.679175; -0.733977>
- <0.680128; -0.733093>
+/*
+ * 
 
 Qubits 4 Swap 0 - 1
 

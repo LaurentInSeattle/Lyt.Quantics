@@ -214,7 +214,7 @@ public sealed class QuRegister
 
     /// <summary> This should perform just like applying a binary swap gate on qubits indices i and j </summary>
     /// <remarks> Assumes that i < j </remarks>
-    public void Swap(int i, int j)
+    public void Swap(KetMap ketMap, int i, int j)
     {
         List<Tuple<int, int>> swaps = [];  
         for (int k1 = 0; k1 < this.State.Count / 2; ++k1)
@@ -225,34 +225,11 @@ public sealed class QuRegister
             // if bit #i is set an bit #j is not set 
             // OR 
             // if bit #j is set an bit #i is not set 
-            bool setI = IsBitSet(k1, i);
-            bool setJ = IsBitSet(k1, j);
-            bool areDiff = setI ^ setJ; 
-
-            // TODO : NEED to reverse the bit string 
-
-            if (areDiff)
+            bool areDifferent = ketMap.Get(k1, i) ^ ketMap.Get(k1, j);
+            if (areDifferent)
             {
-                Debug.WriteLine(k1);
                 // This index k1 needs to be swapped with another one, k2, so... Find k2 
-                int k2 = k1;
-                if (IsBitSet(k1, i))
-                {
-                    ClearBit (k2, i);
-                }
-                else
-                {
-                    SetBit (k2, i);
-                }
-
-                if (IsBitSet(k1, j))
-                {
-                    ClearBit(k2, j);
-                }
-                else
-                {
-                    SetBit(k2, j);
-                }
+                int k2 = ketMap.Match(k1, i, j );
 
                 swaps.Add(new(k1, k2)); 
             }
@@ -262,13 +239,14 @@ public sealed class QuRegister
         {
             int i1 = swap.Item1;
             int i2 = swap.Item2;
+            Debug.WriteLine(i1 + " <-> " + i2);
+
             Complex state1 = this.State[i1];
             Complex state2 = this.State[i2];
             this.State[i1] = state2;
             this.State[i2] = state1;
         }
     }
-
 
     public override string ToString()
     {
