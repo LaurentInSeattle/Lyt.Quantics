@@ -216,8 +216,9 @@ public sealed class QuRegister
     /// <remarks> Assumes that i < j </remarks>
     public void Swap(KetMap ketMap, int i, int j)
     {
-        List<Tuple<int, int>> swaps = [];  
-        for (int k1 = 0; k1 < this.State.Count / 2; ++k1)
+        KetMap reducedKetMap = ketMap.Reduce(i, j);
+        List<Tuple<int, int>> swaps = [];
+        for (int k1 = 0; k1 < this.State.Count; ++k1)
         {
             // for the state at k index: 
             // if bit #i is not equal to bit #j, we need to swap values 
@@ -229,9 +230,21 @@ public sealed class QuRegister
             if (areDifferent)
             {
                 // This index k1 needs to be swapped with another one, k2, so... Find k2 
-                int k2 = ketMap.Match(k1, i, j );
+                int k2 = ketMap.Match(reducedKetMap, k1, i, j);
+                bool alreadyThere = false;
+                foreach (var tuple in swaps)
+                {
+                    if ((tuple.Item1 == k2) && (tuple.Item2 == k1))
+                    {
+                        alreadyThere = true;
+                        break;
+                    }
+                }
 
-                swaps.Add(new(k1, k2)); 
+                if (!alreadyThere)
+                {
+                    swaps.Add(new(k1, k2));
+                }
             }
         }
 
@@ -239,6 +252,7 @@ public sealed class QuRegister
         {
             int i1 = swap.Item1;
             int i2 = swap.Item2;
+            
             Debug.WriteLine(i1 + " <-> " + i2);
 
             Complex state1 = this.State[i1];

@@ -1,4 +1,6 @@
-﻿namespace Lyt.Quantics.Engine.Core;
+﻿// #define VERBOSE 
+
+namespace Lyt.Quantics.Engine.Core;
 
 public sealed class KetMap
 {
@@ -29,10 +31,29 @@ public sealed class KetMap
             this.map.Add(Ket(i));
         }
 
-        // this.DumpMap(this.map);
+        DumpMap(this.map);
     }
 
-    public KetMap DeepClone () => new(this.qubitCount);
+    public KetMap Reduce(int ket1, int ket2)
+    {
+        var min = Math.Min(ket1, ket2);
+        var max = Math.Max(ket1, ket2);
+        KetMap reducedKetMap = this.DeepClone();
+        var reducedMap = reducedKetMap.map;
+        DumpMap(reducedMap);
+
+        foreach (var list in reducedMap)
+        {
+            list.RemoveAt(max);
+            list.RemoveAt(min);
+        }
+
+        DumpMap(reducedMap);
+
+        return reducedKetMap;
+    }
+
+    public KetMap DeepClone() => new(this.qubitCount);
 
     public bool Get(int index, int ket)
     {
@@ -49,7 +70,7 @@ public sealed class KetMap
         return this.map[index][ket];
     }
 
-    public int Match(int index, int ket1, int ket2)
+    public int Match(KetMap reducedKetMap, int index, int ket1, int ket2)
     {
         if ((index < 0) || (index >= this.map.Count))
         {
@@ -71,21 +92,7 @@ public sealed class KetMap
             throw new ArgumentException("Invalid ket indices");
         }
 
-        var min = Math.Min(ket1, ket2);
-        var max = Math.Max(ket1, ket2);
-        KetMap reducedKetMap = this.DeepClone();
-        var reducedMap = reducedKetMap.map;
-        // this.DumpMap(reducedMap);
-
-        foreach (var list in reducedMap)
-        {
-            list.RemoveAt(max);
-            list.RemoveAt(min);
-        }
-
-        // this.DumpMap(reducedMap);
-
-        bool IsMatch(List<bool> x, List<bool> y)
+        static bool IsMatch(List<bool> x, List<bool> y)
         {
             for (int ket = 0; ket < Math.Min(x.Count, y.Count); ++ket)
             {
@@ -98,32 +105,29 @@ public sealed class KetMap
             return true;
         }
 
-        List<bool> target = reducedMap[index]; 
-        int match = 0;
-        foreach (var list in reducedMap)
+        var reducedMap = reducedKetMap.map;
+        List<bool> target = reducedMap[index];
+        for (int match = 0; match < reducedMap.Count; ++match)
         {
-            bool areSame = this.Get(index, ket1) == this.Get(index, ket2);
+            bool areSame = this.Get(match, ket1) == this.Get(match, ket2);
             if (areSame)
             {
-                continue; 
+                continue;
             }
 
-            if ( index == match )
+            if (index == match)
             {
-                continue; 
+                continue;
             }
 
-            if (IsMatch(target, list))
+            if (IsMatch(target, reducedMap[match]))
             {
-                return match; 
-            } 
-
-            ++match;
+                return match;
+            }
         }
 
         throw new Exception("Ket Match not found");
     }
-
 
     /*
      * 
@@ -150,13 +154,13 @@ public sealed class KetMap
     1110    <-0.679175; -0.733977>  <-0.679175; -0.733977>
     1111    <0.680128; -0.733093>  <0.680128; -0.733093>
 
-
      * 
      */
 
     [Conditional("DEBUG")]
-    private void DumpMap(List<List<bool>> map)
+    private static void DumpMap(List<List<bool>> map)
     {
+#if VERBOSE 
         if (this.qubitCount < 3)
         {
             return;
@@ -177,5 +181,6 @@ public sealed class KetMap
 
         Debug.Unindent();
         Debug.WriteLine("");
+#endif // VERBOSE 
     }
 }
