@@ -71,6 +71,28 @@ public sealed class KetMap
         DumpMap(this.map);
     }
 
+    /// <summary> Create a new Ket Map by ignoring the values for the provided qubit index. </summary>
+    public KetMap Reduce(int ket)
+    {
+        if ((ket < 0) || (ket >= qubitCount))
+        {
+            throw new ArgumentException("Invalid ket index: ket");
+        }
+
+        KetMap reducedKetMap = this.DeepClone();
+        var reducedMap = reducedKetMap.map;
+        DumpMap(reducedMap);
+
+        foreach (var list in reducedMap)
+        {
+            list.RemoveAt(ket);
+        }
+
+        DumpMap(reducedMap);
+
+        return reducedKetMap;
+    }
+
     /// <summary> Create a new Ket Map by ignoring the values for the provided qubits indices. </summary>
     public KetMap Reduce(int ket1, int ket2)
     {
@@ -125,6 +147,37 @@ public sealed class KetMap
         return this.map[index][ket];
     }
 
+    /// <summary> Returns the matching index in the state vector when applying a unary gate  </summary>
+    public int UnaryMatch(KetMap reducedKetMap, int index, int ket)
+    {
+        if ((index < 0) || (index >= this.map.Count))
+        {
+            throw new ArgumentException("Invalid index");
+        }
+
+        if ((ket < 0) || (ket >= qubitCount))
+        {
+            throw new ArgumentException("Invalid ket index: ket1");
+        }
+
+        var reducedMap = reducedKetMap.map;
+        List<bool> target = reducedMap[index];
+        for (int match = 0; match < reducedMap.Count; ++match)
+        {
+            if (index == match)
+            {
+                continue;
+            }
+
+            if (IsMatch(target, reducedMap[match]))
+            {
+                return match;
+            }
+        }
+
+        throw new Exception("Ket Match not found");
+    }
+
     /// <summary> Returns the matching index in the state vector when swaping quBits </summary>
     public int SwapMatch(KetMap reducedKetMap, int index, int ket1, int ket2)
     {
@@ -146,19 +199,6 @@ public sealed class KetMap
         if (ket1 == ket2)
         {
             throw new ArgumentException("Invalid ket indices");
-        }
-
-        static bool IsMatch(List<bool> x, List<bool> y)
-        {
-            for (int ket = 0; ket < Math.Min(x.Count, y.Count); ++ket)
-            {
-                if (x[ket] != y[ket])
-                {
-                    return false;
-                }
-            }
-
-            return true;
         }
 
         var reducedMap = reducedKetMap.map;
@@ -183,6 +223,19 @@ public sealed class KetMap
         }
 
         throw new Exception("Ket Match not found");
+    }
+
+    private static bool IsMatch(List<bool> x, List<bool> y)
+    {
+        for (int ket = 0; ket < Math.Min(x.Count, y.Count); ++ket)
+        {
+            if (x[ket] != y[ket])
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     [Conditional("DEBUG")]

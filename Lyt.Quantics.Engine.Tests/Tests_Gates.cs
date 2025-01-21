@@ -1,4 +1,6 @@
-﻿namespace Lyt.Quantics.Engine.Tests;
+﻿using Lyt.Quantics.Engine.Gates.Base;
+
+namespace Lyt.Quantics.Engine.Tests;
 
 [TestClass]
 public sealed class Tests_Gates
@@ -276,7 +278,7 @@ public sealed class Tests_Gates
     }
 
     [TestMethod]
-    public void Test_ApplyUnaryGate()
+    public void Test_ApplyUnaryGateOnQuBitZero()
     {
         try
         {
@@ -296,21 +298,64 @@ public sealed class Tests_Gates
                         matrix = matrix.KroneckerProduct(identityMatrix);
                     }
 
-
                     var newState = matrix.Multiply(registerSource.State);
-                    // var finalState = swap.Multiply(newState);
-                    // Assert.IsTrue(finalState.IsAlmostEqualTo(registerSource.State));
-
                     Debug.WriteLine(registerSource.State.ToString());
                     Debug.WriteLine(newState.ToString());
+                    var clone = registerSource.DeepClone();
+                    clone.ApplyUnaryGateOnQuBitZero(gate);
+                    Debug.WriteLine(clone.ToString());
+                    Assert.IsTrue(clone.State.IsAlmostEqualTo(newState));
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            Assert.Fail();
+        }
+    }
 
-                    //var clone = registerSource.DeepClone();
-                    //var ketMap = new KetMap(qubitCount);
-                    //clone.Swap(ketMap, j, k);
-                    //Debug.WriteLine(clone.ToString());
-                    //Assert.IsTrue(clone.State.IsAlmostEqualTo(newState));
-                    //clone.Swap(ketMap, j, k);
-                    //Assert.IsTrue(clone.State.IsAlmostEqualTo(registerSource.State));
+    [TestMethod]
+    public void Test_ApplyUnaryGateWithSwaps()
+    {
+        try
+        {
+            var identityMatrix = GateFactory.Produce(IdentityGate.Key).Matrix;
+            // Unary gates 
+            foreach (string gateCaptionKey in
+                new string[] { "X", "Y", "Z", "H", "T", "S", "SX" })
+            {
+                var gate = GateFactory.Produce(gateCaptionKey);
+                var gateMatrix = gate.Matrix;
+
+                for (int qubitCount = 4; qubitCount <= 8; qubitCount++)
+                {
+                    var ketMap = new KetMap(qubitCount);
+                    for (int position = 1; position < qubitCount; position++)
+                    {
+                        Debug.WriteLine(string.Format("Gate: {0} - Qubits: {1} ", gateCaptionKey, qubitCount));
+                        var registerSource = new QuRegister(qubitCount);
+                        var matrix = identityMatrix;
+                        for (int i = 1; i < position; i++)
+                        {
+                            matrix = matrix.KroneckerProduct(identityMatrix);
+                        }
+
+                        matrix = matrix.KroneckerProduct(gateMatrix);
+
+                        for (int i = position + 1 ; i < qubitCount; i++)
+                        {
+                            matrix = matrix.KroneckerProduct(identityMatrix);
+                        }
+
+                        var newState = matrix.Multiply(registerSource.State);
+                        Debug.WriteLine(registerSource.State.ToString());
+                        Debug.WriteLine(newState.ToString());
+                        var clone = registerSource.DeepClone();
+                        clone.ApplyUnaryGateAtPosition(gate, ketMap, position);
+                        Debug.WriteLine(clone.ToString());
+                        Assert.IsTrue(clone.State.IsAlmostEqualTo(newState));
+                    } 
                 }
             }
         }

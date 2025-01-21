@@ -212,6 +212,45 @@ public sealed class QuRegister
         return result;
     }
 
+    public void ApplyUnaryGateAtPosition(Gate gate, KetMap ketMap, int position )
+    {
+        if (!gate.IsUnary)
+        {
+            throw new Exception("Gate should be unary.");
+        }
+
+        int stateCount = this.state.Count;
+        int quBitCount = MathUtilities.IntegerLog2(stateCount);
+        if ((position < 0) || (position >= quBitCount))
+        {
+            throw new ArgumentException("Invalid position");
+        }
+
+        this.Swap(ketMap, 0, position);
+        this.ApplyUnaryGateOnQuBitZero(gate);
+        this.Swap(ketMap, 0, position);
+    }
+
+    public void ApplyUnaryGateOnQuBitZero(Gate gate)
+    {
+        if ( ! gate.IsUnary)
+        {
+            throw new Exception("Gate should be unary.");
+        }
+
+        var matrix = gate.Matrix;
+        Vector<Complex> subState = Vector<Complex>.Build.Dense(2);
+        int half = this.State.Count / 2; 
+        for (int k = 0; k < half; ++k)
+        {
+            subState.At(0, this.State[k]);
+            subState.At(1, this.State[k+half]);
+            subState = matrix.Multiply(subState);
+            this.state[k] = subState.At(0);
+            this.state[k+half] = subState.At(1);
+        }
+    }
+
     /// <summary> This should perform just like applying a binary swap gate on qubits indices i and j </summary>
     /// <remarks> Assumes that i < j </remarks>
     public void Swap(KetMap ketMap, int i, int j)
