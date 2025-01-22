@@ -33,6 +33,10 @@ TODO: Studio :
 
 	FEATURE: Ability to cancel a run at 9 and 10 qubits
 		
+	FEATURE: Show some message when user has no files on disk 
+
+	BUG: If no recents files, show a few most recent ones 
+
 	BUG: Can't dismiss toasts in Computer view 
 
 	BUG: Sometimes showing a toasted Error on dropping Swap gate : "overlapping targets"

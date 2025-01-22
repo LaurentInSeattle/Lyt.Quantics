@@ -25,7 +25,6 @@ public class ControlledGate : Gate
     public const string Key = "Co";
 
     private readonly Matrix<Complex> matrix;
-    // private readonly string baseCaptionKey;
 
     public ControlledGate(string captionKey) : this(GateFactory.Produce(captionKey)) { }
 

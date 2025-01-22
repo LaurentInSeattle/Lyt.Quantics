@@ -365,7 +365,93 @@ public sealed class Tests_Gates
             Assert.Fail();
         }
     }
+
+    [TestMethod]
+    public void Test_ApplyBinaryGateOnQuBitsZeroOne()
+    {
+        try
+        {
+            var identityMatrix = GateFactory.Produce(IdentityGate.Key).Matrix;
+            // Binary gates 
+            foreach (string gateCaptionKey in
+                new string[] { "CX", "CZ", "CS" })
+            {
+                var gate = GateFactory.Produce(gateCaptionKey);
+                for (int qubitCount = 4; qubitCount <= 8; qubitCount++)
+                {
+                    Debug.WriteLine(string.Format("Gate: {0} - Qubits: {1} ", gateCaptionKey, qubitCount));
+                    var registerSource = new QuRegister(qubitCount);
+                    var matrix = gate.Matrix;
+                    for (int i = 1; i < qubitCount-1; i++)
+                    {
+                        matrix = matrix.KroneckerProduct(identityMatrix);
+                    }
+
+                    var newState = matrix.Multiply(registerSource.State);
+                    Debug.WriteLine(registerSource.State.ToString());
+                    Debug.WriteLine(newState.ToString());
+
+                    //var clone = registerSource.DeepClone();
+                    //clone.Test_ApplyBinaryGateOnQuBitsZeroOne(gate);
+                    //Debug.WriteLine(clone.ToString());
+                    //Assert.IsTrue(clone.State.IsAlmostEqualTo(newState));
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            Assert.Fail();
+        }
+    }
+
 }
+
+
+/*
+Gate: CX - Qubits: 3 
+
+000   a   <-0.377787; 0.925893>     <-0.377787; 0.925893>   a
+001   b  <-0.956883; -0.290474>    <-0.956883; -0.290474>   b 
+010   c  <-0.997131; 0.0756959>    <-0.997131; 0.0756959>   c
+011   d  <-0.167656; -0.985846>    <-0.167656; -0.985846>   d
+
+100   e   <0.752394; -0.658713>      <0.925472; 0.378816>   g
+101   f     <0.72552; 0.688201>     <-0.291538; 0.956559>   h
+110   g    <0.925472; 0.378816>     <0.752394; -0.658713>   e
+111   h   <-0.291538; 0.956559>       <0.72552; 0.688201>   f
+
+
+Gate: CX - Qubits: 4 
+
+0000   a  <-0.892545; -0.450959>   <-0.892545; -0.450959>   a
+0001   b   <-0.849248; 0.527994>    <-0.849248; 0.527994>   b
+0010   c   <-0.840801; 0.541344>    <-0.840801; 0.541344>   c
+0011   d    <0.0253125; 0.99968>     <0.0253125; 0.99968>   d
+          
+0100   e  <-0.282793; -0.959181>   <-0.282793; -0.959181>   e                   
+0101   f  <-0.966386; -0.257095>   <-0.966386; -0.257095>   f                   
+0110   g  <-0.970327; -0.241797>   <-0.970327; -0.241797>   g                   
+0111   h   <-0.711013; 0.703179>    <-0.711013; 0.703179>   h                   
+          
+1000   i  <-0.975811; -0.218618>   <-0.509107; -0.860704>    m                   
+1001   j   <-0.694063; 0.719914>  <-0.999921; -0.0125731>    n                   
+1010   k   <-0.682604; 0.730789>  <-0.999995; 0.00322427>    o                   
+1011   l    <0.269387; 0.963032>    <-0.517131; 0.855906>    p                   
+          
+1100   m   <-0.509107; -0.860704>  <-0.975811; -0.218618     i
+1101   n  <-0.999921; -0.0125731>   <-0.694063; 0.719914     j
+1110   o  <-0.999995; 0.00322427>   <-0.682604; 0.730789     k
+1111   p    <-0.517131; 0.855906>    <0.269387; 0.963032     l
+
+Top half Unchanged 
+
+Apply X at 0 on bottom half 
+
+ */
+
+
+
 
 /*
 Gate: X - Qubits: 3
