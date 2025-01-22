@@ -331,6 +331,9 @@ public sealed class Tests_Gates
                 for (int qubitCount = 4; qubitCount <= 8; qubitCount++)
                 {
                     var ketMap = new KetMap(qubitCount);
+                    // TODO :
+                    // Fails if position is zero because regular matrix is not properly calculated 
+                    //
                     for (int position = 1; position < qubitCount; position++)
                     {
                         Debug.WriteLine(string.Format("Gate: {0} - Qubits: {1} ", gateCaptionKey, qubitCount));
@@ -367,17 +370,18 @@ public sealed class Tests_Gates
     }
 
     [TestMethod]
-    public void Test_ApplyBinaryGateOnQuBitsZeroOne()
+    public void Test_ApplyBinaryControlledGateOnQuBitsZeroOne()
     {
         try
         {
             var identityMatrix = GateFactory.Produce(IdentityGate.Key).Matrix;
-            // Binary gates 
+            // Unary gates used to create a controlled one 
             foreach (string gateCaptionKey in
-                new string[] { "CX", "CZ", "CS" })
+                new string[] { "X", "Y", "Z", "H", "T", "S", "SX" })
             {
-                var gate = GateFactory.Produce(gateCaptionKey);
-                for (int qubitCount = 4; qubitCount <= 8; qubitCount++)
+                var baseGate = GateFactory.Produce(gateCaptionKey);
+                var gate = new ControlledGate(baseGate);
+                for (int qubitCount = 3; qubitCount <= 8; qubitCount++)
                 {
                     Debug.WriteLine(string.Format("Gate: {0} - Qubits: {1} ", gateCaptionKey, qubitCount));
                     var registerSource = new QuRegister(qubitCount);
@@ -391,10 +395,10 @@ public sealed class Tests_Gates
                     Debug.WriteLine(registerSource.State.ToString());
                     Debug.WriteLine(newState.ToString());
 
-                    //var clone = registerSource.DeepClone();
-                    //clone.Test_ApplyBinaryGateOnQuBitsZeroOne(gate);
-                    //Debug.WriteLine(clone.ToString());
-                    //Assert.IsTrue(clone.State.IsAlmostEqualTo(newState));
+                    var clone = registerSource.DeepClone();
+                    clone.ApplyBinaryControlledGateOnQuBitZero(gate);
+                    Debug.WriteLine(clone.ToString());
+                    Assert.IsTrue(clone.State.IsAlmostEqualTo(newState));
                 }
             }
         }
@@ -405,6 +409,61 @@ public sealed class Tests_Gates
         }
     }
 
+    [TestMethod]
+    public void Test_ApplyBinaryControlledGateAtPosition()
+    {
+        try
+        {
+            var identityMatrix = GateFactory.Produce(IdentityGate.Key).Matrix;
+            // Unary gates used to create a controlled one 
+            foreach (string gateCaptionKey in
+                new string[] { "X", "Y", "Z", "H", "T", "S", "SX" })
+            {
+                var baseGate = GateFactory.Produce(gateCaptionKey);
+                var gate = new ControlledGate(baseGate);
+                var gateMatrix = gate.Matrix;
+                for (int qubitCount = 3; qubitCount <= 8; qubitCount++)
+                {
+                    var ketMap = new KetMap(qubitCount);
+                    for (int position = 0; position < qubitCount; position++)
+                    {
+                        // TODO : FIXME : Regular matrix is improperly calculated 
+                        //
+                        //
+                        //Debug.WriteLine(string.Format("Gate: {0} - Qubits: {1} ", gateCaptionKey, qubitCount));
+                        //var registerSource = new QuRegister(qubitCount);
+                        //var matrix = identityMatrix;
+                        //for (int i = 1; i < position; i++)
+                        //{
+                        //    matrix = matrix.KroneckerProduct(identityMatrix);
+                        //}
+
+                        //matrix = matrix.KroneckerProduct(gateMatrix);
+
+                        //// Note +2 as matrix is from a binary gate and takes two slots 
+                        //for (int i = position + 2; i < qubitCount; i++)
+                        //{
+                        //    matrix = matrix.KroneckerProduct(identityMatrix);
+                        //}
+
+                        //var newState = matrix.Multiply(registerSource.State);
+                        //Debug.WriteLine(registerSource.State.ToString());
+                        //Debug.WriteLine(newState.ToString());
+
+                        //var clone = registerSource.DeepClone();
+                        //clone.ApplyBinaryControlledGateAtPosition(gate, ketMap, position);
+                        //Debug.WriteLine(clone.ToString());
+                        //Assert.IsTrue(clone.State.IsAlmostEqualTo(newState));
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            Assert.Fail();
+        }
+    }
 }
 
 

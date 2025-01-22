@@ -212,45 +212,6 @@ public sealed class QuRegister
         return result;
     }
 
-    public void ApplyUnaryGateAtPosition(Gate gate, KetMap ketMap, int position )
-    {
-        if (!gate.IsUnary)
-        {
-            throw new Exception("Gate should be unary.");
-        }
-
-        int stateCount = this.state.Count;
-        int quBitCount = MathUtilities.IntegerLog2(stateCount);
-        if ((position < 0) || (position >= quBitCount))
-        {
-            throw new ArgumentException("Invalid position");
-        }
-
-        this.Swap(ketMap, 0, position);
-        this.ApplyUnaryGateOnQuBitZero(gate);
-        this.Swap(ketMap, 0, position);
-    }
-
-    public void ApplyUnaryGateOnQuBitZero(Gate gate)
-    {
-        if ( ! gate.IsUnary)
-        {
-            throw new Exception("Gate should be unary.");
-        }
-
-        var matrix = gate.Matrix;
-        Vector<Complex> subState = Vector<Complex>.Build.Dense(2);
-        int half = this.State.Count / 2; 
-        for (int k = 0; k < half; ++k)
-        {
-            subState.At(0, this.State[k]);
-            subState.At(1, this.State[k+half]);
-            subState = matrix.Multiply(subState);
-            this.state[k] = subState.At(0);
-            this.state[k+half] = subState.At(1);
-        }
-    }
-
     /// <summary> This should perform just like applying a binary swap gate on qubits indices i and j </summary>
     /// <remarks> Assumes that i < j </remarks>
     public void Swap(KetMap ketMap, int i, int j)
@@ -301,6 +262,133 @@ public sealed class QuRegister
             this.State[i1] = state2;
             this.State[i2] = state1;
         }
+    }
+
+    public void ApplyUnaryGateAtPosition(Gate gate, KetMap ketMap, int position)
+    {
+        if (!gate.IsUnary)
+        {
+            throw new Exception("Gate should be unary.");
+        }
+
+        int stateCount = this.state.Count;
+        int quBitCount = MathUtilities.IntegerLog2(stateCount);
+        if ((position < 0) || (position >= quBitCount))
+        {
+            throw new ArgumentException("Invalid position");
+        }
+
+        if (position > 0)
+        {
+            this.Swap(ketMap, 0, position);
+        } 
+
+        this.ApplyUnaryGateOnQuBitZero(gate);
+
+        if (position > 0)
+        {
+            this.Swap(ketMap, 0, position);
+        }
+    }
+
+    public void ApplyUnaryGateOnQuBitZero(Gate gate)
+    {
+        if (!gate.IsUnary)
+        {
+            throw new Exception("Gate should be unary.");
+        }
+
+        var matrix = gate.Matrix;
+        Vector<Complex> subState = Vector<Complex>.Build.Dense(2);
+        int half = this.State.Count / 2;
+        for (int k = 0; k < half; ++k)
+        {
+            subState.At(0, this.State[k]);
+            subState.At(1, this.State[k + half]);
+            subState = matrix.Multiply(subState);
+            this.state[k] = subState.At(0);
+            this.state[k + half] = subState.At(1);
+        }
+    }
+
+    public void ApplyBinaryControlledGateAtPosition(ControlledGate gate, KetMap ketMap, int position)
+    {
+        if (!gate.IsBinary)
+        {
+            throw new Exception("Gate should be binary and controlled.");
+        }
+
+        var baseGate = gate.BaseGate;
+        if (!baseGate.IsUnary)
+        {
+            throw new Exception("Base gate should be unary.");
+        }
+
+        int stateCount = this.state.Count;
+        int quBitCount = MathUtilities.IntegerLog2(stateCount);
+        if ((position < 0) || (position >= quBitCount))
+        {
+            throw new ArgumentException("Invalid position");
+        }
+
+        if (position > 0)
+        {
+            this.Swap(ketMap, 0, position);
+        }
+
+        this.ApplyBinaryControlledGateOnQuBitZero(gate);
+
+        if (position > 0)
+        {
+            this.Swap(ketMap, 0, position);
+        }
+    }
+
+    public void ApplyBinaryControlledGateOnQuBitZero(ControlledGate gate)
+    {
+        if (!gate.IsBinary)
+        {
+            throw new Exception("Gate should be binary and controlled.");
+        }
+
+        var baseGate = gate.BaseGate;
+        if (!baseGate.IsUnary)
+        {
+            throw new Exception("Base gate should be unary.");
+        }
+
+        /// <summary> Split this register into two halves. </summary>
+        /// <returns> A tuple containing two registers, top and bottom halves. </returns>
+        Tuple<QuRegister, QuRegister> Split()
+        {
+            int halfCount = this.state.Count / 2;
+            Vector<Complex> topStateVector = Vector<Complex>.Build.Dense(halfCount);
+            Vector<Complex> botStateVector = Vector<Complex>.Build.Dense(halfCount);
+            for (int i = 0; i < halfCount; ++i)
+            {
+                topStateVector.At(i, this.state[i]);
+                botStateVector.At(i, this.state[i + halfCount]);
+            }
+
+            return new Tuple<QuRegister, QuRegister>(new(topStateVector), new(botStateVector));
+        }
+
+        /// <summary> Update this register by merging the two provided halves. </summary>
+        void Merge(QuRegister top, QuRegister bot)
+        {
+            int halfCount = this.state.Count / 2;
+            for (int i = 0; i < halfCount; ++i)
+            {
+                this.state[i] = top.state.At(i);
+                this.state[i + halfCount] = bot.state.At(i);
+            }
+        }
+
+        var tuple = Split();
+        var top  = tuple.Item1;
+        var bot = tuple.Item2;
+        bot.ApplyUnaryGateOnQuBitZero(baseGate); 
+        Merge(top, bot);
     }
 
     public override string ToString()

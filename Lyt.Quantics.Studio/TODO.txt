@@ -14,6 +14,10 @@ TODO: Engine:
 
 	Process gates linearly, optimizing Identity gates (Doable?) 
 		=> Done for SWAP gates 
+		=> Done for UNARY gates 
+		=> Done for BINARY CONTROLLED gates 
+
+	Cleanup Controlled flag 
 
 	??? Include Author in computer metadata
 	
