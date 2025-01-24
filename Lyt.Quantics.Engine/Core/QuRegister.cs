@@ -2,6 +2,8 @@
 
 namespace Lyt.Quantics.Engine.Core;
 
+using Lyt.Quantics.Engine.Gates.UnaryParametrized;
+
 // Cannot use Vector<Complex> using System.Numerics 
 // but we still need System.Numerics for Complex 
 // Be careful when using global usings 

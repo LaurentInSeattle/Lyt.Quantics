@@ -12,12 +12,13 @@ TODO: Framework:
 TODO: Engine: 
 -------------
 
+	Priorities:	
+		Cleanup Controlled flag 
+
 	Process gates linearly, optimizing Identity gates (Doable?) 
 		=> Done for SWAP gates 
 		=> Done for UNARY gates 
 		=> Done for BINARY CONTROLLED gates 
-
-	Cleanup Controlled flag 
 
 	??? Include Author in computer metadata
 	
@@ -93,3 +94,5 @@ N	Register	Reg Bytes	Matrix	Matrix bytes
 16	64 K		1 M			  4 G	64 G
 20  1 M         16 M        !!!     !!!
 24  16 M		256 M 
+28  256 M		4 G
+32  2 G			32 G 

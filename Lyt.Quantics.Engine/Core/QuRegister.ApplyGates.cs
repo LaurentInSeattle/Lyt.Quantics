@@ -172,38 +172,59 @@ public sealed partial class QuRegister
             throw new Exception("Base gate should be unary.");
         }
 
-        /// <summary> Split this register into two halves. </summary>
-        /// <returns> A tuple containing two registers, top and bottom halves. </returns>
-        Tuple<QuRegister, QuRegister> Split()
-        {
-            int halfCount = this.state.Count / 2;
-            Vector<Complex> topStateVector = Vector<Complex>.Build.Dense(halfCount);
-            Vector<Complex> botStateVector = Vector<Complex>.Build.Dense(halfCount);
-            for (int i = 0; i < halfCount; ++i)
-            {
-                topStateVector.At(i, this.state[i]);
-                botStateVector.At(i, this.state[i + halfCount]);
-            }
-
-            return new Tuple<QuRegister, QuRegister>(new(topStateVector), new(botStateVector));
-        }
-
-        /// <summary> Update this register by merging the two provided halves. </summary>
-        void Merge(QuRegister top, QuRegister bot)
-        {
-            int halfCount = this.state.Count / 2;
-            for (int i = 0; i < halfCount; ++i)
-            {
-                this.state[i] = top.state.At(i);
-                this.state[i + halfCount] = bot.state.At(i);
-            }
-        }
-
-        var tuple = Split();
+        var tuple = this.Split();
         var top = tuple.Item1;
         var bot = tuple.Item2;
         bot.ApplyUnaryGateOnQuBitZero(baseGate);
-        Merge(top, bot);
+        this.Merge(top, bot);
     }
+
+    public void ApplyTernaryControlledGateOnQuBitZeroOneTwo(Gate gate)
+    {
+        if (!gate.IsTernary)
+        {
+            throw new Exception("Gate should be ternary and controlled.");
+        }
+
+        //var baseGate = gate.BaseGate;
+        //if (!baseGate.IsBinary)
+        //{
+        //    throw new Exception("Base gate should be binary.");
+        //}
+
+        //var tuple = this.Split();
+        //var top = tuple.Item1;
+        //var bot = tuple.Item2;
+        //bot.ApplyBinaryControlledGateOnQuBitZeroOne(baseGate);
+        //this.Merge(top, bot);
+    }
+
+    /// <summary> Split this register into two halves. </summary>
+    /// <returns> A tuple containing two registers, top and bottom halves. </returns>
+    private Tuple<QuRegister, QuRegister> Split()
+    {
+        int halfCount = this.state.Count / 2;
+        Vector<Complex> topStateVector = Vector<Complex>.Build.Dense(halfCount);
+        Vector<Complex> botStateVector = Vector<Complex>.Build.Dense(halfCount);
+        for (int i = 0; i < halfCount; ++i)
+        {
+            topStateVector.At(i, this.state[i]);
+            botStateVector.At(i, this.state[i + halfCount]);
+        }
+
+        return new Tuple<QuRegister, QuRegister>(new(topStateVector), new(botStateVector));
+    }
+
+    /// <summary> Update this register by merging the two provided halves. </summary>
+    private void Merge(QuRegister top, QuRegister bot)
+    {
+        int halfCount = this.state.Count / 2;
+        for (int i = 0; i < halfCount; ++i)
+        {
+            this.state[i] = top.state.At(i);
+            this.state[i + halfCount] = bot.state.At(i);
+        }
+    }
+
 
 }

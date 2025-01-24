@@ -463,8 +463,76 @@ public sealed class Tests_Gates
             Assert.Fail();
         }
     }
+
+    [TestMethod]
+    public void Test_ApplyTernaryControlledGateOnQuBitsZeroOne()
+    {
+        try
+        {
+            var identityMatrix = GateFactory.Produce(IdentityGate.Key).Matrix;
+            // Binary gates used to create a controlled one 
+            foreach (string gateCaptionKey in
+                new string[] { "CX", "CZ", SwapGate.Key })
+            {
+                var baseGate = GateFactory.Produce(gateCaptionKey);
+                var gate = new ControlledGate(baseGate);
+                for (int qubitCount = 4; qubitCount <= 8; qubitCount++)
+                {
+                    Debug.WriteLine(string.Format("Gate: {0} - Qubits: {1} ", gateCaptionKey, qubitCount));
+                    var registerSource = new QuRegister(qubitCount);
+                    var matrix = gate.Matrix;
+                    for (int i = 3; i < qubitCount ; i++)
+                    {
+                        matrix = matrix.KroneckerProduct(identityMatrix);
+                    }
+
+                    var newState = matrix.Multiply(registerSource.State);
+                    Debug.WriteLine(registerSource.State.ToString());
+                    Debug.WriteLine(newState.ToString());
+
+                    var clone = registerSource.DeepClone();
+                    clone.ApplyTernaryControlledGateOnQuBitZeroOneTwo(gate);
+                    Debug.WriteLine(clone.ToString());
+                    Assert.IsTrue(clone.State.IsAlmostEqualTo(newState));
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            Assert.Fail();
+        }
+    }
+
 }
 
+/*
+Gate: CCX - Qubits: 4 
+
+Top Half: Unchanged 
+Bottom Half: Applied CX 
+
+0000   a   <0.922342; -0.386375>   <0.922342; -0.386375> 
+0001   b   <0.84337; -0.537333>     <0.84337; -0.537333> 
+0010   c   <0.237521; 0.971382>     <0.237521; 0.971382> 
+0011   d   <0.398963; 0.916967>     <0.398963; 0.916967> 
+         
+0100   e   <0.280271; 0.959921>     <0.280271; 0.959921>                        
+0101   f   <0.439147; 0.898415>     <0.439147; 0.898415>                        
+0110   g  <-0.991922; 0.126848>    <-0.991922; 0.126848>                        
+0111   h  <-0.955995; 0.293383>    <-0.955995; 0.293383>                        
+         
+1000   i  <-0.727237; 0.686386>    <-0.727237; 0.686386>                        
+1001   j  <-0.600171; 0.799872>    <-0.600171; 0.799872>                        
+1010   k  <-0.564331; -0.825548>   <-0.564331; -0.825548>                        
+1011   l  <-0.696276; -0.717774>   <-0.696276; -0.717774>   
+         
+1100   m  <-0.600308; -0.799769>      <0.88374; -0.467978>
+1101   n  <-0.727355; -0.686262>     <0.791477; -0.611198>
+1110   o   <0.88374; -0.467978>    <-0.600308; -0.799769>
+1111   p  <0.791477; -0.611198>    <-0.727355; -0.686262>
+
+*/
 
 /*
 Gate: CX - Qubits: 3 
