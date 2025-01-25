@@ -1,6 +1,6 @@
 ﻿namespace Lyt.Quantics.Engine.Gates.Ternary;
 
-public sealed class ControlledControlledZ : Gate
+public sealed class ControlledControlledZ : ControlledGate
 {
     private static readonly Matrix<Complex> CCzMatrix;
 
@@ -9,6 +9,8 @@ public sealed class ControlledControlledZ : Gate
         var gate = new ControlledGate(new ControlledZGate());
         ControlledControlledZ.CCzMatrix = gate.Matrix;
     }
+
+    public ControlledControlledZ() : base(new ControlledZGate()) { }
 
     public override Matrix<Complex> Matrix => ControlledControlledZ.CCzMatrix;
 

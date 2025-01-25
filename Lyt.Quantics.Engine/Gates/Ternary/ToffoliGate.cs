@@ -2,7 +2,7 @@
 
 using MathNet.Numerics.LinearAlgebra;
 
-public sealed class ToffoliGate : Gate
+public sealed class ToffoliGate : ControlledGate
 {
     // the Toffoli gate, also known as the CCNOT gate (“controlled-controlled-not”),
     // invented by Tommaso Toffoli, is a CNOT gate with two control qubits and one target
@@ -34,6 +34,8 @@ public sealed class ToffoliGate : Gate
         ToffoliMatrix.At(6, 7, Complex.One);
         ToffoliMatrix.At(7, 6, Complex.One);
     }
+
+    public ToffoliGate() : base(new ControlledNotGate()) { }
 
     public override Matrix<Complex> Matrix => ToffoliGate.ToffoliMatrix;
 

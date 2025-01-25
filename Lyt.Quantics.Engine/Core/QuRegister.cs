@@ -2,8 +2,6 @@
 
 namespace Lyt.Quantics.Engine.Core;
 
-using Lyt.Quantics.Engine.Gates.UnaryParametrized;
-
 // Cannot use Vector<Complex> using System.Numerics 
 // but we still need System.Numerics for Complex 
 // Be careful when using global usings 
@@ -82,6 +80,8 @@ public sealed partial class QuRegister
         get => this.state;
         set => this.state = value;
     }
+
+    public int QuBitCount => MathUtilities.IntegerLog2(this.state.Count);
 
     // For unit tests 
     public void Apply(Gate gate) => this.state = gate.Matrix.Multiply(this.state);

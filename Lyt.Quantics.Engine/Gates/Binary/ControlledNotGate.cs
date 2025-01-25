@@ -2,12 +2,12 @@
 
 using MathNet.Numerics.LinearAlgebra;
 
-public sealed class ControlledNotGate : Gate
+public sealed class ControlledNotGate : ControlledGate
 {
     // The CNOT (or controlled Pauli-X) gate can be described as the gate that maps the
     // basis states:  |a,b> => |a, a xor b> 
 
-    private static readonly Matrix<Complex> ControlledNotMatrix; 
+    private static readonly Matrix<Complex> ControlledNotMatrix;
 
     static ControlledNotGate()
     {
@@ -21,6 +21,8 @@ public sealed class ControlledNotGate : Gate
         ControlledNotMatrix.At(2, 3, Complex.One);
         ControlledNotMatrix.At(3, 2, Complex.One);
     }
+
+    public ControlledNotGate() : base(new PauliXGate()) { }
 
     public override Matrix<Complex> Matrix => ControlledNotGate.ControlledNotMatrix;
 

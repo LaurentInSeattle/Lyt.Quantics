@@ -1,6 +1,4 @@
-﻿using Lyt.Quantics.Engine.Gates.Base;
-
-namespace Lyt.Quantics.Engine.Tests;
+﻿namespace Lyt.Quantics.Engine.Tests;
 
 [TestClass]
 public sealed class Tests_Gates
@@ -465,7 +463,7 @@ public sealed class Tests_Gates
     }
 
     [TestMethod]
-    public void Test_ApplyTernaryControlledGateOnQuBitsZeroOne()
+    public void Test_ApplyTernaryControlledGateOnQuBitsZeroOneTwo()
     {
         try
         {
@@ -490,10 +488,66 @@ public sealed class Tests_Gates
                     Debug.WriteLine(registerSource.State.ToString());
                     Debug.WriteLine(newState.ToString());
 
-                    //var clone = registerSource.DeepClone();
-                    //clone.ApplyTernaryControlledGateOnQuBitZeroOneTwo(gate);
-                    //Debug.WriteLine(clone.ToString());
-                    //Assert.IsTrue(clone.State.IsAlmostEqualTo(newState));
+                    var clone = registerSource.DeepClone();
+                    clone.ApplyTernaryControlledGateOnQuBitZeroOneTwo(gate);
+                    Debug.WriteLine(clone.ToString());
+                    Assert.IsTrue(clone.State.IsAlmostEqualTo(newState));
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            Assert.Fail();
+        }
+    }
+
+    [TestMethod]
+    public void Test_ApplyTernaryControlledGateAtPosition()
+    {
+        try
+        {
+            var identityMatrix = GateFactory.Produce(IdentityGate.Key).Matrix;
+            // Binary gates used to create a controlled one 
+            foreach (string gateCaptionKey in
+                new string[] { "CX", "CZ", SwapGate.Key })
+            {
+                var baseGate = GateFactory.Produce(gateCaptionKey);
+                var gate = new ControlledGate(baseGate);
+                var gateMatrix = gate.Matrix;
+                for (int qubitCount = 4; qubitCount <= 8; qubitCount++)
+                {
+                    var ketMap = new KetMap(qubitCount);
+                    // Cannot use the last qubit since we have a ternary gate using three slots
+                    for (int position = 1; position < qubitCount - 2; position++)
+                    {
+                        // Regular matrix is improperly calculated for position zero
+                        Debug.WriteLine(string.Format("Gate: {0} - Qubits: {1} ", gateCaptionKey, qubitCount));
+                        var registerSource = new QuRegister(qubitCount);
+                        var matrix = identityMatrix;
+                        for (int i = 1; i < position; i++)
+                        {
+                            matrix = matrix.KroneckerProduct(identityMatrix);
+                        }
+
+                        matrix = matrix.KroneckerProduct(gateMatrix);
+
+                        // Note +3 as matrix is for a ternary gate that takes three slots 
+                        for (int i = position + 3; i < qubitCount; i++)
+                        {
+                            matrix = matrix.KroneckerProduct(identityMatrix);
+                        }
+
+                        var newState = matrix.Multiply(registerSource.State);
+                        Debug.WriteLine(registerSource.State.ToString());
+                        Debug.WriteLine(newState.ToString());
+
+                        var clone = registerSource.DeepClone();
+                        clone.ApplyTernaryControlledGateAtPositions(
+                            gate, ketMap, position, 1 + position, 2 + position);
+                        Debug.WriteLine(clone.State.ToString());
+                        Assert.IsTrue(clone.State.IsAlmostEqualTo(newState));
+                    }
                 }
             }
         }

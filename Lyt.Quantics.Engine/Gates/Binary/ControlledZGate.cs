@@ -2,14 +2,14 @@
 
 using MathNet.Numerics.LinearAlgebra;
 
-public sealed class ControlledZGate : Gate
+public sealed class ControlledZGate : ControlledGate
 {
     // The the CZ gate applies a phase flip (change in the relative phase) to
     // the target qubit only when the control qubit is in the state |1⟩.
     // If the control qubit is in the state |0⟩, the CZ gate does not affect the
     // target qubit. 
 
-    private static readonly Matrix<Complex> ControlledZMatrix; 
+    private static readonly Matrix<Complex> ControlledZMatrix;
 
     static ControlledZGate()
     {
@@ -23,6 +23,8 @@ public sealed class ControlledZGate : Gate
         ControlledZMatrix.At(2, 2, Complex.One);
         ControlledZMatrix.At(3, 3, -Complex.One);
     }
+
+    public ControlledZGate() : base(new PauliZGate()) { }
 
     public override Matrix<Complex> Matrix => ControlledZGate.ControlledZMatrix;
 

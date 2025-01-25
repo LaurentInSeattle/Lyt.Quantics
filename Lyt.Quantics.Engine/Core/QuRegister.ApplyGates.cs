@@ -140,6 +140,11 @@ public sealed partial class QuRegister
             throw new ArgumentException("Invalid target position");
         }
 
+        if (positionTarget == positionControl)
+        {
+            throw new ArgumentException("Invalid positions");
+        }
+
         bool needToSwap = (positionControl != 0) || (positionTarget != 1);
         if (needToSwap)
         {
@@ -179,24 +184,112 @@ public sealed partial class QuRegister
         this.Merge(top, bot);
     }
 
-    public void ApplyTernaryControlledGateOnQuBitZeroOneTwo(Gate gate)
+    /// <summary> Apply the provided ternary controlled gate at positions zero one and two on this quregister </summary>
+    /// <remarks> Made public for unit tests</remarks>
+    public void ApplyTernaryControlledGateOnQuBitZeroOneTwo(ControlledGate gate)
     {
+        int stateCount = this.state.Count;
+        int quBitCount = MathUtilities.IntegerLog2(stateCount);
+        if (quBitCount < 3)
+        {
+            throw new Exception("Invalid qubit count.");
+        }
+
         if (!gate.IsTernary)
         {
             throw new Exception("Gate should be ternary and controlled.");
         }
 
-        //var baseGate = gate.BaseGate;
-        //if (!baseGate.IsBinary)
-        //{
-        //    throw new Exception("Base gate should be binary.");
-        //}
+        var baseGate = gate.BaseGate;
+        if (!baseGate.IsBinary)
+        {
+            throw new Exception("Base gate should be binary.");
+        }
 
-        //var tuple = this.Split();
-        //var top = tuple.Item1;
-        //var bot = tuple.Item2;
-        //bot.ApplyBinaryControlledGateOnQuBitZeroOne(baseGate);
-        //this.Merge(top, bot);
+        // Split the state vector and apply the base gate on the lower half, then merge it back 
+        var tuple = this.Split();
+        var top = tuple.Item1;
+        var bot = tuple.Item2;
+        if (baseGate is ControlledGate controlledBaseGate)
+        {
+            bot.ApplyBinaryControlledGateOnQuBitZeroOne(controlledBaseGate);
+        }
+        else if (baseGate is SwapGate)
+        {
+            var halfKetMap = new KetMap(bot.QuBitCount);
+            bot.Swap(halfKetMap, 0, 1);
+        }
+        else
+        {
+            throw new Exception("Base gate should be either SWAP or controlled.");
+        }
+
+        this.Merge(top, bot);
+    }
+
+    /// <summary> Apply the provided ternary controlled gate at the provided positions on this quregister </summary>
+    public void ApplyTernaryControlledGateAtPositions(
+        ControlledGate gate, KetMap ketMap, int positionControl1, int positionControl2, int positionTarget)
+    {
+        if (!gate.IsTernary)
+        {
+            throw new Exception("Gate should be ternary.");
+        }
+
+        var baseGate = gate.BaseGate;
+        if (!baseGate.IsBinary)
+        {
+            throw new Exception("Base gate should be binary.");
+        }
+
+        if ((baseGate is not ControlledGate) && (baseGate is not SwapGate))
+        {
+            throw new Exception("Base gate should be either SWAP or controlled.");
+        }
+
+        int stateCount = this.state.Count;
+        int quBitCount = MathUtilities.IntegerLog2(stateCount);
+        if ((positionControl1 < 0) || (positionControl1 >= quBitCount))
+        {
+            throw new ArgumentException("Invalid control position");
+        }
+
+        if ((positionControl2 < 0) || (positionControl2 >= quBitCount))
+        {
+            throw new ArgumentException("Invalid control position");
+        }
+
+        if ((positionTarget < 0) || (positionTarget >= quBitCount))
+        {
+            throw new ArgumentException("Invalid target position");
+        }
+
+        if ((positionTarget == positionControl1) ||
+            (positionTarget == positionControl2) ||
+            (positionControl1 == positionControl2))
+        {
+            throw new ArgumentException("Invalid positions");
+        }
+
+        int minControl = Math.Min(positionControl1, positionControl2);
+        int maxControl = Math.Max(positionControl1, positionControl2);
+        bool needToSwap = minControl != 0 || maxControl != 1 || positionTarget != 2;
+        if (needToSwap)
+        {
+            this.Swap(ketMap, minControl, 0);
+            this.Swap(ketMap, maxControl, 1);
+            this.Swap(ketMap, positionTarget, 2);
+        }
+
+        this.ApplyTernaryControlledGateOnQuBitZeroOneTwo(gate);
+
+        if (needToSwap)
+        {
+            // Important: Swap back in reverse order 
+            this.Swap(ketMap, positionTarget, 2);
+            this.Swap(ketMap, maxControl, 1);
+            this.Swap(ketMap, minControl, 0);
+        }
     }
 
     /// <summary> Split this register into two halves. </summary>
@@ -225,6 +318,4 @@ public sealed partial class QuRegister
             this.state[i + halfCount] = bot.state.At(i);
         }
     }
-
-
 }

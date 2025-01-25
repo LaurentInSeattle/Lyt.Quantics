@@ -4,7 +4,7 @@ using MathNet.Numerics.LinearAlgebra;
 
 public sealed class AntiControlledNotGate : Gate
 {
-    private static readonly Matrix<Complex> AntiControlledNotMatrix; 
+    private static readonly Matrix<Complex> AntiControlledNotMatrix;
 
     static AntiControlledNotGate()
     {

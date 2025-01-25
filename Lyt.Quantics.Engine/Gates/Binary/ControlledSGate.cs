@@ -2,14 +2,14 @@
 
 using MathNet.Numerics.LinearAlgebra;
 
-public sealed class ControlledSGate : Gate
+public sealed class ControlledSGate : ControlledGate
 {
     // The CS gate applies a phase change to the target qubit only when the control qubit
     // is in the state |1⟩.
     // If the control qubit is in the state |0⟩, the CS gate does not affect the
     // target qubit. 
 
-    private static readonly Matrix<Complex> ControlledSMatrix; 
+    private static readonly Matrix<Complex> ControlledSMatrix;
 
     static ControlledSGate()
     {
@@ -23,6 +23,8 @@ public sealed class ControlledSGate : Gate
         ControlledSMatrix.At(2, 2, Complex.One);
         ControlledSMatrix.At(3, 3, Complex.ImaginaryOne);
     }
+
+    public ControlledSGate() : base(new S_Gate()) { }
 
     public override Matrix<Complex> Matrix => ControlledSGate.ControlledSMatrix;
 
