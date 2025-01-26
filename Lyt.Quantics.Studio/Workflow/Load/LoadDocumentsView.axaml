@@ -15,6 +15,13 @@
 	<Grid
 		Width="660"
 		>
+		<TextBlock 
+			VerticalAlignment="Top" HorizontalAlignment="Center"
+			Foreground="{StaticResource PastelOrchid_1_100}"
+			FontSize="18" 
+			Margin="4 32 4 4"
+			Text="{Binding NoData}"			
+			/>
 		<ScrollViewer
 			Background="Transparent"
 			VerticalAlignment="Stretch" HorizontalAlignment="Stretch"

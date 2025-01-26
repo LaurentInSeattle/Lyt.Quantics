@@ -15,23 +15,23 @@ TODO: Engine:
 -------------
 
 	Priorities:	
-		Cleanup Controlled flag 
 
 	Process gates linearly, optimizing Identity gates (Doable?) 
 		=> Done for SWAP gates 
 		=> Done for UNARY gates 
 		=> Done for BINARY CONTROLLED gates 
+		=> Done for TERNARY CONTROLLED gates 
+		TODO: Use in Studio App
 
 	??? Include Author in computer metadata
 	
 TODO: Studio : 
 --------------
 
-	Fixed: 
-		BUG: If no recents files, show a few most recent ones 
-
 	Priorities:	
 		BUG: "Flipped" Controlled Gates not working properly 
+		BUG: Regression: Update Gate name and info after a save 
+		BUG: Doc' not in sync' after a UI delete 
 
 	FEATURE: Allow editing angles on controlled rotation and phase gates
 
@@ -43,8 +43,6 @@ TODO: Studio :
 
 	FEATURE: Ability to cancel a run at 9 and 10 qubits
 		
-	FEATURE: Show some message when user has no files on disk 
-
 	BUG: Can't dismiss toasts in Computer view 
 
 	BUG: Sometimes showing a toasted Error on dropping Swap gate : "overlapping targets"

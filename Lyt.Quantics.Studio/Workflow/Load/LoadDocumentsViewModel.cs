@@ -31,21 +31,29 @@ public sealed class LoadDocumentsViewModel : Bindable<LoadDocumentsView>
         {
             this.documentViews.Clear();
             var projects = this.quanticsStudioModel.Projects;
-            var computerNames = from key in projects.Keys orderby key select key;
-            foreach (var computerName in computerNames)
+            if (projects.Count > 0)
             {
-                try
+                this.NoData = string.Empty;
+                var computerNames = from key in projects.Keys orderby key select key;
+                foreach (var computerName in computerNames)
                 {
-                    var computer = projects[computerName];
-                    var documentView = new DocumentViewModel(computer);
-                    documentViews.Add(documentView);
+                    try
+                    {
+                        var computer = projects[computerName];
+                        var documentView = new DocumentViewModel(computer);
+                        documentViews.Add(documentView);
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine(ex);
+                        this.Logger.Warning(computerName + " :  failed to load \n" + ex.ToString());
+                        continue;
+                    }
                 }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine(ex);
-                    this.Logger.Warning(computerName + " :  failed to load \n" + ex.ToString());
-                    continue;
-                }
+            }
+            else
+            {
+                this.NoData = "< No saved projects were found. >";
             }
 
             this.searchEngine = new(this.documentViews, this.Logger);
@@ -174,6 +182,8 @@ public sealed class LoadDocumentsViewModel : Bindable<LoadDocumentsView>
             this.DocumentViews = new(this.searchEngine.All);
         }
     }
+
+    public string? NoData { get => this.Get<string>(); set => this.Set(value); }
 
     public ObservableCollection<DocumentViewModel> DocumentViews
     {

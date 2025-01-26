@@ -10,6 +10,7 @@
   <ItemGroup>
     <None Remove="Resources\Computers\Grover Search.json" />
     <None Remove="Resources\Computers\Tests\Test Long Swaps.json" />
+    <None Remove="Resources\Computers\Toffoli Decomposition.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -39,6 +40,7 @@
     <EmbeddedResource Include="Resources\Computers\Tests\Rotations_Single_Stage.json" />
     <EmbeddedResource Include="Resources\Computers\Tests\Test Long Swaps.json" />
     <EmbeddedResource Include="Resources\Computers\Tests\Toffoli_Basic.json" />
+    <EmbeddedResource Include="Resources\Computers\Toffoli Decomposition.json" />
   </ItemGroup>
 
   <ItemGroup>

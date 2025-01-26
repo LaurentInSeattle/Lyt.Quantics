@@ -6,9 +6,9 @@
 
 public enum GateCategory : int 
 {
-    HadamardAndT, // H , T , T dagger
-
     Pauli, // X Y Z , 
+
+    HadamardAndT, // H , T , T dagger
 
     Phase, // Sqrt X (== SX) , Sqrt Z (== S)  S dagger
 

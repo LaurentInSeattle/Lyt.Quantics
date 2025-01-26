@@ -21,7 +21,7 @@ public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
         noDataTextBlock = new TextBlock()
         {
             Text = "< No Data >",
-            FontSize = 16,
+            FontSize = 18,
             VerticalAlignment = VerticalAlignment.Center,
             HorizontalAlignment = HorizontalAlignment.Center,
             Margin = new Thickness(32),
