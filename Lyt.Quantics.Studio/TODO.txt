@@ -2,7 +2,9 @@
 TODO: Framework: 
 ----------------
 
-	Disabling / Enabling Glyph buttons fails via data binding. (Error in property?) 
+	BUG: Issues with Long Press on Glyph Buttons (Seen in TC) 
+
+	BUG: Disabling / Enabling Glyph buttons fails via data binding. (Error in property?) 
 
 	Annoying flash when replacing a modal dialog by a new one
 		(need some kind of dismiss and replace/run API) 
@@ -25,6 +27,9 @@ TODO: Engine:
 TODO: Studio : 
 --------------
 
+	Fixed: 
+		BUG: If no recents files, show a few most recent ones 
+
 	Priorities:	
 		BUG: "Flipped" Controlled Gates not working properly 
 
@@ -39,8 +44,6 @@ TODO: Studio :
 	FEATURE: Ability to cancel a run at 9 and 10 qubits
 		
 	FEATURE: Show some message when user has no files on disk 
-
-	BUG: If no recents files, show a few most recent ones 
 
 	BUG: Can't dismiss toasts in Computer view 
 

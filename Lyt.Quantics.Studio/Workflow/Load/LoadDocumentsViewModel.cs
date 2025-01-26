@@ -151,7 +151,17 @@ public sealed class LoadDocumentsViewModel : Bindable<LoadDocumentsView>
             var searchResults = this.searchEngine.Filter([filter], [sort]);
             if (searchResults.Success)
             {
-                this.DocumentViews = new(searchResults.Result);
+                var result = searchResults.Result;
+                if (result.Count < 3)
+                {
+                    // If nothing or almost nothing found, redo the search without the predicate
+                    searchResults = this.searchEngine.Filter([], [], [sort]);
+
+                    // and then take the top 5
+                    result = searchResults.Result.Take(5).ToList();
+                }
+
+                this.DocumentViews = new(result);
             }
             else
             {

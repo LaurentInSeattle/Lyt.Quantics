@@ -252,16 +252,19 @@ public sealed class StageViewModel : Bindable<StageView>, IDropTarget
                 var qubitsIndices = new QubitsIndices(stageOperator);
 
                 UserControl gateView; 
-                if (gate is ControlledGate controlledGate)
-                {
-                    var gateVm =
-                        new ControlledGateViewModel(gateParameters, this.stageIndex, qubitsIndices);
-                    gateView = gateVm.CreateViewAndBind();
-                }
-                else if (ConstructedGateViewModel.IsGateSupported(gateKey))
+
+                // Must check this one first as many constructed supported gates as also 
+                // of type ControlledGate 
+                if (ConstructedGateViewModel.IsGateSupported(gateKey))
                 {
                     var gateVm =
                         new ConstructedGateViewModel(gateKey, this.stageIndex, qubitsIndices);
+                    gateView = gateVm.CreateViewAndBind();
+                }
+                else if (gate is ControlledGate controlledGate)
+                {
+                    var gateVm =
+                        new ControlledGateViewModel(gateParameters, this.stageIndex, qubitsIndices);
                     gateView = gateVm.CreateViewAndBind();
                 }
                 else
