@@ -6,10 +6,12 @@ TODO: Framework:
 
 	BUG: Disabling / Enabling Glyph buttons fails via data binding. (Error in property?) 
 
-	Annoying flash when replacing a modal dialog by a new one
+	FEATURE: Negate boolean bound property
+
+	BUG: Annoying flash when replacing a modal dialog by a new one
 		(need some kind of dismiss and replace/run API) 
 
-	??? Ability to drag modal dialogs 
+	NTH: Ability to drag modal dialogs 
 
 TODO: Engine: 
 -------------

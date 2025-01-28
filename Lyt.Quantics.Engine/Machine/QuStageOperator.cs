@@ -2,19 +2,26 @@
 
 public sealed class QuStageOperator
 {
-    public QuStageOperator() { /* Required for serialization */ }
+    public QuStageOperator() 
+    {
+        // Required for serialization
+
+        this.BinarySwap = new();
+        this.FirstTernarySwap = new();
+        this.SecondTernarySwap = new();
+    }
 
     /// <summary> 
     /// This CTOR only used to simulate serialization and to fill up a stage with Identity gates 
     /// </summary>
     /// <param name="gateKey"></param>
-    public QuStageOperator(string gateKey)
+    public QuStageOperator(string gateKey) : this()
     {
         this.GateKey = gateKey;
         this.GateParameters = new();
     }
 
-    public QuStageOperator(Gate gate, QubitsIndices qubitsIndices, bool isDrop)
+    public QuStageOperator(Gate gate, QubitsIndices qubitsIndices, bool isDrop) : this()
     {
         this.GateKey = gate.CaptionKey;
         this.GateParameters = new(gate);
@@ -92,7 +99,19 @@ public sealed class QuStageOperator
     public int LargestQubitIndex => this.AllQuBitIndicesSorted[^1];
 
     [JsonIgnore]
+    public Gate StageOperatorGate { get; private set; } = GateFactory.Produce(IdentityGate.Key); 
+
+    [JsonIgnore]
     public Matrix<Complex> StageOperatorMatrix { get; private set; } = Matrix<Complex>.Build.Dense(1, 1);
+
+    [JsonIgnore]
+    public Swap BinarySwap { get; private set; }
+
+    [JsonIgnore]
+    public Swap FirstTernarySwap { get; private set; }
+
+    [JsonIgnore]
+    public Swap SecondTernarySwap { get; private set; }
 
     [JsonIgnore]
     public Matrix<Complex> BinarySwapMatrix { get; private set; } = Matrix<Complex>.Build.Dense(1, 1);
@@ -196,11 +215,12 @@ public sealed class QuStageOperator
         message = string.Empty;
         try
         {
-            this.StageOperatorMatrix =
-                GateFactory.Produce(this.GateKey, this.GateParameters).Matrix;
+            this.StageOperatorGate = GateFactory.Produce(this.GateKey, this.GateParameters);
+            this.StageOperatorMatrix = this.StageOperatorGate.Matrix;
             if (this.HasBinarySwap)
             {
                 // 'Move' most distant qubit next to smallest   
+                this.BinarySwap = new(1 + this.SmallestQubitIndex, this.LargestQubitIndex);
                 this.BinarySwapMatrix =
                     MatricesUtilities.SwapMatrix(
                         computer.QuBitsCount,
@@ -211,6 +231,7 @@ public sealed class QuStageOperator
                 int order = MathUtilities.TwoPower(computer.QuBitsCount);
                 if (this.MiddleQubitIndex - this.SmallestQubitIndex > 1)
                 {
+                    this.FirstTernarySwap = new(1 + this.SmallestQubitIndex, this.MiddleQubitIndex);
                     this.FirstTernarySwapMatrix =
                         MatricesUtilities.SwapMatrix(
                             computer.QuBitsCount,
@@ -218,11 +239,13 @@ public sealed class QuStageOperator
                 }
                 else
                 {
+                    this.FirstTernarySwap = new(0,0);
                     this.FirstTernarySwapMatrix = Matrix<Complex>.Build.SparseIdentity(order);
                 }
 
                 if (this.LargestQubitIndex - this.SmallestQubitIndex > 2)
                 {
+                    this.SecondTernarySwap = new(2 + this.SmallestQubitIndex, this.LargestQubitIndex);
                     this.SecondTernarySwapMatrix =
                         MatricesUtilities.SwapMatrix(
                             computer.QuBitsCount,
@@ -230,6 +253,7 @@ public sealed class QuStageOperator
                 }
                 else
                 {
+                    this.SecondTernarySwap = new(0, 0);
                     this.SecondTernarySwapMatrix = Matrix<Complex>.Build.SparseIdentity(order);
                 }
             }

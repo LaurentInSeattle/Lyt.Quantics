@@ -199,7 +199,7 @@ public sealed class QuStage
             }
             else
             {
-                return this.CalculateSubStages(sourceRegister, out message);
+                return this.CalculateSubStages(computer, sourceRegister, out message);
             }
         }
         catch (Exception ex)
@@ -332,7 +332,7 @@ public sealed class QuStage
             {
                 if (stageOperator.IsIdentity)
                 {
-                    continue;
+                    //continue;
                 }
 
                 var subStage = new SubStage(stageOperator);
@@ -378,7 +378,7 @@ public sealed class QuStage
         return true;
     }
 
-    private bool CalculateSubStages(QuRegister sourceRegister, out string message)
+    private bool CalculateSubStages(QuComputer computer, QuRegister sourceRegister, out string message)
     {
         message = string.Empty;
         try
@@ -389,38 +389,71 @@ public sealed class QuStage
             }
             else
             {
-                var register = sourceRegister.State.Clone();
+                KetMap ketMap = computer.KetMap;
+                QuRegister register = sourceRegister.DeepClone(); 
+                int subStageIndex = -1; // Init at -1 so that we start at zero  
                 foreach (var subStage in this.subStages)
                 {
+                    ++subStageIndex; 
                     var stageOperator = subStage.StageOperator;
-
-                    // Swap if required 
-                    if (stageOperator.HasBinarySwap)
+                    if ( stageOperator.IsIdentity )
                     {
-                        register = stageOperator.BinarySwapMatrix.Multiply(register);
-                    }
-                    else if ( stageOperator.HasTernarySwap)
-                    {
-                        register = stageOperator.FirstTernarySwapMatrix.Multiply(register);
-                        register = stageOperator.SecondTernarySwapMatrix.Multiply(register);
+                        continue;
                     }
 
-                    register = subStage.SubStageMatrix.Multiply(register);
-
-                    // Un-Swap if we did swap 
-                    if (stageOperator.HasBinarySwap)
+                    if (stageOperator.StageOperatorGate.IsUnary)
                     {
-                        register = stageOperator.BinarySwapMatrix.Multiply(register);
+                        // All unary gates 
+                        register.ApplyUnaryGateAtPosition(
+                            stageOperator.StageOperatorGate, ketMap, subStageIndex);
                     }
-                    else if (stageOperator.HasTernarySwap)
+                    else if (stageOperator.StageOperatorGate.IsBinary)
                     {
-                        // Reverse order of swaps 
-                        register = stageOperator.SecondTernarySwapMatrix.Multiply(register);
-                        register = stageOperator.FirstTernarySwapMatrix.Multiply(register);
+                        // Swap gate is given a special implementation and not a controlled gate in
+                        // our C# code. It is given two targets. 
+                        if (stageOperator.StageOperatorGate is SwapGate swapGate)
+                        {
+                            register.Swap(
+                                ketMap, 
+                                stageOperator.TargetQuBitIndices[0], 
+                                stageOperator.TargetQuBitIndices[1]);
+                        }
+                        else if ( stageOperator.StageOperatorGate is ControlledGate controlledGate)
+                        {
+                            register.ApplyBinaryControlledGateAtPositions(
+                                controlledGate, ketMap, 
+                                stageOperator.ControlQuBitIndices[0], 
+                                stageOperator.TargetQuBitIndices[0]);
+                        }
+                        else
+                        {
+                            throw new NotSupportedException("Invalid binary gate type: Should be controlled.");
+                        }
+
+                    }
+                    else if (stageOperator.StageOperatorGate.IsTernary)
+                    {
+                        // All ternary gates are Controlled of Binary Controlled or Controlled Swap 
+                        if (stageOperator.StageOperatorGate is ControlledGate controlledGate)
+                        {
+                            register.ApplyTernaryControlledGateAtPositions(
+                                controlledGate, ketMap,
+                                stageOperator.ControlQuBitIndices[0],
+                                stageOperator.ControlQuBitIndices[1],
+                                stageOperator.TargetQuBitIndices[0]);
+                        }
+                        else
+                        {
+                            throw new NotSupportedException("Invalid ternary gate type: Should be controlled.");
+                        }
+                    }
+                    else
+                    {
+                        throw new NotSupportedException("Invalid gate type."); 
                     }
                 }
 
-                this.StageRegister.State = register.Clone();
+                this.StageRegister.State = register.State.Clone();
             }
         }
         catch (Exception ex)
