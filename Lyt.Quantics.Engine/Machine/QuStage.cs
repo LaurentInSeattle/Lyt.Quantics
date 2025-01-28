@@ -409,13 +409,22 @@ public sealed class QuStage
                     }
                     else if (stageOperator.StageOperatorGate.IsBinary)
                     {
-                        // Swap gate is given a special implementation and not a controlled gate in
-                        // our C# code. It is given two targets. 
                         if (stageOperator.StageOperatorGate is SwapGate swapGate)
                         {
+                            // Swap gate is given a special implementation and not a controlled gate in
+                            // our C# code. It is given two targets since the gate is symetrical. 
                             register.Swap(
                                 ketMap, 
                                 stageOperator.TargetQuBitIndices[0], 
+                                stageOperator.TargetQuBitIndices[1]);
+                        }
+                        else if (stageOperator.StageOperatorGate is ControlledZGate controlledZGate)
+                        {
+                            // ControlledZGate is also given a special implementation:
+                            // It is given two targets qubits since the gate is also symetrical. 
+                            register.ApplyBinaryControlledGateAtPositions(
+                                controlledZGate, ketMap,
+                                stageOperator.TargetQuBitIndices[0],
                                 stageOperator.TargetQuBitIndices[1]);
                         }
                         else if ( stageOperator.StageOperatorGate is ControlledGate controlledGate)
