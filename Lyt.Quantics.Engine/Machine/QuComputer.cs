@@ -71,7 +71,7 @@ public sealed partial class QuComputer
     public Vector<float> Result { get; private set; } = Vector<float>.Build.Dense(1);
 
     [JsonIgnore]
-    public bool RunSingleStage { get; set; }
+    public bool RunUsingKroneckerProduct { get; set; }
 
     #region Machine states 
 

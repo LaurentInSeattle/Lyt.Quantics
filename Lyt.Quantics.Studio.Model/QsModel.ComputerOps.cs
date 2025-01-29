@@ -264,9 +264,9 @@ public sealed partial class QsModel : ModelBase
         return false;
     }
 
-    public bool Run(bool runSingleStage)
+    public bool Run(bool runUsingKroneckerProduct)
     {
-        this.QuComputer.RunSingleStage = runSingleStage;
+        this.QuComputer.RunUsingKroneckerProduct = runUsingKroneckerProduct;
         bool status = this.QuComputer.Validate(out string message);
         if (status)
         {

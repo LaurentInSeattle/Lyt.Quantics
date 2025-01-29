@@ -49,9 +49,9 @@ public sealed class Tests_Computers
         try
         {
             static void BuildAndRun(
-                QuComputer computer, bool runSingleStage, QuRegister? initialState = null)
+                QuComputer computer, bool runUsingKroneckerProduct, QuRegister? initialState = null)
             {
-                computer.RunSingleStage = runSingleStage;
+                computer.RunUsingKroneckerProduct = runUsingKroneckerProduct;
                 bool isBuilt = computer.Build(out string message);
                 if (!string.IsNullOrWhiteSpace(message))
                 {
@@ -101,9 +101,9 @@ public sealed class Tests_Computers
                 }
                 Assert.IsTrue(isValid);
 
-                BuildAndRun(computer, runSingleStage:true , initialState);
+                BuildAndRun(computer, runUsingKroneckerProduct:true , initialState);
                 var result1 = computer.FinalRegister.DeepClone();
-                BuildAndRun(computer, runSingleStage: false, initialState);
+                BuildAndRun(computer, runUsingKroneckerProduct: false, initialState);
                 var result2 = computer.FinalRegister.DeepClone();
 
                 if (!result1.IsAlmostEqualTo(result2))

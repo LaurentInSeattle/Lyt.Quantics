@@ -4,8 +4,6 @@ using MathNet.Numerics.LinearAlgebra;
 
 public sealed class QuStage
 {
-    private readonly List<SubStage> subStages = [];
-
     public QuStage() { /* Required for deserialization */ }
 
     public List<QuStageOperator> Operators { get; set; } = [];
@@ -173,13 +171,14 @@ public sealed class QuStage
                 return false;
             }
 
-            if (computer.RunSingleStage)
+            if (computer.RunUsingKroneckerProduct)
             {
                 return this.BuildSingleStage(computer, out message);
             }
             else
             {
-                return this.BuildSubStages(computer, out message);
+                message = string.Empty;
+                return true;
             }
         }
         catch (Exception ex)
@@ -193,13 +192,13 @@ public sealed class QuStage
     {
         try
         {
-            if (computer.RunSingleStage)
+            if (computer.RunUsingKroneckerProduct)
             {
-                return this.CalculateSingleStage(sourceRegister, out message);
+                return this.CalculateUsingKromeckerProduct(sourceRegister, out message);
             }
             else
             {
-                return this.CalculateSubStages(computer, sourceRegister, out message);
+                return this.CalculateUsingSwaps(computer, sourceRegister, out message);
             }
         }
         catch (Exception ex)
@@ -259,7 +258,7 @@ public sealed class QuStage
             // Build operators 
             foreach (var stageOperator in this.Operators)
             {
-                if (!stageOperator.Build(computer, out message))
+                if (!stageOperator.Build(out message))
                 {
                     // Failed to build 
                     return false;
@@ -319,41 +318,7 @@ public sealed class QuStage
         return true;
     }
 
-    private bool BuildSubStages(QuComputer computer, out string message)
-    {
-        try
-        {
-            message = string.Empty;
-            int length = computer.QuBitsCount;
-
-            // Create one substage for each non-identity operator, add to list
-            this.subStages.Clear();
-            foreach (var stageOperator in this.Operators)
-            {
-                if (stageOperator.IsIdentity)
-                {
-                    //continue;
-                }
-
-                var subStage = new SubStage(stageOperator);
-                if (!subStage.Build(computer, out message))
-                {
-                    throw new Exception(message);
-                }
-
-                this.subStages.Add(subStage);
-            }
-        }
-        catch (Exception ex)
-        {
-            message = string.Concat("Exception thrown: " + ex.Message);
-            return false;
-        }
-
-        return true;
-    }
-
-    private bool CalculateSingleStage(QuRegister sourceRegister, out string message)
+    private bool CalculateUsingKromeckerProduct(QuRegister sourceRegister, out string message)
     {
         message = string.Empty;
         try
@@ -378,25 +343,20 @@ public sealed class QuStage
         return true;
     }
 
-    private bool CalculateSubStages(QuComputer computer, QuRegister sourceRegister, out string message)
+    private bool CalculateUsingSwaps(QuComputer computer, QuRegister sourceRegister, out string message)
     {
         message = string.Empty;
         try
         {
-            if (this.subStages.Count == 0)
-            {
-                this.StageRegister.State = sourceRegister.State.Clone();
-            }
-            else
+            if (this.Operators.Count > 0)
             {
                 KetMap ketMap = computer.KetMap;
-                QuRegister register = sourceRegister.DeepClone(); 
+                QuRegister register = sourceRegister.DeepClone();
                 int subStageIndex = -1; // Init at -1 so that we start at zero  
-                foreach (var subStage in this.subStages)
+                foreach (var stageOperator in this.Operators)
                 {
-                    ++subStageIndex; 
-                    var stageOperator = subStage.StageOperator;
-                    if ( stageOperator.IsIdentity )
+                    ++subStageIndex;
+                    if (stageOperator.IsIdentity)
                     {
                         continue;
                     }
@@ -414,8 +374,8 @@ public sealed class QuStage
                             // Swap gate is given a special implementation and not a controlled gate in
                             // our C# code. It is given two targets since the gate is symetrical. 
                             register.Swap(
-                                ketMap, 
-                                stageOperator.TargetQuBitIndices[0], 
+                                ketMap,
+                                stageOperator.TargetQuBitIndices[0],
                                 stageOperator.TargetQuBitIndices[1]);
                         }
                         else if (stageOperator.StageOperatorGate is ControlledZGate controlledZGate)
@@ -427,11 +387,11 @@ public sealed class QuStage
                                 stageOperator.TargetQuBitIndices[0],
                                 stageOperator.TargetQuBitIndices[1]);
                         }
-                        else if ( stageOperator.StageOperatorGate is ControlledGate controlledGate)
+                        else if (stageOperator.StageOperatorGate is ControlledGate controlledGate)
                         {
                             register.ApplyBinaryControlledGateAtPositions(
-                                controlledGate, ketMap, 
-                                stageOperator.ControlQuBitIndices[0], 
+                                controlledGate, ketMap,
+                                stageOperator.ControlQuBitIndices[0],
                                 stageOperator.TargetQuBitIndices[0]);
                         }
                         else
@@ -458,12 +418,18 @@ public sealed class QuStage
                     }
                     else
                     {
-                        throw new NotSupportedException("Invalid gate type."); 
+                        throw new NotSupportedException("Invalid gate type.");
                     }
                 }
 
+                // Save stage: NOT the same as empty stage !
                 this.StageRegister.State = register.State.Clone();
             }
+            else
+            {
+                // Empty stage 
+                this.StageRegister.State = sourceRegister.State.Clone();
+            } 
         }
         catch (Exception ex)
         {
