@@ -30,7 +30,7 @@ public sealed class SaveDialogModel : DialogBindable<SaveDialog, object>
     {
         if (this.TrySave(withOverwrite: true))
         {
-            this.dialogService.Dismiss();
+            this.TrySaveAndClose();
         }
     }
 
@@ -38,11 +38,11 @@ public sealed class SaveDialogModel : DialogBindable<SaveDialog, object>
     {
         if (this.TrySave(withOverwrite: false))
         {
-            this.dialogService.Dismiss();
+            this.TrySaveAndClose();
         }
     }
 
-    private void OnCancel(object? _) => this.dialogService.Dismiss();
+    private void OnCancel(object? _) => this.Cancel();
 
 #pragma warning restore IDE0051 // Remove unused private members
 

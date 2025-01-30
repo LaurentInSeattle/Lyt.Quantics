@@ -162,7 +162,8 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
             // Run modal dialog to save computer model - no parameters, no closing action  
             if (this.dialogService is DialogService modalService)
             {
-                modalService.RunModal(this.View.ToasterHost, new SaveDialogModel());
+                modalService.RunModal(
+                    this.View.ToasterHost, new SaveDialogModel(), this.OnSaveClosing);
             }
         }
         catch (Exception ex)
@@ -171,6 +172,14 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
             string uiMessage = "Save: Exception thrown: " + ex.Message;
             this.toaster.Show("Unexpected Error", uiMessage, 4_000, InformationLevel.Error);
         }
+    }
+
+    private void OnSaveClosing(object _, bool handled )
+    {
+        if (handled)
+        {
+            this.RefreshInfoFields();
+        } 
     }
 
     private void OnClose()

@@ -14,16 +14,6 @@ TODO: Framework:
 TODO: Engine: 
 -------------
 
-	Priorities:	
-
-	Process gates linearly, optimizing Identity gates (Doable?) 
-		=> Done for SWAP gates 
-		=> Done for UNARY gates 
-		=> Done for BINARY CONTROLLED gates 
-		=> Done for TERNARY CONTROLLED gates 
-		=> Done Use in Studio App
-		TODO: Cleanup !
-
 	??? Include Author in computer metadata
 	
 TODO: Studio : 
@@ -31,7 +21,6 @@ TODO: Studio :
 
 	Priorities:	
 		BUG: "Flipped" Controlled Gates not working properly 
-		BUG: Regression: Update Gate name and info after a save 
 		BUG: Doc' not in sync' after a UI delete 
 
 	FEATURE: Allow editing angles on controlled rotation and phase gates
