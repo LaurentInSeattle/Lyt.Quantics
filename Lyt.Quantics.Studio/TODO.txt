@@ -4,8 +4,6 @@ TODO: Framework:
 
 	BUG: Issues with Long Press on Glyph Buttons (Seen in TC) 
 
-	BUG: Disabling / Enabling Glyph buttons fails via data binding. (Error in property?) 
-
 	BUG: Annoying flash when replacing a modal dialog by a new one
 		(need some kind of dismiss and replace/run API) 
 
@@ -14,13 +12,16 @@ TODO: Framework:
 TODO: Engine: 
 -------------
 
+	Priorities:	
+		BUG: "Flipped" Controlled Gates not working properly 
+
 	??? Include Author in computer metadata
 	
 TODO: Studio : 
 --------------
 
 	Priorities:	
-		BUG: "Flipped" Controlled Gates not working properly 
+		BUG: No validation in Save Project dialog (=> Use Validation framework)
 		BUG: Doc' not in sync' after a UI delete 
 
 	FEATURE: Allow editing angles on controlled rotation and phase gates
@@ -80,7 +81,7 @@ N	Register	Reg Bytes	Matrix	Matrix bytes
 8	256			4 K			64 K	1 M
 10	1024		16 K		1 M		16 M
 11	2048		32 K		4 M		32 M 
-12	4 K			32 K		16 M	256 M   
+12	4 K			64 K		16 M	256 M   
 14	16 K		256 K		256 M	4 G     <=
 16	64 K		1 M			  4 G	64 G
 20  1 M         16 M        !!!     !!!

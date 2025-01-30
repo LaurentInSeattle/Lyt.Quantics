@@ -243,23 +243,7 @@ public sealed class GateEditAngleDialogModel
 
     public string AngleValueText { get => this.Get<string>()!; set => this.Set(value); }
 
-    public bool SaveButtonIsEnabled
-    {
-        get => this.Get<bool>();
-        set
-        {
-            this.Set(value);
-            this.View.SaveButton.IsDisabled = !value;
-        }
-    }
+    public bool SaveButtonIsEnabled { get => this.Get<bool>(); set => this.Set(value); }
 
-    public bool MakeControlledButtonIsEnabled
-    {
-        get => this.Get<bool>();
-        set
-        {
-            this.Set(value);
-            this.View.MakeControlledButton.IsDisabled = !value;
-        }
-    }
+    public bool MakeControlledButtonIsEnabled { get => this.Get<bool>(); set => this.Set(value); }
 }

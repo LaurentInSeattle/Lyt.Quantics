@@ -88,6 +88,7 @@
 						GlyphStrokeThickness="0"
 						Text="Save and Close"
 						Command="{Binding SaveCommand}"
+						IsDisabled="{Binding !SaveButtonIsEnabled}"
 	    				/>
 					<glyphs:GlyphButton
 						Grid.Column="3"

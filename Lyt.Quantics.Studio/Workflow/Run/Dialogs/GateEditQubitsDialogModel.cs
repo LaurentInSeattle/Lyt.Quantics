@@ -291,15 +291,7 @@ public sealed class GateEditQubitsDialogModel
 
     public string ThirdValueText { get => this.Get<string>()!; set => this.Set(value); }
 
-    public bool SaveButtonIsEnabled
-    {
-        get => this.Get<bool>();
-        set
-        {
-            this.Set(value);
-            this.View.SaveButton.IsDisabled = !value;
-        }
-    }
+    public bool SaveButtonIsEnabled { get => this.Get<bool>(); set => this.Set(value); }
 
     #endregion Bound Properties 
 }

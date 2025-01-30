@@ -128,13 +128,5 @@ public sealed class GateEditControlDialogModel : DialogBindable<GateEditControlD
 
     public string TargetValueText { get => this.Get<string>()!; set => this.Set(value); }
 
-    public bool SaveButtonIsEnabled
-    {
-        get => this.Get<bool>();
-        set
-        {
-            this.Set(value);
-            this.View.SaveButton.IsDisabled = !value;
-        }
-    }
+    public bool SaveButtonIsEnabled { get => this.Get<bool>(); set => this.Set(value); }
 }

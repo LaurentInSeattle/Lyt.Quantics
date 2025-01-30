@@ -110,16 +110,7 @@ public sealed class SaveDialogModel : DialogBindable<SaveDialog, object>
 
     public ICommand CancelCommand { get => this.Get<ICommand>()!; set => this.Set(value); }
 
-    public bool SaveButtonIsEnabled
-    {
-        get => this.Get<bool>();
-        set
-        {
-            this.Set(value);
-            this.View.SaveOverwriteButton.IsDisabled = !value;
-            this.View.SaveAsButton.IsDisabled = !value;
-        }
-    }
+    public bool SaveButtonIsEnabled { get => this.Get<bool>(); set => this.Set(value); }
 
     #endregion Bound Properties 
 }
