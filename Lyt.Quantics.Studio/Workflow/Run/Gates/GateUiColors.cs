@@ -1,4 +1,6 @@
-﻿namespace Lyt.Quantics.Studio.Workflow.Run.Gates; 
+﻿namespace Lyt.Quantics.Studio.Workflow.Run.Gates;
+
+using static Lyt.Avalonia.Controls.Utilities;
 
 public static class GateUiColors
 {
@@ -14,7 +16,7 @@ public static class GateUiColors
     {
         BackgroundBrush = new SolidColorBrush(color: 0x30406080);
         TransparentBrush = new SolidColorBrush(color: 0);
-        Utilities.TryFindResource(BlueBrushName, out SolidColorBrush? maybeBlueBrush);
+        TryFindResource(BlueBrushName, out SolidColorBrush? maybeBlueBrush);
         if (maybeBlueBrush is null)
         {
 #pragma warning disable CA2208 // Instantiate argument exceptions correctly
@@ -26,7 +28,7 @@ public static class GateUiColors
             BlueBrush = maybeBlueBrush;
         }
 
-        Utilities.TryFindResource(OrangeBrushName, out SolidColorBrush? maybeOrangeBrush);
+        TryFindResource(OrangeBrushName, out SolidColorBrush? maybeOrangeBrush);
         if (maybeOrangeBrush is null)
         {
 #pragma warning disable CA2208 // Instantiate argument exceptions correctly

@@ -1,6 +1,6 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Amplitudes;
 
-using static Utilities;
+using static Lyt.Avalonia.Controls.Utilities;
 using static ToolbarCommandMessage;
 
 public sealed class AmplitudesViewModel : Bindable<AmplitudesView>

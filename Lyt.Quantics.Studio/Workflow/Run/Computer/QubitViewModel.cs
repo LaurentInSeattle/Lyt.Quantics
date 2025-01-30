@@ -1,5 +1,7 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
 
+using static Lyt.Avalonia.Controls.Utilities;
+
 public sealed class QubitViewModel : Bindable<QubitView>
 {
     // See: https://en.wikipedia.org/wiki/Unicode_subscripts_and_superscripts
@@ -22,8 +24,8 @@ public sealed class QubitViewModel : Bindable<QubitView>
 
     static QubitViewModel()
     {
-        if ((Utilities.TryFindResource("ToggleOnGeneralVisualState", out VisualState? maybeOnVisualState)) &&
-            (Utilities.TryFindResource("ToggleOffGeneralVisualState", out VisualState? maybeOffVisualState)) &&
+        if ((TryFindResource("ToggleOnGeneralVisualState", out VisualState? maybeOnVisualState)) &&
+            (TryFindResource("ToggleOffGeneralVisualState", out VisualState? maybeOffVisualState)) &&
             ((maybeOnVisualState is not null) &&
             (maybeOffVisualState is not null)))
         {
