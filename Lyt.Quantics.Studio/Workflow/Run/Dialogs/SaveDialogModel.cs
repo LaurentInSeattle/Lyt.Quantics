@@ -1,27 +1,40 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Dialogs;
 
+using static SharedValidators;
+
 public sealed class SaveDialogModel : DialogBindable<SaveDialog, object>
 {
     private readonly QsModel quanticsStudioModel;
+
+    private readonly FormValidator<FileInformation> fileValidator;
 
     public SaveDialogModel()
     {
         this.quanticsStudioModel = App.GetRequiredService<QsModel>();
         this.Title = "Save your Project";
+        this.fileValidator =
+            new FormValidator<FileInformation>(
+                new(FormValidPropertyName: "FormIsValid",
+                    FocusFieldName: "NameTextBox",
+                    FieldValidators: [NameValidator, DescriptionValidator]));
+        this.FileInformation = new();
+        this.CanEnter = false; 
     }
+
+    public FileInformation FileInformation { get; private set; }
 
     protected override void OnViewLoaded()
     {
         base.OnViewLoaded();
-        // Force property changed 
-        this.SaveButtonIsEnabled = true;
-        this.SaveButtonIsEnabled = false;
+        this.ClearForm();
+    }
 
+    private void ClearForm()
+    {
         var computer = this.quanticsStudioModel.QuComputer;
         this.Name = computer.Name;
         this.Description = computer.Description;
-        this.ValidationMessage = string.Empty;
-        this.Validate(withOverwrite: true, out string _);
+        this.fileValidator.Validate(this);
     }
 
 #pragma warning disable IDE0051 // Remove unused private members
@@ -48,17 +61,15 @@ public sealed class SaveDialogModel : DialogBindable<SaveDialog, object>
 
     private bool TrySave(bool withOverwrite)
     {
+        // Extra validation when about to save 
         if (!this.Validate(withOverwrite, out string _))
         {
             return false;
         }
 
         // Save to model 
-        this.ValidationMessage = string.Empty;
-        string newName = this.Name.Trim();
-        string description = this.Description.Trim();
         if (this.quanticsStudioModel.SaveComputerMetadata(
-            newName, description, withOverwrite, out string message))
+            this.FileInformation, withOverwrite, out string message))
         {
             // Save to file 
             string? pathName = this.quanticsStudioModel.SaveComputerToFile(withOverwrite, out message);
@@ -88,11 +99,12 @@ public sealed class SaveDialogModel : DialogBindable<SaveDialog, object>
     {
         bool validated =
             this.quanticsStudioModel.ValidateComputerMetadata(
-            this.Name, this.Description, withOverwrite, out message);
-        this.SaveButtonIsEnabled = validated;
+                this.FileInformation, withOverwrite, out message);
         this.ValidationMessage = validated ? string.Empty : message;
         return validated;
     }
+
+    public void OnEditing() => this.fileValidator.Validate(this);
 
     #region Bound  Properties 
 
@@ -110,7 +122,7 @@ public sealed class SaveDialogModel : DialogBindable<SaveDialog, object>
 
     public ICommand CancelCommand { get => this.Get<ICommand>()!; set => this.Set(value); }
 
-    public bool SaveButtonIsEnabled { get => this.Get<bool>(); set => this.Set(value); }
+    public bool FormIsValid { get => this.Get<bool>(); set => this.Set(value); }
 
     #endregion Bound Properties 
 }

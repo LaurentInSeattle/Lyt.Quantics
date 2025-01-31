@@ -97,6 +97,11 @@ global using Lyt.Quantics.Engine.Utilities;
 
 #endregion Engine 
 
+
+global using FluentValidation;
+global using Lyt.Validation;
+
+
 #region Studio
 
 global using Lyt.Quantics.Studio;
@@ -108,7 +113,7 @@ global using Lyt.Quantics.Studio.Messaging;
 global using Lyt.Quantics.Studio.Model;
 global using Lyt.Quantics.Studio.Model.Messaging;
 global using Lyt.Quantics.Studio.Shell;
-//global using Lyt.Quantics.Studio.Utilities;
+global using Lyt.Quantics.Studio.Utilities;
 global using Lyt.Quantics.Studio.Workflow.Intro;
 global using Lyt.Quantics.Studio.Workflow.Load;
 global using Lyt.Quantics.Studio.Workflow.Load.Tiles;

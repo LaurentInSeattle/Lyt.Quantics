@@ -92,7 +92,7 @@
 						GlyphStrokeThickness="0"
 						Text="Overwrite Save"
 						Command="{Binding OverwriteCommand}"
-						IsDisabled="{Binding !SaveButtonIsEnabled}"
+						IsDisabled="{Binding !FormIsValid}"
 	    				/>
 					<glyphs:GlyphButton
 						x:Name="SaveAsButton"
@@ -107,7 +107,7 @@
 						GlyphStrokeThickness="0"
 						Text="Save As"
 						Command="{Binding SaveCommand}"
-						IsDisabled="{Binding !SaveButtonIsEnabled}"
+						IsDisabled="{Binding !FormIsValid}"
 	    				/>
 					<glyphs:GlyphButton
 						Grid.Column="5"
@@ -177,9 +177,10 @@
 						Grid.Row="3"
 						VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
 						Watermark="What this this computer is doing? "
-						MaxLength="2048"
+						MaxLength="1050"
 						Text="{Binding Description}"
 						Margin="16 0 8 0"
+						AcceptsReturn="True"
 						/>
 					<TextBlock
 						Grid.Row="4"

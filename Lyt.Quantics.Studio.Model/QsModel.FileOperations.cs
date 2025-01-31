@@ -104,20 +104,11 @@ public sealed partial class QsModel : ModelBase
     }
 
     public bool ValidateComputerMetadata(
-        string name, string description, bool withOverwrite, out string message)
+        FileInformation fileInformation, bool withOverwrite, out string message)
     {
-        if (!QsModel.ValidateStringInput(name, "Computer name", 4, 64, out message))
-        {
-            return false;
-        }
-
-        if (!QsModel.ValidateStringInput(description, "Computer description", 4, 2048, out message))
-        {
-            return false;
-        }
-
+        message = string.Empty;
         // Make sure that 'name' can be used as the data file 
-        string pathName = FileManagerModel.ValidPathName(name, out bool changed);
+        string pathName = FileManagerModel.ValidPathName(fileInformation.Name, out bool changed);
         if (changed)
         {
             Debug.WriteLine("Save Path Adjusted: ");
@@ -138,16 +129,18 @@ public sealed partial class QsModel : ModelBase
         return true;
     }
 
-    public bool SaveComputerMetadata(string name, string description, bool withOverwrite, out string message)
+    public bool SaveComputerMetadata(FileInformation fileInformation, bool withOverwrite, out string message)
     {
-        if (!this.ValidateComputerMetadata(name, description, withOverwrite, out message))
+        if (!this.ValidateComputerMetadata(fileInformation, withOverwrite, out message))
         {
             return false;
         }
 
-        this.QuComputer.Name = name;
-        this.QuComputer.Description = description;
+        this.QuComputer.Name = fileInformation.Name;
+        this.QuComputer.Description = fileInformation.Description;
         this.QuComputer.LastModified = DateTime.Now;
+
+        // We changed a date witout saving to disk, then we are dirty
         this.IsDirty = true;
 
         return true;
@@ -160,7 +153,7 @@ public sealed partial class QsModel : ModelBase
             message = string.Empty;
             string name = this.QuComputer.Name;
 
-            // Make sure that 'name' can be used as the data file 
+            // Make sure again that 'name' can be used as the data file 
             string pathName = FileManagerModel.ValidPathName(name, out bool changed);
             if (changed)
             {

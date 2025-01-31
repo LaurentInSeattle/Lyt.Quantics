@@ -53,4 +53,7 @@ global using Lyt.Quantics.Engine.Utilities;
 
 #endregion Engine 
 
+global using FluentValidation;
+
 global using Lyt.Quantics.Studio.Model.Messaging;
+
