@@ -101,7 +101,7 @@
                 />
 		</StackPanel>
 		
-		<!-- Panel should be on top -->
+		<!-- Panel should be on top, we need to have NOT hit test visible for drag and drop -->
 		<Panel
 			x:Name="ToasterHost"
 			Background="Transparent"
