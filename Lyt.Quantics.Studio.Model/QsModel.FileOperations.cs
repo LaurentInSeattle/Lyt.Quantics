@@ -230,29 +230,4 @@ public sealed partial class QsModel : ModelBase
             return false;
         }
     }
-
-    private static bool ValidateStringInput(string input, string label, int min, int max, out string message)
-    {
-        message = string.Empty;
-        input = input.Trim();
-        if (string.IsNullOrEmpty(input))
-        {
-            message = label + " cannot be left empty.";
-            return false;
-        }
-
-        if (input.Length < min)
-        {
-            message = label + " is too short. (Min " + min.ToString() + " chars)";
-            return false;
-        }
-
-        if (input.Length > max)
-        {
-            message = label + " is too long. (Max " + max.ToString() + " chars)";
-            return false;
-        }
-
-        return true;
-    }
 }
