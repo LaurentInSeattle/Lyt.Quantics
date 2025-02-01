@@ -5,7 +5,6 @@ using static SharedValidators;
 public sealed class SaveDialogModel : DialogBindable<SaveDialog, object>
 {
     private readonly QsModel quanticsStudioModel;
-
     private readonly FormValidator<FileInformation> fileValidator;
 
     public SaveDialogModel()
@@ -17,11 +16,8 @@ public sealed class SaveDialogModel : DialogBindable<SaveDialog, object>
                 new(FormValidPropertyName: "FormIsValid",
                     FocusFieldName: "NameTextBox",
                     FieldValidators: [NameValidator, DescriptionValidator]));
-        this.FileInformation = new();
         this.CanEnter = false; 
     }
-
-    public FileInformation FileInformation { get; private set; }
 
     protected override void OnViewLoaded()
     {
@@ -31,6 +27,7 @@ public sealed class SaveDialogModel : DialogBindable<SaveDialog, object>
 
     private void ClearForm()
     {
+        this.fileValidator.Clear(this);
         var computer = this.quanticsStudioModel.QuComputer;
         this.Name = computer.Name;
         this.Description = computer.Description;
@@ -69,7 +66,7 @@ public sealed class SaveDialogModel : DialogBindable<SaveDialog, object>
 
         // Save to model 
         if (this.quanticsStudioModel.SaveComputerMetadata(
-            this.FileInformation, withOverwrite, out string message))
+            this.fileValidator.Value, withOverwrite, out string message))
         {
             // Save to file 
             string? pathName = this.quanticsStudioModel.SaveComputerToFile(withOverwrite, out message);
@@ -99,7 +96,7 @@ public sealed class SaveDialogModel : DialogBindable<SaveDialog, object>
     {
         bool validated =
             this.quanticsStudioModel.ValidateComputerMetadata(
-                this.FileInformation, withOverwrite, out message);
+                this.fileValidator.Value, withOverwrite, out message);
         this.ValidationMessage = validated ? string.Empty : message;
         return validated;
     }

@@ -16,18 +16,14 @@ TODO: Studio :
 --------------
 
 	Priorities:	
-		BUG: No validation in Save Project dialog (=> Use Validation framework)
+		FEATURE: Run computer calculations in a background thread. 
+		FEATURE: Spinner for 9 or 10 qubits and above	
+		FEATURE: Warning for slow computations at 9 and 10 qubits and above
+		FEATURE: Ability to cancel a run at 9 and 10 qubits
+
 		BUG: Doc' not in sync' after a UI delete 
 
 	FEATURE: Allow editing angles on controlled rotation and phase gates
-
-	FEATURE: Run computer calculations in a background thread. 
-		
-	FEATURE: Spinner for 9 or 10 qubits and above
-	
-	FEATURE: Warning for slow computations at 9 and 10 qubits and above
-
-	FEATURE: Ability to cancel a run at 9 and 10 qubits
 		
 	BUG: Sometimes showing a toasted Error on dropping Swap gate : "overlapping targets"
 
