@@ -2,9 +2,6 @@
 TODO: Framework: 
 ----------------
 
-	BUG: Annoying flash when replacing a modal dialog by a new one
-		(need some kind of dismiss and replace/run API) 
-
 	NTH: Ability to drag modal dialogs 
 
 TODO: Engine: 
@@ -32,8 +29,6 @@ TODO: Studio :
 
 	FEATURE: Ability to cancel a run at 9 and 10 qubits
 		
-	BUG: Can't dismiss toasts in Computer view 
-
 	BUG: Sometimes showing a toasted Error on dropping Swap gate : "overlapping targets"
 
 	BUG: Incorrect behaviour of the "Regular/Test" switch after closing a circuit.

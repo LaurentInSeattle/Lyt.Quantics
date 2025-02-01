@@ -95,7 +95,11 @@ public sealed class GateEditAngleDialogModel
     {
         this.IsMakeControlled = true;
         this.onClose?.Invoke(this, true);
-        this.dialogService.Dismiss();
+
+        // The delegate should be invoked only once 
+        this.onClose = null; 
+
+        // We will run another modal dialog, so do NOT dismis the dialog service
     }
 
     public void OnSave(object? _) => base.TrySaveAndClose();

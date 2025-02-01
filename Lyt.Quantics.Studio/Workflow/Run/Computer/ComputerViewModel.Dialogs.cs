@@ -86,11 +86,17 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
 
         if (gateEditAngleDialogModel.IsMakeControlled)
         {
-            this.dialogService.Dismiss();
-            Schedule.OnUiThread(20, () =>
+            // Replace the current modal dialog with the one to construct a
+            // controlled gate from the existing one.
+            if (this.dialogService is DialogService modalService)
             {
-                this.LaunchGateEditControlDialog(gateEditAngleDialogModel.GateInfoProvider);
-            }, DispatcherPriority.Background);
+                // Assumes that the host panel has not been changed 
+                modalService.ReplaceRunModal<GateEditControlDialog, IGateInfoProvider>(
+                    new GateEditControlDialogModel(),
+                    this.OnGateEditControlClose, 
+                    gateEditAngleDialogModel.GateInfoProvider);
+            }
+
             return;
         }
 
