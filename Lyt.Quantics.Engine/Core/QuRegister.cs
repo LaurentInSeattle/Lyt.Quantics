@@ -11,7 +11,7 @@ using static MathUtilities;
 /// <summary> Result of Combining QuBit's </summary>
 public sealed partial class QuRegister
 {
-    public const int MaxQubits = 10; // For now ~ 10, more could be doable ? 
+    public const int MaxQubits = 12; // For now ~ 12, more could be doable ? 
 
     private Vector<Complex> state;
 

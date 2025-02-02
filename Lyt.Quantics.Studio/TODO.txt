@@ -16,10 +16,13 @@ TODO: Studio :
 --------------
 
 	Priorities:	
+		BUG: Editor creates invalid gates control / target qubits indices, 
+			 often (always?) conflicting with Identity 
+
 		FEATURE: Run computer calculations in a background thread. 
-		FEATURE: Spinner for 9 or 10 qubits and above	
-		FEATURE: Warning for slow computations at 9 and 10 qubits and above
-		FEATURE: Ability to cancel a run at 9 and 10 qubits
+		FEATURE: Spinner for 12 qubits and above	
+		FEATURE: Warning for slow computations at 12 qubits and above
+		FEATURE: Ability to cancel a run at 12+ qubits
 
 		BUG: Doc' not in sync' after a UI delete 
 

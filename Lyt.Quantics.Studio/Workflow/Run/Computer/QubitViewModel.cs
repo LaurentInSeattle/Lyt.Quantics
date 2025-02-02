@@ -1,5 +1,6 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
 
+using System.Diagnostics.Eventing.Reader;
 using static Lyt.Avalonia.Controls.Utilities;
 
 public sealed class QubitViewModel : Bindable<QubitView>
@@ -63,7 +64,19 @@ public sealed class QubitViewModel : Bindable<QubitView>
 
     protected override void OnViewLoaded()
     {
-        this.Name = string.Concat("q", verySmallSpace, subscripts[this.qubitIndex]);
+        string subscript;
+        if (this.qubitIndex < 10) 
+        {
+            subscript = subscripts[this.qubitIndex];
+        }
+        else
+        {
+            int tens = this.qubitIndex / 10;
+            int units = this.qubitIndex % 10;
+            subscript = string.Concat ( subscripts[tens], subscripts[units]);
+        }
+
+        this.Name = string.Concat("q", verySmallSpace, subscript);
         this.RefreshKet();
     }
 
