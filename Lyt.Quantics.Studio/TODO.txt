@@ -3,6 +3,7 @@ TODO: Framework:
 ----------------
 
 	NTH: Ability to drag modal dialogs 
+	NTH: Validation should not directly depends on MVVM but use an Get/Set Interface 
 
 TODO: Engine: 
 -------------
@@ -18,17 +19,16 @@ TODO: Studio :
 	Priorities:	
 		BUG: Editor creates invalid gates control / target qubits indices, 
 			 often (always?) conflicting with Identity 
+		BUG: Sometimes showing a toasted Error on dropping Swap gate : "overlapping targets"
+			(could be related to the one above) 
+		BUG: Doc' view not in sync' after a UI delete 
 
 		FEATURE: Run computer calculations in a background thread. 
 		FEATURE: Spinner for 12 qubits and above	
 		FEATURE: Warning for slow computations at 12 qubits and above
 		FEATURE: Ability to cancel a run at 12+ qubits
 
-		BUG: Doc' not in sync' after a UI delete 
-
-	FEATURE: Allow editing angles on controlled rotation and phase gates
-		
-	BUG: Sometimes showing a toasted Error on dropping Swap gate : "overlapping targets"
+	FEATURE: Allow editing angles on controlled rotation and phase gates		
 
 	BUG: Incorrect behaviour of the "Regular/Test" switch after closing a circuit.
 

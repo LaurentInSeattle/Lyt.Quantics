@@ -15,7 +15,6 @@ public sealed class IntroViewModel : Bindable<IntroView>
         this.doIntroViewModel = this.DoIntro.ViewModel<DoIntroViewModel>();
     }
 
-
     public override void Activate(object? activationParameters)
     {
         base.Activate(activationParameters);

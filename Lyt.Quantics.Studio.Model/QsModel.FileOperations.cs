@@ -98,6 +98,7 @@ public sealed partial class QsModel : ModelBase
 
     private void FinalizeModelCreation ()
     {
+        _ = this.QuComputer.Reset(out string _);
         this.InitializeMeasureStates();
         this.IsDirty = false;
         this.Messenger.Publish(MakeModelLoaded());

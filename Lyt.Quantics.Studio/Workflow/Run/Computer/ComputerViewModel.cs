@@ -29,19 +29,6 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>, IDropTar
 
     protected override void OnViewLoaded()
     {
-        Schedule.OnUiThread(
-            5_000, () =>
-            {
-                this.toaster.Dismiss();
-                this.toaster.Host = this.View.ToasterHost;
-
-                // Relocate the location of the toasts for better readability. 
-                if (this.toaster.View is Control control)
-                {
-                    control.HorizontalAlignment = HorizontalAlignment.Right;
-                }
-            }, DispatcherPriority.ApplicationIdle);
-
         this.isLoaded = true;
         if (this.NeedsToLoadModel)
         {

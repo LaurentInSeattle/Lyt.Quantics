@@ -17,8 +17,10 @@ Built-in circuits.
 | :heavy_check_mark: Unix    - Jet Brains Rider   |
 
 ## Notes
-The logic of the computation engine is based on this design: 
-: https://www.stylewarning.com/posts/quantum-interpreter/
+Originally, the logic of the computation engine was based on this design: 
+: https://www.stylewarning.com/posts/quantum-interpreter/ limiting the engine to be only able to manipulate 10 qubits.
+This has been significantly improved and optimized so that the engine is now able to handle up to 20 qubits. 
+However, starting at 16 qubits calculations become very slow.
 
 The User Interface is portable to various OS and is based on the Avalonia 
 cross-platform UI framework for dotnet, available here: https://github.com/AvaloniaUI/Avalonia

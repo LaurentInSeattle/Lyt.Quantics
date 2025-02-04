@@ -49,6 +49,8 @@ public sealed class PhaseGate : Gate
         this.matrix.At(1, 1, eIotaLambda);
     }
 
+    public override bool IsMutable => true;
+
     public override double Angle { get; set; }
 
     public override Matrix<Complex> Matrix => this.matrix;
