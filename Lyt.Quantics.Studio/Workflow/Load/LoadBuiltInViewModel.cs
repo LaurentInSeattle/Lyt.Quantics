@@ -8,6 +8,7 @@ public sealed class LoadBuiltInViewModel : Bindable<LoadBuiltInView>
     private const string NameProperty = "Name";
     private const string DescriptionProperty = "Description";
 
+    private readonly QsModel quanticsStudioModel;
     private readonly List<FilterString> stringFilters;
     private readonly List<FilterPredicate> boolFilters;
 
@@ -18,19 +19,24 @@ public sealed class LoadBuiltInViewModel : Bindable<LoadBuiltInView>
 
     public LoadBuiltInViewModel()
     {
+        // Do not use Injection directly as this is loaded programmatically by the LoadView 
+        this.quanticsStudioModel = App.GetRequiredService<QsModel>();
+
         this.builtInViews = [];
         this.stringFilters = [];
         this.boolFilters = [];
         this.filterPredicate = new(PropertyName: IsUnitTestProperty, PropertyValue: false);
 
-        // Subscribtion processed locally 
+        // Subscriptions processed locally 
         this.Messenger.Subscribe<ToolbarCommandMessage>(this.OnToolbarCommandMessage);
+        this.Messenger.Subscribe<ModelUpdateMessage>(this.OnModelUpdateMessage);
     }
 
     protected override void OnViewLoaded()
     {
         base.OnViewLoaded();
         this.OnBuiltInClearSearch();
+        this.OnShowRegular(this.quanticsStudioModel.ShowBuiltInComputers);
     }
 
     public override void Activate(object? activationParameters)
@@ -61,6 +67,15 @@ public sealed class LoadBuiltInViewModel : Bindable<LoadBuiltInView>
         }
 
         this.OnBuiltInClearSearch();
+        this.OnShowRegular(this.quanticsStudioModel.ShowBuiltInComputers);
+    }
+
+    private void OnModelUpdateMessage(ModelUpdateMessage message)
+    {
+        if (message.PropertyName == nameof(QsModel.ShowBuiltInComputers))
+        {
+            this.OnShowRegular(this.quanticsStudioModel.ShowBuiltInComputers);
+        }
     }
 
     private void OnToolbarCommandMessage(ToolbarCommandMessage message)
@@ -72,20 +87,13 @@ public sealed class LoadBuiltInViewModel : Bindable<LoadBuiltInView>
             case ToolbarCommand.BuiltInClearSearch: this.OnBuiltInClearSearch(); break;
 
             case ToolbarCommand.BuiltInSearch: this.OnBuiltInSearch(message.CommandParameter); break;
-
-            case ToolbarCommand.ShowRegular: this.OnShowRegular(message.CommandParameter); break;
         }
     }
 
-    private void OnShowRegular(object? commandParameter)
+    private void OnShowRegular(bool showRegular)
     {
-        if (commandParameter is not bool value)
-        {
-            return;
-        }
-
         // value is true for regular, flip it to check regular (non UT) circuits 
-        this.filterPredicate = new(PropertyName: IsUnitTestProperty, PropertyValue: !value);
+        this.filterPredicate = new(PropertyName: IsUnitTestProperty, PropertyValue: !showRegular);
         this.DoFilter();
     }
 

@@ -4,67 +4,6 @@ using static ModelStructureUpdateMessage;
 
 public sealed partial class QsModel : ModelBase
 {
-    [JsonIgnore]
-    public bool HideMinibarsComputerState { get; set; }
-
-    [JsonIgnore]
-    public bool HideMinibarsUserOption { get; set; }
-
-    [JsonIgnore]
-    public QuComputer QuComputer { get; private set; }
-
-    [JsonIgnore]
-    public List<bool> QuBitMeasureStates { get; private set; } = [];
-
-    public bool ShouldMeasureAllQubits
-    {
-        get
-        {
-            int total = this.QuBitMeasureStates.Count;
-            if (total != this.QuComputer.QuBitsCount)
-            {
-                return false;
-            }
-
-            int countMeasured =
-                (from state in this.QuBitMeasureStates where state select state).Count();
-            return countMeasured == total;
-        }
-    }
-
-    public bool ShouldMeasureNoQubits
-    {
-        get
-        {
-            int total = this.QuBitMeasureStates.Count;
-            if (total != this.QuComputer.QuBitsCount)
-            {
-                return false;
-            }
-
-            int countMeasured =
-                (from state in this.QuBitMeasureStates where state select state).Count();
-            return countMeasured == 0;
-        }
-    }
-
-    public HashSet<int> NonMeasuredQubitsIndices
-    {
-        get
-        {
-            HashSet<int> indices = [];
-            for (int i = 0; i < this.QuBitMeasureStates.Count; ++i)
-            {
-                if (!this.QuBitMeasureStates[i])
-                {
-                    indices.Add(i);
-                }
-            }
-
-            return indices;
-        }
-    }
-
     public List<Tuple<string, double>> ReducedBitValuesProbabilities(QuRegister register)
     {
         var measureStates = this.QuBitMeasureStates;

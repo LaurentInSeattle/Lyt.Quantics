@@ -5,13 +5,17 @@ using static MessagingExtensions;
 
 public sealed class LoadBuiltInToolbarViewModel : Bindable<LoadBuiltInToolbarView>
 {
-    public LoadBuiltInToolbarViewModel() { }
+    private readonly QsModel quanticsStudioModel;
+
+    public LoadBuiltInToolbarViewModel()
+        => this.quanticsStudioModel = App.GetRequiredService<QsModel>();
+
 
     protected override void OnViewLoaded()
     {
         base.OnViewLoaded();
         this.View.FilterTextBox.Text = string.Empty;
-        this.ShowRegular = true; 
+        this.ShowRegular = this.quanticsStudioModel.ShowBuiltInComputers; 
     }
 
 #pragma warning disable IDE0051 // Remove unused private members
@@ -61,7 +65,7 @@ public sealed class LoadBuiltInToolbarViewModel : Bindable<LoadBuiltInToolbarVie
         set
         {
             this.Set(value);
-            Command(ToolbarCommand.ShowRegular, value);
+            this.quanticsStudioModel.ShowBuiltInComputers = value; 
         }
     }
 

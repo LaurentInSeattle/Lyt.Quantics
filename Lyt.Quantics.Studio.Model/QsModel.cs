@@ -1,6 +1,5 @@
 ﻿namespace Lyt.Quantics.Studio.Model;
 
-using Lyt.Quantics.Engine.Gates.Base;
 using static FileManagerModel;
 
 public sealed partial class QsModel : ModelBase
@@ -34,6 +33,8 @@ public sealed partial class QsModel : ModelBase
 
         // Create a 'blank' computer at initialization time, and nothing in it 
         this.QuComputer = new("Untitled", "New quantum computer project.");
+        this.ShowBuiltInComputers = true;
+        this.ShowRecentDocuments = true;
     }
 
     public Dictionary<string, QuComputer> Projects { get; private set; }

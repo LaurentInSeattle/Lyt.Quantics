@@ -34,9 +34,5 @@ public sealed record class ToolbarCommandMessage(
         // Builtin Projects toolbar 
         BuiltInClearSearch,
         BuiltInSearch,
-        ShowRegular,
-
-        // Saved Projects toolbar 
-        Mru,
     }
 }

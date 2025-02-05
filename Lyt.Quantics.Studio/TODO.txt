@@ -21,7 +21,6 @@ TODO: Studio :
 			 often (always?) conflicting with Identity 
 		BUG: Sometimes showing a toasted Error on dropping Swap gate : "overlapping targets"
 			(could be related to the one above) 
-		BUG: Doc' view not in sync' after a UI delete 
 
 		FEATURE: Run computer calculations in a background thread. 
 		FEATURE: Spinner for 12 qubits and above	
@@ -29,8 +28,6 @@ TODO: Studio :
 		FEATURE: Ability to cancel a run at 12+ qubits
 
 	FEATURE: Allow editing angles on controlled rotation and phase gates		
-
-	BUG: Incorrect behaviour of the "Regular/Test" switch after closing a circuit.
 
 	BUG: Amplitudes histogram shows up after loading another model.
 

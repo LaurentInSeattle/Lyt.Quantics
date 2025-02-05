@@ -12,21 +12,23 @@ public sealed class LoadDocumentsViewModel : Bindable<LoadDocumentsView>
 
     public LoadDocumentsViewModel()
     {
-        // Do not use Injection directly as this is loaded programmatically by the RunView 
+        // Do not use Injection directly as this is loaded programmatically by the LoadView 
         this.quanticsStudioModel = App.GetRequiredService<QsModel>();
         this.documentViews = [];
         this.Messenger.Subscribe<ToolbarCommandMessage>(this.OnToolbarCommandMessage);
+        this.Messenger.Subscribe<ModelUpdateMessage>(this.OnModelUpdateMessage);
     }
 
     protected override void OnViewLoaded()
     {
         base.OnViewLoaded();
-        this.DocumentViews = new(this.documentViews);
+        this.ShowMostRecent(this.quanticsStudioModel.ShowRecentDocuments);
     }
 
     public override void Activate(object? activationParameters)
     {
         base.Activate(activationParameters);
+
         try
         {
             this.documentViews.Clear();
@@ -57,11 +59,20 @@ public sealed class LoadDocumentsViewModel : Bindable<LoadDocumentsView>
             }
 
             this.searchEngine = new(this.documentViews, this.Logger);
+            this.ShowMostRecent(this.quanticsStudioModel.ShowRecentDocuments);
         }
         catch (Exception ex)
         {
             Debug.WriteLine(ex);
             this.Logger.Warning("One or more files failed to load \n" + ex.ToString());
+        }
+    }
+
+    private void OnModelUpdateMessage(ModelUpdateMessage message)
+    {
+        if (message.PropertyName == nameof(QsModel.ShowRecentDocuments))
+        {
+            this.ShowMostRecent(this.quanticsStudioModel.ShowRecentDocuments);
         }
     }
 
@@ -73,14 +84,6 @@ public sealed class LoadDocumentsViewModel : Bindable<LoadDocumentsView>
                 if (message.CommandParameter is DocumentViewModel documentViewModel)
                 {
                     this.OnDelete(documentViewModel);
-                }
-
-                break;
-
-            case ToolbarCommand.Mru:
-                if (message.CommandParameter is bool mostRecent)
-                {
-                    this.ShowMostRecent(mostRecent);
                 }
 
                 break;
@@ -134,7 +137,9 @@ public sealed class LoadDocumentsViewModel : Bindable<LoadDocumentsView>
         // Delete file and update UI 
         if (this.quanticsStudioModel.DeleteDocument(this.documentToDelete.QuComputer, out string message))
         {
-            this.DocumentViews.Remove(this.documentToDelete);
+            this.documentViews.Remove(this.documentToDelete);
+            this.searchEngine = new(this.documentViews, this.Logger);
+            this.ShowMostRecent(this.quanticsStudioModel.ShowRecentDocuments);
         }
         else
         {

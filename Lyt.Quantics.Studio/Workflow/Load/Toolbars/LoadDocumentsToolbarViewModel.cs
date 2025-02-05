@@ -1,14 +1,16 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Load.Toolbars;
 
-using static ToolbarCommandMessage;
-using static MessagingExtensions;
-
 public sealed class LoadDocumentsToolbarViewModel : Bindable<LoadDocumentsToolbarView> 
 {
+    private readonly QsModel quanticsStudioModel;
+
+    public LoadDocumentsToolbarViewModel()
+        => this.quanticsStudioModel = App.GetRequiredService<QsModel>();            
+
     protected override void OnViewLoaded()
     {
         base.OnViewLoaded();
-        this.ShowMru = false;
+        this.ShowMru = this.quanticsStudioModel.ShowRecentDocuments;
     } 
 
     public bool ShowMru
@@ -17,7 +19,7 @@ public sealed class LoadDocumentsToolbarViewModel : Bindable<LoadDocumentsToolba
         set
         {
             this.Set(value);
-            Command(ToolbarCommand.Mru, value);
+            this.quanticsStudioModel.ShowRecentDocuments = value; 
         }
     }
 }
