@@ -10,9 +10,12 @@ TODO: Engine:
 
 	Priorities:	
 		BUG: "Flipped" Controlled Gates not working properly 
+		BUG: Crash in KetMap with Invalid ket indices (both zero) (Need repro)
 
 	??? Include Author in computer metadata
 	
+	FEATURE: Provide C# code sample that runs a quantum circuit.
+
 TODO: Studio : 
 --------------
 
