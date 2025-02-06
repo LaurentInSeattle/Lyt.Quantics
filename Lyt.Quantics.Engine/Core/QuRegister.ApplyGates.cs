@@ -305,7 +305,7 @@ public sealed partial class QuRegister
                 this.Swap(ketMap, maxControl, 1);
             }
 
-            if (!needToSwapTarget)
+            if (needToSwapTarget)
             {
                 this.Swap(ketMap, positionTarget, 2);
             }
@@ -316,7 +316,7 @@ public sealed partial class QuRegister
         if (needToSwap)
         {
             // Important: Swap back in reverse order 
-            if (!needToSwapTarget)
+            if (needToSwapTarget)
             {
                 this.Swap(ketMap, positionTarget, 2);
             }
