@@ -115,10 +115,9 @@ public sealed class Tests_Computers
             }
 
             ValidateBuildAndRun("Entanglement");
-
             ValidateBuildAndRun("Rxyz_Test");
             ValidateBuildAndRun("RxyzCnot_Test");
-            ValidateBuildAndRun("FullAdder");
+            ValidateBuildAndRun("Full Adder - with implicit swaps");
             ValidateBuildAndRun("Deutsch_Balanced");
             ValidateBuildAndRun("Deutsch_Constant");
             ValidateBuildAndRun("SX_Test");
@@ -245,7 +244,7 @@ public sealed class Tests_Computers
                 [ 0.0, 0.0, 0.0, 0.0,  0.0, 0.0, 0.0, 0.0,  0.0, 1.0, 0.0, 0.0,  0.0, 0.0, 0.0, 0.0 ],
                 [ 0.0, 0.0, 0.0, 0.0,  0.0, 0.0, 0.0, 0.0,  0.0, 0.0, 0.0, 0.0,  0.0, 0.0, 0.0, 1.0 ],
             ];
-            ManyRuns("FullAdder", adderStates, adderExpected); 
+            ManyRuns("Full Adder - with implicit swaps", adderStates, adderExpected); 
 
             List<List<QuState>> orGateStates =
             [
