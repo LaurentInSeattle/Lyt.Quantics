@@ -81,6 +81,39 @@ public static class GateFactory
         {
             try
             {
+                if (gateType == typeof(RotationGate))
+                {
+                    ArgumentNullException.ThrowIfNull(gateParameters);
+                    return new RotationGate(gateParameters);
+                }
+
+                if (gateType == typeof(PhaseGate))
+                {
+                    ArgumentNullException.ThrowIfNull(gateParameters);
+                    return new PhaseGate(gateParameters);
+                }
+
+                if (gateType == typeof(ControlledGate))
+                {
+                    ArgumentNullException.ThrowIfNull(gateParameters);
+                    var baseGate = Produce(gateParameters.BaseGateKey, gateParameters);
+                    return new ControlledGate(baseGate);
+                }
+
+                if (gateType == typeof(FlippedControlledGate))
+                {
+                    ArgumentNullException.ThrowIfNull(gateParameters);
+                    var baseGate = Produce(gateParameters.BaseGateKey, gateParameters);
+                    return new FlippedControlledGate(baseGate);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Failed to create gate: " + gateType.FullName + "\n" + ex.ToString() );
+            }
+
+            try
+            {
                 object? instance = Activator.CreateInstance(gateType);
                 if (instance is Gate gate)
                 {
@@ -89,34 +122,10 @@ public static class GateFactory
             }
             catch (MissingMethodException)
             {
-                ArgumentNullException.ThrowIfNull(gateParameters);
-
-                if (gateType == typeof(RotationGate))
-                {
-                    return new RotationGate(gateParameters);
-                }
-
-                if (gateType == typeof(PhaseGate))
-                {
-                    return new PhaseGate(gateParameters);
-                }
-
-                if (gateType == typeof(ControlledGate))
-                {
-                    var baseGate = Produce(gateParameters.BaseGateKey, gateParameters);
-                    return new ControlledGate(baseGate);
-                }
-
-                if (gateType == typeof(FlippedControlledGate))
-                {
-                    var baseGate = Produce(gateParameters.BaseGateKey, gateParameters);
-                    return new FlippedControlledGate(baseGate);
-                }
-
                 throw new NotSupportedException("Unsupported gate type: " + gateType.FullName);
             }
         }
 
-        throw new Exception("No such gate type: " + caption);
+        throw new InvalidOperationException("No such gate type: " + caption);
     }
 }

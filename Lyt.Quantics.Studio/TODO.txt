@@ -2,6 +2,9 @@
 TODO: Framework: 
 ----------------
 
+	Reorganize / classify assemblies between those Avalonia dependant and those independant 
+		Model, Persistence, Search, StateMachine, Validation are independant.
+
 	NTH: Ability to drag modal dialogs 
 	NTH: Validation should not directly depends on MVVM but use an Get/Set Interface 
 
@@ -9,12 +12,12 @@ TODO: Engine:
 -------------
 
 	Priorities:	
-		BUG: "Flipped" Controlled Gates not working properly 
 		BUG: Crash in KetMap with Invalid ket indices (both zero) (Need repro)
+		BUG: "Flipped" Controlled Gates not working properly 
 
 	??? Include Author in computer metadata
 	
-	FEATURE: Provide C# code sample that runs a quantum circuit.
+	FEATURE: Create a C# code sample that loads and runs a quantum circuit.
 
 TODO: Studio : 
 --------------

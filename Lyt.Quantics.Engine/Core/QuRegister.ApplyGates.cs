@@ -145,11 +145,20 @@ public sealed partial class QuRegister
             throw new ArgumentException("Invalid positions");
         }
 
-        bool needToSwap = (positionControl != 0) || (positionTarget != 1);
+        bool needToSwapControl = positionControl != 0;
+        bool needToSwapTarget = positionTarget != 1;
+        bool needToSwap = needToSwapControl || needToSwapTarget;
         if (needToSwap)
         {
-            this.Swap(ketMap, 0, positionControl);
-            this.Swap(ketMap, 1, positionTarget);
+            if (needToSwapControl)
+            {
+                this.Swap(ketMap, 0, positionControl);
+            }
+
+            if (needToSwapTarget)
+            {
+                this.Swap(ketMap, 1, positionTarget);
+            }
         }
 
         this.ApplyBinaryControlledGateOnQuBitZeroOne(gate);
@@ -157,8 +166,15 @@ public sealed partial class QuRegister
         if (needToSwap)
         {
             // Must swap in reverse order 
-            this.Swap(ketMap, 1, positionTarget);
-            this.Swap(ketMap, 0, positionControl);
+            if (needToSwapTarget)
+            {
+                this.Swap(ketMap, 1, positionTarget);
+            }
+
+            if (needToSwapControl)
+            {
+                this.Swap(ketMap, 0, positionControl);
+            }
         }
     }
 
@@ -273,12 +289,26 @@ public sealed partial class QuRegister
 
         int minControl = Math.Min(positionControl1, positionControl2);
         int maxControl = Math.Max(positionControl1, positionControl2);
-        bool needToSwap = minControl != 0 || maxControl != 1 || positionTarget != 2;
+        bool needToSwapMin = minControl != 0;
+        bool needToSwapMax = maxControl != 1;
+        bool needToSwapTarget = positionTarget != 2;
+        bool needToSwap = needToSwapMin || needToSwapMax || needToSwapTarget;
         if (needToSwap)
         {
-            this.Swap(ketMap, minControl, 0);
-            this.Swap(ketMap, maxControl, 1);
-            this.Swap(ketMap, positionTarget, 2);
+            if (needToSwapMin)
+            {
+                this.Swap(ketMap, minControl, 0);
+            }
+
+            if (needToSwapMax)
+            {
+                this.Swap(ketMap, maxControl, 1);
+            }
+
+            if (!needToSwapTarget)
+            {
+                this.Swap(ketMap, positionTarget, 2);
+            }
         }
 
         this.ApplyTernaryControlledGateOnQuBitZeroOneTwo(gate);
@@ -286,9 +316,20 @@ public sealed partial class QuRegister
         if (needToSwap)
         {
             // Important: Swap back in reverse order 
-            this.Swap(ketMap, positionTarget, 2);
-            this.Swap(ketMap, maxControl, 1);
-            this.Swap(ketMap, minControl, 0);
+            if (!needToSwapTarget)
+            {
+                this.Swap(ketMap, positionTarget, 2);
+            }
+
+            if (needToSwapMax)
+            {
+                this.Swap(ketMap, maxControl, 1);
+            }
+
+            if (needToSwapMin)
+            {
+                this.Swap(ketMap, minControl, 0);
+            }
         }
     }
 

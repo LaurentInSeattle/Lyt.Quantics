@@ -8,9 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Computers\Full Adder - with implicit swaps.json" />
     <None Remove="Resources\Computers\Grover Search.json" />
+    <None Remove="Resources\Computers\Quantum Fourier Transform - 5 qubits.json" />
     <None Remove="Resources\Computers\Tests\Test Long Swaps.json" />
     <None Remove="Resources\Computers\Toffoli Decomposition.json" />
+    <None Remove="Resources\Computers\Triple Full Adder.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,12 +25,13 @@
     <EmbeddedResource Include="Resources\Computers\EntanglementFlipped.json" />
     <EmbeddedResource Include="Resources\Computers\EntanglementNot.json" />
     <EmbeddedResource Include="Resources\Computers\Fredkin_Basic.json" />
-    <EmbeddedResource Include="Resources\Computers\FullAdder.json" />
+    <EmbeddedResource Include="Resources\Computers\Full Adder - with implicit swaps.json" />
     <EmbeddedResource Include="Resources\Computers\Grover Search.json" />
     <EmbeddedResource Include="Resources\Computers\HX_PhaseFlip.json" />
     <EmbeddedResource Include="Resources\Computers\HX_Swap.json" />
     <EmbeddedResource Include="Resources\Computers\OR_Gate.json" />
     <EmbeddedResource Include="Resources\Computers\QFT 2 Qubits.json" />
+    <EmbeddedResource Include="Resources\Computers\Quantum Fourier Transform - 5 qubits.json" />
     <EmbeddedResource Include="Resources\Computers\RxyzCnot_Test.json" />
     <EmbeddedResource Include="Resources\Computers\Rxyz_Test.json" />
     <EmbeddedResource Include="Resources\Computers\Swap using CNOT.json" />
@@ -41,6 +45,7 @@
     <EmbeddedResource Include="Resources\Computers\Tests\Test Long Swaps.json" />
     <EmbeddedResource Include="Resources\Computers\Tests\Toffoli_Basic.json" />
     <EmbeddedResource Include="Resources\Computers\Toffoli Decomposition.json" />
+    <EmbeddedResource Include="Resources\Computers\Triple Full Adder.json" />
   </ItemGroup>
 
   <ItemGroup>

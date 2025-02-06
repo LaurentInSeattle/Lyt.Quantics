@@ -1,0 +1,246 @@
+{
+  "Created": "2025-01-01T11:02:00.8983913-08:00",
+  "LastOpened": "2025-02-06T10:38:01.4077544-08:00",
+  "LastModified": "2025-01-01T11:08:34.2740338-08:00",
+  "IsUnitTest": false,
+  "Name": "Full Adder - with implicit swaps",
+  "Description": "Addition with Toffoli gates with implicit swaps",
+  "Comment": "\u003C No comments \u003E",
+  "QuBitsCount": 4,
+  "InitialStates": [
+    "Zero",
+    "Zero",
+    "Zero",
+    "Zero"
+  ],
+  "Stages": [
+    {
+      "Operators": [
+        {
+          "GateKey": "CCX",
+          "GateParameters": {
+            "BaseGateKey": "",
+            "Axis": "X",
+            "Angle": 0,
+            "IsPiDivisor": true,
+            "PiDivisor": 2,
+            "IsPositive": true
+          },
+          "ControlQuBitIndices": [
+            0,
+            1
+          ],
+          "TargetQuBitIndices": [
+            3
+          ]
+        },
+        {
+          "GateKey": "I",
+          "GateParameters": {
+            "BaseGateKey": "",
+            "Axis": "X",
+            "Angle": 0,
+            "IsPiDivisor": true,
+            "PiDivisor": 2,
+            "IsPositive": true
+          },
+          "ControlQuBitIndices": [],
+          "TargetQuBitIndices": [
+            2
+          ]
+        }
+      ]
+    },
+    {
+      "Operators": [
+        {
+          "GateKey": "CX",
+          "GateParameters": {
+            "BaseGateKey": "",
+            "Axis": "X",
+            "Angle": 0,
+            "IsPiDivisor": true,
+            "PiDivisor": 2,
+            "IsPositive": true
+          },
+          "ControlQuBitIndices": [
+            0
+          ],
+          "TargetQuBitIndices": [
+            1
+          ]
+        },
+        {
+          "GateKey": "I",
+          "GateParameters": {
+            "BaseGateKey": "",
+            "Axis": "X",
+            "Angle": 0,
+            "IsPiDivisor": true,
+            "PiDivisor": 2,
+            "IsPositive": true
+          },
+          "ControlQuBitIndices": [],
+          "TargetQuBitIndices": [
+            2
+          ]
+        },
+        {
+          "GateKey": "I",
+          "GateParameters": {
+            "BaseGateKey": "",
+            "Axis": "X",
+            "Angle": 0,
+            "IsPiDivisor": true,
+            "PiDivisor": 2,
+            "IsPositive": true
+          },
+          "ControlQuBitIndices": [],
+          "TargetQuBitIndices": [
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "Operators": [
+        {
+          "GateKey": "I",
+          "GateParameters": {
+            "BaseGateKey": "",
+            "Axis": "X",
+            "Angle": 0,
+            "IsPiDivisor": true,
+            "PiDivisor": 2,
+            "IsPositive": true
+          },
+          "ControlQuBitIndices": [],
+          "TargetQuBitIndices": [
+            0
+          ]
+        },
+        {
+          "GateKey": "CCX",
+          "GateParameters": {
+            "BaseGateKey": "",
+            "Axis": "X",
+            "Angle": 0,
+            "IsPiDivisor": true,
+            "PiDivisor": 2,
+            "IsPositive": true
+          },
+          "ControlQuBitIndices": [
+            1,
+            2
+          ],
+          "TargetQuBitIndices": [
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "Operators": [
+        {
+          "GateKey": "I",
+          "GateParameters": {
+            "BaseGateKey": "",
+            "Axis": "X",
+            "Angle": 0,
+            "IsPiDivisor": true,
+            "PiDivisor": 2,
+            "IsPositive": true
+          },
+          "ControlQuBitIndices": [],
+          "TargetQuBitIndices": [
+            0
+          ]
+        },
+        {
+          "GateKey": "CX",
+          "GateParameters": {
+            "BaseGateKey": "",
+            "Axis": "X",
+            "Angle": 0,
+            "IsPiDivisor": true,
+            "PiDivisor": 2,
+            "IsPositive": true
+          },
+          "ControlQuBitIndices": [
+            1
+          ],
+          "TargetQuBitIndices": [
+            2
+          ]
+        },
+        {
+          "GateKey": "I",
+          "GateParameters": {
+            "BaseGateKey": "",
+            "Axis": "X",
+            "Angle": 0,
+            "IsPiDivisor": true,
+            "PiDivisor": 2,
+            "IsPositive": true
+          },
+          "ControlQuBitIndices": [],
+          "TargetQuBitIndices": [
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "Operators": [
+        {
+          "GateKey": "CX",
+          "GateParameters": {
+            "BaseGateKey": "",
+            "Axis": "X",
+            "Angle": 0,
+            "IsPiDivisor": true,
+            "PiDivisor": 2,
+            "IsPositive": true
+          },
+          "ControlQuBitIndices": [
+            0
+          ],
+          "TargetQuBitIndices": [
+            1
+          ]
+        },
+        {
+          "GateKey": "I",
+          "GateParameters": {
+            "BaseGateKey": "",
+            "Axis": "X",
+            "Angle": 0,
+            "IsPiDivisor": true,
+            "PiDivisor": 2,
+            "IsPositive": true
+          },
+          "ControlQuBitIndices": [],
+          "TargetQuBitIndices": [
+            2
+          ]
+        },
+        {
+          "GateKey": "I",
+          "GateParameters": {
+            "BaseGateKey": "",
+            "Axis": "X",
+            "Angle": 0,
+            "IsPiDivisor": true,
+            "PiDivisor": 2,
+            "IsPositive": true
+          },
+          "ControlQuBitIndices": [],
+          "TargetQuBitIndices": [
+            3
+          ]
+        }
+      ]
+    }
+  ],
+  "ExpectedFinalProbabilities": []
+}
