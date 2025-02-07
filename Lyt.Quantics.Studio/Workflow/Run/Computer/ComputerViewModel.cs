@@ -22,7 +22,7 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>, IDropTar
         this.Messenger.Subscribe<ToolbarCommandMessage>(this.OnToolbarCommandMessage);
         this.Messenger.Subscribe<QubitChangedMessage>(this.OnQubitChangedMessage);
         this.Messenger.Subscribe<ModelStructureUpdateMessage>(this.OnModelStructureUpdateMessage);
-        this.Messenger.Subscribe<ModelResultsUpdateMessage>(this.OnModelResultsUpdateMessage);
+        this.Messenger.Subscribe<ModelResultsUpdateMessage>(this.OnModelResultsUpdateMessage, withUiDispatch: true);
         this.Messenger.Subscribe<ModelUpdateErrorMessage>(this.OnModelUpdateErrorMessage);
         this.Messenger.Subscribe<GateEditMessage>(this.OnGateEditMessage);
     }

@@ -43,7 +43,7 @@ public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
         this.quanticsStudioModel = App.GetRequiredService<QsModel>();
         this.histogramEntries = [];
         this.Messenger.Subscribe<ToolbarCommandMessage>(this.OnToolbarCommandMessage);
-        this.Messenger.Subscribe<ModelResultsUpdateMessage>(this.OnModelResultsUpdateMessage);
+        this.Messenger.Subscribe<ModelResultsUpdateMessage>(this.OnModelResultsUpdateMessage, withUiDispatch: true);
         this.Messenger.Subscribe<ModelStructureUpdateMessage>(this.OnModelStructureUpdateMessage);
         this.Messenger.Subscribe<ModelMeasureStatesUpdateMessage>(this.ModelMeasureStatesUpdateMessage);
     }

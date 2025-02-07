@@ -8,6 +8,7 @@
 
     <Application.Styles>
         <FluentTheme />
+		<StyleInclude Source="avares://Lyt.Avalonia.Controls/Progress/ProgressRing.axaml"/>
 		<StyleInclude Source="avares://Lyt.Quantics.Studio/Assets/Palette/DeepBluePalette.axaml" />
 		<StyleInclude Source="/Assets/Theme/Sliders.axaml"/>
 	</Application.Styles>

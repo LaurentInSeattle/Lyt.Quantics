@@ -142,9 +142,20 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
     {
         try
         {
-            if (this.quanticsStudioModel.Run(runUsingKroneckerProduct: false))
+            if (this.quanticsStudioModel.QuComputer.QuBitsCount <= 8)
             {
-                this.toaster.Show("Complete!", "Successful single Run! ", 4_000, InformationLevel.Success);
+                if (this.quanticsStudioModel.Run(runUsingKroneckerProduct: false))
+                {
+                    this.toaster.Show("Complete!", "Successful single Run! ", 4_000, InformationLevel.Success);
+                }
+            }
+            else
+            {
+                // Run modal dialog to save computer model - no parameters, no closing action  
+                if (this.dialogService is DialogService modalService)
+                {
+                    modalService.RunModal(this.View.ToasterHost, new RunDialogModel());
+                }
             }
         }
         catch (Exception ex)

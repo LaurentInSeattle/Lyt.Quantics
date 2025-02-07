@@ -12,7 +12,6 @@ TODO: Engine:
 -------------
 
 	Priorities:	
-		BUG: Crash in KetMap with Invalid ket indices (both zero) (Need repro)
 		BUG: "Flipped" Controlled Gates not working properly 
 
 	??? Include Author in computer metadata

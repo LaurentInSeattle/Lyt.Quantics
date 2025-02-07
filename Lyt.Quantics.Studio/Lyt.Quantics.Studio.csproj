@@ -42,4 +42,17 @@
     <ProjectReference Include="..\Lyt.Quantics.Studio.Model\Lyt.Quantics.Studio.Model.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <AvaloniaXaml Update="Workflow\Run\Dialogs\RunDialog.axaml">
+      <SubType>Designer</SubType>
+    </AvaloniaXaml>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Workflow\Run\Dialogs\RunDialog.axaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>RunDialog.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
 </Project>

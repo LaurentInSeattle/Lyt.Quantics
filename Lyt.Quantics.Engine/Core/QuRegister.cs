@@ -11,7 +11,8 @@ using static MathUtilities;
 /// <summary> Result of Combining QuBit's </summary>
 public sealed partial class QuRegister
 {
-    public const int MaxQubits = 16; // For now ~ 12, more could be doable ? 
+    public const int MaxQubits = 16; 
+    public const int ThreadedRunAtQubits = 12; // Runs will be threaded at this limit
 
     private Vector<Complex> state;
 
