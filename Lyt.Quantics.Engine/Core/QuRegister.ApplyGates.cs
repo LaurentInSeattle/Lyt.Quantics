@@ -25,7 +25,10 @@ public sealed partial class QuRegister
             // if bit #i is set an bit #j is not set 
             // OR 
             // if bit #j is set an bit #i is not set 
-            bool areDifferent = ketMap.Get(k1, i) ^ ketMap.Get(k1, j);
+            // 
+            // WAS: bool areDifferent = ketMap.Get(k1, i) ^ ketMap.Get(k1, j);
+            var fastMapAtK1 = ketMap.FastMap[k1];
+            bool areDifferent = fastMapAtK1[i] ^ fastMapAtK1[j];
             if (areDifferent)
             {
                 // This index k1 needs to be swapped with another one, k2, so... Find k2 

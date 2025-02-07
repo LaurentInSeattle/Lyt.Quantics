@@ -36,6 +36,9 @@ Qubits 4 Swap 0 - 1
 /// </summary>
 public sealed class KetMap
 {
+    // Made public for performance reason 
+    public bool[][] FastMap;
+
     private readonly int qubitCount;
     private readonly int length;
     private readonly List<List<bool>> map;
@@ -68,32 +71,17 @@ public sealed class KetMap
             this.map.Add(Ket(i));
         }
 
+        this.FastMap = new bool[length][];
+        for (int i = 0; i < length; i++)
+        {
+            this.FastMap[i] = [.. this.map[i]]; 
+        }
+
         DumpMap(this.map);
+        DumpFastMap(this.FastMap);
     }
 
-    /// <summary> Create a new Ket Map by ignoring the values for the provided qubit index. </summary>
-    public KetMap Reduce(int ket)
-    {
-        if ((ket < 0) || (ket >= qubitCount))
-        {
-            throw new ArgumentException("Invalid ket index: ket");
-        }
-
-        KetMap reducedKetMap = this.DeepClone();
-        var reducedMap = reducedKetMap.map;
-        DumpMap(reducedMap);
-
-        foreach (var list in reducedMap)
-        {
-            list.RemoveAt(ket);
-        }
-
-        DumpMap(reducedMap);
-
-        return reducedKetMap;
-    }
-
-    /// <summary> Create a new Ket Map by ignoring the values for the provided qubits indices. </summary>
+    /// <summary> Create a new Ket Map by ignoring the values for the two provided qubits indices. </summary>
     public KetMap Reduce(int ket1, int ket2)
     {
         if ((ket1 < 0) || (ket1 >= qubitCount))
@@ -126,13 +114,22 @@ public sealed class KetMap
 
         DumpMap(reducedMap);
 
+        reducedKetMap.FastMap = new bool[length][];
+        for (int i = 0; i < length; i++)
+        {
+            reducedKetMap.FastMap[i] = [.. reducedKetMap.map[i]];
+        }
+
         return reducedKetMap;
     }
 
     public KetMap DeepClone() => new(this.qubitCount);
 
     /// <summary> Get the ket bit value in the state vector at the provided index </summary>
-    public bool Get(int index, int ket)
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public bool Get(int index, int ket) => this.fastMap[index][ket];
+
+    public bool DebugGet(int index, int ket)
     {
         if ((index < 0) || (index >= this.map.Count))
         {
@@ -145,37 +142,6 @@ public sealed class KetMap
         }
 
         return this.map[index][ket];
-    }
-
-    /// <summary> Returns the matching index in the state vector when applying a unary gate  </summary>
-    public int UnaryMatch(KetMap reducedKetMap, int index, int ket)
-    {
-        if ((index < 0) || (index >= this.map.Count))
-        {
-            throw new ArgumentException("Invalid index");
-        }
-
-        if ((ket < 0) || (ket >= qubitCount))
-        {
-            throw new ArgumentException("Invalid ket index: ket1");
-        }
-
-        var reducedMap = reducedKetMap.map;
-        List<bool> target = reducedMap[index];
-        for (int match = 0; match < reducedMap.Count; ++match)
-        {
-            if (index == match)
-            {
-                continue;
-            }
-
-            if (IsMatch(target, reducedMap[match]))
-            {
-                return match;
-            }
-        }
-
-        throw new Exception("Ket Match not found");
     }
 
     /// <summary> Returns the matching index in the state vector when swaping quBits </summary>
@@ -201,22 +167,36 @@ public sealed class KetMap
             throw new ArgumentException("Invalid ket indices");
         }
 
-        var reducedMap = reducedKetMap.map;
-        List<bool> target = reducedMap[index];
-        for (int match = 0; match < reducedMap.Count; ++match)
+        var reducedFastMap = reducedKetMap.FastMap;
+        bool[] target = reducedFastMap[index];
+        for (int match = 0; match < reducedFastMap.Length; ++match)
         {
-            bool areSame = this.Get(match, ket1) == this.Get(match, ket2);
-            if (areSame)
-            {
-                continue;
-            }
-
             if (index == match)
             {
                 continue;
             }
 
-            if (IsMatch(target, reducedMap[match]))
+            // bool areSame = this.Get(match, ket1) == this.Get(match, ket2);
+            bool areSame = this.FastMap[match][ket1] == this.FastMap[match][ket2]; 
+            if (areSame)
+            {
+                continue;
+            }
+
+            static bool IsMatch(bool[] x, bool[] y)
+            {
+                for (int ket = 0; ket < Math.Min(x.Length, y.Length); ++ket)
+                {
+                    if (x[ket] != y[ket])
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+
+            if (IsMatch(target, reducedFastMap[match]))
             {
                 return match;
             }
@@ -225,31 +205,37 @@ public sealed class KetMap
         throw new Exception("Ket Match not found");
     }
 
-    private static bool IsMatch(List<bool> x, List<bool> y)
-    {
-        for (int ket = 0; ket < Math.Min(x.Count, y.Count); ++ket)
-        {
-            if (x[ket] != y[ket])
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
 
     [Conditional("DEBUG")]
     private static void DumpMap(List<List<bool>> map)
     {
 #if VERBOSE 
-        if (this.qubitCount < 3)
-        {
-            return;
-        }
 
         Debug.WriteLine("Ket Map:");
         Debug.Indent();
         for (int i = 0; i < map.Count; ++i)
+        {
+            var bits = map[i];
+            foreach (var bit in bits)
+            {
+                Debug.Write(bit ? "1" : "0");
+            }
+
+            Debug.WriteLine("");
+        }
+
+        Debug.Unindent();
+        Debug.WriteLine("");
+#endif // VERBOSE 
+    }
+
+    [Conditional("DEBUG")]
+    private static void DumpFastMap(bool[][] map)
+    {
+#if VERBOSE 
+        Debug.WriteLine("Fast Ket Map:");
+        Debug.Indent();
+        for (int i = 0; i < map.Length; ++i)
         {
             var bits = map[i];
             foreach (var bit in bits)
