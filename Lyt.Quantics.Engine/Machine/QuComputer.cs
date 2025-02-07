@@ -16,6 +16,7 @@ public sealed partial class QuComputer
     private bool isComplete;
 
     private CancellationTokenSource? cancellationTokenSource;
+    private Action<bool, int>? updateDelegate; 
 
     public QuComputer() { /* Required for deserialization */ }
 
@@ -331,7 +332,7 @@ public sealed partial class QuComputer
     }
 
     /// <summary> Non threaded version of running the machine, for Unit Tests only </summary>
-    public bool Run(bool checkExpected, out string message)
+    public bool Run(bool checkExpected, Action<bool, int>? onUpdate, out string message)
     {
         if (this.IsRunning)
         {
@@ -355,6 +356,7 @@ public sealed partial class QuComputer
 
         try
         {
+            this.updateDelegate = onUpdate;
             Tuple<bool, string>? tuple = this.RunInternal(checkExpected, withCTS: false);
             if (tuple is not null)
             {
@@ -399,6 +401,7 @@ public sealed partial class QuComputer
             return new Tuple<bool, string>(false, message);
         }
 
+        this.updateDelegate?.Invoke(true, this.StepIndex - 1);
         this.cancellationTokenSource.Cancel();
 
         await Task.Delay(200); 
@@ -409,7 +412,7 @@ public sealed partial class QuComputer
     }
 
     /// <summary> Launch a UI Run of the machine, awaitable </summary>
-    public async Task<Tuple<bool, string>> Run(bool checkExpected)
+    public async Task<Tuple<bool, string>> Run(bool checkExpected, Action<bool, int>? onUpdate)
     {
         string message = string.Empty;
         if (this.IsRunning)
@@ -432,10 +435,10 @@ public sealed partial class QuComputer
 
         this.cancellationTokenSource = new();
 
-        this.IsRunning = true;
-
         try
         {
+            this.updateDelegate = onUpdate; 
+            this.IsRunning = true;
             Tuple<bool, string>? tuple = null ;             
             await Task.Run(()=> 
             {
@@ -523,7 +526,9 @@ public sealed partial class QuComputer
                 if (Step(out message))
                 {
                     ++this.StepIndex;
-                    if( withCTS)
+                    this.updateDelegate?.Invoke(false, this.StepIndex);
+
+                    if ( withCTS)
                     {
                         if (this.cancellationTokenSource is null)
                         {
@@ -562,6 +567,7 @@ public sealed partial class QuComputer
         {
             this.IsRunning = false;
             this.IsComplete = true;
+            this.updateDelegate?.Invoke(true, this.StepIndex);
         }
 
         return new Tuple<bool, string>(true, string.Empty) ;

@@ -60,6 +60,7 @@ global using Lyt.Avalonia.Interfaces.Random;
 global using Lyt.Avalonia.Interfaces.UserInterface;
 
 global using Lyt.Avalonia.Controls;
+global using Lyt.Avalonia.Controls.Countdown;
 global using Lyt.Avalonia.Controls.Glyphs;
 
 global using Lyt.Avalonia.Mvvm;

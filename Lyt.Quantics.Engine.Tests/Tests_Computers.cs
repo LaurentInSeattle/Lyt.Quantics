@@ -71,7 +71,7 @@ public sealed class Tests_Computers
                     computer.Initialize(initialState);
                 }
 
-                bool isComplete = computer.Run(checkExpected: true, out message);
+                bool isComplete = computer.Run(checkExpected: true, null, out message);
                 if (!string.IsNullOrWhiteSpace(message))
                 {
                     Debug.WriteLine(message);
@@ -202,7 +202,7 @@ public sealed class Tests_Computers
 
                     Assert.IsTrue(isPrepared);
 
-                    bool isComplete = computer.Run(checkExpected: true, out message);
+                    bool isComplete = computer.Run(checkExpected: true, null, out message);
                     if (!string.IsNullOrWhiteSpace(message))
                     {
                         Debug.WriteLine(message);

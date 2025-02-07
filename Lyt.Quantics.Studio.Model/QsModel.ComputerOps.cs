@@ -30,7 +30,7 @@ public sealed partial class QsModel : ModelBase
             }
 
             string result = sb.ToString();
-            result = result.Reverse(); 
+            result = result.Reverse();
             return result;
         }
 
@@ -48,12 +48,12 @@ public sealed partial class QsModel : ModelBase
             }
         }
 
-        List<string> keys = []; 
+        List<string> keys = [];
         foreach (var kvp in reducedBitValuesProbabilities)
         {
             keys.Add(kvp.Key);
         }
-        
+
         keys.Sort();
         keys.Reverse();
         List<Tuple<string, double>> filteredBitValuesProbabilities = [];
@@ -215,7 +215,10 @@ public sealed partial class QsModel : ModelBase
                 status = this.QuComputer.Prepare(out message);
                 if (status)
                 {
-                    status = this.QuComputer.Run(checkExpected: false, out message);
+                    void OnUpdate(bool isComplete, int step)
+                        => this.Messenger.Publish(new ModelProgressMessage(IsComplete: isComplete, Step: step));
+
+                    status = this.QuComputer.Run(checkExpected: false, OnUpdate, out message);
                     if (status)
                     {
                         this.Messenger.Publish(new ModelResultsUpdateMessage());

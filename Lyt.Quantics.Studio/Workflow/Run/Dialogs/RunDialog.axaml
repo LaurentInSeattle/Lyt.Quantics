@@ -10,10 +10,11 @@
 	xmlns:glyphs="clr-namespace:Lyt.Avalonia.Controls.Glyphs;assembly=Lyt.Avalonia.Controls"
 	xmlns:toggle="clr-namespace:Lyt.Avalonia.Controls.Toggle;assembly=Lyt.Avalonia.Controls"
 	xmlns:progress="clr-namespace:Lyt.Avalonia.Controls.Progress;assembly=Lyt.Avalonia.Controls"
+	xmlns:countdown="clr-namespace:Lyt.Avalonia.Controls.Countdown;assembly=Lyt.Avalonia.Controls"
     xmlns:theme="clr-namespace:Lyt.Quantics.Studio"
 	>
 	<Grid
-		Width="680" Height="400"
+		Width="600" Height="300"
 		Background="Transparent"
 		>
 		<Rectangle
@@ -72,7 +73,7 @@
 						<!-- Spacer -->
 						<ColumnDefinition Width="40" />
 						<!-- Dismiss -->
-						<ColumnDefinition Width="72" />
+						<ColumnDefinition Width="80" />
 					</Grid.ColumnDefinitions>
 					<progress:ProgressRing
 						Grid.Column="0"
@@ -87,12 +88,12 @@
 						Style="{StaticResource ToolbarIconButton}"
 						Behaviour="Tap"
 						HorizontalAlignment="Center" VerticalAlignment="Center"
-						Width="64" Height="48"
+						Width="72" Height="48"
 						Margin="4"
 						GlyphSource="dismiss"
 						ButtonBackground="BorderlessRectangle"
 						GlyphStrokeThickness="0"
-						Text="Cancel"
+						Text="Abort"
 						Command="{Binding CancelCommand}"
 				    	/>
 				</Grid>
@@ -104,23 +105,35 @@
 					ShowGridLines="False"
 					>
 					<Grid.RowDefinitions>
-						<!-- Fields -->
-						<RowDefinition Height="44" />
+						<!-- Spacer -->
+						<RowDefinition Height="40" />
 						<!-- Message -->
 						<RowDefinition Height="40" />
+						<RowDefinition Height="60" />
 						<RowDefinition Height="*" />
 					</Grid.RowDefinitions>
 					<TextBlock
 						Grid.Row="1"
 						VerticalAlignment="Center" HorizontalAlignment="Stretch"
-						TextAlignment="Left"
+						TextAlignment="Center"
 						Foreground="{StaticResource LightAqua_0_080}"
-						Text="Please wait..."
-						FontStyle="Italic"
-						FontSize="14"
-						Margin="40 0 0 0"
+						Text="{Binding Message}"
+						FontStyle="Normal"
+						FontSize="16"
+						Margin="0 0 0 0"
 						IsHitTestVisible="False"
 					    />
+					<countdown:CountDownBarControl
+						x:Name="CountDownBarControl"
+						Grid.Row="2"
+						Margin="24 0 24 0"
+						BarHeight="12"
+						BackgroundBrush="{StaticResource LightAqua_2_100}"
+						ForegroundBrush="{StaticResource OrangePeel_0_100}"
+												IsProgress="True"
+						Total="{Binding ProgressTotal}"
+						Value="{Binding ProgressValue}"
+						/>
 				</Grid>
 			</Grid>
 		</Border>
