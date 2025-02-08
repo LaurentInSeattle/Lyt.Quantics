@@ -78,7 +78,7 @@
 					<progress:ProgressRing
 						Grid.Column="0"
 						HorizontalAlignment="Center" VerticalAlignment="Center"
-						Width="40" Height="40"
+						Width="34" Height="34"
 						Margin="4"
 						IsActive="{Binding RingIsActive}"
 						Foreground="{StaticResource LightAqua_0_120}"

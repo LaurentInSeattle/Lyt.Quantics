@@ -125,28 +125,10 @@ public sealed class KetMap
 
     public KetMap DeepClone() => new(this.qubitCount);
 
-    /// <summary> Get the ket bit value in the state vector at the provided index </summary>
-    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public bool Get(int index, int ket) => this.fastMap[index][ket];
-
-    public bool DebugGet(int index, int ket)
-    {
-        if ((index < 0) || (index >= this.map.Count))
-        {
-            throw new ArgumentException("Invalid index");
-        }
-
-        if ((ket < 0) || (ket >= qubitCount))
-        {
-            throw new ArgumentException("Invalid ket index");
-        }
-
-        return this.map[index][ket];
-    }
-
     /// <summary> Returns the matching index in the state vector when swaping quBits </summary>
     public int SwapMatch(KetMap reducedKetMap, int index, int ket1, int ket2)
     {
+#if DEBUG
         if ((index < 0) || (index >= this.map.Count))
         {
             throw new ArgumentException("Invalid index");
@@ -167,6 +149,7 @@ public sealed class KetMap
             throw new ArgumentException("Invalid ket indices");
         }
 
+#endif // DEBUG
         var reducedFastMap = reducedKetMap.FastMap;
         bool[] target = reducedFastMap[index];
         for (int match = 0; match < reducedFastMap.Length; ++match)
@@ -209,7 +192,7 @@ public sealed class KetMap
     [Conditional("DEBUG")]
     private static void DumpMap(List<List<bool>> map)
     {
-#if VERBOSE 
+#if VERBOSE
 
         Debug.WriteLine("Ket Map:");
         Debug.Indent();
@@ -232,7 +215,7 @@ public sealed class KetMap
     [Conditional("DEBUG")]
     private static void DumpFastMap(bool[][] map)
     {
-#if VERBOSE 
+#if VERBOSE
         Debug.WriteLine("Fast Ket Map:");
         Debug.Indent();
         for (int i = 0; i < map.Length; ++i)

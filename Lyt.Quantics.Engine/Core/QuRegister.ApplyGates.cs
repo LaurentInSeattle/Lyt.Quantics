@@ -17,45 +17,80 @@ public sealed partial class QuRegister
     {
         KetMap reducedKetMap = ketMap.Reduce(i, j);
         List<Tuple<int, int>> swaps = [];
-        for (int k1 = 0; k1 < this.State.Count; ++k1)
-        {
-            // for the state at k index: 
-            // if bit #i is not equal to bit #j, we need to swap values 
-            // The condition is equivalent to: 
-            // if bit #i is set an bit #j is not set 
-            // OR 
-            // if bit #j is set an bit #i is not set 
-            // 
-            // WAS: bool areDifferent = ketMap.Get(k1, i) ^ ketMap.Get(k1, j);
-            var fastMapAtK1 = ketMap.FastMap[k1];
-            bool areDifferent = fastMapAtK1[i] ^ fastMapAtK1[j];
-            if (areDifferent)
-            {
-                // This index k1 needs to be swapped with another one, k2, so... Find k2 
-                int k2 = ketMap.SwapMatch(reducedKetMap, k1, i, j);
-                bool alreadyThere = false;
-                foreach (var tuple in swaps)
-                {
-                    if ((tuple.Item1 == k2) && (tuple.Item2 == k1))
-                    {
-                        alreadyThere = true;
-                        break;
-                    }
-                }
 
-                if (!alreadyThere)
+        void ProcessStateVector(int from, int to)
+        {
+            for (int k1 = from; k1 < to; ++k1)
+            {
+                // for the state at k index: 
+                // if bit #i is not equal to bit #j, we need to swap values 
+                // The condition is equivalent to: 
+                // if bit #i is set an bit #j is not set 
+                // OR 
+                // if bit #j is set an bit #i is not set 
+                // 
+                // WAS: bool areDifferent = ketMap.Get(k1, i) ^ ketMap.Get(k1, j);
+                var fastMapAtK1 = ketMap.FastMap[k1];
+                bool areDifferent = fastMapAtK1[i] ^ fastMapAtK1[j];
+                if (areDifferent)
                 {
-                    swaps.Add(new(k1, k2));
+                    // This index k1 needs to be swapped with another one, k2, so... Find k2 
+                    int k2 = ketMap.SwapMatch(reducedKetMap, k1, i, j);
+                    lock (swaps)
+                    {
+                        swaps.Add(new(k1, k2));
+                    }
                 }
             }
         }
 
+        if (this.QuBitCount >= QuRegister.ThreadedRunAtQubits)
+        {
+            // Speed up the processing of the state vector using threads (aka tasks) 
+            // 1 : Setup
+            int count = 4; // Consider: Environment.ProcessorCount;  
+            int all = this.State.Count;
+            int half = all / 2;
+            int quart = half / 2;
+            int[] indices = [0, quart, half, half + quart, all];
+            Task[] tasks = new Task[count];
+            for (int taskIndex = 0; taskIndex < count; ++taskIndex)
+            {
+                int from = indices[taskIndex];
+                int to = indices[1 + taskIndex];
+                var task = new Task(() => ProcessStateVector(from, to));
+                tasks[taskIndex] = task;
+            }
+
+            // 2 : Start all tasks
+            for (int taskIndex = 0; taskIndex < count; ++taskIndex)
+            {
+                tasks[taskIndex].Start();
+            }
+
+            // 3 : Wait for completion 
+            Task.WaitAll(tasks);
+        }
+        else
+        {
+            ProcessStateVector(from: 0, to: this.State.Count);
+        }
+
+        HashSet<ulong> processedSwaps = new(1024);
         foreach (var swap in swaps)
         {
             int i1 = swap.Item1;
             int i2 = swap.Item2;
+            ulong swapKey = (uint)(i2 << 32) + (uint)i1;
+            if (processedSwaps.Contains(swapKey))
+            {
+                continue;
+            }
 
-#if VERBOSE            
+            swapKey = (uint)(i1 << 32) + (uint)i2;
+            processedSwaps.Add(swapKey);
+
+#if VERBOSE
             Debug.WriteLine(i1 + " <-> " + i2);
 #endif // VERBOSE            
 

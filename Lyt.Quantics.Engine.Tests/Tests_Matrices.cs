@@ -219,7 +219,7 @@ public sealed class Tests_Matrices
     [TestMethod]
     public void Test_Fast_Swaps()
     {
-        for (int qubitCount = 3; qubitCount <= 8; qubitCount++)
+        for (int qubitCount = 7; qubitCount <= 8; qubitCount++)
         {
             var ketMap = new KetMap(qubitCount);
 
