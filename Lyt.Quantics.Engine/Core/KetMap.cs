@@ -37,7 +37,8 @@ Qubits 4 Swap 0 - 1
 public sealed class KetMap
 {
     // Made public for performance reason 
-    public bool[][] FastMap;
+    public bool[][] FastMapBits;
+    public int [] FastMapValues;
 
     private readonly int qubitCount;
     private readonly int length;
@@ -71,14 +72,34 @@ public sealed class KetMap
             this.map.Add(Ket(i));
         }
 
-        this.FastMap = new bool[length][];
+        this.FastMapBits = new bool[length][];
         for (int i = 0; i < length; i++)
         {
-            this.FastMap[i] = [.. this.map[i]]; 
+            this.FastMapBits[i] = [.. this.map[i]]; 
+        }
+
+        this.FastMapValues = new int[length];
+        for (int i = 0; i < length; i++)
+        {
+            int sum = 0;
+            int bitValue = 1;
+            bool[] bools = this.FastMapBits[i];
+            int boolsLength = bools.Length;
+            for (int j = 0; j < boolsLength; ++j)
+            {
+                if (bools[boolsLength - 1 - j])
+                {
+                    sum += bitValue; 
+                }
+
+                bitValue *= 2; 
+            } 
+
+            this.FastMapValues[i] = sum; 
         }
 
         DumpMap(this.map);
-        DumpFastMap(this.FastMap);
+        DumpFastMap(this.FastMapBits, this.FastMapValues);
     }
 
     /// <summary> Create a new Ket Map by ignoring the values for the two provided qubits indices. </summary>
@@ -114,10 +135,30 @@ public sealed class KetMap
 
         DumpMap(reducedMap);
 
-        reducedKetMap.FastMap = new bool[length][];
+        reducedKetMap.FastMapBits = new bool[length][];
         for (int i = 0; i < length; i++)
         {
-            reducedKetMap.FastMap[i] = [.. reducedKetMap.map[i]];
+            reducedKetMap.FastMapBits[i] = [.. reducedKetMap.map[i]];
+        }
+
+        reducedKetMap.FastMapValues = new int[length];
+        for (int i = 0; i < length; i++)
+        {
+            int sum = 0;
+            int bitValue = 1;
+            bool[] bools = reducedKetMap.FastMapBits[i];
+            int boolsLength = bools.Length;
+            for (int j = 0; j < boolsLength; ++j)
+            {
+                if (bools[boolsLength - 1 - j])
+                {
+                    sum += bitValue;
+                }
+
+                bitValue *= 2;
+            }
+
+            reducedKetMap.FastMapValues[i] = sum;
         }
 
         return reducedKetMap;
@@ -150,39 +191,26 @@ public sealed class KetMap
         }
 
 #endif // DEBUG
-        var reducedFastMap = reducedKetMap.FastMap;
-        bool[] target = reducedFastMap[index];
-        for (int match = 0; match < reducedFastMap.Length; ++match)
+        var reducedFastMapBits = reducedKetMap.FastMapBits;
+        int targetValue = reducedKetMap.FastMapValues[index];
+        for (int match = 0; match < reducedFastMapBits.Length; ++match)
         {
             if (index == match)
             {
                 continue;
             }
 
-            // bool areSame = this.Get(match, ket1) == this.Get(match, ket2);
-            bool areSame = this.FastMap[match][ket1] == this.FastMap[match][ket2]; 
+            bool areSame = this.FastMapBits[match][ket1] == this.FastMapBits[match][ket2]; 
             if (areSame)
             {
                 continue;
             }
 
-            static bool IsMatch(bool[] x, bool[] y)
+            int matchValue = reducedKetMap.FastMapValues[match];
+            if (matchValue == targetValue)
             {
-                for (int ket = 0; ket < Math.Min(x.Length, y.Length); ++ket)
-                {
-                    if (x[ket] != y[ket])
-                    {
-                        return false;
-                    }
-                }
-
-                return true;
-            }
-
-            if (IsMatch(target, reducedFastMap[match]))
-            {
-                return match;
-            }
+                return match; 
+            } 
         }
 
         throw new Exception("Ket Match not found");
@@ -213,7 +241,7 @@ public sealed class KetMap
     }
 
     [Conditional("DEBUG")]
-    private static void DumpFastMap(bool[][] map)
+    private static void DumpFastMap(bool[][] map, int[] ints)
     {
 #if VERBOSE
         Debug.WriteLine("Fast Ket Map:");
@@ -226,6 +254,8 @@ public sealed class KetMap
                 Debug.Write(bit ? "1" : "0");
             }
 
+            Debug.Write(" ");
+            Debug.Write(ints[i]);
             Debug.WriteLine("");
         }
 

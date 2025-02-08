@@ -19,7 +19,7 @@ Built-in circuits.
 ## Notes
 Originally, the logic of the computation engine was based on this design: 
 : https://www.stylewarning.com/posts/quantum-interpreter/ limiting the engine to be only able to manipulate 10 qubits.
-This has been significantly improved and optimized so that the engine is now able to handle up to 20 qubits. 
+This has been significantly improved and optimized so that the engine is now able to handle up to 18 qubits. 
 However, starting at 16 qubits calculations become very slow.
 
 The User Interface is portable to various OS and is based on the Avalonia 
