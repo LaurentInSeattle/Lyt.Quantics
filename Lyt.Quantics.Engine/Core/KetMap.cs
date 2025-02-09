@@ -200,14 +200,13 @@ public sealed class KetMap
                 continue;
             }
 
-            bool areSame = this.FastMapBits[match][ket1] == this.FastMapBits[match][ket2]; 
-            if (areSame)
+            bool[] bitsAtMatch = this.FastMapBits[match]; 
+            if (bitsAtMatch[ket1] == bitsAtMatch[ket2])
             {
                 continue;
             }
 
-            int matchValue = reducedKetMap.FastMapValues[match];
-            if (matchValue == targetValue)
+            if (reducedKetMap.FastMapValues[match] == targetValue)
             {
                 return match; 
             } 
@@ -215,7 +214,6 @@ public sealed class KetMap
 
         throw new Exception("Ket Match not found");
     }
-
 
     [Conditional("DEBUG")]
     private static void DumpMap(List<List<bool>> map)

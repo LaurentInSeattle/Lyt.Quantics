@@ -19,7 +19,8 @@ public sealed partial class QuRegister
     public void Swap(KetMap ketMap, int i, int j)
     {
         KetMap reducedKetMap = ketMap.Reduce(i, j);
-
+        
+        // This is looping over the entire state vector and truly is where there's a need to go as fast as possible 
         void ProcessStateVector(int from, int to, bool withLocks)
         {
             for (int k1 = from; k1 < to; ++k1)
