@@ -44,6 +44,9 @@ public sealed class Tests_PreloadedSwaps
 
                     swaps.Add(qubits, i, j, swap); 
                 }
+
+                Debug.WriteLine("Stage: " + i);
+                Debug.WriteLine("Elapsed: " + stopwatch.Elapsed.TotalSeconds.ToString("F1"));
             }
 
             Debug.WriteLine("Elapsed: " + stopwatch.Elapsed.TotalSeconds.ToString("F1"));
@@ -53,12 +56,20 @@ public sealed class Tests_PreloadedSwaps
         string swapStrings = SerializationUtilities.Serialize(swaps);
         Debug.WriteLine("Swap Strings: " + swapStrings.Length);
         Debug.WriteLine("Elapsed: " + stopwatch.Elapsed.TotalSeconds.ToString("F1"));
+
+        byte[] swapsBinary = CompressionUtilities.Compress(swapStrings);
+        Debug.WriteLine("Compressed: Elapsed: " + stopwatch.Elapsed.TotalSeconds.ToString("F1"));
+
         string docs = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-        string path = Path.Combine(docs, "test.json");
-        File.WriteAllText( path, swapStrings );
+        string path = Path.Combine(docs, "test.binary");
+
+        File.WriteAllBytes( path, swapsBinary);
         Debug.WriteLine("Saved: Elapsed: " + stopwatch.Elapsed.TotalSeconds.ToString("F1"));
-        string read = File.ReadAllText(path);
+
+        byte[] readBinary = File.ReadAllBytes(path);
+        string read = CompressionUtilities.DecompressToString(readBinary);
+        Debug.WriteLine("Read + Decompressed: Elapsed: " + stopwatch.Elapsed.TotalSeconds.ToString("F1"));
         var loaded = SerializationUtilities.Deserialize<NestedDictionary<int, int, int, List<Swap>>>(read);
-        Debug.WriteLine("Read + Deserialisation: Elapsed: " + stopwatch.Elapsed.TotalSeconds.ToString("F1"));
+        Debug.WriteLine("Deserialisation: Elapsed: " + stopwatch.Elapsed.TotalSeconds.ToString("F1"));
     }
 } 

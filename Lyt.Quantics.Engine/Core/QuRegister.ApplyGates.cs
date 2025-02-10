@@ -6,13 +6,12 @@ namespace Lyt.Quantics.Engine.Core;
 // but we still need System.Numerics for Complex 
 // Be careful when using global usings 
 using MathNet.Numerics.LinearAlgebra;
-using static MathUtilities;
 
 /// <summary> Result of Combining QuBit's </summary>
 public sealed partial class QuRegister
 {
-    private List<Tuple<int, int>> swaps = new(1024);
-    private HashSet<ulong> processedSwaps = new(1024);
+    private readonly List<Tuple<int, int>> swaps = new(1024);
+    private readonly HashSet<ulong> processedSwaps = new(1024);
 
     public List<Swap> GenerateSwaps (KetMap ketMap, int i, int j) 
     {
