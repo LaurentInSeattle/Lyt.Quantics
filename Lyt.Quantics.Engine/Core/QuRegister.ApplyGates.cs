@@ -13,7 +13,7 @@ public sealed partial class QuRegister
     private readonly List<Tuple<int, int>> swaps = new(1024);
     private readonly HashSet<ulong> processedSwaps = new(1024);
 
-    public List<Swap> GenerateSwaps (KetMap ketMap, int i, int j) 
+    public List<Swap> GenerateSwaps(KetMap ketMap, int i, int j)
     {
         KetMap reducedKetMap = ketMap.Reduce(i, j);
 
@@ -107,15 +107,39 @@ public sealed partial class QuRegister
             generatedSwaps.Add(new Swap(i1, i2));
         }
 
-        return generatedSwaps; 
+        return generatedSwaps;
+    }
+
+    public void Swap(KetMap ketMap, int i, int j)
+    {
+        if (this.QuBitCount == 2)
+        {
+            Complex state1 = this.State[1];
+            Complex state2 = this.State[2];
+            this.State[1] = state2;
+            this.State[2] = state1;
+        }
+        else
+        {
+            var preloadedSwaps = SwapData.Swaps(this.QuBitCount, i, j);
+            foreach (var swap in preloadedSwaps)
+            {
+                int i1 = swap.Index1;
+                int i2 = swap.Index2;
+                Complex state1 = this.State[i1];
+                Complex state2 = this.State[i2];
+                this.State[i1] = state2;
+                this.State[i2] = state1;
+            }
+        }
     }
 
     /// <summary> This should perform just like applying a binary swap gate on qubits indices i and j </summary>
     /// <remarks> Assumes that i < j </remarks>
-    public void Swap(KetMap ketMap, int i, int j)
+    public void SlowSwap(KetMap ketMap, int i, int j)
     {
         KetMap reducedKetMap = ketMap.Reduce(i, j);
-        
+
         // This is looping over the entire state vector and truly is where there's a need to go as fast as possible 
         void ProcessStateVector(int from, int to, bool withLocks)
         {
@@ -141,7 +165,7 @@ public sealed partial class QuRegister
                         {
                             this.swaps.Add(new(k1, k2));
                         }
-                    } 
+                    }
                     else
                     {
                         this.swaps.Add(new(k1, k2));
@@ -167,7 +191,7 @@ public sealed partial class QuRegister
             {
                 int from = indices[taskIndex];
                 int to = indices[1 + taskIndex];
-                var task = new Task(() => ProcessStateVector(from, to, withLocks:true));
+                var task = new Task(() => ProcessStateVector(from, to, withLocks: true));
                 tasks[taskIndex] = task;
             }
 

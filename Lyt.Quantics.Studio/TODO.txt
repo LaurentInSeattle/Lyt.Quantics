@@ -43,7 +43,7 @@ TODO: Studio :
 
 	NTH: Show "wave function" in Amplitude view (See in QRyd)
 
-	NTH: Ability to give names to qubits (Alice, Bob,...)
+	NTH: Ability to give names to qubits (Ex: Alice, Bob for teleport.)
 
 	NTH: Ability to Insert a stage 
 

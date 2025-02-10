@@ -180,6 +180,10 @@ public sealed class ShellViewModel : Bindable<ShellView>
         {
             this.Profiler.MemorySnapshot(newViewModel.View.GetType().Name + ":  Activated");
         }
+        else
+        {
+            this.LoadSwapData(); 
+        }
     }
 
     private static void SetupWorkflow()
@@ -197,6 +201,25 @@ public sealed class ShellViewModel : Bindable<ShellView>
         CreateAndBind<RunViewModel, RunView>();
     }
 
+    private void LoadSwapData()
+    {
+        Task.Run(() => 
+        {
+            try
+            {
+                SwapData.Load();
+                Dispatch.OnUiThread(() =>
+                {
+                    this.Profiler.MemorySnapshot("Swap Data Loaded");
+                } ) ;
+            }
+            catch (Exception ex)
+            {
+                this.Logger.Fatal("Failed to load swap data.\n" + ex.ToString());
+            }
+        }); 
+    }
+
     public GridLength TitleBarHeight { get => this.Get<GridLength>(); set => this.Set(value); }
 
     public bool IsTitleBarVisible { get => this.Get<bool>(); set => this.Set(value); }
@@ -205,9 +228,7 @@ public sealed class ShellViewModel : Bindable<ShellView>
 /*
  *
 
-    Could be useful later... 
-
-    For now: Do not delete just yet 
+    Could be useful later...     For now: Do not delete just yet 
 
     //private void OnModelUpdated(ModelUpdateMessage message)
     //{

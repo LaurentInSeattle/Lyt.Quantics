@@ -61,6 +61,31 @@ public static class SerializationUtilities
         throw new Exception("Failed to load resource: " + name);
     }
 
+    public static byte[] LoadEmbeddedBinaryResource(string name, out string? resourceName)
+    {
+        resourceName = SerializationUtilities.GetFullResourceName(name);
+        if (!string.IsNullOrEmpty(resourceName))
+        {
+            var stream = engineAssembly.GetManifestResourceStream(resourceName);
+            if (stream is not null)
+            {
+                using (stream)
+                {
+                    byte[] bytes = new byte[stream.Length];
+                    int bytesRead = stream.Read(bytes, 0, bytes.Length);
+                    if (bytesRead !=  bytes.Length)
+                    {
+                        throw new Exception("Failed to read resource stream: " + name);
+                    }
+
+                    return bytes; 
+                }
+            }
+        }
+
+        throw new Exception("Failed to load resource: " + name);
+    }
+
     public static string Serialize<T>(T binaryObject) where T : class
     {
         try

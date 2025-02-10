@@ -1,6 +1,4 @@
-﻿using Lyt.Quantics.Engine.Core;
-
-namespace Lyt.Quantics.Engine.Tests;
+﻿namespace Lyt.Quantics.Engine.Tests;
 
 [TestClass]
 public sealed class Tests_PreloadedSwaps
@@ -8,18 +6,20 @@ public sealed class Tests_PreloadedSwaps
     [TestMethod]
     public void Test_Serialization()
     {
-        var swaps = new NestedDictionary<int, int, int, List<Swap>>();
-        swaps.Add(2, 0, 1, new List<Swap>() { new Swap(0, 1), new Swap(1, 0) });
-        swaps.Add(3, 0, 1, new List<Swap>() { new Swap(0, 1), new Swap(1, 0) });
-        swaps.Add(3, 0, 2, new List<Swap>() { new Swap(0, 2), new Swap(2, 0) });
-        swaps.Add(3, 1, 2, new List<Swap>() { new Swap(1, 2), new Swap(2, 1) });
+        var swaps = new NestedDictionary<int, int, int, List<Swap>>
+        {
+            { 2, 0, 1, [new Swap(0, 1), new Swap(1, 0)] },
+            { 3, 0, 1, [new Swap(0, 1), new Swap(1, 0)] },
+            { 3, 0, 2, [new Swap(0, 2), new Swap(2, 0)] },
+            { 3, 1, 2, [new Swap(1, 2), new Swap(2, 1)] }
+        };
 
         string swapStrings = SerializationUtilities.Serialize(swaps);
         Debug.WriteLine(swapStrings);
         var data = SerializationUtilities.Deserialize<NestedDictionary<int, int, int, List<Swap>>>(swapStrings);
     }
 
-    [TestMethod]
+    // [TestMethod]
     public void Test_GenerateSwaps ()
     {
         var swaps = new NestedDictionary<int, int, int, List<Swap>>();

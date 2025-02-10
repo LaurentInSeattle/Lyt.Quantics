@@ -180,6 +180,8 @@ public sealed class Tests_Matrices
                     var newState = swap.Multiply(registerSource.State);
                     var finalState = swap.Multiply(newState);
                     Assert.IsTrue(finalState.IsAlmostEqualTo(registerSource.State));
+                    //Debug.WriteLine(registerSource.State.ToString());
+                    //Debug.WriteLine(newState.ToString());
                 }
             }
         }
@@ -219,7 +221,9 @@ public sealed class Tests_Matrices
     [TestMethod]
     public void Test_Fast_Swaps()
     {
-        for (int qubitCount = 7; qubitCount <= 8; qubitCount++)
+        SwapData.Poke(); 
+
+        for (int qubitCount = 3; qubitCount <= 8; qubitCount++)
         {
             var ketMap = new KetMap(qubitCount);
 
