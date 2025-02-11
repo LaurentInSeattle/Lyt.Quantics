@@ -8,7 +8,6 @@ public sealed partial class QuComputer
         {
             this.InitialStates.Add(QuState.Zero);
             this.QuBitsCount = this.InitialStates.Count;
-            this.KetMap = new KetMap (this.QuBitsCount);
             if (this.Stages.Count == 0)
             {
                 QuStage quStage = new();
@@ -33,7 +32,6 @@ public sealed partial class QuComputer
         {
             this.InitialStates.Add(QuState.Zero);
             this.QuBitsCount = this.InitialStates.Count;
-            this.KetMap = new KetMap(this.QuBitsCount);
             if (this.Stages.Count == 0)
             {
                 QuStage quStage = new();
@@ -59,7 +57,6 @@ public sealed partial class QuComputer
             int qubitIndex = this.QuBitsCount - 1;
             this.InitialStates.RemoveAt(qubitIndex);
             this.QuBitsCount = this.InitialStates.Count;
-            this.KetMap = new KetMap(this.QuBitsCount);
 
             // For all stages : Remove all operators 'touching' this qubit index 
             foreach (var stage in this.Stages)

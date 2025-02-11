@@ -110,7 +110,7 @@ public sealed partial class QuRegister
         return generatedSwaps;
     }
 
-    public void Swap(KetMap ketMap, int i, int j)
+    public void Swap(int i, int j)
     {
         if (this.QuBitCount == 2)
         {
@@ -234,7 +234,7 @@ public sealed partial class QuRegister
     }
 
     /// <summary> Apply the provided unary gate at provided position on this quregister </summary>
-    public void ApplyUnaryGateAtPosition(Gate gate, KetMap ketMap, int position)
+    public void ApplyUnaryGateAtPosition(Gate gate, int position)
     {
         if (!gate.IsUnary)
         {
@@ -250,14 +250,14 @@ public sealed partial class QuRegister
 
         if (position > 0)
         {
-            this.Swap(ketMap, 0, position);
+            this.Swap(0, position);
         }
 
         this.ApplyUnaryGateOnQuBitZero(gate);
 
         if (position > 0)
         {
-            this.Swap(ketMap, 0, position);
+            this.Swap(0, position);
         }
     }
 
@@ -285,7 +285,7 @@ public sealed partial class QuRegister
 
     /// <summary> Apply the provided binary controlled gate at the provided positions on this quregister </summary>
     public void ApplyBinaryControlledGateAtPositions(
-        ControlledGate gate, KetMap ketMap, int positionControl, int positionTarget)
+        ControlledGate gate, int positionControl, int positionTarget)
     {
         if (!gate.IsBinary)
         {
@@ -322,12 +322,12 @@ public sealed partial class QuRegister
         {
             if (needToSwapControl)
             {
-                this.Swap(ketMap, 0, positionControl);
+                this.Swap(0, positionControl);
             }
 
             if (needToSwapTarget)
             {
-                this.Swap(ketMap, 1, positionTarget);
+                this.Swap(1, positionTarget);
             }
         }
 
@@ -338,12 +338,12 @@ public sealed partial class QuRegister
             // Must swap in reverse order 
             if (needToSwapTarget)
             {
-                this.Swap(ketMap, 1, positionTarget);
+                this.Swap(1, positionTarget);
             }
 
             if (needToSwapControl)
             {
-                this.Swap(ketMap, 0, positionControl);
+                this.Swap(0, positionControl);
             }
         }
     }
@@ -402,8 +402,7 @@ public sealed partial class QuRegister
         }
         else if (baseGate is SwapGate)
         {
-            var halfKetMap = new KetMap(bot.QuBitCount);
-            bot.Swap(halfKetMap, 0, 1);
+            bot.Swap(0, 1);
         }
         else
         {
@@ -415,7 +414,7 @@ public sealed partial class QuRegister
 
     /// <summary> Apply the provided ternary controlled gate at the provided positions on this quregister </summary>
     public void ApplyTernaryControlledGateAtPositions(
-        ControlledGate gate, KetMap ketMap, int positionControl1, int positionControl2, int positionTarget)
+        ControlledGate gate, int positionControl1, int positionControl2, int positionTarget)
     {
         if (!gate.IsTernary)
         {
@@ -467,17 +466,17 @@ public sealed partial class QuRegister
         {
             if (needToSwapMin)
             {
-                this.Swap(ketMap, minControl, 0);
+                this.Swap(minControl, 0);
             }
 
             if (needToSwapMax)
             {
-                this.Swap(ketMap, maxControl, 1);
+                this.Swap(maxControl, 1);
             }
 
             if (needToSwapTarget)
             {
-                this.Swap(ketMap, positionTarget, 2);
+                this.Swap(positionTarget, 2);
             }
         }
 
@@ -488,17 +487,17 @@ public sealed partial class QuRegister
             // Important: Swap back in reverse order 
             if (needToSwapTarget)
             {
-                this.Swap(ketMap, positionTarget, 2);
+                this.Swap(positionTarget, 2);
             }
 
             if (needToSwapMax)
             {
-                this.Swap(ketMap, maxControl, 1);
+                this.Swap(maxControl, 1);
             }
 
             if (needToSwapMin)
             {
-                this.Swap(ketMap, minControl, 0);
+                this.Swap(minControl, 0);
             }
         }
     }

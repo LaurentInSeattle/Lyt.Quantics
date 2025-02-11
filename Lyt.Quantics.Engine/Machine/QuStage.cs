@@ -198,7 +198,7 @@ public sealed class QuStage
             }
             else
             {
-                return this.CalculateUsingSwaps(computer, sourceRegister, out message);
+                return this.CalculateUsingSwaps(sourceRegister, out message);
             }
         }
         catch (Exception ex)
@@ -343,14 +343,13 @@ public sealed class QuStage
         return true;
     }
 
-    private bool CalculateUsingSwaps(QuComputer computer, QuRegister sourceRegister, out string message)
+    private bool CalculateUsingSwaps(QuRegister sourceRegister, out string message)
     {
         message = string.Empty;
         try
         {
             if (this.Operators.Count > 0)
             {
-                KetMap ketMap = computer.KetMap;
                 QuRegister register = sourceRegister.DeepClone();
                 int subStageIndex = -1; // Init at -1 so that we start at zero  
                 foreach (var stageOperator in this.Operators)
@@ -365,7 +364,7 @@ public sealed class QuStage
                     {
                         // All unary gates 
                         register.ApplyUnaryGateAtPosition(
-                            stageOperator.StageOperatorGate, ketMap, subStageIndex);
+                            stageOperator.StageOperatorGate, subStageIndex);
                     }
                     else if (stageOperator.StageOperatorGate.IsBinary)
                     {
@@ -374,7 +373,6 @@ public sealed class QuStage
                             // Swap gate is given a special implementation and not a controlled gate in
                             // our C# code. It is given two targets since the gate is symetrical. 
                             register.Swap(
-                                ketMap,
                                 stageOperator.TargetQuBitIndices[0],
                                 stageOperator.TargetQuBitIndices[1]);
                         }
@@ -383,14 +381,14 @@ public sealed class QuStage
                             // ControlledZGate is also given a special implementation:
                             // It is given two targets qubits since the gate is also symetrical. 
                             register.ApplyBinaryControlledGateAtPositions(
-                                controlledZGate, ketMap,
+                                controlledZGate,
                                 stageOperator.TargetQuBitIndices[0],
                                 stageOperator.TargetQuBitIndices[1]);
                         }
                         else if (stageOperator.StageOperatorGate is ControlledGate controlledGate)
                         {
                             register.ApplyBinaryControlledGateAtPositions(
-                                controlledGate, ketMap,
+                                controlledGate,
                                 stageOperator.ControlQuBitIndices[0],
                                 stageOperator.TargetQuBitIndices[0]);
                         }
@@ -406,7 +404,7 @@ public sealed class QuStage
                         if (stageOperator.StageOperatorGate is ControlledGate controlledGate)
                         {
                             register.ApplyTernaryControlledGateAtPositions(
-                                controlledGate, ketMap,
+                                controlledGate,
                                 stageOperator.ControlQuBitIndices[0],
                                 stageOperator.ControlQuBitIndices[1],
                                 stageOperator.TargetQuBitIndices[0]);

@@ -151,15 +151,25 @@ public sealed partial class QuRegister
     public List<Tuple<string, double>> BitValuesProbabilities()
     {
         int length = this.state.Count;
+        int stringLength = MathUtilities.IntegerLog2(length);
+        char[] charArray = new char[stringLength];
         var bitValuesProbabilities = new List<Tuple<string, double>>(length);
         List<double> probabilities = this.KetProbabilities();
-        for (int i = 0; i < length; ++i)
+        //for (int i = length - 1; i >= 0; --i)
+        for (int i = 0 ; i < length; ++i)
         {
-            string ket = BinaryStringUtilities.ToBinary(i, MathUtilities.IntegerLog2(length));
-            string bits = ket.Reverse();
+            int k = i;
+            for (int j = 0; j < stringLength; ++j)
+            {
+                charArray[j] = (k & 1) == 0 ? '0' : '1';
+                k >>= 1;
+            }
+
+            string bits = new(charArray);
             bitValuesProbabilities.Add(new Tuple<string, double>(bits, probabilities[i]));
         }
 
+        // TODO: OPtimize this sort: This is THE hot spot now 
         bitValuesProbabilities =
             [.. (from bvp in bitValuesProbabilities orderby bvp.Item1 select bvp)];
 #if VERBOSE

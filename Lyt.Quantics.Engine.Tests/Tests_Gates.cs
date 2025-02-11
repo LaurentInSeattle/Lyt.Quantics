@@ -353,7 +353,7 @@ public sealed class Tests_Gates
                         Debug.WriteLine(registerSource.State.ToString());
                         Debug.WriteLine(newState.ToString());
                         var clone = registerSource.DeepClone();
-                        clone.ApplyUnaryGateAtPosition(gate, ketMap, position);
+                        clone.ApplyUnaryGateAtPosition(gate, position);
                         Debug.WriteLine(clone.ToString());
                         Assert.IsTrue(clone.State.IsAlmostEqualTo(newState));
                     } 
@@ -448,7 +448,7 @@ public sealed class Tests_Gates
                         Debug.WriteLine(newState.ToString());
 
                         var clone = registerSource.DeepClone();
-                        clone.ApplyBinaryControlledGateAtPositions(gate, ketMap, position, 1+position);
+                        clone.ApplyBinaryControlledGateAtPositions(gate, position, 1+position);
                         Debug.WriteLine(clone.State.ToString());
                         Assert.IsTrue(clone.State.IsAlmostEqualTo(newState));
                     }
@@ -544,7 +544,7 @@ public sealed class Tests_Gates
 
                         var clone = registerSource.DeepClone();
                         clone.ApplyTernaryControlledGateAtPositions(
-                            gate, ketMap, position, 1 + position, 2 + position);
+                            gate, position, 1 + position, 2 + position);
                         Debug.WriteLine(clone.State.ToString());
                         Assert.IsTrue(clone.State.IsAlmostEqualTo(newState));
                     }
