@@ -171,20 +171,20 @@ public sealed class LoadDocumentsViewModel : Bindable<LoadDocumentsView>
                     searchResults = this.searchEngine.Filter([], [], [sort]);
 
                     // and then take the top 5
-                    result = searchResults.Result.Take(5).ToList();
+                    result = [.. searchResults.Result.Take(5)];
                 }
 
-                this.DocumentViews = new(result);
+                this.DocumentViews = [.. result];
             }
             else
             {
                 this.Logger.Warning("Search failed: " + searchResults.Message);
-                this.DocumentViews = new(this.searchEngine.All);
+                this.DocumentViews = [.. this.searchEngine.All];
             }
         }
         else
         {
-            this.DocumentViews = new(this.searchEngine.All);
+            this.DocumentViews = [.. this.searchEngine.All];
         }
     }
 

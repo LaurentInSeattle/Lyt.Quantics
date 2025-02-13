@@ -3,9 +3,9 @@
 public static class ReflectionUtilities
 {
     public static List<Type> DerivedFrom<TType>() where TType : class
-        => (from t in Assembly.GetExecutingAssembly().GetTypes()
+        => [.. (from t in Assembly.GetExecutingAssembly().GetTypes()
             where t.IsClass && !t.IsAbstract && t.IsSubclassOf(typeof(TType))
-            select t).ToList();
+            select t)];
 
     /// <summary> Creates a partially cloned object.</summary>
     /// <remarks> Copies only public instance RW value or string properties. </remarks>

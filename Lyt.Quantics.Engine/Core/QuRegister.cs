@@ -148,15 +148,14 @@ public sealed partial class QuRegister
         return probabilities;
     }
 
-    public List<Tuple<string, double>> BitValuesProbabilities()
+    public Tuple<string, double, int>[] BitValuesProbabilities()
     {
         int length = this.state.Count;
         int stringLength = MathUtilities.IntegerLog2(length);
         char[] charArray = new char[stringLength];
-        var bitValuesProbabilities = new List<Tuple<string, double>>(length);
+        var bitValuesProbabilities = new List<Tuple<string, double, int>>(length);
         List<double> probabilities = this.KetProbabilities();
-        //for (int i = length - 1; i >= 0; --i)
-        for (int i = 0 ; i < length; ++i)
+        for (int i = 0; i < length; ++i)
         {
             int k = i;
             for (int j = 0; j < stringLength; ++j)
@@ -165,13 +164,26 @@ public sealed partial class QuRegister
                 k >>= 1;
             }
 
+            int rank = 0;
+            int multiplier = 1;
+            for (int j = stringLength - 1; j >= 0; --j)
+            {
+                int bitValue = charArray[j] == '0' ? 0 : 1;
+                rank += bitValue * multiplier;
+                multiplier *= 2;
+            }
+
             string bits = new(charArray);
-            bitValuesProbabilities.Add(new Tuple<string, double>(bits, probabilities[i]));
+            bitValuesProbabilities.Add(new Tuple<string, double, int>(bits, probabilities[i], rank));
         }
 
-        // TODO: OPtimize this sort: This is THE hot spot now 
-        bitValuesProbabilities =
-            [.. (from bvp in bitValuesProbabilities orderby bvp.Item1 select bvp)];
+        var sortedBitValuesProbabilities = new Tuple<string, double, int>[length];
+        for (int i = 0; i < length; ++i)
+        {
+            var kvp = bitValuesProbabilities[i];
+            sortedBitValuesProbabilities[kvp.Item3] = kvp;
+        }
+
 #if VERBOSE
         Debug.WriteLine("");
         for (int i = 0; i < length; ++i)
@@ -181,7 +193,7 @@ public sealed partial class QuRegister
         }
         Debug.WriteLine("");
 #endif // VERBOSE
-        return bitValuesProbabilities;
+        return sortedBitValuesProbabilities;
     }
 
     public List<int> Measure()

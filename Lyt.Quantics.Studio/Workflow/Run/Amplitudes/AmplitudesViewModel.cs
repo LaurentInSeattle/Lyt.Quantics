@@ -182,12 +182,11 @@ public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
         if (computer.IsComplete)
         {
             QuRegister register = computer.Stages[rank - 1].StageRegister;
-            List<Tuple<string, double>> bitValuesProbabilities =
-                this.quanticsStudioModel.ReducedBitValuesProbabilities(register);
+            var bitValuesProbabilities = this.quanticsStudioModel.ReducedBitValuesProbabilities(register);
             var vm = new HistogramViewModel();
             var view = vm.CreateViewAndBind();
             this.UpdateContent(view);
-            this.histogramEntries = new List<HistogramEntry>(bitValuesProbabilities.Count);
+            this.histogramEntries = new List<HistogramEntry>(bitValuesProbabilities.Length);
             foreach (var bitValue in bitValuesProbabilities)
             {
                 var entry = new HistogramEntry(bitValue.Item2, bitValue.Item1);

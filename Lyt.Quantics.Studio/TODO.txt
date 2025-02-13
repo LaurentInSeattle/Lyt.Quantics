@@ -6,7 +6,8 @@ TODO: Framework:
 		Model, Persistence, Search, StateMachine, Validation are independant.
 
 	NTH: Ability to drag modal dialogs 
-	NTH: Validation should not directly depends on MVVM but use an Get/Set Interface 
+
+	NTH: Validation should not directly depends on MVVM but use a Get/Set Interface 
 
 TODO: Engine: 
 -------------
@@ -27,10 +28,7 @@ TODO: Studio :
 		BUG: Sometimes showing a toasted Error on dropping Swap gate : "overlapping targets"
 			(could be related to the one above) 
 
-		FEATURE: Run computer calculations in a background thread. 
-		FEATURE: Spinner for 12 qubits and above	
-		FEATURE: Warning for slow computations at 12 qubits and above
-		FEATURE: Ability to cancel a run at 12+ qubits
+		FEATURE: Ability to cancel a run at 16+ qubits
 
 	FEATURE: Allow editing angles on controlled rotation and phase gates		
 

@@ -4,11 +4,11 @@ using static ModelStructureUpdateMessage;
 
 public sealed partial class QsModel : ModelBase
 {
-    public List<Tuple<string, double>> ReducedBitValuesProbabilities(QuRegister register)
+    public Tuple<string, double, int>[] ReducedBitValuesProbabilities(QuRegister register)
     {
         var measureStates = this.QuBitMeasureStates;
         DumpMeasureStates(measureStates);
-        List<Tuple<string, double>> bitValuesProbabilities = register.BitValuesProbabilities();
+        var bitValuesProbabilities = register.BitValuesProbabilities();
         if (this.ShouldMeasureAllQubits)
         {
             // All qubits measured, return the full list 
@@ -56,11 +56,13 @@ public sealed partial class QsModel : ModelBase
 
         keys.Sort();
         keys.Reverse();
-        List<Tuple<string, double>> filteredBitValuesProbabilities = [];
+        var filteredBitValuesProbabilities = new Tuple<string, double, int>[keys.Count];
+        int index = 0; 
         foreach (string key in keys)
         {
             double value = reducedBitValuesProbabilities[key];
-            filteredBitValuesProbabilities.Add(new Tuple<string, double>(key, value));
+            filteredBitValuesProbabilities[index] = new Tuple<string, double,int>(key, value, 0);
+            ++index; 
         }
 
         return filteredBitValuesProbabilities;

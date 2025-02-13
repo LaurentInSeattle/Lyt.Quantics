@@ -1,7 +1,6 @@
 ﻿namespace Lyt.Quantics.Engine.Machine;
 
 using MathNet.Numerics.LinearAlgebra;
-using System;
 
 public sealed partial class QuComputer
 {
@@ -576,8 +575,8 @@ public sealed partial class QuComputer
             (this.ExpectedFinalProbabilities.Count == lastRegister.State.Count))
         {
             bool valid = true;
-            List<Tuple<string, double>> bitValuesProbabilities = lastRegister.BitValuesProbabilities();
-            for (int i = 0; i < bitValuesProbabilities.Count; i++)
+            var bitValuesProbabilities = lastRegister.BitValuesProbabilities();
+            for (int i = 0; i < bitValuesProbabilities.Length; i++)
             {
                 if (!MathUtilities.AreAlmostEqual(
                     this.ExpectedFinalProbabilities[i], bitValuesProbabilities[i].Item2))
@@ -590,7 +589,7 @@ public sealed partial class QuComputer
             if (!valid)
             {
                 Debug.WriteLine("Run: Machine not providing expected probabilities.");
-                for (int i = 0; i < bitValuesProbabilities.Count; i++)
+                for (int i = 0; i < bitValuesProbabilities.Length; i++)
                 {
                     Debug.WriteLine(
                         string.Format(
@@ -610,33 +609,4 @@ public sealed partial class QuComputer
 
         return true;
     }
-
-    #region   Do NOT Delete ~~~ Used for Unit Tests Serialization 
-
-#pragma warning disable CA2211 // Non-constant fields should not be visible
-    public static QuComputer Example =
-#pragma warning restore CA2211 
-        new()
-        {
-            Name = "Entanglement",
-            Description = "Hadamard followed by CNot",
-            QuBitsCount = 2,
-            InitialStates = [QuState.Zero, QuState.Zero],
-            Stages =
-            [
-                new QuStage()
-                {
-                   Operators =  [ new QuStageOperator( "H") { TargetQuBitIndices = [0]  }, ] ,
-                },
-                new QuStage()
-                {
-                   Operators =
-                   [
-                       new QuStageOperator ("CX" ) { ControlQuBitIndices = [0], TargetQuBitIndices = [1]},
-                   ] ,
-                },
-            ],
-        };
-
-    #endregion   Do NOT Delete ~~~ Used for Unit Tests Serialization 
 }
