@@ -225,8 +225,6 @@ public sealed class Tests_Matrices
 
         for (int qubitCount = 3; qubitCount <= 8; qubitCount++)
         {
-            var ketMap = new KetMap(qubitCount);
-
             for (int j = 0; j < qubitCount; j++)
             {
                 for (int k = j + 1; k < qubitCount; k++)
