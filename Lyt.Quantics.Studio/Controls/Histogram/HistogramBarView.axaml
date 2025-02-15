@@ -15,14 +15,14 @@
 		ClipToBounds="False"
 		>
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="4" />
-			<ColumnDefinition Width="44" />
-			<ColumnDefinition Width="4" />
+			<ColumnDefinition Width="6" />
+			<ColumnDefinition Width="48" />
+			<ColumnDefinition Width="6" />
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="30" />
 			<RowDefinition Height="200" />
-			<RowDefinition Height="30" />
+			<RowDefinition Height="32" />
 		</Grid.RowDefinitions>
 		<Rectangle
 			Grid.Row="0" Grid.RowSpan="3" Grid.Column="1"

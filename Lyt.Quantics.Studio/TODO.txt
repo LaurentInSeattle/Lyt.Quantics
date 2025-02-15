@@ -28,9 +28,21 @@ TODO: Studio :
 		BUG: Sometimes showing a toasted Error on dropping Swap gate : "overlapping targets"
 			(could be related to the one above) 
 
+		FEATURE: Swaps for 17 qubits
+
+		FEATURE: Swaps for 18 qubits
+
 		FEATURE: Ability to cancel a run at 16+ qubits
 
 	FEATURE: Allow editing angles on controlled rotation and phase gates		
+
+	FEATURE: Should create histogram entries view models in threads 	
+
+	BUG: Computer view supports only 16 swimlanes for qubits.
+
+	BUG: Gates renders shifted down in Computer view, starts to be visible at 8+ qubits.
+
+	BUG: Horizontal scroll bar not always visible in Computer view.
 
 	BUG: Amplitudes histogram shows up after loading another model.
 

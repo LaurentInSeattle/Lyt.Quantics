@@ -7,14 +7,20 @@ public sealed class HistogramBarViewModel : Bindable<HistogramBarView>
         this.DisablePropertyChangedLogging = true;
         this.Value = string.Format("{0:F2}", 100.0 * value);
         this.Height = 2 * 100.0 * value * multiplier;
-        if (label.Length > 4)
+        char[] text = new char[label.Length + label.Length / 4];
+        int j = 0;
+        for (int i = 0; i < label.Length; ++i)
         {
-            string rightPart = label.Substring(label.Length - 4, 4);
-            string leftPart = label[..^4];
-            label = string.Concat(leftPart, " ", rightPart);
+            text[j] = label[i];
+            ++j;
+            if ((i > 0) && (0 == (1+i) % 4))
+            {
+                text[j] = ' ';
+                ++j;
+            }
         }
 
-        this.Label = label;
+        this.Label = new string(text);
         this.FontSize =
             label.Length <= 5 ?
                 14.0 :
