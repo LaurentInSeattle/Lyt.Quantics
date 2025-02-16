@@ -22,9 +22,10 @@ public sealed class HistogramBarViewModel : Bindable<HistogramBarView>
 
         this.Label = new string(text);
         this.FontSize =
-            label.Length <= 5 ?
-                14.0 :
-                label.Length <= 6 ? 12.0 : 10.0;
+            label.Length <= 6 ?
+                16.0 :
+                label.Length <= 8 ? 14.0 :
+                label.Length <= 12 ? 12.0 : 11.0;
     }
 
     public string? Value { get => this.Get<string?>(); set => this.Set(value); }

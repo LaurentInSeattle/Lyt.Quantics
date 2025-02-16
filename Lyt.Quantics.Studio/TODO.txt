@@ -49,8 +49,6 @@ TODO: Studio :
 
 	NTH: Ability to Insert a stage 
 
-	NTH: Monospaced font for labels in the Amplitudes view
-
 	NTH: Nicer app icon 
 	
 	NTH: Nicer Measure icon 

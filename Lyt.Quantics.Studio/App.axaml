@@ -14,10 +14,7 @@
 	</Application.Styles>
 	<Application.Resources>
 		<ResourceDictionary>
-			<!--
-			This is now the default font, loaded at startup
-			<FontFamily x:Key="InterV">avares://TextoCopier/Assets/Inter-V.ttf</FontFamily>
-			-->
+			<FontFamily x:Key="Monospace">avares://Lyt.Quantics.Studio/Assets/SometypeMono-Regular.ttf</FontFamily>
 			<ResourceDictionary.MergedDictionaries>
 				<ResourceInclude Source="/Assets/Icons/PathResourceDictionary.axaml"/>
 				<ResourceInclude Source="/Assets/Icons/GatesResourceDictionary.axaml"/>
