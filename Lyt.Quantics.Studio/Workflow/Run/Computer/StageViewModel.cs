@@ -44,7 +44,7 @@ public sealed class StageViewModel : Bindable<StageView>, IDropTarget
         var view = this.View;
         int qubitCount = this.quanticsStudioModel.QuComputer.QuBitsCount;
         this.GridHeight = FromQuBitsCount(qubitCount);
-        for (int rowIndex = 0; rowIndex < 16; ++rowIndex)
+        for (int rowIndex = 0; rowIndex < QuRegister.MaxQubits; ++rowIndex)
         {
             var gateRow = view.GatesGrid.RowDefinitions[rowIndex];
             var barRow = view.MinibarsGrid.RowDefinitions[rowIndex];
@@ -217,6 +217,9 @@ public sealed class StageViewModel : Bindable<StageView>, IDropTarget
         try
         {
             var computer = this.quanticsStudioModel.QuComputer;
+            var grid = this.View.GatesGrid; 
+            grid.Children.Clear();
+
             if (this.stageIndex >= computer.Stages.Count)
             {
                 // this is the last empty UI stage used to drop new gates 
@@ -225,7 +228,6 @@ public sealed class StageViewModel : Bindable<StageView>, IDropTarget
             }
 
             this.activeGates = 0;
-            this.View.GatesGrid.Children.Clear();
             var stage = computer.Stages[this.stageIndex];
             if (stage.Operators.Count == 0)
             {
@@ -277,7 +279,7 @@ public sealed class StageViewModel : Bindable<StageView>, IDropTarget
 
                 gateView.SetValue(Grid.RowProperty, firstIndex);
                 gateView.SetValue(Grid.RowSpanProperty, gateRows);
-                this.View.GatesGrid.Children.Add(gateView);
+                grid.Children.Add(gateView);
             }
         }
         catch (Exception ex)

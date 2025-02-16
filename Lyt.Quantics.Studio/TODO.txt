@@ -38,12 +38,6 @@ TODO: Studio :
 
 	FEATURE: Should create histogram entries view models in threads 	
 
-	BUG: Computer view supports only 16 swimlanes for qubits.
-
-	BUG: Gates renders shifted down in Computer view, starts to be visible at 8+ qubits.
-
-	BUG: Horizontal scroll bar not always visible in Computer view.
-
 	BUG: Amplitudes histogram shows up after loading another model.
 
 	NTH: Show Bloch spheres (or their projections)

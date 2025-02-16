@@ -13,7 +13,7 @@
 	>
 	<Grid
 		Background="#40202060" 
-		Height="56"
+		Height="60"
 		>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="40" />

@@ -70,24 +70,30 @@
 			Grid.Row="1" Grid.Column="0"
 			DragDrop.AllowDrop="True"
 			Background="Transparent"
+			ShowGridLines="False"
 			>
-			<!-- 16 rows: one for each qubits -->
+			<!-- 18 rows: one for each qubits -->
 			<Grid.RowDefinitions>
 				<RowDefinition Height="60" />
 				<RowDefinition Height="60" />
 				<RowDefinition Height="60" />
 				<RowDefinition Height="60" />
+				
 				<RowDefinition Height="60" />
 				<RowDefinition Height="60" />
+				<RowDefinition Height="60" />
+				<RowDefinition Height="60" />
+				
+				<RowDefinition Height="60" />
+				<RowDefinition Height="60" />
+				<RowDefinition Height="60" />
+				<RowDefinition Height="60" />
+				
 				<RowDefinition Height="60" />
 				<RowDefinition Height="60" />
 				<RowDefinition Height="60" />
 				<RowDefinition Height="60" />
 
-				<RowDefinition Height="60" />
-				<RowDefinition Height="60" />
-				<RowDefinition Height="60" />
-				<RowDefinition Height="60" />
 				<RowDefinition Height="60" />
 				<RowDefinition Height="60" />
 			</Grid.RowDefinitions>
@@ -96,7 +102,7 @@
 			x:Name="MinibarsGrid"
 			Grid.Row="1" Grid.Column="1"
 			>
-			<!-- 16 rows: one for each qubits -->			
+			<!-- 18 rows: one for each qubits -->			
 			<Grid.RowDefinitions>
 				<RowDefinition Height="60" />
 				<RowDefinition Height="60" />
@@ -109,6 +115,8 @@
 				<RowDefinition Height="60" />
 				<RowDefinition Height="60" />
 
+				<RowDefinition Height="60" />
+				<RowDefinition Height="60" />
 				<RowDefinition Height="60" />
 				<RowDefinition Height="60" />
 				<RowDefinition Height="60" />

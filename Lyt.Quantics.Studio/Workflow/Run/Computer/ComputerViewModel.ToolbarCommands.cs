@@ -248,4 +248,12 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
         this.quanticsStudioModel.Clean();
         ActivateView(ActivatedView.Load);
     }
+
+    public bool OnClicked(bool isLeft)
+    {
+        var stage = this.Stages[isLeft ? 0 : this.Stages.Count - 1];
+        var stageView = stage.View;
+        stageView.BringIntoView();
+        return true; 
+    }
 }

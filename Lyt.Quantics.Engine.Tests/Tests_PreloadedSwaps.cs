@@ -17,10 +17,11 @@ public sealed class Tests_PreloadedSwaps
         string swapStrings = SerializationUtilities.Serialize(swaps);
         Debug.WriteLine(swapStrings);
         var data = SerializationUtilities.Deserialize<NestedDictionary<int, int, int, List<Swap>>>(swapStrings);
+        Debug.WriteLine(data.GetType());
     }
 
     // [TestMethod]
-    public void Test_GenerateSwaps ()
+    public static void Test_GenerateSwaps ()
     {
         var swaps = new NestedDictionary<int, int, int, List<Swap>>();
         var stopwatch = new Stopwatch(); 
@@ -71,5 +72,6 @@ public sealed class Tests_PreloadedSwaps
         Debug.WriteLine("Read + Decompressed: Elapsed: " + stopwatch.Elapsed.TotalSeconds.ToString("F1"));
         var loaded = SerializationUtilities.Deserialize<NestedDictionary<int, int, int, List<Swap>>>(read);
         Debug.WriteLine("Deserialisation: Elapsed: " + stopwatch.Elapsed.TotalSeconds.ToString("F1"));
+        Debug.WriteLine(loaded.GetType());
     }
 } 

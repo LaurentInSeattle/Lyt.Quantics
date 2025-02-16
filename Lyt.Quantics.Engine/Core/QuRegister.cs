@@ -11,7 +11,7 @@ using static MathUtilities;
 /// <summary> Result of Combining QuBit's </summary>
 public sealed partial class QuRegister
 {
-    public const int MaxQubits = 16;    // Preloaded swaps limited to 16 for now  
+    public const int MaxQubits = 18;    // Preloaded swaps limited to 18 for now  
     public const int ThreadedRunAtQubits = 12; // Runs will be threaded above this limit
 
     private Vector<Complex> state;
