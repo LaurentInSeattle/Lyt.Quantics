@@ -14,6 +14,8 @@ public sealed class StageViewModel : Bindable<StageView>, IDropTarget
 
     public StageViewModel(int stageIndex, QsModel quanticsStudioModel)
     {
+        this.DisablePropertyChangedLogging = true; 
+
         this.stageIndex = stageIndex;
         this.quanticsStudioModel = quanticsStudioModel;
         this.Name = (1 + stageIndex).ToString();
@@ -27,8 +29,8 @@ public sealed class StageViewModel : Bindable<StageView>, IDropTarget
         this.UpdateQubitCount();
     }
 
-    private static GridLength FromQuBitsCount(int quBitsCount)
-        => new(OtherHeights + QuBitHeight * quBitsCount, GridUnitType.Pixel);
+    private static double PixelsFromQuBitsCount(int quBitsCount)
+        => OtherHeights + QuBitHeight * quBitsCount;
 
     public bool IsEmpty => this.activeGates == 0;
 
@@ -43,7 +45,7 @@ public sealed class StageViewModel : Bindable<StageView>, IDropTarget
 
         var view = this.View;
         int qubitCount = this.quanticsStudioModel.QuComputer.QuBitsCount;
-        this.GridHeight = FromQuBitsCount(qubitCount);
+        this.GridHeight = PixelsFromQuBitsCount(qubitCount);
         for (int rowIndex = 0; rowIndex < QuRegister.MaxQubits; ++rowIndex)
         {
             var gateRow = view.GatesGrid.RowDefinitions[rowIndex];
@@ -366,5 +368,5 @@ public sealed class StageViewModel : Bindable<StageView>, IDropTarget
 
     public bool IsMarkerVisible { get => this.Get<bool>(); set => this.Set(value); }
 
-    public GridLength GridHeight { get => this.Get<GridLength>(); set => this.Set(value); }
+    public double GridHeight { get => this.Get<double>(); set => this.Set(value); }
 }

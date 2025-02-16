@@ -32,8 +32,6 @@ TODO: Studio :
 
 		FEATURE: Swaps for 18 qubits
 
-		FEATURE: Ability to cancel a run at 16+ qubits
-
 	FEATURE: Allow editing angles on controlled rotation and phase gates		
 
 	FEATURE: Should create histogram entries view models in threads 	
@@ -63,7 +61,7 @@ TODO: Studio :
 
 	??? Export circuits to Q# or other languges 
 
-	??? Help Window
+	??? Help / FAQ Window
 
 	??? Settings Window
 

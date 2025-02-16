@@ -1,6 +1,7 @@
 ﻿namespace Lyt.Quantics.Engine.Machine;
 
 using MathNet.Numerics.LinearAlgebra;
+using System.Threading.Tasks;
 
 public sealed partial class QuComputer
 {
@@ -382,6 +383,7 @@ public sealed partial class QuComputer
     /// <summary> Breaks a UI Run of the machine, awaitable </summary>
     public async Task<Tuple<bool, string>> Break ()
     {
+        Debug.WriteLine("Break requested.");
         string message = string.Empty;
         if (!this.IsRunning)
         {
@@ -398,15 +400,26 @@ public sealed partial class QuComputer
         this.updateDelegate?.Invoke(true, this.StepIndex - 1);
         this.cancellationTokenSource.Cancel();
 
-        await Task.Delay(200); 
+        await Task.Delay(200);
 
-        // TODO: Check stopped 
+        // Check stopped 
+        if (!this.IsRunning)
+        {
+            await Task.Delay(500);
+
+            // Check again stopped 
+            if (!this.IsRunning)
+            {
+                message = "Run: Machine is still running. Restart the application.";
+                return new Tuple<bool, string>(false, message);
+            }
+        }
 
         return new Tuple<bool, string>(true, message);
     }
 
     /// <summary> Launch a UI Run of the machine, awaitable </summary>
-    public async Task<Tuple<bool, string>> Run(bool checkExpected, Action<bool, int>? onUpdate)
+    public async Task<Tuple<bool, string>> RunAsync(bool checkExpected, Action<bool, int>? onUpdate)
     {
         string message = string.Empty;
         if (this.IsRunning)
@@ -465,6 +478,7 @@ public sealed partial class QuComputer
         {
             this.cancellationTokenSource.Dispose();
             this.cancellationTokenSource = null ;
+            Debug.WriteLine("Run Async complete, token cancelled." );
         }
 
         return new Tuple<bool, string>(true, message); 
@@ -515,6 +529,7 @@ public sealed partial class QuComputer
             }
 
             // running the stages 
+
             for (int i = 0; i < this.Stages.Count; i++)
             {
                 if (Step(out message))
@@ -529,7 +544,12 @@ public sealed partial class QuComputer
                             return new Tuple<bool, string>(false, "Run: Cannot run: No CTS.");
                         }
 
-                        this.cancellationTokenSource?.Token.ThrowIfCancellationRequested();
+                        if (this.cancellationTokenSource.IsCancellationRequested)
+                        {
+                            return new Tuple<bool, string>(false, "Cancelled.");
+                        }
+
+                        this.cancellationTokenSource.Token.ThrowIfCancellationRequested();
                     }
                 }
                 else
@@ -548,8 +568,8 @@ public sealed partial class QuComputer
             this.FinalRegister = lastRegister.DeepClone();
             Vector<float> measure = Vector<float>.Build.Dense([.. lastRegister.Measure()]);
 
-            Debug.WriteLine("Last stage, last register: " + lastRegister.ToString());
-            Debug.WriteLine("Last stage, measure: " + measure.ToString());
+            //Debug.WriteLine("Last stage, last register: " + lastRegister.ToString());
+            //Debug.WriteLine("Last stage, measure: " + measure.ToString());
             this.Result = measure;
         }
         catch (Exception ex)

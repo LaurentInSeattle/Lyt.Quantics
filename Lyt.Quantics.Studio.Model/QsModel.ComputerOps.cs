@@ -205,7 +205,7 @@ public sealed partial class QsModel : ModelBase
         return false;
     }
 
-    public bool Run(bool runUsingKroneckerProduct)
+    public bool Run(bool runUsingKroneckerProduct, bool runAsync = false )
     {
         this.QuComputer.RunUsingKroneckerProduct = runUsingKroneckerProduct;
         bool status = this.QuComputer.Validate(out string message);
@@ -217,14 +217,23 @@ public sealed partial class QsModel : ModelBase
                 status = this.QuComputer.Prepare(out message);
                 if (status)
                 {
-                    void OnUpdate(bool isComplete, int step)
+                    void PublishUpdate(bool isComplete, int step)
                         => this.Messenger.Publish(new ModelProgressMessage(IsComplete: isComplete, Step: step));
 
-                    status = this.QuComputer.Run(checkExpected: false, OnUpdate, out message);
-                    if (status)
+                    if (runAsync)
                     {
-                        this.Messenger.Publish(new ModelResultsUpdateMessage());
+                        // Fire and forget the calculation task 
+                        _ = Task.Run(() => this.QuComputer.RunAsync(checkExpected: false, PublishUpdate));
                         return true;
+                    } 
+                    else
+                    {
+                        status = this.QuComputer.Run(checkExpected: false, PublishUpdate, out message);
+                        if (status)
+                        {
+                            this.Messenger.Publish(new ModelResultsUpdateMessage());
+                            return true;
+                        }
                     }
                 }
             }
@@ -233,6 +242,8 @@ public sealed partial class QsModel : ModelBase
         this.PublishError(message);
         return false;
     }
+
+    public async Task<Tuple<bool, string>> Break () => await this.QuComputer.Break();
 
     private void PublishError(string message)
         => this.Messenger.Publish(new ModelUpdateErrorMessage(message));

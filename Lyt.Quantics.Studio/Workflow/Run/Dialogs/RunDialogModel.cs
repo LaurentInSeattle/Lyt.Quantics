@@ -1,5 +1,4 @@
-﻿
-using Tmds.DBus.Protocol;
+﻿using System.Threading.Tasks;
 
 namespace Lyt.Quantics.Studio.Workflow.Run.Dialogs;
 
@@ -24,32 +23,45 @@ public sealed class RunDialogModel : DialogBindable<RunDialog, object>
         this.ProgressTotal = this.quanticsStudioModel.QuComputer.Stages.Count;
         this.Message = "Calculation started...";
 
-        _ = Task.Run(this.Run);
-    }
-
-    private void Run()
-    {
-        _ = this.quanticsStudioModel.Run(runUsingKroneckerProduct: false);
-        Dispatch.OnUiThread(() =>
-        {
-            this.RingIsActive = false;
-            this.Cancel();
-        }, DispatcherPriority.Normal);
+        _ = this.quanticsStudioModel.Run(runUsingKroneckerProduct: false, runAsync: true);
     }
 
     private void OnModelProgress(ModelProgressMessage message)
     {
-        this.Message =
-            string.Format(
-                " {0} / {1} calculation steps complete.",
-                message.Step,
-                this.quanticsStudioModel.QuComputer.Stages.Count);
-        this.ProgressValue = message.Step;
+        if (message.IsComplete)
+        {
+            var toaster = App.GetRequiredService<IToaster>();
+            toaster.Show("Complete!", "Successful single Run! ", 4_000, InformationLevel.Success);
+            this.RingIsActive = false;
+            this.Cancel();
+
+        }
+        else
+        {
+            this.Message =
+                string.Format(
+                    " {0} / {1} calculation steps complete.",
+                    message.Step,
+                    this.quanticsStudioModel.QuComputer.Stages.Count);
+            this.ProgressValue = message.Step;
+        } 
     }
 
 #pragma warning disable IDE0051 // Remove unused private members
 
-    private void OnCancel(object? _) => this.Cancel();
+    private async void OnCancel(object? _)
+    {
+        var result = await this.quanticsStudioModel.Break();
+        if ( !result.Item1)
+        {
+            var toaster = App.GetRequiredService<IToaster>();
+            toaster.Show("Error!", result.Item2, 30_000, InformationLevel.Error); 
+        }
+
+        // Cancel even if error 
+        this.Cancel();
+        this.RingIsActive = false;
+    }
 
 #pragma warning restore IDE0051 // Remove unused private members
 

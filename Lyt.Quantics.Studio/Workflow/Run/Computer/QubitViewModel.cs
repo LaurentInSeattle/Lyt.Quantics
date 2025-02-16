@@ -45,6 +45,8 @@ public sealed class QubitViewModel : Bindable<QubitView>
 
     public QubitViewModel(int qubitIndex)
     {
+        this.DisablePropertyChangedLogging = true;
+
         this.qubitIndex = qubitIndex;
         this.quanticsStudioModel = App.GetRequiredService<QsModel>();
 

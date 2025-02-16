@@ -142,7 +142,7 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>
     {
         try
         {
-            if (this.quanticsStudioModel.QuComputer.QuBitsCount <= 8)
+            if (this.quanticsStudioModel.QuComputer.QuBitsCount <= QuRegister.UiThreadedRunAtQubits)
             {
                 if (this.quanticsStudioModel.Run(runUsingKroneckerProduct: false))
                 {
