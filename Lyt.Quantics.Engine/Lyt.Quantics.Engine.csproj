@@ -15,6 +15,9 @@
     <None Remove="Resources\Computers\Toffoli Decomposition.json" />
     <None Remove="Resources\Computers\Triple Full Adder.json" />
     <None Remove="Resources\SwapFiles\Swaps_17.binary" />
+    <None Remove="Resources\SwapFiles\Swaps_18_0.binary" />
+    <None Remove="Resources\SwapFiles\Swaps_18_1.binary" />
+    <None Remove="Resources\SwapFiles\Swaps_18_2.binary" />
     <None Remove="Resources\SwapFiles\Swaps_3_16.binary" />
   </ItemGroup>
 
@@ -49,6 +52,9 @@
     <EmbeddedResource Include="Resources\Computers\Toffoli Decomposition.json" />
     <EmbeddedResource Include="Resources\Computers\Triple Full Adder.json" />
     <EmbeddedResource Include="Resources\SwapFiles\Swaps_17.binary" />
+    <EmbeddedResource Include="Resources\SwapFiles\Swaps_18_0.binary" />
+    <EmbeddedResource Include="Resources\SwapFiles\Swaps_18_1.binary" />
+    <EmbeddedResource Include="Resources\SwapFiles\Swaps_18_2.binary" />
     <EmbeddedResource Include="Resources\SwapFiles\Swaps_3_16.binary" />
   </ItemGroup>
 

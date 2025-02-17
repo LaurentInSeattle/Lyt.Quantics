@@ -4,7 +4,21 @@ public sealed record class Swap(int Index1, int Index2);
 
 public sealed class SwapData
 {
-    private const string SwapFileName = "Swaps_3_16.binary";
+    public enum LoadState
+    {
+        Nothing, 
+        UpToSixteen,
+        Seventeen,
+        Eighteen,
+    }
+
+    private const string Swap_3_16_FileName = "Swaps_3_16.binary";
+    private const string Swap_17_FileName = "Swaps_18.binary";
+    private const string Swap_18_0_FileName = "Swaps_18_0.binary";
+    private const string Swap_18_1_FileName = "Swaps_18_1.binary";
+    private const string Swap_18_2_FileName = "Swaps_18_2.binary";
+
+    public static LoadState State { get; private set; } = LoadState.Nothing; 
 
     private static NestedDictionary<int, int, int, List<Swap>> PreloadedSwaps { get; set; } = [];
 
@@ -12,15 +26,16 @@ public sealed class SwapData
     {
         if( PreloadedSwaps.Count == 0)
         {
-            Load(); 
+            Load();
+            State = LoadState.UpToSixteen; 
         }
     }
 
-    public static void Load()
+    public static void Load(string filename = Swap_3_16_FileName)
     {
         try
         {
-            byte[] swapBinaryData = SerializationUtilities.LoadEmbeddedBinaryResource(SwapFileName, out string? _);
+            byte[] swapBinaryData = SerializationUtilities.LoadEmbeddedBinaryResource(filename, out string? _);
             string read = CompressionUtilities.DecompressToString(swapBinaryData);
             var loaded = SerializationUtilities.Deserialize<NestedDictionary<int, int, int, List<Swap>>>(read);
             SwapData.PreloadedSwaps = loaded;
@@ -30,6 +45,46 @@ public sealed class SwapData
             Debug.WriteLine("Failed to load swap data; \n" + ex);
             throw;
         }
+    }
+
+    public static void OnQuBitCountChanged (int qubitCount)
+    {
+        if ( ( qubitCount < 0 ) || ( qubitCount > QuRegister.MaxQubits))
+        {
+            throw new Exception("Invalid QuBit Count"); 
+        }
+
+        if ( qubitCount <= 16)
+        {
+            if (State == LoadState.UpToSixteen)
+            {
+                return;
+            }
+
+            Load(Swap_3_16_FileName);
+            State = LoadState.UpToSixteen;
+        }
+        else if (qubitCount == 17)
+        {
+            if (State == LoadState.Seventeen)
+            {
+                return;
+            }
+
+            Load(Swap_17_FileName);
+            State = LoadState.Seventeen;
+        }
+        else if (qubitCount == 18)
+        {
+            if (State == LoadState.Eighteen)
+            {
+                return;
+            }
+
+            Load(Swap_17_FileName);
+            State = LoadState.Seventeen;
+        }
+
     }
 
     // For unit tests only 

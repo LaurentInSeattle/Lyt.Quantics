@@ -38,4 +38,5 @@ global using Lyt.Quantics.Engine.Machine;
 global using Lyt.Quantics.Engine.Matrices;
 global using Lyt.Quantics.Engine.Utilities;
 
+global using Lyt.Quantics.Swaps;
 
