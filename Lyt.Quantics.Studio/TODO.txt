@@ -13,11 +13,9 @@ TODO: Engine:
 -------------
 
 	Priorities:	
-		=> FEATURE: Handle Swap only for 0,n 1,n, 2,n 
+		BUG: "Flipped" Controlled Gates not working properly (Still need them?)
 
-		BUG: "Flipped" Controlled Gates not working properly 
-
-	??? Include Author in computer metadata
+	??? NEEDED:  Include Author in computer metadata
 	
 	FEATURE: Create a C# code sample that loads and runs a quantum circuit.
 
@@ -29,14 +27,13 @@ TODO: Studio :
 			 often (always?) conflicting with Identity 
 		BUG: Sometimes showing a toasted Error on dropping Swap gate : "overlapping targets"
 			(could be related to the one above) 
-
-		FEATURE: Swaps for 17 qubits
-
-		FEATURE: Swaps for 18 qubits
+		BUG: Review predefined circuits (some do not work anymore)
 
 	FEATURE: Allow editing angles on controlled rotation and phase gates		
 
-	FEATURE: Should create histogram entries view models in threads 	
+	FEATURE: Should create histogram entries view models in threads at 12+ qubits
+
+	BUG: Missing two bits for labels in Amplitudes histogram at 17 and 18 qubits.
 
 	BUG: Amplitudes histogram shows up after loading another model.
 
@@ -55,15 +52,15 @@ TODO: Studio :
 	
 	NTH: Nicer Measure icon 
 		
-	??? Open Folder in Saved Projects view (Not portable to browser)
+	??? NEEDED: Open Folder in Saved Projects view (Not portable to browser)
 
-	??? Ability to add or remove qubits at index 0 with shift key 
+	??? NEEDED: Ability to add or remove qubits at index 0 with shift key 
 
-	??? Export circuits to Q# or other languges 
+	??? NEEDED: Export circuits to Q# or other languages  (which ones)
 
-	??? Help / FAQ Window
+	??? NEEDED: Help / FAQ Window
 
-	??? Settings Window
+	??? NEEDED: Settings Window
 
 	---
 
@@ -77,9 +74,10 @@ N	Register	Reg Bytes	Matrix	Matrix bytes
 8	256			4 K			64 K	1 M
 10	1024		16 K		1 M		16 M
 11	2048		32 K		4 M		32 M 
-12	4 K			64 K		16 M	256 M   
-14	16 K		256 K		256 M	4 G     <=
+12	4 K			64 K		16 M	256 M   <= Matrix Max 
+14	16 K		256 K		256 M	4 G     
 16	64 K		1 M			  4 G	64 G
+18  256 K		4 M			!!!		!!!		<= Current Max
 20  1 M         16 M        !!!     !!!
 24  16 M		256 M 
 28  256 M		4 G

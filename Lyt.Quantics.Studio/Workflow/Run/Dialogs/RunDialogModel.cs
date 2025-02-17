@@ -30,6 +30,7 @@ public sealed class RunDialogModel : DialogBindable<RunDialog, object>
     {
         if (message.IsComplete)
         {
+            this.Messenger.Publish(new ModelResultsUpdateMessage());
             var toaster = App.GetRequiredService<IToaster>();
             toaster.Show("Complete!", "Successful single Run! ", 4_000, InformationLevel.Success);
             this.RingIsActive = false;
