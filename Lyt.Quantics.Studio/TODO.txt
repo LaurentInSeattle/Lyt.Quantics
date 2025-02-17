@@ -13,6 +13,8 @@ TODO: Engine:
 -------------
 
 	Priorities:	
+		=> FEATURE: Handle Swap only for 0,n 1,n, 2,n 
+
 		BUG: "Flipped" Controlled Gates not working properly 
 
 	??? Include Author in computer metadata

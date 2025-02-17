@@ -372,7 +372,7 @@ public sealed class QuStage
                         {
                             // Swap gate is given a special implementation and not a controlled gate in
                             // our C# code. It is given two targets since the gate is symetrical. 
-                            register.Swap(
+                            register.GeneralSwap(
                                 stageOperator.TargetQuBitIndices[0],
                                 stageOperator.TargetQuBitIndices[1]);
                         }

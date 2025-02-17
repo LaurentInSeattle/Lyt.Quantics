@@ -240,10 +240,10 @@ public sealed class Tests_Matrices
                     Debug.WriteLine(newState.ToString());
 
                     var clone = registerSource.DeepClone();
-                    clone.Swap(j, k);
+                    clone.GeneralSwap(j, k);
                     Debug.WriteLine(clone.ToString());
                     Assert.IsTrue(clone.State.IsAlmostEqualTo(newState));
-                    clone.Swap(j, k);
+                    clone.GeneralSwap(j, k);
                     Assert.IsTrue(clone.State.IsAlmostEqualTo(registerSource.State));
                 }
             }

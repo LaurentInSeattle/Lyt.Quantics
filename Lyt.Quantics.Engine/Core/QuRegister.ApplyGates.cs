@@ -109,9 +109,44 @@ public sealed partial class QuRegister
 
         return generatedSwaps;
     }
+    public void GeneralSwap(int i, int j)
+    {
+        if (i == j)
+        {
+            throw new Exception("Invalid swap indices. ! ( i == j )");
+        }
+
+        if (i > 0)
+        {
+            this.Swap(0, i);
+        }
+
+        if (j > 1)
+        {
+            this.Swap(1, j);
+        }
+
+        this.Swap(0, 1);
+
+        if (j > 1)
+        {
+            this.Swap(1, j);
+        }
+
+        if (i > 0)
+        {
+            this.Swap(0, i);
+        }
+
+    }
 
     public void Swap(int i, int j)
     {
+        if (i == j)
+        {
+            throw new Exception("Invalid swap indices. ! ( i == j )");
+        }
+
         if (this.QuBitCount == 2)
         {
             Complex state1 = this.State[1];
@@ -121,6 +156,11 @@ public sealed partial class QuRegister
         }
         else
         {
+            if ( i > j )
+            {
+                throw new Exception("Invalid swap indices. ! ( i > j )"); 
+            }
+
             var preloadedSwaps = SwapData.Swaps(this.QuBitCount, i, j);
             foreach (var swap in preloadedSwaps)
             {
@@ -466,17 +506,17 @@ public sealed partial class QuRegister
         {
             if (needToSwapMin)
             {
-                this.Swap(minControl, 0);
+                this.Swap(0, minControl);
             }
 
             if (needToSwapMax)
             {
-                this.Swap(maxControl, 1);
+                this.Swap(1, maxControl);
             }
 
             if (needToSwapTarget)
             {
-                this.Swap(positionTarget, 2);
+                this.Swap(2, positionTarget);
             }
         }
 
@@ -487,17 +527,17 @@ public sealed partial class QuRegister
             // Important: Swap back in reverse order 
             if (needToSwapTarget)
             {
-                this.Swap(positionTarget, 2);
+                this.Swap(2, positionTarget);
             }
 
             if (needToSwapMax)
             {
-                this.Swap(maxControl, 1);
+                this.Swap(1, maxControl);
             }
 
             if (needToSwapMin)
             {
-                this.Swap(minControl, 0);
+                this.Swap(0, minControl);
             }
         }
     }
