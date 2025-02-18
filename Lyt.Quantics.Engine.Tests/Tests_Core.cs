@@ -53,6 +53,7 @@ public sealed class Tests_Core
         int q2M = q2.Measure();
         Assert.IsTrue(q2M == 1);
         var qr = new QuRegister(q1, q2);
+        qr.Calculate();
         var qrM = qr.Measure();
         Assert.IsTrue(qrM[0] == 0);
         Assert.IsTrue(qrM[1] == 1);

@@ -323,8 +323,8 @@ public sealed class StageViewModel : Bindable<StageView>, IDropTarget
             }
 
             var stage = computer.Stages[this.stageIndex];
-            var probabilities = stage.QuBitProbabilities;
-            if (probabilities.Count != computer.QuBitsCount)
+            double[] probabilities = stage.QuBitProbabilities;
+            if (probabilities.Length != computer.QuBitsCount)
             {
                 string uiMessage = "Mismatch between qubit probabilities count and Qubit count.";
                 this.toaster.Show("Error", uiMessage, 4_000, InformationLevel.Error);
@@ -333,8 +333,7 @@ public sealed class StageViewModel : Bindable<StageView>, IDropTarget
 
             for (int qubitIndex = 0; qubitIndex < computer.QuBitsCount; qubitIndex++)
             {
-                double value = probabilities.At(qubitIndex);
-                var vm = new AmplitudeMinibarViewModel(value);
+                var vm = new AmplitudeMinibarViewModel(probabilities[qubitIndex]);
                 var view = vm.CreateViewAndBind();
                 view.SetValue(Grid.RowProperty, qubitIndex);
                 this.View.MinibarsGrid.Children.Add(view);

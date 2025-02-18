@@ -15,12 +15,7 @@ public sealed class QuStage
     public Matrix<Complex> StageMatrix { get; private set; } = Matrix<Complex>.Build.Dense(1, 1);
 
     [JsonIgnore]
-    public Vector<double> KetProbabilities =>
-        Vector<double>.Build.Dense([.. this.StageRegister.KetProbabilities()]);
-
-    [JsonIgnore]
-    public Vector<double> QuBitProbabilities =>
-        Vector<double>.Build.Dense([.. this.StageRegister.QuBitProbabilities()]);
+    public double[] QuBitProbabilities => this.StageRegister.QuBitProbabilities;
 
     [JsonIgnore]
     public string Operations

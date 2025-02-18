@@ -12,13 +12,13 @@ using static MathUtilities;
 public sealed partial class QuRegister
 {
     // Preloaded swaps limited to 18 for now  
-    public const int MaxQubits = 18;    
+    public const int MaxQubits = 18;
 
     // Runs will be threaded above this limit
     public const int ThreadedRunAtQubits = 12;
 
     // Ui will launch a progress dialog above this limit
-    public const int UiThreadedRunAtQubits = 16; 
+    public const int UiThreadedRunAtQubits = 16;
 
     private Vector<Complex> state;
 
@@ -90,18 +90,32 @@ public sealed partial class QuRegister
 
     public int QuBitCount => MathUtilities.IntegerLog2(this.state.Count);
 
+    public double[] QuBitProbabilities { get; private set; } = [];
+
+    public double[] KetProbabilities { get; private set; } = [];
+
+    public Tuple<string, double, int>[] BitValuesProbabilities { get; private set; } = [];
+
     // For unit tests 
     public void Apply(Gate gate) => this.state = gate.Matrix.Multiply(this.state);
 
-    public List<double> KetProbabilities()
+    public void Calculate()
     {
-        int length = this.state.Count;
-        List<double> probabilities = new(length);
-        for (int i = 0; i < length; ++i)
+        this.QuBitProbabilities = new double[this.QuBitCount];
+        this.KetProbabilities = new double[this.State.Count];
+
+        this.CalculateKetProbabilities();
+        this.CalculateBitValuesProbabilities();
+        this.CalculateQuBitProbabilities();
+    }
+
+    public void CalculateKetProbabilities()
+    {
+        for (int i = 0; i < this.state.Count; ++i)
         {
             Complex complex = this.state[i];
             var conjugate = Complex.Conjugate(complex);
-            probabilities.Add((conjugate * complex).Real);
+            this.KetProbabilities[i] = (conjugate * complex).Real;
         }
 
 #if VERBOSE
@@ -115,15 +129,12 @@ public sealed partial class QuRegister
         Debug.WriteLine("");
 #endif // VERBOSE
 
-        return probabilities;
     }
 
-    public List<double> QuBitProbabilities()
+    public void CalculateQuBitProbabilities()
     {
         int stateCount = this.state.Count;
         int quBitCount = MathUtilities.IntegerLog2(stateCount);
-        var bitValuesProbabilities = this.BitValuesProbabilities();
-        List<double> probabilities = new(quBitCount);
         for (int quBit = 0; quBit < quBitCount; ++quBit)
         {
             double probability = 0.0;
@@ -135,11 +146,11 @@ public sealed partial class QuRegister
                     Debug.WriteLine(
                         "Qubit: " + quBit + " at " + k + " adding: " + bitValuesProbabilities[k].Item2.ToString("F2"));
 #endif // VERBOSE
-                    probability += bitValuesProbabilities[k].Item2;
+                    probability += this.BitValuesProbabilities[k].Item2;
                 }
             }
 
-            probabilities.Add(probability);
+            this.QuBitProbabilities[quBit] = probability;
         }
 
 #if VERBOSE
@@ -150,17 +161,14 @@ public sealed partial class QuRegister
         }
         Debug.WriteLine("");
 #endif // VERBOSE
-
-        return probabilities;
     }
 
-    public Tuple<string, double, int>[] BitValuesProbabilities()
+    public void CalculateBitValuesProbabilities()
     {
         int length = this.state.Count;
         int stringLength = MathUtilities.IntegerLog2(length);
         char[] charArray = new char[stringLength];
         var bitValuesProbabilities = new List<Tuple<string, double, int>>(length);
-        List<double> probabilities = this.KetProbabilities();
         for (int i = 0; i < length; ++i)
         {
             int k = i;
@@ -180,7 +188,7 @@ public sealed partial class QuRegister
             }
 
             string bits = new(charArray);
-            bitValuesProbabilities.Add(new Tuple<string, double, int>(bits, probabilities[i], rank));
+            bitValuesProbabilities.Add(new Tuple<string, double, int>(bits, this.KetProbabilities[i], rank));
         }
 
         var sortedBitValuesProbabilities = new Tuple<string, double, int>[length];
@@ -199,19 +207,18 @@ public sealed partial class QuRegister
         }
         Debug.WriteLine("");
 #endif // VERBOSE
-        return sortedBitValuesProbabilities;
+        this.BitValuesProbabilities = sortedBitValuesProbabilities;
     }
 
     public List<int> Measure()
     {
-        List<double> probabilities = this.KetProbabilities();
         int length = this.state.Count;
         double sample = RandomUtility.NextDouble();
         int slot = -1;
         double sumProbabilities = 0.0;
         for (int i = 0; i < length; ++i)
         {
-            sumProbabilities += probabilities[i];
+            sumProbabilities += this.KetProbabilities[i];
             if (sample <= sumProbabilities)
             {
                 slot = i;

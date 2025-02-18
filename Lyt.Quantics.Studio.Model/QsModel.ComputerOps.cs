@@ -8,7 +8,7 @@ public sealed partial class QsModel : ModelBase
     {
         var measureStates = this.QuBitMeasureStates;
         DumpMeasureStates(measureStates);
-        var bitValuesProbabilities = register.BitValuesProbabilities();
+        var bitValuesProbabilities = register.BitValuesProbabilities;
         if (this.ShouldMeasureAllQubits)
         {
             // All qubits measured, return the full list 

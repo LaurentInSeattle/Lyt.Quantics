@@ -75,9 +75,6 @@ public sealed partial class QuComputer
     public QuRegister FinalRegister { get; private set; } = new(1);
 
     [JsonIgnore]
-    public Vector<float> Result { get; private set; } = Vector<float>.Build.Dense(1);
-
-    [JsonIgnore]
     public bool RunUsingKroneckerProduct { get; set; }
 
     #region Machine states 
@@ -512,6 +509,7 @@ public sealed partial class QuComputer
                     return false;
                 }
 
+                stage.StageRegister.Calculate(); 
                 //Debug.WriteLine(
                 //    string.Format("Step: {0} - Probabilities: {1}", this.StepIndex, stage.KetProbabilities));
             }
@@ -572,14 +570,10 @@ public sealed partial class QuComputer
                 return new Tuple<bool, string>(false, message);
             }
 
-            // Measure last register
             QuRegister lastRegister = this.Stages[^1].StageRegister;
             this.FinalRegister = lastRegister.DeepClone();
-            Vector<float> measure = Vector<float>.Build.Dense([.. lastRegister.Measure()]);
 
             //Debug.WriteLine("Last stage, last register: " + lastRegister.ToString());
-            //Debug.WriteLine("Last stage, measure: " + measure.ToString());
-            this.Result = measure;
         }
         catch (Exception ex)
         {
@@ -604,7 +598,7 @@ public sealed partial class QuComputer
             (this.ExpectedFinalProbabilities.Count == lastRegister.State.Count))
         {
             bool valid = true;
-            var bitValuesProbabilities = lastRegister.BitValuesProbabilities();
+            var bitValuesProbabilities = lastRegister.BitValuesProbabilities;
             for (int i = 0; i < bitValuesProbabilities.Length; i++)
             {
                 if (!MathUtilities.AreAlmostEqual(

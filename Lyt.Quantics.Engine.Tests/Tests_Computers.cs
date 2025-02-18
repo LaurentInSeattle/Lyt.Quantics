@@ -79,8 +79,7 @@ public sealed class Tests_Computers
                 Assert.IsTrue(isComplete);
                 Debug.WriteLine(
                     computer.Name +
-                    "\n   Final Register: " + computer.FinalRegister.ToString() +
-                    "\n   Measure: " + computer.Result);
+                    "\n   Final Register: " + computer.FinalRegister.ToString());
             }
 
             static QuComputer ValidateBuildAndRun(string resourceFileName, QuRegister? initialState = null)
@@ -209,7 +208,7 @@ public sealed class Tests_Computers
                     }
 
                     Assert.IsTrue(isComplete);
-                    Debug.WriteLine(computer.Name + " - Final result: " + computer.Result);
+                    Debug.WriteLine(computer.Name);
                 }
             }
 

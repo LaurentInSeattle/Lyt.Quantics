@@ -30,7 +30,7 @@ public sealed class LoadViewModel : Bindable<LoadView>
         base.Activate(activationParameters);
         this.loadBuiltInViewModel.Activate(activationParameters);
         this.loadDocumentsViewModel.Activate(activationParameters);
-        this.Messenger.Publish(new ShowTitleBarMessage(Show: false));
+        this.Messenger.Publish(new ShowTitleBarMessage(Show: true));
     }
 
     public HeaderedContentView Blank { get => this.Get<HeaderedContentView>()!; set => this.Set(value); }

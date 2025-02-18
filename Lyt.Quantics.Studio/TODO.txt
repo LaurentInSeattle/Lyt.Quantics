@@ -13,6 +13,7 @@ TODO: Engine:
 -------------
 
 	Priorities:	
+		FEATURE: Use Array instead of List or Vector to calculate and store probabilities.
 		BUG: "Flipped" Controlled Gates not working properly (Still need them?)
 
 	??? NEEDED:  Include Author in computer metadata
@@ -29,11 +30,7 @@ TODO: Studio :
 			(could be related to the one above) 
 		BUG: Review predefined circuits (some do not work anymore)
 
-	FEATURE: Allow editing angles on controlled rotation and phase gates		
-
-	FEATURE: Should create histogram entries view models in threads at 12+ qubits
-
-	BUG: Missing two bits for labels in Amplitudes histogram at 17 and 18 qubits.
+	FEATURE: Allow editing angles on controlled rotation and phase gates			
 
 	BUG: Amplitudes histogram shows up after loading another model.
 
