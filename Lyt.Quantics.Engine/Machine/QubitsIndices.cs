@@ -21,6 +21,56 @@ public sealed class QubitsIndices
         this.TargetQuBitIndices.Add(targetIndex);
     }
 
+    public QubitsIndices (int dropIndex, Gate gate)
+    {
+        if (gate.IsUnary)
+        {
+            this.TargetQuBitIndices.Add(dropIndex);
+        }
+        else if (gate.IsBinary)
+        {
+            if (gate is SwapGate)
+            {
+                this.TargetQuBitIndices.Add(dropIndex);
+                this.TargetQuBitIndices.Add(1 + dropIndex);
+            }
+            else
+            {
+                this.ControlQuBitIndices.Add(dropIndex);
+                this.TargetQuBitIndices.Add(1 + dropIndex);
+            }
+        }
+        else if (gate.IsTernary)
+        {
+            if (gate is ControlledControlledZ)
+            {
+                this.TargetQuBitIndices.Add(dropIndex);
+                this.TargetQuBitIndices.Add(1 + dropIndex);
+                this.TargetQuBitIndices.Add(2 + dropIndex);
+            }
+            else if (gate is ToffoliGate)
+            {
+                this.ControlQuBitIndices.Add(dropIndex);
+                this.ControlQuBitIndices.Add(1 + dropIndex);
+                this.TargetQuBitIndices.Add(2 + dropIndex);
+            }
+            else if (gate is FredkinGate)
+            {
+                this.ControlQuBitIndices.Add(dropIndex);
+                this.TargetQuBitIndices.Add(1 + dropIndex);
+                this.TargetQuBitIndices.Add(2 + dropIndex);
+            }
+            else
+            {
+                throw new Exception("Unexpected Ternary gate type");
+            }
+        }
+        else
+        {
+            throw new Exception("Unexpected gate type");
+        }
+    }
+
     /// <summary> Control Qubit Indices for controlled gates </summary>
     public List<int> ControlQuBitIndices { get; set; } = [];
 

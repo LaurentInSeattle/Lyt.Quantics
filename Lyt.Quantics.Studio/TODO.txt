@@ -5,6 +5,8 @@ TODO: Framework:
 	Reorganize / classify assemblies between those Avalonia dependant and those independant 
 		Model, Persistence, Search, StateMachine, Validation are independant.
 
+	Move Drag / Drop and other behaviors from Q-Studio to Framework 
+
 	NTH: Ability to drag modal dialogs 
 
 	NTH: Validation should not directly depends on MVVM but use a Get/Set Interface 
@@ -13,7 +15,6 @@ TODO: Engine:
 -------------
 
 	Priorities:	
-		FEATURE: Use Array instead of List or Vector to calculate and store probabilities.
 		BUG: "Flipped" Controlled Gates not working properly (Still need them?)
 
 	??? NEEDED:  Include Author in computer metadata
@@ -24,15 +25,14 @@ TODO: Studio :
 --------------
 
 	Priorities:	
-		BUG: Editor creates invalid gates control / target qubits indices, 
-			 often (always?) conflicting with Identity 
-		BUG: Sometimes showing a toasted Error on dropping Swap gate : "overlapping targets"
-			(could be related to the one above) 
-		BUG: Review predefined circuits (some do not work anymore)
 
+		BUG: QFT 2 bits broken 
+
+		FEATURE: Remove flipped CNOT gate - BUT keep in toolbox
+	
 	FEATURE: Allow editing angles on controlled rotation and phase gates			
 
-	BUG: Amplitudes histogram shows up after loading another model.
+	BUG: Amplitudes histogram shows up after loading another model. (No repro, fixed?)
 
 	NTH: Show Bloch spheres (or their projections)
 		See: https://quantumcomputing.stackexchange.com/questions/10116/how-to-get-the-bloch-sphere-angles-given-an-arbitrary-qubit

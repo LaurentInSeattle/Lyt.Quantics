@@ -1,5 +1,6 @@
 ﻿namespace Lyt.Quantics.Engine.Machine;
 
+using Lyt.Quantics.Engine.Gates.Base;
 using MathNet.Numerics.LinearAlgebra;
 
 public sealed class QuStage
@@ -106,9 +107,9 @@ public sealed class QuStage
     }
 
     /// <summary> If isDrop is true we only have one target qubit index ! </summary>
-    public void AddAtQubit(QuComputer computer, QubitsIndices qubitsIndices, Gate gate, bool isDrop)
+    public void AddAtQubit(QuComputer computer, QubitsIndices qubitsIndices, Gate gate)
     {
-        var stageOperator = new QuStageOperator(gate, qubitsIndices, isDrop);
+        var stageOperator = new QuStageOperator(gate, qubitsIndices);
         if (!stageOperator.Validate(computer, out string message))
         {
             throw new Exception(message);
@@ -278,12 +279,12 @@ public sealed class QuStage
         {
             message = string.Empty;
             int length = computer.QuBitsCount;
-            bool notSupported = 
+            bool notSupported =
                 (from op in this.Operators where op.HasBinarySwap select op.HasBinarySwap).FirstOrDefault();
             if (notSupported)
             {
                 throw new Exception("Swaps not supported in this calculation mode.");
-            } 
+            }
 
             // Combine all operator matrices to create the stage matrix using the Knonecker product
             int powTwo = MathUtilities.TwoPower(length);
@@ -398,11 +399,34 @@ public sealed class QuStage
                         // All ternary gates are Controlled of Binary Controlled or Controlled Swap 
                         if (stageOperator.StageOperatorGate is ControlledGate controlledGate)
                         {
-                            register.ApplyTernaryControlledGateAtPositions(
-                                controlledGate,
-                                stageOperator.ControlQuBitIndices[0],
-                                stageOperator.ControlQuBitIndices[1],
-                                stageOperator.TargetQuBitIndices[0]);
+                            if (controlledGate is ControlledControlledZ)
+                            {
+                                register.ApplyTernaryControlledGateAtPositions(
+                                    controlledGate,
+                                    stageOperator.TargetQuBitIndices[0],
+                                    stageOperator.TargetQuBitIndices[1],
+                                    stageOperator.TargetQuBitIndices[2]);
+                            }
+                            else if (controlledGate is ToffoliGate)
+                            {
+                                register.ApplyTernaryControlledGateAtPositions(
+                                    controlledGate,
+                                    stageOperator.ControlQuBitIndices[0],
+                                    stageOperator.ControlQuBitIndices[1],
+                                    stageOperator.TargetQuBitIndices[0]);
+                            }
+                            else if (controlledGate is FredkinGate)
+                            {
+                                register.ApplyTernaryControlledGateAtPositions(
+                                    controlledGate,
+                                    stageOperator.ControlQuBitIndices[0],
+                                    stageOperator.TargetQuBitIndices[0],
+                                    stageOperator.TargetQuBitIndices[1]);
+                            }
+                            else
+                            {
+                                throw new Exception("Unexpected Ternary gate type");
+                            }
                         }
                         else
                         {
@@ -422,7 +446,7 @@ public sealed class QuStage
             {
                 // Empty stage 
                 this.StageRegister.State = sourceRegister.State.Clone();
-            } 
+            }
         }
         catch (Exception ex)
         {

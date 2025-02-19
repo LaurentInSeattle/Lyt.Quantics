@@ -18,25 +18,14 @@ public sealed class QuStageOperator
     /// <param name="gate"></param>
     /// <param name="qubitsIndices"></param>
     /// <param name="isDrop"></param>
-    public QuStageOperator(Gate gate, QubitsIndices qubitsIndices, bool isDrop) : this()
+    public QuStageOperator(Gate gate, QubitsIndices qubitsIndices) : this()
     {
         this.GateKey = gate.CaptionKey;
         this.GateParameters = new(gate);
 
-        if (isDrop)
-        {
-            // It's a drop at only one given qubit index 
-            int qubitIndex = qubitsIndices.TargetQuBitIndices[0];
-            var defaultsQubitsIndices = QuStageOperator.CreateDefaultQubitsIndices(gate, qubitIndex);
-            this.TargetQuBitIndices = defaultsQubitsIndices.TargetQuBitIndices;
-            this.ControlQuBitIndices = defaultsQubitsIndices.ControlQuBitIndices;
-        }
-        else
-        {
-            // Make a copy
-            this.TargetQuBitIndices = [.. qubitsIndices.TargetQuBitIndices];
-            this.ControlQuBitIndices = [.. qubitsIndices.ControlQuBitIndices];
-        }
+        // Make a copy of provided qubits indices 
+        this.TargetQuBitIndices = [.. qubitsIndices.TargetQuBitIndices];
+        this.ControlQuBitIndices = [.. qubitsIndices.ControlQuBitIndices];
     }
 
     #region Public (must have get + set) Serialized Properties 
@@ -204,84 +193,5 @@ public sealed class QuStageOperator
         }
 
         return true;
-    }
-
-    private static QubitsIndices CreateDefaultQubitsIndices(Gate gate, int qubitIndex)
-    {
-        var qubitsIndices = new QubitsIndices();
-
-        // Allocate qubits indices when dropping gates interactively 
-        if (gate.QuBitsTransformed == 1)
-        {
-            // Unnary gate: the only one qubit is the target qubit
-            qubitsIndices.TargetQuBitIndices.Add(qubitIndex);
-        }
-        else if (gate.QuBitsTransformed == 2)
-        {
-            // Binary gate 
-            if (gate.IsControlled)
-            {
-                // Assumes that the user drops on the Control qubit, 
-                // which is true except for the flipped CX 
-                if (gate.CaptionKey == FlippedControlledNotGate.Key)
-                {
-                    qubitsIndices.ControlQuBitIndices.Add(1 + qubitIndex);
-                    qubitsIndices.TargetQuBitIndices.Add(qubitIndex);
-                }
-                else
-                {
-                    qubitsIndices.ControlQuBitIndices.Add(qubitIndex);
-                    qubitsIndices.TargetQuBitIndices.Add(1 + qubitIndex);
-                }
-            }
-            else
-            {
-                // Assumes that all non controlled gates have two targets 
-                qubitsIndices.TargetQuBitIndices.Add(qubitIndex);
-                qubitsIndices.TargetQuBitIndices.Add(1 + qubitIndex);
-            }
-        }
-        else if (gate.QuBitsTransformed == 3)
-        {
-            // Ternary gate 
-            if (gate.ControlQuBits == 0)
-            {
-                qubitsIndices.TargetQuBitIndices.Add(qubitIndex);
-                qubitsIndices.TargetQuBitIndices.Add(1 + qubitIndex);
-                qubitsIndices.TargetQuBitIndices.Add(2 + qubitIndex);
-            }
-            else if (gate.ControlQuBits == 1)
-            {
-                // Assumes that the user drops on the Control qubit
-                qubitsIndices.ControlQuBitIndices.Add(qubitIndex);
-                qubitsIndices.TargetQuBitIndices.Add(1 + qubitIndex);
-                qubitsIndices.TargetQuBitIndices.Add(2 + qubitIndex);
-            }
-            else if (gate.ControlQuBits == 2)
-            {
-                // Assumes that the user drops on the First Control qubit
-                qubitsIndices.ControlQuBitIndices.Add(qubitIndex);
-                qubitsIndices.ControlQuBitIndices.Add(1 + qubitIndex);
-                qubitsIndices.TargetQuBitIndices.Add(2 + qubitIndex);
-            }
-            else if (gate.ControlQuBits == 3)
-            {
-                // Is that even possible ??? 
-                if (Debugger.IsAttached) { Debugger.Break(); }
-                qubitsIndices.ControlQuBitIndices.Add(qubitIndex);
-                qubitsIndices.ControlQuBitIndices.Add(1 + qubitIndex);
-                qubitsIndices.ControlQuBitIndices.Add(2 + qubitIndex);
-            }
-            else
-            {
-                throw new NotSupportedException("Internal logic error: more than 3 control qubits.");
-            }
-        }
-        else
-        {
-            throw new NotSupportedException("No gates processing more than 3 qubits.");
-        }
-
-        return qubitsIndices;
     }
 }

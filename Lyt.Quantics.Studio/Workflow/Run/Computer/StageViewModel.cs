@@ -207,7 +207,7 @@ public sealed class StageViewModel : Bindable<StageView>, IDropTarget
         }
 
         if (!this.quanticsStudioModel.AddGate(
-            this.stageIndex, qubitsIndices, gate, isDrop, out string message))
+                this.stageIndex, qubitsIndices, gate, isDrop, out string message))
         {
             this.toaster.Show("Failed to Add Gate!", message, 4_000, InformationLevel.Error);
             return;

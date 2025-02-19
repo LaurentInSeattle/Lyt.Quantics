@@ -30,8 +30,8 @@ public sealed class SwapData
     {
         if( PreloadedSwaps.Count == 0)
         {
-            Load();
-            State = LoadState.UpToSixteen; 
+            // The very first load is done threaded 
+            Task.Run(() => { Load(); State = LoadState.UpToSixteen; });
         }
     }
 

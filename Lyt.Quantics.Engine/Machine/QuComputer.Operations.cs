@@ -2,7 +2,7 @@
 
 public sealed partial class QuComputer
 {
-    public bool CreateNew (out string message)
+    public bool CreateNew(out string message)
     {
         try
         {
@@ -65,7 +65,7 @@ public sealed partial class QuComputer
             }
 
             // Remove all empty stages 
-            this.PackStages(out message); 
+            this.PackStages(out message);
 
             this.IsValid = false;
             return this.Validate(out message);
@@ -95,7 +95,7 @@ public sealed partial class QuComputer
                 // This 'shortcut' becomes important at 6 qubits and above 
                 message = string.Empty;
                 return true;
-            } 
+            }
 
             this.IsValid = false;
             return this.Validate(out message);
@@ -123,6 +123,13 @@ public sealed partial class QuComputer
                 return false;
             }
 
+            if (isDrop)
+            {
+                //If isDrop is true we only have one target qubit index !
+                // This needs to be done BEFORE clearing the qubits swim lanes 
+                qubitsIndices = new (qubitsIndices.TargetQuBitIndices[0], gate);
+            }
+
             var allIndices = qubitsIndices.AllQubitIndicesSorted();
             foreach (int qubitIndex in allIndices)
             {
@@ -145,12 +152,12 @@ public sealed partial class QuComputer
             // Dont care how many removed 
             int min = allIndices.Min();
             int max = allIndices.Max();
-            for (int qubitIndex = min; qubitIndex  <= max; qubitIndex ++)
+            for (int qubitIndex = min; qubitIndex <= max; qubitIndex++)
             {
                 _ = stage.ClearAtQubit(qubitIndex);
             }
 
-            stage.AddAtQubit(this, qubitsIndices, gate, isDrop);
+            stage.AddAtQubit(this, qubitsIndices, gate);
             return true;
         }
         catch (Exception ex)
@@ -207,7 +214,7 @@ public sealed partial class QuComputer
         }
     }
 
-    public bool PackStages (out string message)
+    public bool PackStages(out string message)
     {
         try
         {
