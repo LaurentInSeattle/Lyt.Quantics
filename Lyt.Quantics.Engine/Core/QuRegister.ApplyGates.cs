@@ -59,12 +59,15 @@ public sealed partial class QuRegister
         {
             if ( i > j )
             {
-                throw new Exception("Invalid swap indices. ! ( i > j )"); 
+                // throw new Exception("Invalid swap indices. ! ( i > j )");
+                (j, i) = (i, j);
             }
 
+            // Consider using threads here when we have a lot of swaps to perform 
             var preloadedSwaps = SwapData.Swaps(this.QuBitCount, i, j);
-            foreach (var swap in preloadedSwaps)
+            for (int k = 0; k < preloadedSwaps.Count; ++k)
             {
+                var swap = preloadedSwaps[k];
                 int i1 = swap.Index1;
                 int i2 = swap.Index2;
                 Complex state1 = this.State[i1];
@@ -159,6 +162,7 @@ public sealed partial class QuRegister
 
         bool needToSwapControl = positionControl != 0;
         bool needToSwapTarget = positionTarget != 1;
+        bool cancelledSwapTarget = false;
         bool needToSwap = needToSwapControl || needToSwapTarget;
         if (needToSwap)
         {
@@ -169,7 +173,15 @@ public sealed partial class QuRegister
 
             if (needToSwapTarget)
             {
-                this.Swap(1, positionTarget);
+                // Make sure we do not swap twice with cancelling the previous swap 
+                if ((positionTarget == 0) && (positionControl == 1))
+                {
+                    cancelledSwapTarget = true;
+                }
+                else
+                {
+                    this.Swap(1, positionTarget);
+                } 
             }
         }
 
@@ -178,7 +190,7 @@ public sealed partial class QuRegister
         if (needToSwap)
         {
             // Must swap in reverse order 
-            if (needToSwapTarget)
+            if (needToSwapTarget && ! cancelledSwapTarget)
             {
                 this.Swap(1, positionTarget);
             }

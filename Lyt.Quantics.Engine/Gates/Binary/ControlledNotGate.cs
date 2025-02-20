@@ -6,6 +6,7 @@ public sealed class ControlledNotGate : ControlledGate
 {
     // The CNOT (or controlled Pauli-X) gate can be described as the gate that maps the
     // basis states:  |a,b> => |a, a xor b> 
+    public new const string Key = "CX";
 
     private static readonly Matrix<Complex> ControlledNotMatrix;
 
@@ -36,7 +37,7 @@ public sealed class ControlledNotGate : ControlledGate
 
     public override string AlternateName => "CNOT";
 
-    public override string CaptionKey { get; set; } = "CX";
+    public override string CaptionKey { get; set; } = ControlledNotGate.Key;
 
     public override GateCategory Category => GateCategory.BinaryControlled;
 }

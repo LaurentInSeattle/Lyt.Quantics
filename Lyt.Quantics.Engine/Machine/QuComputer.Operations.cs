@@ -125,9 +125,16 @@ public sealed partial class QuComputer
 
             if (isDrop)
             {
-                //If isDrop is true we only have one target qubit index !
+                // If isDrop is true we only have one target qubit index !
                 // This needs to be done BEFORE clearing the qubits swim lanes 
+                // If gate is FCX, dont change it just yet so that indices are properly set
                 qubitsIndices = new (qubitsIndices.TargetQuBitIndices[0], gate);
+
+                // if we dropped a Flipped CNOT, change it to a CNOT gate
+                if (gate.CaptionKey == FlippedControlledNotGate.Key)
+                {
+                    gate = GateFactory.Produce(ControlledNotGate.Key);
+                } 
             }
 
             var allIndices = qubitsIndices.AllQubitIndicesSorted();

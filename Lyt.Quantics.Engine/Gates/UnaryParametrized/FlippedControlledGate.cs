@@ -1,5 +1,6 @@
 ﻿namespace Lyt.Quantics.Engine.Gates.UnaryParametrized;
 
+/// <summary> Only used in Unit Test. Keep ! </summary>
 public class FlippedControlledGate : Gate
 {
     // => See additional comments in ControlledGate

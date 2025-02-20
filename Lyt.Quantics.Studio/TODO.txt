@@ -15,7 +15,6 @@ TODO: Engine:
 -------------
 
 	Priorities:	
-		BUG: "Flipped" Controlled Gates not working properly (Still need them?)
 
 	??? NEEDED:  Include Author in computer metadata
 	

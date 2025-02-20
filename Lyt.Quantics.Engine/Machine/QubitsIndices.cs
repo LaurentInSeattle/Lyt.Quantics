@@ -34,6 +34,11 @@ public sealed class QubitsIndices
                 this.TargetQuBitIndices.Add(dropIndex);
                 this.TargetQuBitIndices.Add(1 + dropIndex);
             }
+            else if (gate is FlippedControlledNotGate)
+            {
+                this.TargetQuBitIndices.Add(dropIndex);
+                this.ControlQuBitIndices.Add(1 + dropIndex);
+            }
             else
             {
                 this.ControlQuBitIndices.Add(dropIndex);

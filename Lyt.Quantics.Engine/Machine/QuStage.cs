@@ -356,37 +356,33 @@ public sealed class QuStage
                         continue;
                     }
 
-                    if (stageOperator.StageOperatorGate.IsUnary)
+                    var gate = stageOperator.StageOperatorGate;
+                    var controls = stageOperator.ControlQuBitIndices;
+                    var targets = stageOperator.TargetQuBitIndices;
+                    if (gate.IsUnary)
                     {
                         // All unary gates 
-                        register.ApplyUnaryGateAtPosition(
-                            stageOperator.StageOperatorGate, subStageIndex);
+                        register.ApplyUnaryGateAtPosition(gate, subStageIndex);
                     }
-                    else if (stageOperator.StageOperatorGate.IsBinary)
+                    else if (gate.IsBinary)
                     {
-                        if (stageOperator.StageOperatorGate is SwapGate swapGate)
+                        if (gate is SwapGate swapGate)
                         {
                             // Swap gate is given a special implementation and not a controlled gate in
                             // our C# code. It is given two targets since the gate is symetrical. 
-                            register.GeneralSwap(
-                                stageOperator.TargetQuBitIndices[0],
-                                stageOperator.TargetQuBitIndices[1]);
+                            register.GeneralSwap(targets[0], targets[1]);
                         }
-                        else if (stageOperator.StageOperatorGate is ControlledZGate controlledZGate)
+                        else if (gate is ControlledZGate controlledZGate)
                         {
                             // ControlledZGate is also given a special implementation:
                             // It is given two targets qubits since the gate is also symetrical. 
                             register.ApplyBinaryControlledGateAtPositions(
-                                controlledZGate,
-                                stageOperator.TargetQuBitIndices[0],
-                                stageOperator.TargetQuBitIndices[1]);
+                                controlledZGate, targets[0], targets[1]);
                         }
-                        else if (stageOperator.StageOperatorGate is ControlledGate controlledGate)
+                        else if (gate is ControlledGate controlledGate)
                         {
                             register.ApplyBinaryControlledGateAtPositions(
-                                controlledGate,
-                                stageOperator.ControlQuBitIndices[0],
-                                stageOperator.TargetQuBitIndices[0]);
+                                controlledGate, controls[0], targets[0]);
                         }
                         else
                         {
@@ -394,34 +390,25 @@ public sealed class QuStage
                         }
 
                     }
-                    else if (stageOperator.StageOperatorGate.IsTernary)
+                    else if (gate.IsTernary)
                     {
                         // All ternary gates are Controlled of Binary Controlled or Controlled Swap 
-                        if (stageOperator.StageOperatorGate is ControlledGate controlledGate)
+                        if (gate is ControlledGate controlledGate)
                         {
                             if (controlledGate is ControlledControlledZ)
                             {
                                 register.ApplyTernaryControlledGateAtPositions(
-                                    controlledGate,
-                                    stageOperator.TargetQuBitIndices[0],
-                                    stageOperator.TargetQuBitIndices[1],
-                                    stageOperator.TargetQuBitIndices[2]);
+                                    controlledGate, targets[0], targets[1], targets[2]);
                             }
                             else if (controlledGate is ToffoliGate)
                             {
                                 register.ApplyTernaryControlledGateAtPositions(
-                                    controlledGate,
-                                    stageOperator.ControlQuBitIndices[0],
-                                    stageOperator.ControlQuBitIndices[1],
-                                    stageOperator.TargetQuBitIndices[0]);
+                                    controlledGate, controls[0], controls[1], targets[0]);
                             }
                             else if (controlledGate is FredkinGate)
                             {
                                 register.ApplyTernaryControlledGateAtPositions(
-                                    controlledGate,
-                                    stageOperator.ControlQuBitIndices[0],
-                                    stageOperator.TargetQuBitIndices[0],
-                                    stageOperator.TargetQuBitIndices[1]);
+                                    controlledGate, controls[0], targets[0], targets[1]);
                             }
                             else
                             {
