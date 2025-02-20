@@ -15,7 +15,7 @@ public sealed class SwapGate : Gate
         //    { 0, 0, 1, 0 },
         //    { 0, 1, 0, 0 },
         //    { 0, 0, 0, 1 },
-        SwapMatrix = Matrix<Complex>.Build.Sparse(4, 4, Complex.Zero);
+        SwapMatrix = Matrix<Complex>.Build.Dense(4, 4, Complex.Zero);
         SwapMatrix.At(0, 0, Complex.One);
         SwapMatrix.At(3, 3, Complex.One);
         SwapMatrix.At(1, 2, Complex.One);

@@ -25,7 +25,7 @@ public sealed class ToffoliGate : ControlledGate
         //    { 0, 0, 0, 0 , 0, 0, 0, 1},
         //    { 0, 0, 0, 0 , 0, 0, 1, 0},
 
-        ToffoliMatrix = Matrix<Complex>.Build.Sparse(8, 8, Complex.Zero);
+        ToffoliMatrix = Matrix<Complex>.Build.Dense(8, 8, Complex.Zero);
         for (int i = 0; i < 6; i++)
         {
             ToffoliMatrix.At(i, i, Complex.One);

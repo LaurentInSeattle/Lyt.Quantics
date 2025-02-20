@@ -8,7 +8,7 @@ public sealed class AntiControlledNotGate : Gate
 
     static AntiControlledNotGate()
     {
-        AntiControlledNotMatrix = Matrix<Complex>.Build.Sparse(4, 4, Complex.Zero);
+        AntiControlledNotMatrix = Matrix<Complex>.Build.Dense(4, 4, Complex.Zero);
         //    { 0, 1, 0, 0 },
         //    { 1, 0, 0, 0 },
         //    { 0, 0, 1, 0 },

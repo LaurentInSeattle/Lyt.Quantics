@@ -22,7 +22,7 @@ public sealed class SX_Gate : Gate
         //        { 1 - i , 1 + i } 
         var OnePlusIota = new Complex(1, 1) / 2.0;
         var OneMinusIota = new Complex(1, -1) / 2.0;
-        sX_GateMatrix = Matrix<Complex>.Build.Sparse(2, 2, Complex.Zero);
+        sX_GateMatrix = Matrix<Complex>.Build.Dense(2, 2, Complex.Zero);
         sX_GateMatrix.At(0, 0, OnePlusIota);
         sX_GateMatrix.At(0, 1, OneMinusIota);
         sX_GateMatrix.At(1, 0, OneMinusIota);

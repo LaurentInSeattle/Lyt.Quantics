@@ -26,7 +26,7 @@ public sealed class T_Gate : Gate
         //{ 1, 0 },
         //{ 0, new Complex ( SqrtOfTwo / 2.0 , SqrtOfTwo / 2.0 )}
         var complex = new Complex(SqrtOfTwo / 2.0, SqrtOfTwo / 2.0); 
-        T_GateMatrix = Matrix<Complex>.Build.Sparse(2, 2, Complex.Zero);
+        T_GateMatrix = Matrix<Complex>.Build.Dense(2, 2, Complex.Zero);
         T_GateMatrix.At(0, 0, Complex.One);
         T_GateMatrix.At(1, 1, complex);
     }

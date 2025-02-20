@@ -20,7 +20,7 @@ public sealed class HadamardGate : Gate
     {
         // { 1 / SqrtOfTwo,  1 / SqrtOfTwo },
         // { 1 / SqrtOfTwo, -1 / SqrtOfTwo }
-        var matrix = Matrix<Complex>.Build.Sparse(2, 2, Complex.One);
+        var matrix = Matrix<Complex>.Build.Dense(2, 2, Complex.One);
         matrix.At(1, 1, -Complex.One);
         HadamardGateMatrix = matrix.Divide(SqrtOfTwo);
     }

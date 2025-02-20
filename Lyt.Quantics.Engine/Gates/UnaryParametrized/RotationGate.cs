@@ -51,7 +51,7 @@ public class RotationGate : Gate
         Complex sinComplex = sinReal;
         Complex iotaSin = new(0, sinReal);
 
-        this.matrix = Matrix<Complex>.Build.Sparse(2, 2, Complex.Zero);
+        this.matrix = Matrix<Complex>.Build.Dense(2, 2, Complex.Zero);
 
         switch (this.Axis)
         {

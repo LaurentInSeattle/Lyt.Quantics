@@ -14,7 +14,7 @@ public sealed class FlippedControlledNotGate : Gate
         //    { 0, 0, 0, 1 },
         //    { 0, 0, 1, 0 },
         //    { 0, 1, 0, 0 },
-        FlippedControlledNotMatrix = Matrix<Complex>.Build.Sparse(4, 4, Complex.Zero);
+        FlippedControlledNotMatrix = Matrix<Complex>.Build.Dense(4, 4, Complex.Zero);
         FlippedControlledNotMatrix.At(0, 0, Complex.One);
         FlippedControlledNotMatrix.At(2, 2, Complex.One);
         FlippedControlledNotMatrix.At(1, 3, Complex.One);

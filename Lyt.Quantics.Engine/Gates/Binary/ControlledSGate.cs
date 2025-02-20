@@ -13,7 +13,7 @@ public sealed class ControlledSGate : ControlledGate
 
     static ControlledSGate()
     {
-        ControlledSMatrix = Matrix<Complex>.Build.Sparse(4, 4, Complex.Zero);
+        ControlledSMatrix = Matrix<Complex>.Build.Dense(4, 4, Complex.Zero);
         //    { 1, 0, 0,  0 },
         //    { 0, 1, 0,  0 },
         //    { 0, 0, 1,  0 },

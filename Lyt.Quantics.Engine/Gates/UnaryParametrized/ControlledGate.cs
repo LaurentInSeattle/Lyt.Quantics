@@ -48,7 +48,7 @@ public class ControlledGate : Gate
         int baseDimension = baseGate.MatrixDimension;
         int dimension = 2 * baseDimension;
         int delta = dimension - baseDimension;
-        this.matrix = Matrix<Complex>.Build.Sparse(dimension, dimension, Complex.Zero);
+        this.matrix = Matrix<Complex>.Build.Dense(dimension, dimension, Complex.Zero);
 
         // Identity part 
         for (int diagonal = 0; diagonal < delta; ++diagonal)

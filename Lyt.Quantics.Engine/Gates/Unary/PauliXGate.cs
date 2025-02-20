@@ -16,7 +16,7 @@ public sealed class PauliXGate : Gate
     {
         //  { 0, 1 },
         //  { 1, 0 }
-        PauliXGateMatrix = Matrix<Complex>.Build.Sparse(2, 2, Complex.One);
+        PauliXGateMatrix = Matrix<Complex>.Build.Dense(2, 2, Complex.One);
         PauliXGateMatrix.At(0, 0, Complex.Zero);
         PauliXGateMatrix.At(1, 1, Complex.Zero);
     }

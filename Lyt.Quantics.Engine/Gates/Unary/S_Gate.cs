@@ -16,7 +16,7 @@ public sealed class S_Gate : Gate
     {
         //  { 1,  0 },
         //  { 0,  Complex.ImaginaryOne}
-        S_GateMatrix = Matrix<Complex>.Build.Sparse(2, 2, Complex.Zero);
+        S_GateMatrix = Matrix<Complex>.Build.Dense(2, 2, Complex.Zero);
         S_GateMatrix.At(0, 0, Complex.One);
         S_GateMatrix.At(1, 1, Complex.ImaginaryOne);
     }

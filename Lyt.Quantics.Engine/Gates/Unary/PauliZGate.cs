@@ -14,7 +14,7 @@ public sealed class PauliZGate : Gate
     {
         //  { 1,  0 },
         //  { 0, -1 }
-        PauliZGateMatrix = Matrix<Complex>.Build.Sparse(2, 2, Complex.Zero);
+        PauliZGateMatrix = Matrix<Complex>.Build.Dense(2, 2, Complex.Zero);
         PauliZGateMatrix.At(0, 0, Complex.One);
         PauliZGateMatrix.At(1, 1, -Complex.One);
     }

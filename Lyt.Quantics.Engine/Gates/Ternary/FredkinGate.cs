@@ -24,7 +24,7 @@ public sealed class FredkinGate : ControlledGate
         //    { 0, 0, 0, 0 , 0, 1, 0, 0},
         //    { 0, 0, 0, 0 , 0, 0, 0, 1},
 
-        FredkinMatrix = Matrix<Complex>.Build.Sparse(8, 8, Complex.Zero);
+        FredkinMatrix = Matrix<Complex>.Build.Dense(8, 8, Complex.Zero);
         for (int i = 0; i < 5; i++)
         {
             FredkinMatrix.At(i, i, Complex.One);

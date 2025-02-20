@@ -14,7 +14,7 @@ public sealed class PauliYGate : Gate
     {
         //        { 0,                    -Complex.ImaginaryOne },
        //         { Complex.ImaginaryOne,  0 }
-        PauliYGateMatrix = Matrix<Complex>.Build.Sparse(2, 2, Complex.Zero);
+        PauliYGateMatrix = Matrix<Complex>.Build.Dense(2, 2, Complex.Zero);
         PauliYGateMatrix.At(0, 1, -Complex.ImaginaryOne);
         PauliYGateMatrix.At(1, 0, Complex.ImaginaryOne);
     }
