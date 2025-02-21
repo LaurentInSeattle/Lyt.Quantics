@@ -57,12 +57,12 @@ public sealed partial class QsModel : ModelBase
         keys.Sort();
         keys.Reverse();
         var filteredBitValuesProbabilities = new Tuple<string, double, int>[keys.Count];
-        int index = 0; 
+        int index = 0;
         foreach (string key in keys)
         {
             double value = reducedBitValuesProbabilities[key];
-            filteredBitValuesProbabilities[index] = new Tuple<string, double,int>(key, value, 0);
-            ++index; 
+            filteredBitValuesProbabilities[index] = new Tuple<string, double, int>(key, value, 0);
+            ++index;
         }
 
         return filteredBitValuesProbabilities;
@@ -149,11 +149,38 @@ public sealed partial class QsModel : ModelBase
 
     public bool AddGate(int stageIndex, QubitsIndices qubitsIndices, Gate gate, bool isDrop, out string message)
     {
+        if (gate is AntiControlledNotGate)
+        {
+            return this.AddAntiControlledNotGate(stageIndex, qubitsIndices, isDrop, out message);
+        }
+
         bool status = this.QuComputer.AddGate(stageIndex, qubitsIndices, gate, isDrop, out message);
         if (status)
         {
             this.IsDirty = true;
             this.Messenger.Publish(MakeStageChanged(stageIndex));
+        }
+        else
+        {
+            this.PublishError(message);
+        }
+
+        return status;
+    }
+
+    public bool AddAntiControlledNotGate(int stageIndex, QubitsIndices qubitsIndices, bool isDrop, out string message)
+    {
+        var xGate1 = GateFactory.Produce(PauliXGate.Key);
+        bool status1 = this.QuComputer.AddGate(stageIndex, qubitsIndices, xGate1, isDrop, out message);
+        var gate = GateFactory.Produce(ControlledNotGate.Key);
+        bool status2 = this.QuComputer.AddGate(1 + stageIndex, qubitsIndices, gate, isDrop, out message);
+        var xGate2 = GateFactory.Produce(PauliXGate.Key);
+        bool status3 = this.QuComputer.AddGate(2 + stageIndex, qubitsIndices, xGate2, isDrop, out message);
+        bool status = status1 && status2 && status3;
+        if (status)
+        {
+            this.IsDirty = true;
+            this.Messenger.Publish(MakeModelLoaded());
         }
         else
         {
@@ -205,7 +232,7 @@ public sealed partial class QsModel : ModelBase
         return false;
     }
 
-    public bool Run(bool runUsingKroneckerProduct, bool runAsync = false )
+    public bool Run(bool runUsingKroneckerProduct, bool runAsync = false)
     {
         this.QuComputer.RunUsingKroneckerProduct = runUsingKroneckerProduct;
         bool status = this.QuComputer.Validate(out string message);
@@ -225,7 +252,7 @@ public sealed partial class QsModel : ModelBase
                         // Fire and forget the calculation task 
                         _ = Task.Run(() => this.QuComputer.RunAsync(checkExpected: false, PublishUpdate));
                         return true;
-                    } 
+                    }
                     else
                     {
                         status = this.QuComputer.Run(checkExpected: false, PublishUpdate, out message);
@@ -243,7 +270,7 @@ public sealed partial class QsModel : ModelBase
         return false;
     }
 
-    public async Task<Tuple<bool, string>> Break () => await this.QuComputer.Break();
+    public async Task<Tuple<bool, string>> Break() => await this.QuComputer.Break();
 
     private void PublishError(string message)
         => this.Messenger.Publish(new ModelUpdateErrorMessage(message));

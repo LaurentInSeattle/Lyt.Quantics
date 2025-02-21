@@ -21,7 +21,7 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>, IDropTar
         // Subscribtion processed locally 
         this.Messenger.Subscribe<ToolbarCommandMessage>(this.OnToolbarCommandMessage);
         this.Messenger.Subscribe<QubitChangedMessage>(this.OnQubitChangedMessage);
-        this.Messenger.Subscribe<ModelStructureUpdateMessage>(this.OnModelStructureUpdateMessage);
+        this.Messenger.Subscribe<ModelStructureUpdateMessage>(this.OnModelStructureUpdateMessage, withUiDispatch: true);
         this.Messenger.Subscribe<ModelResultsUpdateMessage>(this.OnModelResultsUpdateMessage, withUiDispatch: true);
         this.Messenger.Subscribe<ModelUpdateErrorMessage>(this.OnModelUpdateErrorMessage);
         this.Messenger.Subscribe<GateEditMessage>(this.OnGateEditMessage);
@@ -215,7 +215,9 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>, IDropTar
         {
             if (message.ModelLoaded)
             {
-                Dispatch.OnUiThread(() => this.InitializeModelOnUi(), DispatcherPriority.ApplicationIdle);
+                Dispatch.OnUiThread(
+                    () => this.InitializeModelOnUi(forceReload:true), 
+                    DispatcherPriority.ApplicationIdle);
                 return;
             }
 
@@ -312,13 +314,16 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>, IDropTar
         }
     }
 
-    private void InitializeModelOnUi()
+    private void InitializeModelOnUi(bool forceReload = false)
     {
-        if (!this.isLoaded)
+        if (!forceReload)
         {
-            this.NeedsToLoadModel = true;
-            return;
-        }
+            if (!this.isLoaded)
+            {
+                this.NeedsToLoadModel = true;
+                return;
+            }
+        } 
 
         var computer = this.quanticsStudioModel.QuComputer;
         int qubitCount = computer.QuBitsCount;
