@@ -172,10 +172,28 @@ public sealed partial class QsModel : ModelBase
     {
         var xGate1 = GateFactory.Produce(PauliXGate.Key);
         bool status1 = this.QuComputer.AddGate(stageIndex, qubitsIndices, xGate1, isDrop, out message);
+        if ( ! status1)
+        {
+            this.PublishError(message);
+            return false ;
+        }
+
         var gate = GateFactory.Produce(ControlledNotGate.Key);
         bool status2 = this.QuComputer.AddGate(1 + stageIndex, qubitsIndices, gate, isDrop, out message);
+        if (!status2)
+        {
+            this.PublishError(message);
+            return false;
+        }
+
         var xGate2 = GateFactory.Produce(PauliXGate.Key);
         bool status3 = this.QuComputer.AddGate(2 + stageIndex, qubitsIndices, xGate2, isDrop, out message);
+        if (!status3)
+        {
+            this.PublishError(message);
+            return false;
+        }
+
         bool status = status1 && status2 && status3;
         if (status)
         {

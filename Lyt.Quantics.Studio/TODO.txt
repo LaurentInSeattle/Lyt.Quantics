@@ -25,6 +25,8 @@ TODO: Studio :
 
 	Priorities:	
 
+		BUG: Drop hint not visible anymore after adding an ACX gate 
+
 		BUG: QFT 2 bits broken 
 	
 	FEATURE: Allow editing angles on controlled rotation and phase gates			
