@@ -2,10 +2,11 @@ namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
 
 public partial class StageView : BehaviorEnabledUserControl
 {
-    private static readonly DropTargetView dropTargetView;
+    public static readonly DropTargetView DropTargetView;
+
     private static StageView? dropTargetViewOwner;
 
-    static StageView() => dropTargetView = new DropTargetView();
+    static StageView() => DropTargetView = new DropTargetView();
 
     public static void HideDropTarget()
     {
@@ -13,7 +14,7 @@ public partial class StageView : BehaviorEnabledUserControl
         {
             if (dropTargetViewOwner.DataContext is StageViewModel stageViewModel)
             {
-                stageViewModel.HideDropTarget(dropTargetView);
+                stageViewModel.HideDropTarget(DropTargetView);
             }
         }
 
@@ -33,7 +34,7 @@ public partial class StageView : BehaviorEnabledUserControl
             HideDropTarget();
         }
 
-        stageViewModel.ShowDropTarget(dropTargetView, position);
+        stageViewModel.ShowDropTarget(DropTargetView, position);
         dropTargetViewOwner = stageView;
 
         return true;

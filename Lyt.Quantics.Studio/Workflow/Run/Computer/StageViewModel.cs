@@ -159,8 +159,10 @@ public sealed class StageViewModel : Bindable<StageView>, IDropTarget
 
     public void ShowDropTarget(DropTargetView dropTargetView, Point point)
     {
+        // Debug.WriteLine("ShowDropTarget");
         if (!this.IsBound)
         {
+            // Debug.WriteLine("ShowDropTarget: Not Bound");
             return;
         }
 
@@ -177,9 +179,9 @@ public sealed class StageViewModel : Bindable<StageView>, IDropTarget
         if (quBitIndex == -1)
         {
             // outside qubit area: reject
+            // Debug.WriteLine("ShowDropTarget: Reject");
             return;
         }
-
 
         // Debug.WriteLine("Drop View at index: " + qubitIndex.ToString());
         dropTargetView.SetValue(Grid.RowProperty, quBitIndex);
@@ -204,6 +206,11 @@ public sealed class StageViewModel : Bindable<StageView>, IDropTarget
                     4_000, InformationLevel.Warning);
                 return;
             }
+        }
+
+        if ( isDrop)
+        {
+            this.HideDropTarget(StageView.DropTargetView);
         }
 
         if (!this.quanticsStudioModel.AddGate(
