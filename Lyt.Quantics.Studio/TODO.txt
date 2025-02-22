@@ -2,7 +2,8 @@
 TODO: Framework: 
 ----------------
 
-	Reorganize / classify assemblies between those Avalonia dependant and those independant 
+	Reorganize / classify assemblies between those Avalonia dependant and those independant
+		Add interfaces if needed (Ex: IPropertyStore for Validation)
 		Model, Persistence, Search, StateMachine, Validation are independant.
 
 	Move Drag / Drop and other behaviors from Q-Studio to Framework 
@@ -25,13 +26,12 @@ TODO: Studio :
 
 	Priorities:	
 
-		BUG: Drop hint not visible anymore after adding an ACX gate 
-
-		BUG: QFT 2 bits broken 
+		BUG: Amplitudes histogram shows up after loading another model. (No repro, fixed?)
+		BUG: QFT 2 bits sample broken 
 	
 	FEATURE: Allow editing angles on controlled rotation and phase gates			
 
-	BUG: Amplitudes histogram shows up after loading another model. (No repro, fixed?)
+	NTH: Ability to give names to qubits (Ex: Alice, Bob for teleport.)
 
 	NTH: Show Bloch spheres (or their projections)
 		See: https://quantumcomputing.stackexchange.com/questions/10116/how-to-get-the-bloch-sphere-angles-given-an-arbitrary-qubit
@@ -39,8 +39,6 @@ TODO: Studio :
 			  Yaw => Phi = Phase ( Beta * Conjugate( Alpha ) / ( |Alpha| * |Beta| ) )
 
 	NTH: Show "wave function" in Amplitude view (See in QRyd)
-
-	NTH: Ability to give names to qubits (Ex: Alice, Bob for teleport.)
 
 	NTH: Ability to Insert a stage 
 

@@ -59,21 +59,57 @@ public sealed partial class QuRegister
         {
             if ( i > j )
             {
-                // throw new Exception("Invalid swap indices. ! ( i > j )");
                 (j, i) = (i, j);
             }
 
-            // Consider using threads here when we have a lot of swaps to perform 
             var preloadedSwaps = SwapData.Swaps(this.QuBitCount, i, j);
-            for (int k = 0; k < preloadedSwaps.Count; ++k)
+
+            void ProcessStateVector(int from, int to)
             {
-                var swap = preloadedSwaps[k];
-                int i1 = swap.Index1;
-                int i2 = swap.Index2;
-                Complex state1 = this.State[i1];
-                Complex state2 = this.State[i2];
-                this.State[i1] = state2;
-                this.State[i2] = state1;
+                for (int k = from; k < to; ++k)
+                {
+                    var swap = preloadedSwaps[k];
+                    int i1 = swap.Index1;
+                    int i2 = swap.Index2;
+                    Complex state1 = this.State[i1];
+                    Complex state2 = this.State[i2];
+                    this.State[i1] = state2;
+                    this.State[i2] = state1;
+                }
+            }
+
+            int swapCount = preloadedSwaps.Count; 
+            if (this.QuBitCount >= QuRegister.ThreadedRunAtQubits)
+            {
+                // Speed up the processing of the state vector using threads (aka tasks) 
+                // 1 : Setup
+                int taskCount = 4; // Consider: Calculated from Environment.ProcessorCount;
+                                    
+                int all = swapCount;
+                int half = all / 2;
+                int quart = half / 2;
+                int[] indices = [0, quart, half, half + quart, all];
+                var tasks = new Task[taskCount];
+                for (int taskIndex = 0; taskIndex < taskCount; ++taskIndex)
+                {
+                    int from = indices[taskIndex];
+                    int to = indices[1 + taskIndex];
+                    var task = new Task(() => ProcessStateVector(from, to));
+                    tasks[taskIndex] = task;
+                }
+
+                // 2 : Start all tasks
+                for (int taskIndex = 0; taskIndex < taskCount; ++taskIndex)
+                {
+                    tasks[taskIndex].Start();
+                }
+
+                // 3 : Wait for completion 
+                Task.WaitAll(tasks);
+            }
+            else
+            {
+                ProcessStateVector(from: 0, to: swapCount);
             }
         }
     }
