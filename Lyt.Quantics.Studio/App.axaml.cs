@@ -42,11 +42,14 @@ public partial class App : ApplicationBase
             new Tuple<Type, Type>(typeof(IRandomizer), typeof(Randomizer)),
             new Tuple<Type, Type>(typeof(IAnimationService), typeof(AnimationService)),
         ],
-        singleInstanceRequested: true, 
-        splashImageUri: new Uri("avares://Lyt.Quantics.Studio/Assets/Images/Splash.jpg"))
-    {
-        // This should be empty, use the OnStartup override
-    }
+        singleInstanceRequested: true,
+        // splashImageUri: new Uri("avares://Lyt.Quantics.Studio/Assets/Images/Splash.jpg"))
+        splashImageUri: null, 
+        appSplashWindow: new SplashWindow() 
+        )
+        {
+            // This should be empty, use the OnStartup override
+        }
 
     public bool RestartRequired { get; set; }
 

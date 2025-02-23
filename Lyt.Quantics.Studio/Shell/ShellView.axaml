@@ -22,7 +22,7 @@
         Background="Transparent"
         >
 		<Grid.RowDefinitions>
-			<RowDefinition Height="{Binding TitleBarHeight, FallbackValue=42}" MaxHeight="42" />
+			<RowDefinition Height="{Binding TitleBarHeight}" MaxHeight="42" />
 			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
 		<Rectangle
