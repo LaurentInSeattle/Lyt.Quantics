@@ -8,8 +8,6 @@ TODO: Framework:
 
 	Move Drag / Drop and other behaviors from Q-Studio to Framework 
 
-	Splash screen support 
-
 	NTH: Ability to drag modal dialogs 
 
 	NTH: Validation should not directly depends on MVVM but use a Get/Set Interface 
