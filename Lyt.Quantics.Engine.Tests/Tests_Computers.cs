@@ -48,6 +48,8 @@ public sealed class Tests_Computers
     {
         try
         {
+            SwapData.Load();
+
             static void BuildAndRun(
                 QuComputer computer, bool runUsingKroneckerProduct, QuRegister? initialState = null)
             {
@@ -153,6 +155,8 @@ public sealed class Tests_Computers
     {
         try
         {
+            SwapData.Load(); 
+
             static QuComputer ValidateAndBuild(string resourceFileName)
             {
                 Assert.IsFalse(string.IsNullOrWhiteSpace(resourceFileName));

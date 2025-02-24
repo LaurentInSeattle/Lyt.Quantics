@@ -221,7 +221,7 @@ public sealed class Tests_Matrices
     [TestMethod]
     public void Test_Fast_Swaps()
     {
-        SwapData.Poke(); 
+        SwapData.Load(); 
 
         for (int qubitCount = 3; qubitCount <= 8; qubitCount++)
         {

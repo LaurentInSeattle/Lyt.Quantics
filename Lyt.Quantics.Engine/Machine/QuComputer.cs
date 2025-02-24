@@ -1,15 +1,11 @@
 ﻿namespace Lyt.Quantics.Engine.Machine;
 
-using MathNet.Numerics.LinearAlgebra;
-using System.Threading.Tasks;
-
 public sealed partial class QuComputer
 {
     private const string DefaultName = "< Untitled >";
     private const string DefaultDescription = "< Undocumented >";
     private const string DefaultComment = "< No comments >";
 
-    private int quBitsCount;
     private bool isValid;
     private bool isBuilt;
     private bool isPrepared;
@@ -43,15 +39,7 @@ public sealed partial class QuComputer
 
     public string Comment { get; set; } = DefaultComment;
 
-    public int QuBitsCount 
-    {
-        get => this.quBitsCount; 
-        set
-        {
-            this.quBitsCount = value;
-            SwapData.OnQuBitCountChanged(this.quBitsCount);
-        }
-    }
+    public int QuBitsCount { get; set; } 
 
     public List<QuState> InitialStates { get; set; } = [];
 

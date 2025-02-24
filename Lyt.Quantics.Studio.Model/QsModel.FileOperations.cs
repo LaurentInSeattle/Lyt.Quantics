@@ -98,6 +98,7 @@ public sealed partial class QsModel : ModelBase
 
     private void FinalizeModelCreation ()
     {
+        SwapData.OnQuBitCountChanged(this.QuComputer.QuBitsCount);
         _ = this.QuComputer.Reset(out string _);
         this.InitializeMeasureStates();
         this.IsDirty = false;

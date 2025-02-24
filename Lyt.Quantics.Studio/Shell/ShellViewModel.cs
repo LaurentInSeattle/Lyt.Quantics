@@ -207,7 +207,7 @@ public sealed class ShellViewModel : Bindable<ShellView>
         {
             try
             {
-                SwapData.Load();
+                SwapData.Poke();
                 Dispatch.OnUiThread(() =>
                 {
                     this.Profiler.MemorySnapshot("Swap Data Loaded");

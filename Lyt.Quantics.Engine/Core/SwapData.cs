@@ -31,9 +31,15 @@ public sealed class SwapData
         if( PreloadedSwaps.Count == 0)
         {
             // The very first load is done threaded 
-            Task.Run(() => { Load(); State = LoadState.UpToSixteen; });
+            Task.Run(() => 
+            { 
+                State = LoadState.UpToSixteen; 
+                Load(); 
+            });
         }
     }
+
+    public static void Poke() { /* will trigger the static CTor */ }
 
     public static void Load(string filename = Swap_3_16_FileName)
         => SwapData.PreloadedSwaps = LoadInto(filename); 
@@ -85,13 +91,19 @@ public sealed class SwapData
     {
         try
         {
+            Debug.WriteLine("Loading: " + filename);
+            var begin = DateTime.Now; 
             byte[] swapBinaryData = SerializationUtilities.LoadEmbeddedBinaryResource(filename, out string? _);
             string read = CompressionUtilities.DecompressToString(swapBinaryData);
             var loaded = SerializationUtilities.Deserialize<NestedDictionary<int, int, int, List<Swap>>>(read);
+
+            var end = DateTime.Now;
+            Debug.WriteLine("Loading: " + filename + "  " + (end-begin).TotalSeconds.ToString() + " s.");
             return loaded;
         }
         catch (Exception ex)
         {
+            State = LoadState.Nothing; 
             Debug.WriteLine("Failed to load swap data; \n" + ex);
             throw;
         }
@@ -103,9 +115,6 @@ public sealed class SwapData
         PreloadedSwaps_18_1 = [];
         PreloadedSwaps_18_2 = [];
     }
-
-    // For unit tests only 
-    public static void Poke() { /* will trigger the static CTor */ }
 
     public static List<Swap> Swaps(int qubit, int i, int j)
     {

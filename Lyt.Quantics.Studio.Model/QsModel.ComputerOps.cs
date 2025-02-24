@@ -73,6 +73,7 @@ public sealed partial class QsModel : ModelBase
         bool status = this.QuComputer.AddQubitAtEnd(out message);
         if (status)
         {
+            SwapData.OnQuBitCountChanged(this.QuComputer.QuBitsCount);
             this.QuBitMeasureStates.Add(true);
             this.IsDirty = true;
             this.Messenger.Publish(MakeQubitsChanged());
@@ -90,6 +91,7 @@ public sealed partial class QsModel : ModelBase
         bool status = this.QuComputer.RemoveLastQubit(out message);
         if (status)
         {
+            SwapData.OnQuBitCountChanged(this.QuComputer.QuBitsCount);
             this.QuBitMeasureStates.RemoveAt(this.QuBitMeasureStates.Count - 1);
             this.IsDirty = true;
             this.Messenger.Publish(MakeQubitsChanged());
