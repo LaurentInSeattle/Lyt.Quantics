@@ -1,6 +1,7 @@
 ﻿namespace Lyt.Quantics.Engine.Core;
 
-public sealed record class Swap(int Index1, int Index2);
+/// <summary> Significantly faster as struct than using a sealed class  </summary>
+public record struct Swap(int Index1, int Index2);
 
 public sealed class SwapData
 {
@@ -20,11 +21,11 @@ public sealed class SwapData
 
     public static LoadState State { get; private set; } = LoadState.Nothing; 
 
-    private static NestedDictionary<int, int, int, List<Swap>> PreloadedSwaps { get; set; } = [];
+    private static NestedDictionary<int, int, int, Swap[]> PreloadedSwaps { get; set; } = [];
 
-    private static NestedDictionary<int, int, int, List<Swap>> PreloadedSwaps_18_0 { get; set; } = [];
-    private static NestedDictionary<int, int, int, List<Swap>> PreloadedSwaps_18_1 { get; set; } = [];
-    private static NestedDictionary<int, int, int, List<Swap>> PreloadedSwaps_18_2 { get; set; } = [];
+    private static NestedDictionary<int, int, int, Swap[]> PreloadedSwaps_18_0 { get; set; } = [];
+    private static NestedDictionary<int, int, int, Swap[]> PreloadedSwaps_18_1 { get; set; } = [];
+    private static NestedDictionary<int, int, int, Swap[]> PreloadedSwaps_18_2 { get; set; } = [];
 
     static SwapData()
     {
@@ -87,18 +88,18 @@ public sealed class SwapData
         }
     }
 
-    private static NestedDictionary<int, int, int, List<Swap>> LoadInto(string filename)
+    private static NestedDictionary<int, int, int, Swap[]> LoadInto(string filename)
     {
         try
         {
-            Debug.WriteLine("Loading: " + filename);
-            var begin = DateTime.Now; 
+            // Debug.WriteLine("Loading: " + filename);
+            // var begin = DateTime.Now; 
             byte[] swapBinaryData = SerializationUtilities.LoadEmbeddedBinaryResource(filename, out string? _);
             string read = CompressionUtilities.DecompressToString(swapBinaryData);
-            var loaded = SerializationUtilities.Deserialize<NestedDictionary<int, int, int, List<Swap>>>(read);
+            var loaded = SerializationUtilities.Deserialize<NestedDictionary<int, int, int, Swap[] >>(read);
 
-            var end = DateTime.Now;
-            Debug.WriteLine("Loading: " + filename + "  " + (end-begin).TotalSeconds.ToString() + " s.");
+            //var end = DateTime.Now;
+            //Debug.WriteLine("Loading: " + filename + "  " + (end-begin).TotalSeconds.ToString() + " s.");
             return loaded;
         }
         catch (Exception ex)
@@ -116,7 +117,7 @@ public sealed class SwapData
         PreloadedSwaps_18_2 = [];
     }
 
-    public static List<Swap> Swaps(int qubit, int i, int j)
+    public static Swap[] Swaps(int qubit, int i, int j)
     {
         if ((qubit < 0) || (qubit > QuRegister.MaxQubits))
         {
@@ -142,7 +143,7 @@ public sealed class SwapData
         int max = Math.Max(i, j);
         if (qubit != 18)
         {
-            if (SwapData.PreloadedSwaps.TryGetValue(qubit, min, max, out List<Swap>? value))
+            if (SwapData.PreloadedSwaps.TryGetValue(qubit, min, max, out Swap[]? value))
             {
                 if (value is not null)
                 {
@@ -152,11 +153,11 @@ public sealed class SwapData
         } 
         else
         {
-            NestedDictionary<int, int, int, List<Swap>> target =
+            NestedDictionary<int, int, int, Swap[]> target =
                 min == 0 ?
                     PreloadedSwaps_18_0 :
                     min == 1 ? PreloadedSwaps_18_1 : PreloadedSwaps_18_2;
-            if (target.TryGetValue(qubit, min, max, out List<Swap>? value))
+            if (target.TryGetValue(qubit, min, max, out Swap[]? value))
             {
                 if (value is not null)
                 {
@@ -169,3 +170,24 @@ public sealed class SwapData
         throw new Exception("Failed to load swap data.");
     }
 }
+
+/*
+
+NOTES: 
+
+Debug / Swap as class
+Des. List: Swaps_3_16.binary  0.9644455 s.
+Des. array:: Swaps_3_16.binary  0.9986428 s.
+Des. List: Swaps_3_16.binary  0.916533 s.
+Des. array:: Swaps_3_16.binary  1.0190603 s.
+Des. List: Swaps_3_16.binary  0.9248993 s.
+Des. array:: Swaps_3_16.binary  1.0141247 s.
+
+Debug / Swap as struct
+
+Des. List: Swaps_3_16.binary  0.5999504 s.
+Des. array:: Swaps_3_16.binary  0.5598991 s.
+Des. List: Swaps_3_16.binary  0.5337701 s.
+Des. array:: Swaps_3_16.binary  0.5383083 s.
+
+ */

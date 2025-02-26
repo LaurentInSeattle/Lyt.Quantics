@@ -29,18 +29,22 @@ public sealed class QubitsIndices
         }
         else if (gate.IsBinary)
         {
-            if (gate is SwapGate)
+            if ((gate is SwapGate)|| (gate is ControlledZGate))
             {
+                // For these two gates both indices are equivalent and consequently 
+                // are both considered as targets
                 this.TargetQuBitIndices.Add(dropIndex);
                 this.TargetQuBitIndices.Add(1 + dropIndex);
             }
             else if (gate is FlippedControlledNotGate)
             {
+                // Flipped: Top is target, bottom is control
                 this.TargetQuBitIndices.Add(dropIndex);
                 this.ControlQuBitIndices.Add(1 + dropIndex);
             }
             else
             {
+                // Regular: Top is control, bottom is target
                 this.ControlQuBitIndices.Add(dropIndex);
                 this.TargetQuBitIndices.Add(1 + dropIndex);
             }

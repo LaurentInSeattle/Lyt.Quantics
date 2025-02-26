@@ -78,7 +78,7 @@ public sealed partial class QuRegister
                 }
             }
 
-            int swapCount = preloadedSwaps.Count; 
+            int swapCount = preloadedSwaps.Length; 
             if (this.QuBitCount >= QuRegister.ThreadedRunAtQubits)
             {
                 // Speed up the processing of the state vector using threads (aka tasks) 
