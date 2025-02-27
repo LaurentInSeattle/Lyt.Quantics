@@ -1,5 +1,6 @@
 ﻿namespace Lyt.Quantics.Studio.Model;
 
+using Lyt.Quantics.Studio.Model.Algoritms.ShorFactorisation;
 using static FileManagerModel;
 
 public sealed partial class QsModel : ModelBase
@@ -35,6 +36,8 @@ public sealed partial class QsModel : ModelBase
         this.QuComputer = new("Untitled", "New quantum computer project.");
         this.ShowBuiltInComputers = true;
         this.ShowRecentDocuments = true;
+
+        ShorClassic.Poke(); 
     }
 
     public Dictionary<string, QuComputer> Projects { get; private set; }

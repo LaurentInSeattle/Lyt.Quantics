@@ -6,6 +6,13 @@ public static class RandomUtility
 
     public static double NextDouble() => random.NextDouble();
 
+    public static int NextInt(int n)
+    {
+        double x = NextDouble();
+        int r = (int)((Math.Floor(n * x) - 1.0));
+        return 1 + r;
+    }
+
     // TODO: Improve 
 
     // USE : https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.randomnumbergenerator?view=net-8.0 
