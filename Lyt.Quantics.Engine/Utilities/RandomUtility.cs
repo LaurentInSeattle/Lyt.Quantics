@@ -13,6 +13,13 @@ public static class RandomUtility
         return 1 + r;
     }
 
+    public static long NextLong(long n)
+    {
+        double x = NextDouble();
+        long r = (long)((Math.Floor(n * x) - 1.0));
+        return 1 + r;
+    }
+
     // TODO: Improve 
 
     // USE : https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.randomnumbergenerator?view=net-8.0 

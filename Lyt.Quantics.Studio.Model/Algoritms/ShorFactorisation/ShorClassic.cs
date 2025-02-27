@@ -2,38 +2,89 @@
 
 public static class ShorClassic
 {
-    public static void Poke()
+    public static void Poke() { } 
+
+    //static ShorClassic() => primes = GetAllPrimesLessThan(int.MaxValue - 2);
+
+    //public static void Poke()
+    //{
+    //    // See: https://en.wikipedia.org/wiki/List_of_prime_numbers
+    //    // int[] primes = [29, 67, 89, 101, 239, 631, 1013, 5557, 6043, 7727, 7919];
+
+    //    // Delicate primes
+    //    // Primes that having any one of their(base 10) digits changed to any other value will always result in a composite number.
+    //    long[] primes = 
+    //        [
+    //            294001, 505447, 584141, 604171, 971767, 
+    //            1062599, 1282529, 1524181, 
+    //            2017963, 2474431, 2690201, 
+    //            3085553, 3326489, 
+    //            4393139
+    //        ];
+
+    //    for (int k = 0; k < 1; ++ k)
+    //    {
+    //        for (int i = 0; i < primes.Length - 1; ++i)
+    //        {
+    //            long p1 = primes[i];
+    //            for (int j = 1 + i; j < primes.Length; ++j)
+    //            {
+    //                long p2 = primes[j];
+    //                var start = DateTime.Now;
+    //                long n = p1 * p2; 
+    //                var tuple = NaiveFactorize(n);
+    //                var end = DateTime.Now;
+    //                Debug.WriteLine("Submitted Factors " + p1 + " - " + p2);
+    //                Debug.WriteLine("Elapsed: " + (end - start).TotalSeconds.ToString("F3"));
+
+    //                long min = Math.Min(tuple.Item1, tuple.Item2);
+    //                long max = Math.Max(tuple.Item1, tuple.Item2);
+    //                if ((min != p1) || (max != p2))
+    //                {
+    //                    if (Debugger.IsAttached)
+    //                    {
+    //                        Debugger.Break();
+    //                    }
+    //                }
+    //            }
+    //        }
+    //    } 
+    //}
+
+    private static readonly List<long> primes = []; 
+
+    private static List<long> GetAllPrimesLessThan(int maxPrime)
     {
-        // See: https://en.wikipedia.org/wiki/List_of_prime_numbers
-        int[] primes = [29, 67, 89, 101, 239, 631, 1013, 5557, 6043, 7727, 7919];
+        var start = DateTime.Now;
 
-        for (int k = 0; k < 10; ++ k)
+        long maxSquareRoot = (long)Math.Sqrt(maxPrime);
+        int capacity = (int) Math.Min(maxSquareRoot, int.MaxValue); 
+        var primes = new List<long>(capacity);
+        var eliminated = new FastBitArray(maxPrime + 1);
+
+        for (int i = 2; i <= maxPrime; ++i)
         {
-            for (int i = 0; i < primes.Length - 1; ++i)
+            if (!eliminated[i])
             {
-                int p1 = primes[i];
-                for (int j = 1 + i; j < primes.Length; ++j)
+                primes.Add(i);
+                if (i <= maxSquareRoot)
                 {
-                    int p2 = primes[j];
-                    var start = DateTime.Now;
-                    var tuple = Factorize(p1 * p2);
-                    var end = DateTime.Now;
-                    Debug.WriteLine("Submitted Factors " + p1 + " - " + p2);
-                    Debug.WriteLine("Elapsed: " + (end - start).TotalSeconds.ToString("F3"));
-
-                    int min = Math.Min(tuple.Item1, tuple.Item2);
-                    int max = Math.Max(tuple.Item1, tuple.Item2);
-                    if ((min != p1) || (max != p2))
+                    for (int j = i * i; j <= maxPrime- i; j += i)
                     {
-                        if (Debugger.IsAttached) Debugger.Break();
+                        eliminated[j] = true;
                     }
                 }
             }
-        } 
+        }
+
+        var end = DateTime.Now;
+        Debug.WriteLine("GetAllPrimesLessThan: Elapsed: " + (end - start).TotalSeconds.ToString("F3"));
+
+        return primes;
     }
 
     /// Return the greatest comon divisor of nonnegative numbers, not both 0.
-    public static int GreatestCommonDivisor(int a, int b)
+    public static long GreatestCommonDivisor(long a, long b)
     {
         if ((a == 0) && (b == 0))
         {
@@ -42,7 +93,7 @@ public static class ShorClassic
 
         while (b != 0)
         {
-            int r = a % b;
+            long r = a % b;
             a = b;
             b = r;
         }
@@ -51,23 +102,35 @@ public static class ShorClassic
     }
 
     // Calculate k to the power of power 
-    public static int IntPower(int k, int power)
+    public static long IntPower(long k, int power)
     {
         for (int i = 1; i < power; ++i)
         {
             k *= k;
+            if ( k < 0)
+            {
+                // Overflow 
+                return 0; 
+            }
         }
 
         return k;
     }
 
     /// <summary> Find mininum value (r) such as a to the power of r mod n is one  </summary>
-    public static int FindOrder(int a, int n)
+    /// <remarks> Retarded version that almost never returns anything useful. </remarks>
+    public static int FindOrder(long a, long n)
     {
         for (int r = 2; r < 13; r += 2)
         {
             // Calculate a to the power of r by 2
-            int determinant = IntPower(a, r);
+            long determinant = IntPower(a, r);
+            if (determinant < 0)
+            {
+                // Overflow 
+                return 0;
+            }
+
             if (1 == determinant % n)
             {
                 return r;
@@ -78,9 +141,9 @@ public static class ShorClassic
     }
 
     // See : https://www.youtube.com/watch?v=tnctwK-9-G4&list=PLl0eQOWl7mnUTNF7KlDJVI3PUgyaXQUHS&index=1
-    public static Tuple<int, int> Factorize(int n)
+    public static Tuple<long, long> Factorize(long n)
     {
-        Tuple<int, int> tuple = new(0, 0);
+        Tuple<long, long> tuple = new(0, 0);
         Debug.WriteLine("Factorizing " + n);
         bool finished = false;
         bool isLucky = false;
@@ -92,7 +155,7 @@ public static class ShorClassic
         {
             ++loop;
 
-            int a = RandomUtility.NextInt(n);
+            long a = RandomUtility.NextLong(n);
             if ((a == 1) || (a == n))
             {
                 throw new ArgumentException("Invalid random number.");
@@ -105,13 +168,13 @@ public static class ShorClassic
 
             // Debug.WriteLine("Random " + a + "   Loop: " + loop);
 
-            int gcd = GreatestCommonDivisor(a, n);
+            long gcd = GreatestCommonDivisor(a, n);
             if (gcd > 1)
             {
                 // Super lucky case
                 isLucky = true;
                 finished = true;
-                tuple = new Tuple<int, int>(gcd, n / gcd);
+                tuple = new Tuple<long, long>(gcd, n / gcd);
             }
             else
             {
@@ -123,15 +186,15 @@ public static class ShorClassic
                     // Calculate a to the power of r by 2
                     // OVERFLOW Here !!!
                     // Bigger than N ??? 
-                    int determinant = IntPower(a, rBy2);
+                    long determinant = IntPower(a, rBy2);
                     if (determinant < 0)
                     {
                         // Fail, go get a new random A value and loop 
                     }
                     else
                     {
-                        int i = determinant - 1;
-                        int j = determinant + 1;
+                        long i = determinant - 1;
+                        long j = determinant + 1;
                         if ((0 == i % n) || (0 == j % n))
                         {
                             // Fail, go get a new random A value and loop 
@@ -140,12 +203,12 @@ public static class ShorClassic
                         {
                             // Success !
                             order = r;
-                            i = i % n;
-                            j = j % n;
-                            int p1 = GreatestCommonDivisor(i, n);
-                            int p2 = GreatestCommonDivisor(j, n);
+                            i %= n;
+                            j %= n;
+                            long p1 = GreatestCommonDivisor(i, n);
+                            long p2 = GreatestCommonDivisor(j, n);
                             finished = true;
-                            tuple = new Tuple<int, int>(p1, p2);
+                            tuple = new Tuple<long, long>(p1, p2);
                         }
                     } 
                 }
@@ -155,6 +218,55 @@ public static class ShorClassic
         Debug.WriteLine(
             "Factors " + tuple.Item1 + " - " + tuple.Item2 + 
             "   Loops: " + loop + "   Lucky: " + isLucky + "   Order: " + order);
+        return tuple;
+    }
+
+    public static Tuple<long, long> NaiveFactorize(long n)
+    {
+        Tuple<long, long> tuple = new(0, 0);
+        Debug.WriteLine("Naive Factorizing " + n);
+        int squareRoot = (int)Math.Sqrt(n); 
+        bool finished = false;
+        int loop = -1;
+        // int maxPrime = Math.Min(squareRoot, int.MaxValue - 2);
+        int startIndex = primes.Count - 1; 
+        while ( primes[startIndex] > squareRoot)
+        {
+            --startIndex;
+        }
+
+        while (!finished)
+        {
+            ++loop;
+
+            if ( loop >= primes.Count)
+            {
+                break; 
+            }
+
+            long a = primes[startIndex - loop];
+
+            // Debug.WriteLine("Random " + a + "   Loop: " + loop);
+
+            long gcd = GreatestCommonDivisor(a, n);
+            if (gcd > 1)
+            {
+                // Happy case
+                finished = true;
+                tuple = new Tuple<long, long>(gcd, n / gcd);
+            }
+            // else: Fail, go get a new prime value and loop             
+        }
+
+        if (!finished)
+        {
+            Debug.WriteLine("Overflow !");
+        }
+        else
+        {
+            Debug.WriteLine("Factors " + tuple.Item1 + " - " + tuple.Item2 + "   Loops: " + loop);
+        } 
+
         return tuple;
     }
 }
