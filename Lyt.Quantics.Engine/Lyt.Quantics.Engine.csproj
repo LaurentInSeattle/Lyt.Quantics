@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Computers\2-Bit Example of Grover%27s Search.json" />
     <None Remove="Resources\Computers\Full Adder - with implicit swaps.json" />
     <None Remove="Resources\Computers\Grover Search.json" />
     <None Remove="Resources\Computers\Quantum Fourier Transform - 5 qubits.json" />
@@ -22,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Resources\Computers\2-Bit Example of Grover's Search.json" />
     <EmbeddedResource Include="Resources\Computers\DenseCoding.json" />
     <EmbeddedResource Include="Resources\Computers\Deutsch_Balanced.json" />
     <EmbeddedResource Include="Resources\Computers\Deutsch_Constant.json" />
@@ -35,7 +37,6 @@
     <EmbeddedResource Include="Resources\Computers\HX_PhaseFlip.json" />
     <EmbeddedResource Include="Resources\Computers\HX_Swap.json" />
     <EmbeddedResource Include="Resources\Computers\OR_Gate.json" />
-    <EmbeddedResource Include="Resources\Computers\QFT 2 Qubits.json" />
     <EmbeddedResource Include="Resources\Computers\Quantum Fourier Transform - 5 qubits.json" />
     <EmbeddedResource Include="Resources\Computers\RxyzCnot_Test.json" />
     <EmbeddedResource Include="Resources\Computers\Rxyz_Test.json" />

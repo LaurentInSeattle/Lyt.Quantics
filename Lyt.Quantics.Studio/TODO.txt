@@ -12,6 +12,8 @@ TODO: Framework:
 
 	NTH: Validation should not directly depends on MVVM but use a Get/Set Interface 
 
+	NTH: Audio: See: https://github.com/LSXPrime/SoundFlow 
+
 TODO: Engine: 
 -------------
 
