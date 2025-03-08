@@ -12,6 +12,7 @@
     <None Remove="Resources\Computers\Full Adder - with implicit swaps.json" />
     <None Remove="Resources\Computers\Grover Search.json" />
     <None Remove="Resources\Computers\Quantum Fourier Transform - 5 qubits.json" />
+    <None Remove="Resources\Computers\Single Qbit Teleportation.json" />
     <None Remove="Resources\Computers\Tests\Test Long Swaps.json" />
     <None Remove="Resources\Computers\Toffoli Decomposition.json" />
     <None Remove="Resources\Computers\Triple Full Adder.json" />
@@ -40,9 +41,9 @@
     <EmbeddedResource Include="Resources\Computers\Quantum Fourier Transform - 5 qubits.json" />
     <EmbeddedResource Include="Resources\Computers\RxyzCnot_Test.json" />
     <EmbeddedResource Include="Resources\Computers\Rxyz_Test.json" />
+    <EmbeddedResource Include="Resources\Computers\Single Qbit Teleportation.json" />
     <EmbeddedResource Include="Resources\Computers\Swap using CNOT.json" />
     <EmbeddedResource Include="Resources\Computers\SX_Test.json" />
-    <EmbeddedResource Include="Resources\Computers\Teleport.json" />
     <EmbeddedResource Include="Resources\Computers\Tests\All Gates.json" />
     <EmbeddedResource Include="Resources\Computers\Tests\Double_Ent_Five_Stages.json" />
     <EmbeddedResource Include="Resources\Computers\Tests\Double_Ent_Three_Stages.json" />

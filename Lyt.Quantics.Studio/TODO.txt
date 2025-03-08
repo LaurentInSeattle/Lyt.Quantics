@@ -28,8 +28,6 @@ TODO: Studio :
 
 	Priorities:	
 
-		BUG: Amplitudes histogram shows up after loading another model. (No repro, fixed?)
-		BUG: QFT 2 bits sample broken 
 	
 	FEATURE: Allow editing angles on controlled rotation and phase gates			
 

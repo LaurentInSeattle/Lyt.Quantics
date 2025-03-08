@@ -288,10 +288,10 @@ public sealed class Tests_Computers
             ];
             List<List<double>> teleporterExpected =
             [
-                [0.0, 0.0, 0.25, 0.25, 0.25, 0.25, 0.0, 0.0],
-                [ 0.25, 0.25, 0.0, 0.0, 0.0, 0.0, 0.25, 0.25 ],
+                [0.25, 0.25, 0.25, 0.25, 0.0, 0.0, 0.0, 0.0],
+                [0.0, 0.0, 0.0, 0.0, 0.25, 0.25, 0.25, 0.25 ],
             ];
-            ManyRuns("Teleport", teleporterStates, teleporterExpected);
+            ManyRuns("Single Qbit Teleportation", teleporterStates, teleporterExpected);
 
         }
         catch (Exception ex)
