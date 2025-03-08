@@ -13,6 +13,7 @@
     <None Remove="Resources\Computers\Grover Search.json" />
     <None Remove="Resources\Computers\Quantum Fourier Transform - 5 qubits.json" />
     <None Remove="Resources\Computers\Single Qbit Teleportation.json" />
+    <None Remove="Resources\Computers\Superdense Coding.json" />
     <None Remove="Resources\Computers\Tests\Test Long Swaps.json" />
     <None Remove="Resources\Computers\Toffoli Decomposition.json" />
     <None Remove="Resources\Computers\Triple Full Adder.json" />
@@ -25,7 +26,6 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Resources\Computers\2-Bit Example of Grover's Search.json" />
-    <EmbeddedResource Include="Resources\Computers\DenseCoding.json" />
     <EmbeddedResource Include="Resources\Computers\Deutsch_Balanced.json" />
     <EmbeddedResource Include="Resources\Computers\Deutsch_Constant.json" />
     <EmbeddedResource Include="Resources\Computers\Double Superposition.json" />
@@ -42,6 +42,7 @@
     <EmbeddedResource Include="Resources\Computers\RxyzCnot_Test.json" />
     <EmbeddedResource Include="Resources\Computers\Rxyz_Test.json" />
     <EmbeddedResource Include="Resources\Computers\Single Qbit Teleportation.json" />
+    <EmbeddedResource Include="Resources\Computers\Superdense Coding.json" />
     <EmbeddedResource Include="Resources\Computers\Swap using CNOT.json" />
     <EmbeddedResource Include="Resources\Computers\SX_Test.json" />
     <EmbeddedResource Include="Resources\Computers\Tests\All Gates.json" />

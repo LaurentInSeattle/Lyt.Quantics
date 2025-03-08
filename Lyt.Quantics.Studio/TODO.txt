@@ -27,7 +27,7 @@ TODO: Studio :
 --------------
 
 	Priorities:	
-
+		BUG: Deleting entries in doc view does not delete files 
 	
 	FEATURE: Allow editing angles on controlled rotation and phase gates			
 
