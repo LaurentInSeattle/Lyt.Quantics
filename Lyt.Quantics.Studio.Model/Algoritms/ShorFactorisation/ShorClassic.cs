@@ -6,7 +6,7 @@ public static class ShorClassic
     {
         //for (int i = 0; i < 50; ++i)
         //{
-        //    Factorize(67*29);
+        //    Factorize(67 * 89);
         //}
     }
 
@@ -130,7 +130,7 @@ public static class ShorClassic
     public static int FindOrder(long a, long n)
     {
         long b = a;
-        for (int r = 2; r < 15; r += 2)
+        for (int r = 2; r < 15; ++r)
         {
             long determinant = a * a;
             if (determinant < 0)
@@ -186,7 +186,7 @@ public static class ShorClassic
             else
             {
                 int r = FindOrder(a, n);
-                if ((r > 0) && (0 == r % 2) && (r < 13))
+                if ((r > 0) && (0 == r % 2) && (r < 15))
                 {
                     int rBy2 = r / 2;
 
