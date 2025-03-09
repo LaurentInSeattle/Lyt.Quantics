@@ -2,7 +2,13 @@
 
 public static class ShorClassic
 {
-    public static void Poke() { } 
+    public static void Poke()
+    {
+        //for (int i = 0; i < 50; ++i)
+        //{
+        //    Factorize(67*29);
+        //}
+    }
 
     //static ShorClassic() => primes = GetAllPrimesLessThan(int.MaxValue - 2);
 
@@ -51,14 +57,14 @@ public static class ShorClassic
     //    } 
     //}
 
-    private static readonly List<long> primes = []; 
+    private static readonly List<long> primes = [];
 
     private static List<long> GetAllPrimesLessThan(int maxPrime)
     {
         var start = DateTime.Now;
 
         long maxSquareRoot = (long)Math.Sqrt(maxPrime);
-        int capacity = (int) Math.Min(maxSquareRoot, int.MaxValue); 
+        int capacity = (int)Math.Min(maxSquareRoot, int.MaxValue);
         var primes = new List<long>(capacity);
         var eliminated = new FastBitArray(maxPrime + 1);
 
@@ -69,7 +75,7 @@ public static class ShorClassic
                 primes.Add(i);
                 if (i <= maxSquareRoot)
                 {
-                    for (int j = i * i; j <= maxPrime- i; j += i)
+                    for (int j = i * i; j <= maxPrime - i; j += i)
                     {
                         eliminated[j] = true;
                     }
@@ -107,32 +113,36 @@ public static class ShorClassic
         for (int i = 1; i < power; ++i)
         {
             k *= k;
-            if ( k < 0)
+            if (k < 0)
             {
                 // Overflow 
-                return 0; 
+                return 0;
             }
         }
 
         return k;
     }
 
-    /// <summary> Find mininum value (r) such as a to the power of r mod n is one  </summary>
+    /// <summary> 
+    /// Find the EVEN mininum value (r) such as (a) to the power of (r) mod (n) is one  
+    /// </summary>
     /// <remarks> Retarded version that almost never returns anything useful. </remarks>
     public static int FindOrder(long a, long n)
     {
-        for (int r = 2; r < 13; r += 2)
+        long b = a;
+        for (int r = 2; r < 15; r += 2)
         {
-            // Calculate a to the power of r by 2
-            long determinant = IntPower(a, r);
+            long determinant = a * a;
             if (determinant < 0)
             {
                 // Overflow 
                 return 0;
             }
 
-            if (1 == determinant % n)
+            a = determinant % n;
+            if (1 == a)
             {
+                Debug.WriteLine("Order of " + b + " mod " + n + "  : " + r);
                 return r;
             }
         }
@@ -161,15 +171,12 @@ public static class ShorClassic
                 throw new ArgumentException("Invalid random number.");
             }
 
-            //if ( ( 0 == a % 2 ) && ( a > 5 ))
-            //{
-            //    a = a - 1; 
-            //}
-
-            // Debug.WriteLine("Random " + a + "   Loop: " + loop);
-
             long gcd = GreatestCommonDivisor(a, n);
-            if (gcd > 1)
+            if (gcd == n)
+            {
+                // Fail, go get a new random A value and loop 
+            }
+            else if (gcd > 1)
             {
                 // Super lucky case
                 isLucky = true;
@@ -179,16 +186,15 @@ public static class ShorClassic
             else
             {
                 int r = FindOrder(a, n);
-                if ((r > 0) && (0 == r % 2)&& (r<13))
+                if ((r > 0) && (0 == r % 2) && (r < 13))
                 {
                     int rBy2 = r / 2;
 
                     // Calculate a to the power of r by 2
-                    // OVERFLOW Here !!!
-                    // Bigger than N ??? 
                     long determinant = IntPower(a, rBy2);
                     if (determinant < 0)
                     {
+                        // OVERFLOW Here !!! Bigger than N ??? 
                         // Fail, go get a new random A value and loop 
                     }
                     else
@@ -210,13 +216,13 @@ public static class ShorClassic
                             finished = true;
                             tuple = new Tuple<long, long>(p1, p2);
                         }
-                    } 
+                    }
                 }
             }
         }
 
         Debug.WriteLine(
-            "Factors " + tuple.Item1 + " - " + tuple.Item2 + 
+            "Factors " + tuple.Item1 + " - " + tuple.Item2 +
             "   Loops: " + loop + "   Lucky: " + isLucky + "   Order: " + order);
         return tuple;
     }
@@ -225,12 +231,12 @@ public static class ShorClassic
     {
         Tuple<long, long> tuple = new(0, 0);
         Debug.WriteLine("Naive Factorizing " + n);
-        int squareRoot = (int)Math.Sqrt(n); 
+        int squareRoot = (int)Math.Sqrt(n);
         bool finished = false;
         int loop = -1;
         // int maxPrime = Math.Min(squareRoot, int.MaxValue - 2);
-        int startIndex = primes.Count - 1; 
-        while ( primes[startIndex] > squareRoot)
+        int startIndex = primes.Count - 1;
+        while (primes[startIndex] > squareRoot)
         {
             --startIndex;
         }
@@ -239,9 +245,9 @@ public static class ShorClassic
         {
             ++loop;
 
-            if ( loop >= primes.Count)
+            if (loop >= primes.Count)
             {
-                break; 
+                break;
             }
 
             long a = primes[startIndex - loop];
@@ -265,7 +271,7 @@ public static class ShorClassic
         else
         {
             Debug.WriteLine("Factors " + tuple.Item1 + " - " + tuple.Item2 + "   Loops: " + loop);
-        } 
+        }
 
         return tuple;
     }

@@ -15,9 +15,17 @@ public static class RandomUtility
 
     public static long NextLong(long n)
     {
+    Begin: 
         double x = NextDouble();
         long r = (long)((Math.Floor(n * x) - 1.0));
-        return 1 + r;
+        long a =  1 + r;
+
+        if ((a == 1) || (a == n))
+        {
+            goto Begin;
+        }
+
+        return a; 
     }
 
     // TODO: Improve 
