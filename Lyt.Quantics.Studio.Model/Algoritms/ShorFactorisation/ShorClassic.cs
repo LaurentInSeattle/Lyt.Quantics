@@ -127,7 +127,7 @@ public static class ShorClassic
     /// Find the EVEN mininum value (r) such as (a) to the power of (r) mod (n) is one  
     /// </summary>
     /// <remarks> Retarded version that almost never returns anything useful. </remarks>
-    public static int FindOrder(long a, long n)
+    public static int FindEvenOrder(long a, long n)
     {
         long b = a;
         for (int r = 2; r < 15; ++r)
@@ -142,8 +142,11 @@ public static class ShorClassic
             a = determinant % n;
             if (1 == a)
             {
-                Debug.WriteLine("Order of " + b + " mod " + n + "  : " + r);
-                return r;
+                if (0 == r % 2)
+                {
+                    Debug.WriteLine("Order of " + b + " mod " + n + "  : " + r);
+                    return r;
+                } 
             }
         }
 
@@ -185,7 +188,7 @@ public static class ShorClassic
             }
             else
             {
-                int r = FindOrder(a, n);
+                int r = FindEvenOrder(a, n);
                 if ((r > 0) && (0 == r % 2) && (r < 15))
                 {
                     int rBy2 = r / 2;

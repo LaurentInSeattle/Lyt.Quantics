@@ -63,7 +63,7 @@
 			HorizontalAlignment="Center" VerticalAlignment="Center"
 			Width="80" Height="48"
 			Margin="4"
-			GlyphSource="ic_fluent_arrow_previous_24_regular"
+			GlyphSource="pack"
 			ButtonBackground="BorderlessRectangle"
 			GlyphStrokeThickness="0"
 			Text="Pack Stages"

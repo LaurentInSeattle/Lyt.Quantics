@@ -15,9 +15,18 @@
     </ItemGroup>
 
     <ItemGroup>
+      <AvaloniaResource Remove="Assets\Icons\Unused_FluentSvgResourceDictionary.axaml" />
+    </ItemGroup>
+
+    <ItemGroup>
       <AvaloniaXaml Remove="Assets\Icons\GatesResourceDictionary.axaml" />
       <AvaloniaXaml Remove="Assets\Icons\PathResourceDictionary.axaml" />
+      <AvaloniaXaml Remove="Assets\Icons\Unused_FluentSvgResourceDictionary.axaml" />
       <AvaloniaXaml Remove="Assets\Theme\Sliders.axaml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Resource Include="Assets\Icons\Unused_FluentSvgResourceDictionary.axaml" />
     </ItemGroup>
 
   <ItemGroup>
