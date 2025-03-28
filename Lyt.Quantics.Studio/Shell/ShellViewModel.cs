@@ -35,8 +35,6 @@ public sealed class ShellViewModel : Bindable<ShellView>
         ShellViewModel.SetupWorkflow();
         this.Logger.Debug("OnViewLoaded SetupWorkflow complete");
 
-        this.Logger.Debug("OnViewLoaded BindGroupIcons complete");
-
         this.OnViewActivation(ActivatedView.Intro, parameter: null, isFirstActivation: true);
         this.Logger.Debug("OnViewLoaded OnViewActivation complete");
 
