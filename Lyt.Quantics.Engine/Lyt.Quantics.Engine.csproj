@@ -63,7 +63,7 @@
 
   <ItemGroup>
     <PackageReference Include="MathNet.Numerics" Version="5.0.0" />
-    <PackageReference Include="System.Numerics.Tensors" Version="9.0.2" />
+    <PackageReference Include="System.Numerics.Tensors" Version="9.0.3" />
   </ItemGroup>
 
 </Project>
