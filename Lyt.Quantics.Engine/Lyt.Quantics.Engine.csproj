@@ -66,4 +66,9 @@
     <PackageReference Include="System.Numerics.Tensors" Version="9.0.5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Lyt.Avalonia.Framework\Lyt.Messenger\Lyt.Messenger.csproj" />
+    <ProjectReference Include="..\..\Lyt.Avalonia.Framework\Lyt.Utilities\Lyt.Utilities.csproj" />
+  </ItemGroup>
+
 </Project>

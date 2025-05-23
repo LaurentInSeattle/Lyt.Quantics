@@ -1,3 +1,5 @@
+using Lyt.Avalonia.Interfaces.Dispatch;
+
 namespace Lyt.Quantics.Studio;
 
 public partial class App : ApplicationBase
@@ -20,9 +22,9 @@ public partial class App : ApplicationBase
             typeof(QsModel),
         ],
         [
-           typeof(Keyboard),
 
            // Singletons
+           typeof(Keyboard),
            typeof(ShellViewModel),
            typeof(IntroViewModel),
            typeof(LoadViewModel),
@@ -30,13 +32,14 @@ public partial class App : ApplicationBase
         ],
         [
             // Services 
-            new Tuple<Type, Type>(typeof(IMessenger), typeof(Messenger)),
-            new Tuple<Type, Type>(typeof(IProfiler), typeof(Profiler)),
 #if DEBUG
             new Tuple<Type, Type>(typeof(ILogger), typeof(LogViewerWindow)),
 #else
             new Tuple<Type, Type>(typeof(ILogger), typeof(Logger)),
 #endif
+            new Tuple<Type, Type>(typeof(IDispatch), typeof(Dispatch)),
+            new Tuple<Type, Type>(typeof(IMessenger), typeof(Messenger)),
+            new Tuple<Type, Type>(typeof(IProfiler), typeof(Profiler)),
             new Tuple<Type, Type>(typeof(IDialogService), typeof(DialogService)),
             new Tuple<Type, Type>(typeof(IToaster), typeof(Toaster)),
             new Tuple<Type, Type>(typeof(IRandomizer), typeof(Randomizer)),

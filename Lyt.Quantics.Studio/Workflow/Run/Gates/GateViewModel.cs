@@ -98,6 +98,7 @@ public sealed class GateViewModel : GateViewModelBase<GateView>
 
         if (!this.IsGhost && this.DragAble is not null)
         {
+            // FIXME : Crash here on second attach ??? 
             this.DragAble.Attach(this.View);
             this.View.InvalidateVisual();
         }
