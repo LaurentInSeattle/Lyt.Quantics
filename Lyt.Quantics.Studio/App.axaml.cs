@@ -1,5 +1,3 @@
-using Lyt.Avalonia.Interfaces.Dispatch;
-
 namespace Lyt.Quantics.Studio;
 
 public partial class App : ApplicationBase
