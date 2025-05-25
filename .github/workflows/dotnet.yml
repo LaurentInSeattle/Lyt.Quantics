@@ -23,12 +23,19 @@ jobs:
       with:
         dotnet-version: 9.0.x
 
-    - name: Checkout Lyt.Avalonia.Framework
+    - name: Checkout Lyt.Framework
       uses: actions/checkout@v4
       with:
-        repository: LaurentInSeattle/Lyt.Avalonia.Framework
+        repository: LaurentInSeattle/Lyt.Framework
         ref: main
-        path: sauce\Lyt.Avalonia.Framework
+        path: sauce\Lyt.Framework
+       
+    - name: Checkout Lyt.Avalonia
+      uses: actions/checkout@v4
+      with:
+        repository: LaurentInSeattle/Lyt.Avalonia
+        ref: main
+        path: sauce\Lyt.Avalonia
        
     - name: Checkout Lyt.Quantics
       uses: actions/checkout@v4
