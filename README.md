@@ -47,7 +47,7 @@ Install the free Visual Studio 2022 Community Edition, or the Pro or Enterprise.
 for Mac or Unix: 
 Install the 'Free for non-commercial use' Jet Brains Ryder Edition, or the Pro or Enterprise. 
 
-First clone the Lyt.Avalonia.Framework repository.
+First clone both the 'Lyt.Avalonia' and the 'Lyt.Framework' repositories.
 Then clone this repo' in the same root folder, open the solution, build, etc.
 
 <p align="left"><img src="FullAdderScreenshot.png" height="520"/>
