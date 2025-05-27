@@ -2,7 +2,7 @@
 
 using static GateUiConstants; 
 
-public sealed class ControlledGateViewModel : CompositeGateViewModel<ControlledGateView>
+public sealed partial class ControlledGateViewModel : CompositeGateViewModel<ControlledGateView>
 {
     // This is NOT the actual key for the gate
     // but the key of the base gate this gate is controlling
@@ -23,7 +23,7 @@ public sealed class ControlledGateViewModel : CompositeGateViewModel<ControlledG
         this.CreateGate();
     }
 
-    protected override void OnViewLoaded()
+    public override void OnViewLoaded()
     {
         base.OnViewLoaded();
 

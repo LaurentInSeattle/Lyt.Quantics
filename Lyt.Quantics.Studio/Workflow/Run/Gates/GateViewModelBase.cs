@@ -1,8 +1,8 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Gates;
 
 public abstract class GateViewModelBase<TView> 
-    : Bindable<TView>, IDragAbleBindable, IGateInfoProvider
-    where TView : Control, new()
+    : ViewModel<TView>, IDragAbleBindable, IGateInfoProvider
+    where TView : Control, IView, new()
 {
     public const string CustomDragAndDropFormat = "GateViewModel";
 
@@ -13,9 +13,6 @@ public abstract class GateViewModelBase<TView>
         Gate gate, QubitsIndices qubitsIndices, 
         bool isGhost , bool isToolBox, int stageIndex)
     {
-        // Too many properties here and too many gates !
-        this.DisablePropertyChangedLogging = true;
-
         // Do not use Injection directly as this is loaded programmatically by the RunView 
         this.quanticsStudioModel = App.GetRequiredService<QsModel>();
         this.toaster = App.GetRequiredService<IToaster>();

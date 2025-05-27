@@ -4,15 +4,21 @@ using static ViewActivationMessage;
 using static ToolbarCommandMessage; 
 using static MessagingExtensions;
 
-public sealed class DocumentViewModel : Bindable<DocumentView>
+public sealed partial class DocumentViewModel : ViewModel<DocumentView>
 {
-    private readonly QuComputer quComputer; 
+    private readonly QuComputer quComputer;
+
+    [ObservableProperty]
+    private string name;
+
+    [ObservableProperty]
+    private string opened;
+
+    [ObservableProperty]
+    private string description;
 
     public DocumentViewModel(QuComputer quComputer)
     {
-        base.DisablePropertyChangedLogging = true;
-        base.DisableAutomaticBindingsLogging = true;
-
         this.quComputer = quComputer;
         this.Name = quComputer.Name;
         this.Description = quComputer.Description;
@@ -30,29 +36,14 @@ public sealed class DocumentViewModel : Bindable<DocumentView>
     // Replicates the model property for sorting purpose 
     public DateTime LastOpened { get; private set; }
 
-    #region Methods invoked by the Framework using reflection 
-#pragma warning disable IDE0051 // Remove unused private members
-
-    private void OnOpen(object? _)
+    [RelayCommand]
+    public void OnOpen(object? _)
         => ActivateView(
             ActivatedView.Run,
             new ComputerActivationParameter(
                 ComputerActivationParameter.Kind.Document, string.Empty, this.QuComputer));
 
-    private void OnDelete(object? _)
+    [RelayCommand]
+    public void OnDelete(object? _)
         => Command(ToolbarCommand.DeleteDocument, this);
-
-    #endregion Methods invoked by the Framework using reflection 
-#pragma warning restore IDE0051 // Remove unused private members
-
-    public ICommand OpenCommand { get => this.Get<ICommand>()!; set => this.Set(value); }
-
-    public ICommand DeleteCommand { get => this.Get<ICommand>()!; set => this.Set(value); }
-
-    public string Name { get => this.Get<string>()!; set => this.Set(value); }
-
-    public string Opened { get => this.Get<string>()!; set => this.Set(value); }
-
-    public string Description { get => this.Get<string>()!; set => this.Set(value); }
-
 }

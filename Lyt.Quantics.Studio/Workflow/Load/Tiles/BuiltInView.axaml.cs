@@ -1,6 +1,6 @@
 namespace Lyt.Quantics.Studio.Workflow.Load.Tiles;
 
-public partial class BuiltInView : UserControl
+public partial class BuiltInView : UserControl, IView
 {
     public BuiltInView() 
     {

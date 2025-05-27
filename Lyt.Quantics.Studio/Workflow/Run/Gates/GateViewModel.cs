@@ -3,7 +3,7 @@
 using static GateUiConstants;
 using static GateUiColors;
 
-public sealed class GateViewModel : GateViewModelBase<GateView>
+public sealed partial class GateViewModel : GateViewModelBase<GateView>
 {
     public GateViewModel(
         Gate gate, 
@@ -92,7 +92,7 @@ public sealed class GateViewModel : GateViewModelBase<GateView>
             _ => null,
         };
 
-    protected override void OnViewLoaded()
+    public override void OnViewLoaded()
     {
         base.OnViewLoaded();
 
@@ -122,41 +122,49 @@ public sealed class GateViewModel : GateViewModelBase<GateView>
         return view;
     }
 
-    #region Bound properties 
+    #region Observable properties 
 
-    public double GateHeight { get => this.Get<double>(); set => this.Set(value); }
+    [ObservableProperty]
+    private double gateHeight;
 
-    public Thickness GateMargin { get => this.Get<Thickness>(); set => this.Set(value); }
+    [ObservableProperty]
+    private Thickness gateMargin;
 
-    public string? Name { get => this.Get<string?>(); set => this.Set(value); }
+    [ObservableProperty]
+    private string? name;
 
-    public double FontSize { get => this.Get<double>(); set => this.Set(value); }
+    [ObservableProperty]
+    private double fontSize;
 
-    public string? Parameter { get => this.Get<string?>(); set => this.Set(value); }
+    [ObservableProperty]
+    private string? parameter;
 
-    public double ParameterFontSize { get => this.Get<double>(); set => this.Set(value); }
+    [ObservableProperty]
+    private double parameterFontSize;
 
-    public IBrush? GateCategoryBrush { get => this.Get<IBrush?>(); set => this.Set(value); }
+    [ObservableProperty]
+    private IBrush? gateCategoryBrush;
 
-    public IBrush? GateBackground { get => this.Get<IBrush?>(); set => this.Set(value); }
+    [ObservableProperty] 
+    private IBrush? gateBackground;
 
-    public bool IsTextVisible { get => this.Get<bool>(); set => this.Set(value); }
+    [ObservableProperty] 
+    private bool isTextVisible;
 
-    public bool IsBorderVisible
-    {
-        get => this.Get<bool>();
-        set
-        {
-            this.Set(value);
-            this.GateBorderThickness = new Thickness(value ? 1.0 : 0.0);
-        }
-    }
+    [ObservableProperty] 
+    private bool isBorderVisible;
 
-    public Thickness GateBorderThickness { get => this.Get<Thickness>(); set => this.Set(value); }
+    [ObservableProperty] 
+    private Thickness gateBorderThickness;
 
-    public bool IsSpecialVisible { get => this.Get<bool>(); set => this.Set(value); }
+    [ObservableProperty] 
+    private bool isSpecialVisible;
 
-    public Control SpecialGate { get => this.Get<Control>()!; set => this.Set(value); }
+    [ObservableProperty] 
+    private Control? specialGate;
 
-    #endregion Bound properties 
+    #endregion Observable  properties 
+
+    partial void OnIsBorderVisibleChanged(bool value)
+        => this.GateBorderThickness = new Thickness(value ? 1.0 : 0.0);
 }

@@ -5,11 +5,14 @@ using static GateUiColors;
 
 /// <summary> Abstract base class for Controlled and Constructed gates  </summary>
 /// <typeparam name="TView">The corresponding view.</typeparam>
-public abstract class CompositeGateViewModel<TView> : GateViewModelBase<TView>
-        where TView : Control, new()
+public abstract partial class CompositeGateViewModel<TView> : GateViewModelBase<TView>
+        where TView : Control, IView , new()
 {
     protected readonly Grid contentGrid;
     protected readonly List<int> allQuBitIndicesSorted;
+
+    [ObservableProperty]
+    private double gateHeight;
 
     public CompositeGateViewModel(
         Gate gate, int stageIndex, QubitsIndices qubitsIndices, bool isGhost = false)
@@ -218,6 +221,4 @@ public abstract class CompositeGateViewModel<TView> : GateViewModelBase<TView>
     }
 
     #endregion Gate Elements 
-
-    public double GateHeight { get => this.Get<double>(); set => this.Set(value); }
 }

@@ -86,7 +86,7 @@
                 ButtonBackground="BorderlessRectangle"
                 GlyphStrokeThickness="0"
                 GlyphAngle="0"
-                Command="{Binding OpenCommand}"
+                Command="{Binding OnOpen}"
                 />
 		</Grid>
 	</Border>

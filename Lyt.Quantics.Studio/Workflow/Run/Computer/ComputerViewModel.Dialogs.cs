@@ -70,9 +70,10 @@ public sealed partial class ComputerViewModel : ViewModel<ComputerView>
         // Run modal dialog to phase or rotation angle
         if (this.dialogService is DialogService modalService)
         {
-            modalService.RunModal<GateEditAngleDialog, IGateInfoProvider>(
-                this.View.ToasterHost, new GateEditAngleDialogModel(),
-                this.OnGateEditAngleClose, gateInfoProvider);
+            //  TODO ! 
+            //modalService.RunModal<GateEditAngleDialog, IGateInfoProvider>(
+            //    this.View.ToasterHost, new GateEditAngleDialogModel(),
+            //    this.OnGateEditAngleClose, gateInfoProvider);
         }
     }
 

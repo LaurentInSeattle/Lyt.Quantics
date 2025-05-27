@@ -3,32 +3,30 @@
 using static ToolbarCommandMessage;
 using static MessagingExtensions;
 
-public sealed class LoadBuiltInToolbarViewModel : Bindable<LoadBuiltInToolbarView>
+public sealed partial class LoadBuiltInToolbarViewModel : ViewModel<LoadBuiltInToolbarView>
 {
     private readonly QsModel quanticsStudioModel;
+
+    [ObservableProperty]
+    public bool showRegular;
 
     public LoadBuiltInToolbarViewModel()
         => this.quanticsStudioModel = App.GetRequiredService<QsModel>();
 
 
-    protected override void OnViewLoaded()
+    public override void OnViewLoaded()
     {
         base.OnViewLoaded();
         this.View.FilterTextBox.Text = string.Empty;
         this.ShowRegular = this.quanticsStudioModel.ShowBuiltInComputers; 
     }
 
-#pragma warning disable IDE0051 // Remove unused private members
-#pragma warning disable CA1822 // Mark members as static
-
-    private void OnClearSearch(object? _)
+    [RelayCommand]
+    public void OnClearSearch()
     {
         this.View.FilterTextBox.Text = string.Empty;
         Command(ToolbarCommand.BuiltInClearSearch);
     } 
-
-#pragma warning restore CA1822 // Mark members as static
-#pragma warning restore IDE0051 // Remove unused private members
 
     public void OnEditing()
     {
@@ -59,15 +57,6 @@ public sealed class LoadBuiltInToolbarViewModel : Bindable<LoadBuiltInToolbarVie
         }
     }
 
-    public bool ShowRegular
-    {
-        get => this.Get<bool>();
-        set
-        {
-            this.Set(value);
-            this.quanticsStudioModel.ShowBuiltInComputers = value; 
-        }
-    }
-
-    public ICommand ClearSearchCommand { get => this.Get<ICommand>()!; set => this.Set(value); }
+    partial void OnShowRegularChanged ( bool value)
+            => this.quanticsStudioModel.ShowBuiltInComputers = value; 
 }

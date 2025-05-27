@@ -166,8 +166,8 @@ public sealed partial class ShellViewModel : ViewModel<ShellView>
     }
 
     private void Activate<TViewModel, TControl>(bool isFirstActivation, object? activationParameters)
-        where TViewModel : Bindable<TControl>
-        where TControl : Control, new()
+        where TViewModel : ViewModel<TControl>
+        where TControl : Control, IView , new()
     {
         if (this.View is null)
         {
@@ -175,7 +175,8 @@ public sealed partial class ShellViewModel : ViewModel<ShellView>
         }
 
         object? currentView = this.View.ShellViewContent.Content;
-        if (currentView is Control control && control.DataContext is Bindable currentViewModel)
+        if (currentView is Control control && 
+            control.DataContext is ViewModel currentViewModel)
         {
             currentViewModel.Deactivate();
         }

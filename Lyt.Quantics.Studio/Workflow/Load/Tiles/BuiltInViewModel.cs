@@ -3,13 +3,16 @@
 using static ViewActivationMessage;
 using static MessagingExtensions;
 
-public sealed class BuiltInViewModel : Bindable<BuiltInView>
+public sealed partial class BuiltInViewModel : ViewModel<BuiltInView>
 {
+    [ObservableProperty]
+    private string name;
+
+    [ObservableProperty]
+    private string description;
+
     public BuiltInViewModel(QuComputer quComputer)
     {
-        base.DisablePropertyChangedLogging = true;
-        base.DisableAutomaticBindingsLogging = true;
-
         this.IsUnitTest = quComputer.IsUnitTest; 
         this.Name = quComputer.Name;
         this.Description = quComputer.Description;
@@ -17,21 +20,10 @@ public sealed class BuiltInViewModel : Bindable<BuiltInView>
 
     public bool IsUnitTest { get; private set; }
 
-    #region Methods invoked by the Framework using reflection 
-#pragma warning disable IDE0051 // Remove unused private members
-
-    private void OnOpen(object? _)
+    [RelayCommand]
+    public void OnOpen(object? _)
         => ActivateView(
             ActivatedView.Run, 
             new ComputerActivationParameter(
-                ComputerActivationParameter.Kind.Resource, this.Name));   
-
-    #endregion Methods invoked by the Framework using reflection 
-#pragma warning restore IDE0051 // Remove unused private members
-
-    public ICommand OpenCommand { get => this.Get<ICommand>()!; set => this.Set(value); }
-
-    public string Name { get => this.Get<string>()!; set => this.Set(value); }
-
-    public string Description { get => this.Get<string>()!; set => this.Set(value); }
+                ComputerActivationParameter.Kind.Resource, this.Name));
 }

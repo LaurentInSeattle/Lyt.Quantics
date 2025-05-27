@@ -31,7 +31,7 @@
 			ButtonBackground="BorderlessRectangle"
 			GlyphStrokeThickness="0"
 			Text="Create New"
-			Command="{Binding CreateBlankCommand}"
+			Command="{Binding OnCreateBlank}"
 	    	/>
 	</Grid>
 </UserControl>

@@ -1,6 +1,6 @@
 namespace Lyt.Quantics.Studio.Workflow.Load.Tiles;
 
-public partial class DocumentView : UserControl
+public partial class DocumentView : UserControl, IView
 {
     public DocumentView()
     {

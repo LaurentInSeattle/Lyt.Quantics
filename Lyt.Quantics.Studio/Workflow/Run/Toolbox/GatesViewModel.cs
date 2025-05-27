@@ -1,21 +1,28 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Toolbox;
 
-public sealed class GatesViewModel : Bindable<GatesView>
+public sealed partial class GatesViewModel : ViewModel<GatesView>
 {
     private readonly QsModel quanticsStudioModel;
     private readonly IToaster toaster;
 
+    [ObservableProperty]
+    private List<GateViewModel>? gates;
+
+    [ObservableProperty]
+    private string? gateTitle;
+
+    [ObservableProperty]
+    private string? gateDescription;
+
     public GatesViewModel()
     {
-        this.DisablePropertyChangedLogging = true;
-
         // Do not use Injection directly as this is loaded programmatically by the RunView 
         this.quanticsStudioModel = ApplicationBase.GetRequiredService<QsModel>();
         this.toaster = ApplicationBase.GetRequiredService<IToaster>();
         this.Messenger.Subscribe<GateHoverMessage>(this.OnGateHover);
     }
 
-    protected override void OnViewLoaded()
+    public override void OnViewLoaded()
     {
         base.OnViewLoaded();
 
@@ -77,10 +84,4 @@ public sealed class GatesViewModel : Bindable<GatesView>
                 4_000, InformationLevel.Error);
         }
     }
-
-    public List<GateViewModel>? Gates { get => this.Get<List<GateViewModel>?>(); set => this.Set(value); }
-
-    public string? GateTitle { get => this.Get<string?>(); set => this.Set(value); }
-
-    public string? GateDescription { get => this.Get<string?>(); set => this.Set(value); }
 }

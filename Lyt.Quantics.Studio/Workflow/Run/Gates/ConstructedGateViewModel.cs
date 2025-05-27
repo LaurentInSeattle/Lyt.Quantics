@@ -1,6 +1,6 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Gates;
 
-public sealed class ConstructedGateViewModel : CompositeGateViewModel<ConstructedGateView>
+public sealed partial class ConstructedGateViewModel : CompositeGateViewModel<ConstructedGateView>
 {
     // Controlled Gates are not supported here, they have their own class  
     private static readonly Dictionary<string, string> supportedGates =
@@ -33,7 +33,7 @@ public sealed class ConstructedGateViewModel : CompositeGateViewModel<Constructe
         this.CreateGate();
     }
 
-    protected override void OnViewLoaded()
+    public override void OnViewLoaded()
     {
         base.OnViewLoaded();
 
