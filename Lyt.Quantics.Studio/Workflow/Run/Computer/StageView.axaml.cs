@@ -1,6 +1,6 @@
 namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
 
-public partial class StageView : BehaviorEnabledUserControl
+public partial class StageView : BehaviorEnabledUserControl, IView
 {
     public static readonly DropTargetView DropTargetView;
 
@@ -43,6 +43,14 @@ public partial class StageView : BehaviorEnabledUserControl
     public StageView()
     {
         this.InitializeComponent();
+
+        this.Loaded += (s, e) =>
+        {
+            if (this.DataContext is not null && this.DataContext is ViewModel viewModel)
+            {
+                viewModel.OnViewLoaded();
+            }
+        };
 
         this.DataContextChanged +=
             (s, e) =>

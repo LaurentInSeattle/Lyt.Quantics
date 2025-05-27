@@ -1,6 +1,6 @@
 namespace Lyt.Quantics.Studio.Workflow.Run.Code;
 
-public partial class CodeView : BehaviorEnabledUserControl
+public partial class CodeView : BehaviorEnabledUserControl, IView
 {
     public CodeView()
     {

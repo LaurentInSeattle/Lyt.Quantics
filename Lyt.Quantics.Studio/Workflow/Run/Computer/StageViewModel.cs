@@ -1,6 +1,6 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
 
-public sealed class StageViewModel : Bindable<StageView>, IDropTarget
+public sealed partial class StageViewModel : ViewModel<StageView>, IDropTarget
 {
     private const double MarginHeight = 30.0;
     private const double QuBitHeight = 60.0;
@@ -10,12 +10,19 @@ public sealed class StageViewModel : Bindable<StageView>, IDropTarget
     public readonly QsModel quanticsStudioModel;
     public readonly IToaster toaster;
 
+    [ObservableProperty]
+    private string name;
+
+    [ObservableProperty]
+    private bool isMarkerVisible;
+
+    [ObservableProperty]
+    private double gridHeight;
+
     private int activeGates;
 
     public StageViewModel(int stageIndex, QsModel quanticsStudioModel)
     {
-        this.DisablePropertyChangedLogging = true; 
-
         this.stageIndex = stageIndex;
         this.quanticsStudioModel = quanticsStudioModel;
         this.Name = (1 + stageIndex).ToString();
@@ -23,7 +30,7 @@ public sealed class StageViewModel : Bindable<StageView>, IDropTarget
         this.toaster = App.GetRequiredService<IToaster>();
     }
 
-    protected override void OnViewLoaded()
+    public override void OnViewLoaded()
     {
         base.OnViewLoaded();
         this.UpdateQubitCount();
@@ -58,7 +65,7 @@ public sealed class StageViewModel : Bindable<StageView>, IDropTarget
 
     public void UpdateGatesAndMinibars()
     {
-        if (this.Control is null)
+        if (this.View is null)
         {
             // Too early: The View might still be null 
             return;
@@ -369,10 +376,4 @@ public sealed class StageViewModel : Bindable<StageView>, IDropTarget
             return qubitIndex;
         }
     }
-
-    public string Name { get => this.Get<string>()!; set => this.Set(value); }
-
-    public bool IsMarkerVisible { get => this.Get<bool>(); set => this.Set(value); }
-
-    public double GridHeight { get => this.Get<double>(); set => this.Set(value); }
 }
