@@ -1,6 +1,6 @@
 ﻿namespace Lyt.Quantics.Studio.Behaviors;
 
-public sealed class DisabledOnModal : BehaviorBase<Bindable>
+public sealed class DisabledOnModal : Lyt.Mvvm.Behaviors.BehaviorBase<ViewModel>
 {
     private IMessenger? messenger;
 
@@ -20,7 +20,7 @@ public sealed class DisabledOnModal : BehaviorBase<Bindable>
         this.messenger?.Unregister(this);
         this.messenger = null;
         if ((this.AssociatedObject is not null) &&
-            (this.AssociatedObject.Control is Control control))
+            (this.AssociatedObject.ViewBase is Control control))
         {
             control.IsEnabled = true;
             control.Opacity = 1.0;
@@ -30,7 +30,7 @@ public sealed class DisabledOnModal : BehaviorBase<Bindable>
     private void OnModalChanged(ModalMessage message)
     {
         if ((this.AssociatedObject is not null) &&
-            (this.AssociatedObject.Control is Control control))
+            (this.AssociatedObject.ViewBase is Control control))
         {
             control.IsEnabled = message.State == ModalMessage.Modal.Leave;
             control.Opacity = message.State == ModalMessage.Modal.Leave ? 1.0 : 0.5;

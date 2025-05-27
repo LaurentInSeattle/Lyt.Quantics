@@ -1,11 +1,27 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
 
-public sealed partial class ComputerViewModel : Bindable<ComputerView>, IDropTarget
+public sealed partial class ComputerViewModel : ViewModel<ComputerView>, IDropTarget
 {
     private readonly QsModel quanticsStudioModel;
     private readonly IToaster toaster;
     private bool isLoaded;
     private bool needsToLoadModel;
+
+    // Collections of Qubits view models 
+    [ObservableProperty]
+    private ObservableCollection<QubitViewModel> qubits;
+
+    // Collections of Stages view models 
+    [ObservableProperty]
+    private ObservableCollection<StageViewModel> stages;
+
+    /// <summary> The name of the computer currently edited.</summary>
+    [ObservableProperty]
+    private string name;
+
+    /// <summary> The description of the computer currently edited.</summary>
+    [ObservableProperty]
+    private string description;
 
     public ComputerViewModel()
     {
@@ -17,6 +33,8 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>, IDropTar
         // Collections of Qubits and stages view models 
         this.Qubits = [];
         this.Stages = [];
+        this.Name = string.Empty;
+        this.Description = string.Empty;
 
         // Subscribtion processed locally 
         this.Messenger.Subscribe<ToolbarCommandMessage>(this.OnToolbarCommandMessage);
@@ -27,10 +45,10 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>, IDropTar
         this.Messenger.Subscribe<GateEditMessage>(this.OnGateEditMessage);
     }
 
-    protected override void OnViewLoaded()
+    public override void OnViewLoaded()
     {
         this.isLoaded = true;
-        if (this.NeedsToLoadModel)
+        if (this.needsToLoadModel)
         {
             this.InitializeModelOnUi();
         }
@@ -320,7 +338,7 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>, IDropTar
         {
             if (!this.isLoaded)
             {
-                this.NeedsToLoadModel = true;
+                this.needsToLoadModel = true;
                 return;
             }
         } 
@@ -359,7 +377,7 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>, IDropTar
 
                 this.AddEmptyStageOnUi();
 
-                this.NeedsToLoadModel = false;
+                this.needsToLoadModel = false;
             }, DispatcherPriority.ApplicationIdle);
     }
 
@@ -426,7 +444,6 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>, IDropTar
 
 #pragma warning restore CA1822 
 
-
     private void Remove(IGateInfoProvider gateInfoProvider)
     {
         // Debug.WriteLine("Removing gate: " + gateInfoProvider.Gate.CaptionKey);
@@ -438,28 +455,4 @@ public sealed partial class ComputerViewModel : Bindable<ComputerView>, IDropTar
                 4_000, InformationLevel.Error);
         }
     }
-
-    public bool NeedsToLoadModel
-    {
-        get => this.needsToLoadModel;
-        set => this.needsToLoadModel = value;
-    }
-
-    public ObservableCollection<QubitViewModel> Qubits
-    {
-        get => this.Get<ObservableCollection<QubitViewModel>>()!;
-        set => this.Set(value);
-    }
-
-    public ObservableCollection<StageViewModel> Stages
-    {
-        get => this.Get<ObservableCollection<StageViewModel>>()!;
-        set => this.Set(value);
-    }
-
-    /// <summary> The name of the computer currently edited.</summary>
-    public string Name { get => this.Get<string>()!; set => this.Set(value); }
-
-    /// <summary> The description of the computer currently edited.</summary>
-    public string Description { get => this.Get<string>()!; set => this.Set(value); }
 }

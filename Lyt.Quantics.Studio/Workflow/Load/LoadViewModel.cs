@@ -2,11 +2,19 @@
 
 using static HeaderedContentViewModel;
 
-public sealed class LoadViewModel : Bindable<LoadView>
+public sealed partial class LoadViewModel : ViewModel<LoadView>
 {
     private readonly LoadBuiltInViewModel loadBuiltInViewModel;
-
     private readonly LoadDocumentsViewModel loadDocumentsViewModel;
+
+    [ObservableProperty]
+    private HeaderedContentView blank;
+
+    [ObservableProperty]
+    private HeaderedContentView builtIn;
+
+    [ObservableProperty]
+    private HeaderedContentView documents;
 
     public LoadViewModel() 
     {
@@ -32,10 +40,4 @@ public sealed class LoadViewModel : Bindable<LoadView>
         this.loadDocumentsViewModel.Activate(activationParameters);
         this.Messenger.Publish(new ShowTitleBarMessage(Show: true));
     }
-
-    public HeaderedContentView Blank { get => this.Get<HeaderedContentView>()!; set => this.Set(value); }
-
-    public HeaderedContentView BuiltIn { get => this.Get<HeaderedContentView>()!; set => this.Set(value); }
-
-    public HeaderedContentView Documents { get => this.Get<HeaderedContentView>()!; set => this.Set(value); }
 }

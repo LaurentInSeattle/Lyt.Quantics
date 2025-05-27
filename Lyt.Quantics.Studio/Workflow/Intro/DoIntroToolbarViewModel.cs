@@ -3,24 +3,18 @@
 using static MessagingExtensions;
 using static ViewActivationMessage;
 
-public sealed class DoIntroToolbarViewModel : Bindable<DoIntroToolbarView>
+public sealed partial class DoIntroToolbarViewModel : ViewModel<DoIntroToolbarView>
 {
-    #region Methods invoked by the Framework using reflection 
-#pragma warning disable IDE0051 // Remove unused private members
 #pragma warning disable CA1822 // Mark members as static
 
-    private void OnExit(object? _) => ActivateView(ActivatedView.Exit);
+    [RelayCommand]
+    public void OnExit() => ActivateView(ActivatedView.Exit);
 
-    private void OnNext(object? _) => ActivateView(ActivatedView.Load);
+    [RelayCommand]
+    public void OnNext() => ActivateView(ActivatedView.Load);
 
 #pragma warning restore CA1822 // 
-#pragma warning restore IDE0051
-    #endregion Methods invoked by the Framework using reflection 
 
     // TODO: License: 
     // https://opensource.org/license/mit
-
-    public ICommand ExitCommand { get => this.Get<ICommand>()!; set => this.Set(value); }
-
-    public ICommand NextCommand { get => this.Get<ICommand>()!; set => this.Set(value); }
 }

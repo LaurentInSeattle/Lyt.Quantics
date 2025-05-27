@@ -2,7 +2,7 @@
 
 using static ToolbarCommandMessage;
 
-public sealed class LoadBuiltInViewModel : Bindable<LoadBuiltInView>
+public sealed partial class LoadBuiltInViewModel : ViewModel<LoadBuiltInView>
 {
     private const string IsUnitTestProperty = "IsUnitTest";
     private const string NameProperty = "Name";
@@ -11,18 +11,21 @@ public sealed class LoadBuiltInViewModel : Bindable<LoadBuiltInView>
     private readonly QsModel quanticsStudioModel;
     private readonly List<FilterString> stringFilters;
     private readonly List<FilterPredicate> boolFilters;
+    private List<BuiltInViewModel> loadedBuiltInViews;
+
+    [ObservableProperty]
+    private List<BuiltInViewModel> builtInViews;
 
     private SearchEngine<BuiltInViewModel>? searchEngine;
     private FilterPredicate? filterPredicate;
-
-    private List<BuiltInViewModel> builtInViews;
 
     public LoadBuiltInViewModel()
     {
         // Do not use Injection directly as this is loaded programmatically by the LoadView 
         this.quanticsStudioModel = App.GetRequiredService<QsModel>();
 
-        this.builtInViews = [];
+        this.loadedBuiltInViews = [];
+        this.BuiltInViews = [];
         this.stringFilters = [];
         this.boolFilters = [];
         this.filterPredicate = new(PropertyName: IsUnitTestProperty, PropertyValue: false);
@@ -32,7 +35,7 @@ public sealed class LoadBuiltInViewModel : Bindable<LoadBuiltInView>
         this.Messenger.Subscribe<ModelUpdateMessage>(this.OnModelUpdateMessage);
     }
 
-    protected override void OnViewLoaded()
+    public override void OnViewLoaded()
     {
         base.OnViewLoaded();
         this.OnBuiltInClearSearch();
@@ -43,17 +46,17 @@ public sealed class LoadBuiltInViewModel : Bindable<LoadBuiltInView>
     {
         base.Activate(activationParameters);
 
-        if ((this.builtInViews.Count == 0) || (this.searchEngine is null))
+        if ((this.loadedBuiltInViews.Count == 0) || (this.searchEngine is null))
         {
             var builtInComputers = QsModel.BuiltInComputers;
-            this.builtInViews = new(builtInComputers.Count);
+            this.loadedBuiltInViews = new(builtInComputers.Count);
             var computerNames = from key in builtInComputers.Keys orderby key select key;
             foreach (string computerName in computerNames)
             {
                 try
                 {
                     var computer = builtInComputers[computerName];
-                    builtInViews.Add(new BuiltInViewModel(computer));
+                    loadedBuiltInViews.Add(new BuiltInViewModel(computer));
                 }
                 catch (Exception ex)
                 {
@@ -63,7 +66,7 @@ public sealed class LoadBuiltInViewModel : Bindable<LoadBuiltInView>
                 }
             }
 
-            this.searchEngine = new(this.builtInViews, this.Logger);
+            this.searchEngine = new(this.loadedBuiltInViews, this.Logger);
         }
 
         this.OnBuiltInClearSearch();
@@ -148,11 +151,5 @@ public sealed class LoadBuiltInViewModel : Bindable<LoadBuiltInView>
             this.BuiltInViews = this.searchEngine.All;
             this.Logger.Warning("Search failed: " + filteredResults.Message);
         }
-    }
-
-    public List<BuiltInViewModel> BuiltInViews
-    {
-        get => this.Get<List<BuiltInViewModel>>()!;
-        set => this.Set(value);
     }
 }

@@ -3,7 +3,7 @@
 using static Lyt.Avalonia.Controls.Utilities;
 using static ToolbarCommandMessage;
 
-public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
+public sealed partial class AmplitudesViewModel : ViewModel<AmplitudesView>
 {
     private static readonly SolidColorBrush pastelOrchidBrush;
     private static readonly TextBlock noDataTextBlock;
@@ -48,7 +48,7 @@ public sealed class AmplitudesViewModel : Bindable<AmplitudesView>
         this.Messenger.Subscribe<ModelMeasureStatesUpdateMessage>(this.ModelMeasureStatesUpdateMessage);
     }
 
-    protected override void OnViewLoaded()
+    public override void OnViewLoaded()
     {
         // Note that this view gets loaded when we expand it for the very first time
         // At this moment, we may already have received model result updates, in such case 

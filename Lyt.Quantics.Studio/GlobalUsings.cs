@@ -103,7 +103,11 @@ global using Lyt.Quantics.Engine.Utilities;
 
 global using FluentValidation;
 global using Lyt.Validation;
+global using Lyt.Mvvm;
 
+global using CommunityToolkit.Mvvm;
+global using CommunityToolkit.Mvvm.ComponentModel;
+global using CommunityToolkit.Mvvm.Input;
 
 #region Studio
 

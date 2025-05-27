@@ -1,13 +1,20 @@
 ﻿namespace Lyt.Quantics.Studio.Shell;
 
+using Lyt.Mvvm;
 using static MessagingExtensions;
 using static ViewActivationMessage;
 
-public sealed class ShellViewModel : Bindable<ShellView>
+public sealed partial class ShellViewModel : ViewModel<ShellView>
 {
     private readonly IToaster toaster;
     private readonly IDialogService dialogService;
     private readonly QsModel quanticsStudioModel;
+
+    [ObservableProperty]
+    private GridLength titleBarHeight;
+
+    [ObservableProperty]
+    private bool isTitleBarVisible;
 
     public ShellViewModel(
         IDialogService dialogService, IToaster toaster, QsModel quanticsStudioModel)
@@ -19,7 +26,7 @@ public sealed class ShellViewModel : Bindable<ShellView>
         this.Messenger.Subscribe<ShowTitleBarMessage>(this.OnShowTitleBar);
     }
 
-    protected override void OnViewLoaded()
+    public override void OnViewLoaded()
     {
         this.Logger.Debug("OnViewLoaded begins");
 
@@ -101,7 +108,9 @@ public sealed class ShellViewModel : Bindable<ShellView>
             if (this.dialogService is DialogService modalService)
             {
                 modalService.Dismiss();
-                modalService.RunModal(this.View.ToasterHost, new SaveDialogModel());
+
+                // TODO
+                // modalService.RunModal(this.View.ToasterHost, new SaveDialogModel());
             }
 
             return;
@@ -186,17 +195,9 @@ public sealed class ShellViewModel : Bindable<ShellView>
 
     private static void SetupWorkflow()
     {
-        static void CreateAndBind<TViewModel, TControl>()
-             where TViewModel : Bindable<TControl>
-             where TControl : Control, new()
-        {
-            var vm = App.GetRequiredService<TViewModel>();
-            vm.CreateViewAndBind();
-        }
-
-        CreateAndBind<IntroViewModel, IntroView>();
-        CreateAndBind<LoadViewModel, LoadView>();
-        CreateAndBind<RunViewModel, RunView>();
+        App.GetRequiredService<IntroViewModel>().CreateViewAndBind();
+        App.GetRequiredService<LoadViewModel>().CreateViewAndBind();
+        App.GetRequiredService<RunViewModel>().CreateViewAndBind();
     }
 
     private void LoadSwapData()
@@ -217,27 +218,4 @@ public sealed class ShellViewModel : Bindable<ShellView>
             }
         }); 
     }
-
-    public GridLength TitleBarHeight { get => this.Get<GridLength>(); set => this.Set(value); }
-
-    public bool IsTitleBarVisible { get => this.Get<bool>(); set => this.Set(value); }
 }
-
-/*
- *
-
-    Could be useful later...     For now: Do not delete just yet 
-
-    //private void OnModelUpdated(ModelUpdateMessage message)
-    //{
-    //    string msgProp = string.IsNullOrWhiteSpace(message.PropertyName) ? "<unknown>" : message.PropertyName;
-    //    string msgMethod = string.IsNullOrWhiteSpace(message.MethodName) ? "<unknown>" : message.MethodName;
-    //    this.Logger.Debug("Model update, property: " + msgProp + " method: " + msgMethod);
-
-    //    //if (message.PropertyName != nameof( < some model property > ))
-    //    //{
-    //    //}
-    //}
-
- * 
- */

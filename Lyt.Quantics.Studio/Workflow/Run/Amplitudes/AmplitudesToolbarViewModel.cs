@@ -3,14 +3,30 @@
 using static ToolbarCommandMessage;
 using static MessagingExtensions;
 
-public sealed class AmplitudesToolbarViewModel : Bindable<AmplitudesToolbarView>
+public sealed partial class AmplitudesToolbarViewModel : ViewModel<AmplitudesToolbarView>
 {
     private readonly QsModel quanticsStudioModel;
+
+    [ObservableProperty]
+    private bool showAll;
+
+    [ObservableProperty]
+    private bool showByBitOrder;
+
+    [ObservableProperty]
+    private double stageCount;
+
+    [ObservableProperty]
+    private double stageRank;
+
+    [ObservableProperty]
+    private string stageRankText;
 
     private bool isInitializing;
 
     public AmplitudesToolbarViewModel()
     {
+        this.stageRankText = string.Empty;
         this.quanticsStudioModel = App.GetRequiredService<QsModel>();
         this.Messenger.Subscribe<ModelStructureUpdateMessage>(this.OnModelStructureUpdateMessage);
     }
@@ -24,48 +40,23 @@ public sealed class AmplitudesToolbarViewModel : Bindable<AmplitudesToolbarView>
         this.isInitializing = false;
     }
 
-    protected override void OnViewLoaded()
+    public override void OnViewLoaded()
     {
         this.ShowAll = true;
         this.ShowByBitOrder = true;
     }
 
-    public bool ShowAll
+    partial void OnShowAllChanged(bool value) => Command(ToolbarCommand.ShowAll, value);
+
+    partial void OnShowByBitOrderChanged(bool value) => Command(ToolbarCommand.ShowByBitOrder, value);
+
+    partial void OnStageRankChanged(double value)
     {
-        get => this.Get<bool>();
-        set
+        int rank = (int)Math.Round(this.StageRank);
+        this.StageRankText = string.Format("Stage {0:D}", rank);
+        if (!this.isInitializing)
         {
-            this.Set(value);
-            Command(ToolbarCommand.ShowAll, value);
+            Command(ToolbarCommand.ShowStage, rank);
         }
     }
-
-    public bool ShowByBitOrder
-    {
-        get => this.Get<bool>();
-        set
-        {
-            this.Set(value);
-            Command(ToolbarCommand.ShowByBitOrder, value);
-        }
-    }
-
-    public double StageCount { get => this.Get<double>(); set => this.Set(value); }
-
-    public double StageRank
-    {
-        get => this.Get<double>();
-        set
-        {
-            this.Set(value);
-            int stageRank = (int)Math.Round(this.StageRank);
-            this.StageRankText = string.Format("Stage {0:D}", stageRank);
-            if (!this.isInitializing)
-            {
-                Command(ToolbarCommand.ShowStage, stageRank);
-            }
-        }
-    }
-
-    public string StageRankText { get => this.Get<string>()!; set => this.Set(value); }
 }

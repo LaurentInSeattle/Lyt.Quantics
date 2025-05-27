@@ -1,10 +1,10 @@
 namespace Lyt.Quantics.Studio.Controls;
 
-public partial class HeaderedContentView : UserControl
+public partial class HeaderedContentView : UserControl, IView
 {
     public HeaderedContentView() => this.InitializeComponent();
 
-    public TViewModel ViewModel<TViewModel>() where TViewModel : Bindable
+    public TViewModel ViewModel<TViewModel>() where TViewModel : ViewModel
     {
         if ((this.DataContext is HeaderedContentViewModel headeredContentViewModel) &&
             (headeredContentViewModel.ContentView is not null) &&

@@ -2,9 +2,18 @@
 
 using static HeaderedContentViewModel;
 
-public sealed class RunViewModel : Bindable<RunView>
+public sealed partial class RunViewModel : ViewModel<RunView>
 {
     private readonly ComputerViewModel computerViewModel;
+
+    [ObservableProperty]
+    private HeaderedContentView gates;
+
+    [ObservableProperty]
+    private HeaderedContentView computer;
+
+    [ObservableProperty]
+    private HeaderedContentView amplitudes;
 
     public RunViewModel()
     {
@@ -26,12 +35,6 @@ public sealed class RunViewModel : Bindable<RunView>
         this.computerViewModel.Activate(activationParameters);
         this.Messenger.Publish(new ShowTitleBarMessage(Show: false));
     }
-
-    public HeaderedContentView Gates { get => this.Get<HeaderedContentView>()!; set => this.Set(value); }
-
-    public HeaderedContentView Computer { get => this.Get<HeaderedContentView>()!; set => this.Set(value); }
-
-    public HeaderedContentView Amplitudes { get => this.Get<HeaderedContentView>()!; set => this.Set(value); }
 
     #region Code View: Commented out for now 
     //protected override void OnViewLoaded()

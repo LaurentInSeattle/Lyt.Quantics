@@ -53,6 +53,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lyt.Avalonia.Interfaces", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lyt.Avalonia.Mvvm", "..\Lyt.Avalonia\Lyt.Avalonia.Mvvm\Lyt.Avalonia.Mvvm.csproj", "{761F8ABB-93F9-3510-6DCA-4CCF287C4A1B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lyt.Mvvm", "..\Lyt.Framework\Lyt.Mvvm\Lyt.Mvvm.csproj", "{66333785-F79B-0142-0808-D9E0F442C5F6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -123,6 +125,10 @@ Global
 		{761F8ABB-93F9-3510-6DCA-4CCF287C4A1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{761F8ABB-93F9-3510-6DCA-4CCF287C4A1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{761F8ABB-93F9-3510-6DCA-4CCF287C4A1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66333785-F79B-0142-0808-D9E0F442C5F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66333785-F79B-0142-0808-D9E0F442C5F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66333785-F79B-0142-0808-D9E0F442C5F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66333785-F79B-0142-0808-D9E0F442C5F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -141,6 +147,7 @@ Global
 		{7CB4D17F-9BED-45A4-AE3C-D3CECC2916C4} = {DA5C3214-5362-D53D-7EE1-7B72DB27BE75}
 		{0C26EF60-4941-3001-BD62-AEEE9669F666} = {DA5C3214-5362-D53D-7EE1-7B72DB27BE75}
 		{761F8ABB-93F9-3510-6DCA-4CCF287C4A1B} = {DA5C3214-5362-D53D-7EE1-7B72DB27BE75}
+		{66333785-F79B-0142-0808-D9E0F442C5F6} = {E78947C0-7E1C-49D7-84AB-FF115B07F512}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AE3F677D-2838-47EE-8DB0-77930CEA80A9}

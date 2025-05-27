@@ -34,7 +34,7 @@
 			ButtonBackground="BorderlessRectangle"
 			GlyphStrokeThickness="0"
 			Text="Exit and Close"
-			Command="{Binding ExitCommand}"
+			Command="{Binding OnExit}"
 	    	/>
 		<glyphs:GlyphButton
 			Grid.Column="3"
@@ -47,7 +47,7 @@
 			ButtonBackground="BorderlessRectangle"
 			GlyphStrokeThickness="0"
 			Text="I Agree with the MIT Licence Terms, Continue"
-			Command="{Binding NextCommand}"
+			Command="{Binding OnNext}"
 	    	/>
 	</Grid>
 </UserControl>

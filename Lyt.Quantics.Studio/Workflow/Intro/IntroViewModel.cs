@@ -2,9 +2,12 @@
 
 using static HeaderedContentViewModel;
 
-public sealed class IntroViewModel : Bindable<IntroView>
+public sealed partial class IntroViewModel : ViewModel<IntroView>
 {
     private readonly DoIntroViewModel doIntroViewModel;
+
+    [ObservableProperty]
+    private HeaderedContentView doIntro;
 
     public IntroViewModel()
     {
@@ -19,11 +22,5 @@ public sealed class IntroViewModel : Bindable<IntroView>
     {
         base.Activate(activationParameters);
         this.doIntroViewModel.Activate(activationParameters);
-    }
-
-    public HeaderedContentView DoIntro
-    {
-        get => this.Get<HeaderedContentView>()!;
-        set => this.Set(value);
     }
 }

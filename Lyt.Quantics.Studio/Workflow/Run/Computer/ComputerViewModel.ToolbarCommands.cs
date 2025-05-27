@@ -4,7 +4,7 @@ using static ViewActivationMessage;
 using static MessagingExtensions;
 using static ToolbarCommandMessage;
 
-public sealed partial class ComputerViewModel : Bindable<ComputerView>
+public sealed partial class ComputerViewModel : ViewModel<ComputerView>
 {
     private void OnToolbarCommandMessage(ToolbarCommandMessage message)
     {

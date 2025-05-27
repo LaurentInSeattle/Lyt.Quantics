@@ -2,11 +2,17 @@
 
 using static ToolbarCommandMessage;
 
-public sealed class LoadDocumentsViewModel : Bindable<LoadDocumentsView>
+public sealed partial class LoadDocumentsViewModel : ViewModel<LoadDocumentsView>
 {
     private readonly QsModel quanticsStudioModel;
-    private readonly List<DocumentViewModel> documentViews;
+    private readonly List<DocumentViewModel> loadedDocumentViews;
 
+    [ObservableProperty]
+    private string? noData;
+
+    [ObservableProperty]
+    private ObservableCollection<DocumentViewModel> documentViews;
+    
     private SearchEngine<DocumentViewModel>? searchEngine;
     private DocumentViewModel? documentToDelete;
 
@@ -14,12 +20,13 @@ public sealed class LoadDocumentsViewModel : Bindable<LoadDocumentsView>
     {
         // Do not use Injection directly as this is loaded programmatically by the LoadView 
         this.quanticsStudioModel = App.GetRequiredService<QsModel>();
-        this.documentViews = [];
+        this.loadedDocumentViews = [];
+        this.DocumentViews = [];
         this.Messenger.Subscribe<ToolbarCommandMessage>(this.OnToolbarCommandMessage);
         this.Messenger.Subscribe<ModelUpdateMessage>(this.OnModelUpdateMessage);
     }
 
-    protected override void OnViewLoaded()
+    public override void OnViewLoaded()
     {
         base.OnViewLoaded();
         this.ShowMostRecent(this.quanticsStudioModel.ShowRecentDocuments);
@@ -31,7 +38,7 @@ public sealed class LoadDocumentsViewModel : Bindable<LoadDocumentsView>
 
         try
         {
-            this.documentViews.Clear();
+            this.loadedDocumentViews.Clear();
             var projects = this.quanticsStudioModel.Projects;
             if (projects.Count > 0)
             {
@@ -43,7 +50,7 @@ public sealed class LoadDocumentsViewModel : Bindable<LoadDocumentsView>
                     {
                         var computer = projects[computerName];
                         var documentView = new DocumentViewModel(computer);
-                        documentViews.Add(documentView);
+                        loadedDocumentViews.Add(documentView);
                     }
                     catch (Exception ex)
                     {
@@ -58,7 +65,7 @@ public sealed class LoadDocumentsViewModel : Bindable<LoadDocumentsView>
                 this.NoData = "< No saved projects were found. >";
             }
 
-            this.searchEngine = new(this.documentViews, this.Logger);
+            this.searchEngine = new(this.loadedDocumentViews, this.Logger);
             this.ShowMostRecent(this.quanticsStudioModel.ShowRecentDocuments);
         }
         catch (Exception ex)
@@ -137,8 +144,8 @@ public sealed class LoadDocumentsViewModel : Bindable<LoadDocumentsView>
         // Delete file and update UI 
         if (this.quanticsStudioModel.DeleteDocument(this.documentToDelete.QuComputer, out string message))
         {
-            this.documentViews.Remove(this.documentToDelete);
-            this.searchEngine = new(this.documentViews, this.Logger);
+            this.loadedDocumentViews.Remove(this.documentToDelete);
+            this.searchEngine = new(this.loadedDocumentViews, this.Logger);
             this.ShowMostRecent(this.quanticsStudioModel.ShowRecentDocuments);
         }
         else
@@ -186,13 +193,5 @@ public sealed class LoadDocumentsViewModel : Bindable<LoadDocumentsView>
         {
             this.DocumentViews = [.. this.searchEngine.All];
         }
-    }
-
-    public string? NoData { get => this.Get<string>(); set => this.Set(value); }
-
-    public ObservableCollection<DocumentViewModel> DocumentViews
-    {
-        get => this.Get<ObservableCollection<DocumentViewModel>>()!;
-        set => this.Set(value);
     }
 }

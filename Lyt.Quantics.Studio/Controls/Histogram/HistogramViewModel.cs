@@ -1,8 +1,26 @@
 ﻿namespace Lyt.Quantics.Studio.Controls.Histogram;
 
-public sealed class HistogramViewModel : Bindable<HistogramView>
+public sealed partial class HistogramViewModel : ViewModel<HistogramView>
 {
-    public HistogramViewModel() => this.DisablePropertyChangedLogging = true;
+    [ObservableProperty]
+    private string? value0;
+
+    [ObservableProperty]
+    private string? value25;
+
+    [ObservableProperty]
+    private string? value50;
+
+    [ObservableProperty]
+    private string? value75;
+
+    [ObservableProperty]
+    private string? value100;
+
+    [ObservableProperty]
+    private List<HistogramBarViewModel>? histogramBars;
+
+    public HistogramViewModel() { }
 
     public void Update(List<HistogramEntry> entries)
     {
@@ -52,20 +70,5 @@ public sealed class HistogramViewModel : Bindable<HistogramView>
         }
 
         this.HistogramBars = list;
-    }
-
-    public string? Value0 { get => this.Get<string?>(); set => this.Set(value); }
-
-    public string? Value25 { get => this.Get<string?>(); set => this.Set(value); }
-
-    public string? Value50 { get => this.Get<string?>(); set => this.Set(value); }
-
-    public string? Value75 { get => this.Get<string?>(); set => this.Set(value); }
-
-    public string? Value100 { get => this.Get<string?>(); set => this.Set(value); }
-
-    public List<HistogramBarViewModel>? HistogramBars
-    {
-        get => this.Get<List<HistogramBarViewModel>?>(); set => this.Set(value);
     }
 }

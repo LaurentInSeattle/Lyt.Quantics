@@ -1,6 +1,6 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
 
-public sealed partial class ComputerViewModel : Bindable<ComputerView>
+public sealed partial class ComputerViewModel : ViewModel<ComputerView>
 {
     private readonly IDialogService dialogService;
 

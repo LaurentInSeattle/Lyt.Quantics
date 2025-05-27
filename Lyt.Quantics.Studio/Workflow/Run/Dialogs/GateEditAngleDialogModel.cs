@@ -1,7 +1,7 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Dialogs;
 
-public sealed class GateEditAngleDialogModel
-    : DialogBindable<GateEditAngleDialog, IGateInfoProvider>
+public sealed partial class GateEditAngleDialogModel
+    : DialogViewModel<GateEditAngleDialog, IGateInfoProvider>
 {
     private const int DefaultPredefinedValue = 8;
 
@@ -21,6 +21,30 @@ public sealed class GateEditAngleDialogModel
             { 9,  new AnglePredefinedValue( 1, true ) },
         };
 
+    [ObservableProperty]
+    private string customValue;
+
+    [ObservableProperty]
+    private string validationMessage;
+
+    [ObservableProperty]
+    private string? title;
+
+    [ObservableProperty]
+    private string angleValueText;
+
+    [ObservableProperty]
+    private bool saveButtonIsEnabled;
+
+    [ObservableProperty]
+    private bool makeControlledButtonIsEnabled;
+
+    [ObservableProperty]
+    private double valuesCount;
+
+    [ObservableProperty]
+    private double sliderValue;
+
     private bool isChangedFromSlider;
     private bool isInitializing;
 
@@ -28,6 +52,9 @@ public sealed class GateEditAngleDialogModel
     {
         this.GateParameters = new();
         this.IsMakeControlled = false;
+        this.CustomValue = string.Empty;
+        this.ValidationMessage = string.Empty;
+        this.AngleValueText = string.Empty;
         this.ValuesCount = GateEditAngleDialogModel.PredefinedValues.Count - 1;
         this.PredefinedValue = GateEditAngleDialogModel.PredefinedValues[DefaultPredefinedValue];
     }
@@ -45,7 +72,7 @@ public sealed class GateEditAngleDialogModel
 
     public double AngleValue { get; private set; }
 
-    protected override void OnViewLoaded()
+    public override void OnViewLoaded()
     {
         base.OnViewLoaded();
 
@@ -97,7 +124,7 @@ public sealed class GateEditAngleDialogModel
         this.onClose?.Invoke(this, true);
 
         // The delegate should be invoked only once 
-        this.onClose = null; 
+        this.onClose = null;
 
         // We will run another modal dialog, so do NOT dismis the dialog service
     }
@@ -221,33 +248,6 @@ public sealed class GateEditAngleDialogModel
         throw new Exception("Failed to setup slider.");
     }
 
-    public string CustomValue { get => this.Get<string>()!; set => this.Set(value); }
-
-    public string ValidationMessage { get => this.Get<string>()!; set => this.Set(value); }
-
-    public string? Title { get => this.Get<string?>(); set => this.Set(value); }
-
-    public ICommand MakeControlledCommand { get => this.Get<ICommand>()!; set => this.Set(value); }
-
-    public ICommand SaveCommand { get => this.Get<ICommand>()!; set => this.Set(value); }
-
-    public ICommand CancelCommand { get => this.Get<ICommand>()!; set => this.Set(value); }
-
-    public double ValuesCount { get => this.Get<double>(); set => this.Set(value); }
-
-    public double SliderValue
-    {
-        get => this.Get<double>();
-        set
-        {
-            this.Set(value);
-            this.OnSliderChanged((int)Math.Round(this.SliderValue));
-        }
-    }
-
-    public string AngleValueText { get => this.Get<string>()!; set => this.Set(value); }
-
-    public bool SaveButtonIsEnabled { get => this.Get<bool>(); set => this.Set(value); }
-
-    public bool MakeControlledButtonIsEnabled { get => this.Get<bool>(); set => this.Set(value); }
+    partial void OnSliderValueChanged(double value)
+        => this.OnSliderChanged((int)Math.Round(value));
 }

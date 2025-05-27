@@ -1,6 +1,6 @@
 namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
 
-public partial class ComputerView : BehaviorEnabledUserControl
+public partial class ComputerView : BehaviorEnabledUserControl, IView
 {
     public ComputerView()
     {
@@ -11,6 +11,13 @@ public partial class ComputerView : BehaviorEnabledUserControl
                 new DragOverAble(StageView.HideDropTarget).Attach(this);
                 new DropAble(StageView.HideDropTarget).Attach(this);
             };
+        this.Loaded += (s, e) =>
+        {
+            if (this.DataContext is not null && this.DataContext is ViewModel viewModel)
+            {
+                viewModel.OnViewLoaded();
+            }
+        };
         this.Tapped +=
             (s, e) =>
             {
@@ -28,6 +35,4 @@ public partial class ComputerView : BehaviorEnabledUserControl
                 }
             };
     }
-
-    private void ComputerView_Tapped(object? sender, TappedEventArgs e) => throw new NotImplementedException();
 }
