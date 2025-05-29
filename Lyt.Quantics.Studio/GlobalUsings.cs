@@ -24,6 +24,9 @@ global using System.Windows.Input;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Hosting;
 
+global using CommunityToolkit.Mvvm.ComponentModel;
+global using CommunityToolkit.Mvvm.Input;
+
 #endregion System 
 
 #region Avalonia 
@@ -68,6 +71,7 @@ global using Lyt.Avalonia.Mvvm.Logging;
 global using Lyt.Avalonia.Mvvm.Toasting;
 global using Lyt.Avalonia.Mvvm.Utilities;
 
+global using Lyt.Framework.Interfaces.Binding;
 global using Lyt.Framework.Interfaces.Dispatching;
 global using Lyt.Framework.Interfaces.Logging;
 global using Lyt.Framework.Interfaces.Messaging;
@@ -75,6 +79,7 @@ global using Lyt.Framework.Interfaces.Modeling;
 global using Lyt.Framework.Interfaces.Profiling;
 global using Lyt.Framework.Interfaces.Randomizing;
 
+global using Lyt.Mvvm;
 global using Lyt.Model;
 global using Lyt.Persistence;
 global using Lyt.Messaging;
@@ -82,6 +87,7 @@ global using Lyt.Search;
 global using Lyt.Utilities.Extensions;
 global using Lyt.Utilities.Profiling;
 global using Lyt.Utilities.Randomizing;
+global using Lyt.Validation;
 
 #endregion Framework 
 
@@ -100,18 +106,10 @@ global using Lyt.Quantics.Engine.Utilities;
 
 #endregion Engine 
 
-
 global using FluentValidation;
-global using Lyt.Validation;
-global using Lyt.Mvvm;
-
-global using CommunityToolkit.Mvvm;
-global using CommunityToolkit.Mvvm.ComponentModel;
-global using CommunityToolkit.Mvvm.Input;
 
 #region Studio
 
-global using Lyt.Quantics.Studio;
 global using Lyt.Quantics.Studio.Behaviors;
 global using Lyt.Quantics.Studio.Behaviors.DragDrop;
 global using Lyt.Quantics.Studio.Controls;
@@ -121,10 +119,13 @@ global using Lyt.Quantics.Studio.Model;
 global using Lyt.Quantics.Studio.Model.Messaging;
 global using Lyt.Quantics.Studio.Shell;
 global using Lyt.Quantics.Studio.Utilities;
+
 global using Lyt.Quantics.Studio.Workflow.Intro;
+
 global using Lyt.Quantics.Studio.Workflow.Load;
 global using Lyt.Quantics.Studio.Workflow.Load.Tiles;
 global using Lyt.Quantics.Studio.Workflow.Load.Toolbars;
+
 global using Lyt.Quantics.Studio.Workflow.Run;
 global using Lyt.Quantics.Studio.Workflow.Run.Amplitudes;
 global using Lyt.Quantics.Studio.Workflow.Run.Code;
