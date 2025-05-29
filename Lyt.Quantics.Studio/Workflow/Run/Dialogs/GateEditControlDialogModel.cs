@@ -1,9 +1,34 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Dialogs;
 
-public sealed class GateEditControlDialogModel : DialogBindable<GateEditControlDialog, IGateInfoProvider>
+public sealed partial class GateEditControlDialogModel 
+    : DialogViewModel<GateEditControlDialog, IGateInfoProvider>
 {
     private int controlIndex;
     private int targetIndex;
+
+    [ObservableProperty]
+    private string? validationMessage;
+
+    [ObservableProperty]
+    private string? title;
+
+    [ObservableProperty]
+    private double valuesCount;
+
+    [ObservableProperty]
+    private string? controlValueText;
+
+    [ObservableProperty]
+    private string? targetValueText;
+
+    [ObservableProperty]
+    private bool saveButtonIsEnabled;
+
+    [ObservableProperty]
+    private double controlSliderValue;
+
+    [ObservableProperty]
+    private double targetSliderValue;
 
     public GateEditControlDialogModel() { }
 
@@ -14,7 +39,7 @@ public sealed class GateEditControlDialogModel : DialogBindable<GateEditControlD
 
     public QubitsIndices QubitsIndices { get; private set; } = new();
 
-    protected override void OnViewLoaded()
+    public override void OnViewLoaded()
     {
         base.OnViewLoaded();
 
@@ -46,22 +71,20 @@ public sealed class GateEditControlDialogModel : DialogBindable<GateEditControlD
         this.ControlSliderValue = indexControl;
     }
 
-#pragma warning disable IDE0051 // Remove unused private members
-
-    private void OnSave(object? _)
+    [RelayCommand]
+    public void OnSave()
     {
         this.QubitsIndices = new(this.controlIndex, this.targetIndex);
         this.onClose?.Invoke(this, true);
         this.dialogService.Dismiss();
     }
 
-    private void OnCancel(object? _)
+    [RelayCommand]
+    public void OnCancel()
     {
         this.onClose?.Invoke(this, false);
         this.dialogService.Dismiss();
     }
-
-#pragma warning restore IDE0051 // Remove unused private members
 
     private bool Validate(out string message)
     {
@@ -94,39 +117,9 @@ public sealed class GateEditControlDialogModel : DialogBindable<GateEditControlD
         this.Validate(out string _);
     }
 
-    public string ValidationMessage { get => this.Get<string>()!; set => this.Set(value); }
+    partial void OnControlSliderValueChanged(double value)
+        => this.OnSliderChanged((int)Math.Round(value), isControl: true);
 
-    public string? Title { get => this.Get<string?>(); set => this.Set(value); }
-
-    public ICommand SaveCommand { get => this.Get<ICommand>()!; set => this.Set(value); }
-
-    public ICommand CancelCommand { get => this.Get<ICommand>()!; set => this.Set(value); }
-
-    public double ValuesCount { get => this.Get<double>(); set => this.Set(value); }
-
-    public double ControlSliderValue
-    {
-        get => this.Get<double>();
-        set
-        {
-            this.Set(value);
-            this.OnSliderChanged((int)Math.Round(this.ControlSliderValue), isControl: true);
-        }
-    }
-
-    public double TargetSliderValue
-    {
-        get => this.Get<double>();
-        set
-        {
-            this.Set(value);
-            this.OnSliderChanged((int)Math.Round(this.TargetSliderValue), isControl: false);
-        }
-    }
-
-    public string ControlValueText { get => this.Get<string>()!; set => this.Set(value); }
-
-    public string TargetValueText { get => this.Get<string>()!; set => this.Set(value); }
-
-    public bool SaveButtonIsEnabled { get => this.Get<bool>(); set => this.Set(value); }
+    partial void OnTargetSliderValueChanged(double value)
+        =>this.OnSliderChanged((int)Math.Round(value), isControl: false);
 }

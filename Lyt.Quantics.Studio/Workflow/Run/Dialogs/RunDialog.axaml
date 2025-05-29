@@ -94,7 +94,7 @@
 						ButtonBackground="BorderlessRectangle"
 						GlyphStrokeThickness="0"
 						Text="Abort"
-						Command="{Binding CancelCommand}"
+						Command="{Binding OnCancel}"
 				    	/>
 				</Grid>
 

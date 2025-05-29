@@ -70,10 +70,9 @@ public sealed partial class ComputerViewModel : ViewModel<ComputerView>
         // Run modal dialog to phase or rotation angle
         if (this.dialogService is DialogService modalService)
         {
-            //  TODO ! 
-            //modalService.RunModal<GateEditAngleDialog, IGateInfoProvider>(
-            //    this.View.ToasterHost, new GateEditAngleDialogModel(),
-            //    this.OnGateEditAngleClose, gateInfoProvider);
+            modalService.RunViewModelModal<GateEditAngleDialog, IGateInfoProvider>(
+                this.View.ToasterHost, new GateEditAngleDialogModel(),
+                this.OnGateEditAngleClose, gateInfoProvider);
         }
     }
 
@@ -92,7 +91,7 @@ public sealed partial class ComputerViewModel : ViewModel<ComputerView>
             if (this.dialogService is DialogService modalService)
             {
                 // Assumes that the host panel has not been changed 
-                modalService.ReplaceRunModal<GateEditControlDialog, IGateInfoProvider>(
+                modalService.ReplaceRunViewModelModal<GateEditControlDialog, IGateInfoProvider>(
                     new GateEditControlDialogModel(),
                     this.OnGateEditControlClose, 
                     gateEditAngleDialogModel.GateInfoProvider);
@@ -152,7 +151,7 @@ public sealed partial class ComputerViewModel : ViewModel<ComputerView>
         // Run modal dialog to construct a controlled gate from the existing one
         if (this.dialogService is DialogService modalService)
         {
-            modalService.RunModal<GateEditControlDialog, IGateInfoProvider>(
+            modalService.RunViewModelModal<GateEditControlDialog, IGateInfoProvider>(
                 this.View.ToasterHost, new GateEditControlDialogModel(),
                 this.OnGateEditControlClose, gateInfoProvider);
         }
@@ -205,7 +204,7 @@ public sealed partial class ComputerViewModel : ViewModel<ComputerView>
         // Run modal dialog to edit Targets for swap or edit control and target for binary gates 
         if (this.dialogService is DialogService modalService)
         {
-            modalService.RunModal<GateEditQubitsDialog, IGateInfoProvider>(
+            modalService.RunViewModelModal<GateEditQubitsDialog, IGateInfoProvider>(
                 this.View.ToasterHost, new GateEditQubitsDialogModel(),
                 this.OnEditQubitsClose, gateInfoProvider);
         }

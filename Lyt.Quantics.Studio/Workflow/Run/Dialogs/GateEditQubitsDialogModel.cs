@@ -1,9 +1,24 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Dialogs;
 
-public sealed class GateEditQubitsDialogModel
-    : DialogBindable<GateEditQubitsDialog, IGateInfoProvider>
+public sealed partial class GateEditQubitsDialogModel
+    : DialogViewModel<GateEditQubitsDialog, IGateInfoProvider>
 {
     public sealed record class QubitSetup(int Index, bool IsControl);
+
+    [ObservableProperty] private bool hasThreeQubits;
+    [ObservableProperty] private string? validationMessage;
+    [ObservableProperty] private string? title;
+    [ObservableProperty] private double valuesCount;
+    [ObservableProperty] private double firstSliderValue;
+    [ObservableProperty] private string? firstValueTextLabel;
+    [ObservableProperty] private string? firstValueText;
+    [ObservableProperty] private double secondSliderValue;
+    [ObservableProperty] private string? secondValueTextLabel;
+    [ObservableProperty] private string? secondValueText;
+    [ObservableProperty] private double thirdSliderValue;
+    [ObservableProperty] private string? thirdValueTextLabel;
+    [ObservableProperty] private string? thirdValueText;
+    [ObservableProperty] private bool saveButtonIsEnabled;
 
     private int firstIndex;
     private int secondIndex;
@@ -19,7 +34,7 @@ public sealed class GateEditQubitsDialogModel
 
     public QubitsIndices QubitsIndices { get; private set; } = new();
 
-    protected override void OnViewLoaded()
+    public override void OnViewLoaded()
     {
         base.OnViewLoaded();
 
@@ -47,21 +62,20 @@ public sealed class GateEditQubitsDialogModel
         this.Validate(out string _);
     }
 
-#pragma warning disable IDE0051 // Remove unused private members
-
-    private void OnSave(object? _)
+    [RelayCommand]
+    public void OnSave()
     {
         this.PopulateStageParameters();
         this.onClose?.Invoke(this, true);
         this.dialogService.Dismiss();
     }
 
-    private void OnCancel(object? _)
+    [RelayCommand]
+    public void OnCancel()
     {
         this.onClose?.Invoke(this, false);
         this.dialogService.Dismiss();
     }
-#pragma warning restore IDE0051 // Remove unused private members
 
     private void SetupLabels()
     {
@@ -235,63 +249,12 @@ public sealed class GateEditQubitsDialogModel
         this.Validate(out string _);
     }
 
-    #region Bound  Properties 
+    partial void OnFirstSliderValueChanged(double value)
+        => this.OnSliderChanged((int)Math.Round(value), sliderIndex: 0);
 
-    public bool HasThreeQubits { get => this.Get<bool>(); set => this.Set(value); }
+    partial void OnSecondSliderValueChanged(double value)
+        => this.OnSliderChanged((int)Math.Round(value), sliderIndex: 1);
 
-    public string ValidationMessage { get => this.Get<string>()!; set => this.Set(value); }
-
-    public string? Title { get => this.Get<string?>(); set => this.Set(value); }
-
-    public ICommand SaveCommand { get => this.Get<ICommand>()!; set => this.Set(value); }
-
-    public ICommand CancelCommand { get => this.Get<ICommand>()!; set => this.Set(value); }
-
-    public double ValuesCount { get => this.Get<double>(); set => this.Set(value); }
-
-    public double FirstSliderValue
-    {
-        get => this.Get<double>();
-        set
-        {
-            this.Set(value);
-            this.OnSliderChanged((int)Math.Round(this.FirstSliderValue), sliderIndex: 0);
-        }
-    }
-
-    public string FirstValueTextLabel { get => this.Get<string>()!; set => this.Set(value); }
-
-    public string FirstValueText { get => this.Get<string>()!; set => this.Set(value); }
-
-    public double SecondSliderValue
-    {
-        get => this.Get<double>();
-        set
-        {
-            this.Set(value);
-            this.OnSliderChanged((int)Math.Round(this.SecondSliderValue), sliderIndex: 1);
-        }
-    }
-
-    public string SecondValueTextLabel { get => this.Get<string>()!; set => this.Set(value); }
-
-    public string SecondValueText { get => this.Get<string>()!; set => this.Set(value); }
-
-    public double ThirdSliderValue
-    {
-        get => this.Get<double>();
-        set
-        {
-            this.Set(value);
-            this.OnSliderChanged((int)Math.Round(this.ThirdSliderValue), sliderIndex: 2);
-        }
-    }
-
-    public string ThirdValueTextLabel { get => this.Get<string>()!; set => this.Set(value); }
-
-    public string ThirdValueText { get => this.Get<string>()!; set => this.Set(value); }
-
-    public bool SaveButtonIsEnabled { get => this.Get<bool>(); set => this.Set(value); }
-
-    #endregion Bound Properties 
+    partial void OnThirdSliderValueChanged(double value)
+        => this.OnSliderChanged((int)Math.Round(value), sliderIndex: 2);
 }

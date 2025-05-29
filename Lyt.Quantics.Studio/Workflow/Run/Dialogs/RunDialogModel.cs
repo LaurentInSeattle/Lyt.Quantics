@@ -1,10 +1,23 @@
-﻿using System.Threading.Tasks;
+﻿namespace Lyt.Quantics.Studio.Workflow.Run.Dialogs;
 
-namespace Lyt.Quantics.Studio.Workflow.Run.Dialogs;
-
-public sealed class RunDialogModel : DialogBindable<RunDialog, object>
+public sealed partial class RunDialogModel : DialogViewModel<RunDialog, object>
 {
     private readonly QsModel quanticsStudioModel;
+
+    [ObservableProperty]
+    private float progressTotal;
+
+    [ObservableProperty]
+    private float progressValue;
+
+    [ObservableProperty]
+    private string? message;
+
+    [ObservableProperty]
+    private string? title;
+
+    [ObservableProperty]
+    private bool ringIsActive;
 
     public RunDialogModel()
     {
@@ -12,17 +25,17 @@ public sealed class RunDialogModel : DialogBindable<RunDialog, object>
         this.Title = "Calculations in Progress...";
         this.CanEnter = false;
         this.CanEscape = false;
-        this.Messenger.Subscribe<ModelProgressMessage>(this.OnModelProgress, withUiDispatch: true);
-    }
-
-    protected override void OnViewLoaded()
-    {
-        base.OnViewLoaded();
         this.RingIsActive = true;
         this.ProgressValue = 0;
         this.ProgressTotal = this.quanticsStudioModel.QuComputer.Stages.Count;
         this.Message = "Calculation started...";
 
+        this.Messenger.Subscribe<ModelProgressMessage>(this.OnModelProgress, withUiDispatch: true);
+    }
+
+    public override void OnViewLoaded()
+    {
+        base.OnViewLoaded();
         _ = this.quanticsStudioModel.Run(runUsingKroneckerProduct: false, runAsync: true);
     }
 
@@ -48,9 +61,8 @@ public sealed class RunDialogModel : DialogBindable<RunDialog, object>
         } 
     }
 
-#pragma warning disable IDE0051 // Remove unused private members
-
-    private async void OnCancel(object? _)
+    [RelayCommand]
+    public async Task OnCancel()
     {
         var result = await this.quanticsStudioModel.Break();
         if ( !result.Item1)
@@ -63,22 +75,4 @@ public sealed class RunDialogModel : DialogBindable<RunDialog, object>
         this.Cancel();
         this.RingIsActive = false;
     }
-
-#pragma warning restore IDE0051 // Remove unused private members
-
-    #region Bound  Properties 
-
-    public float ProgressTotal { get => this.Get<float>(); set => this.Set(value); }
-
-    public float ProgressValue { get => this.Get<float>(); [DoNotLog] set => this.Set(value); }
-
-    public string Message { get => this.Get<string>()!; set => this.Set(value); }
-
-    public string? Title { get => this.Get<string?>(); set => this.Set(value); }
-
-    public bool RingIsActive { get => this.Get<bool>(); set => this.Set(value); }
-
-    public ICommand CancelCommand { get => this.Get<ICommand>()!; set => this.Set(value); }
-
-    #endregion Bound Properties 
 }
