@@ -64,7 +64,6 @@ global using Lyt.Avalonia.Controls.Glyphs;
 global using Lyt.Avalonia.Mvvm;
 global using Lyt.Avalonia.Mvvm.Animations;
 global using Lyt.Avalonia.Mvvm.Behaviors;
-global using Lyt.Avalonia.Mvvm.Core;
 global using Lyt.Avalonia.Mvvm.Dialogs;
 global using Lyt.Avalonia.Mvvm.Input;
 global using Lyt.Avalonia.Mvvm.Logging;
