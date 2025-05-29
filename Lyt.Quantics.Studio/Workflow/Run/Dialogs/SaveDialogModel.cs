@@ -2,10 +2,25 @@
 
 using static SharedValidators;
 
-public sealed class SaveDialogModel : DialogBindable<SaveDialog, object>
+public sealed partial class SaveDialogModel : DialogViewModel<SaveDialog, object>
 {
     private readonly QsModel quanticsStudioModel;
     private readonly FormValidator<FileInformation> fileValidator;
+
+    [ObservableProperty]
+    private string? title;
+
+    [ObservableProperty]
+    private string? name;
+
+    [ObservableProperty]
+    private string? description;
+
+    [ObservableProperty]
+    private bool formIsValid;
+
+    [ObservableProperty]
+    private string? validationMessage;
 
     public SaveDialogModel()
     {
@@ -16,14 +31,15 @@ public sealed class SaveDialogModel : DialogBindable<SaveDialog, object>
                 new(FormValidPropertyName: "FormIsValid",
                     FocusFieldName: "NameTextBox",
                     FieldValidators: [NameValidator, DescriptionValidator]));
-        this.CanEnter = false; 
-    }
-
-    protected override void OnViewLoaded()
-    {
-        base.OnViewLoaded();
+        this.CanEnter = false;
         this.ClearForm();
     }
+
+    //public override void OnViewLoaded()
+    //{
+    //    base.OnViewLoaded();
+    //    this.ClearForm();
+    //}
 
     private void ClearForm()
     {
@@ -34,9 +50,8 @@ public sealed class SaveDialogModel : DialogBindable<SaveDialog, object>
         this.fileValidator.Validate(this);
     }
 
-#pragma warning disable IDE0051 // Remove unused private members
-
-    private void OnOverwrite(object? _)
+    [RelayCommand]
+    public void OnOverwrite()
     {
         if (this.TrySave(withOverwrite: true))
         {
@@ -44,7 +59,8 @@ public sealed class SaveDialogModel : DialogBindable<SaveDialog, object>
         }
     }
 
-    private void OnSave(object? _)
+    [RelayCommand]
+    public void OnSave()
     {
         if (this.TrySave(withOverwrite: false))
         {
@@ -52,9 +68,8 @@ public sealed class SaveDialogModel : DialogBindable<SaveDialog, object>
         }
     }
 
-    private void OnCancel(object? _) => this.Cancel();
-
-#pragma warning restore IDE0051 // Remove unused private members
+    [RelayCommand]
+    public void OnCancel() => this.Cancel();
 
     private bool TrySave(bool withOverwrite)
     {
@@ -102,24 +117,4 @@ public sealed class SaveDialogModel : DialogBindable<SaveDialog, object>
     }
 
     public void OnEditing() => this.fileValidator.Validate(this);
-
-    #region Bound  Properties 
-
-    public string Name { get => this.Get<string>()!; set => this.Set(value); }
-
-    public string Description { get => this.Get<string>()!; set => this.Set(value); }
-
-    public string ValidationMessage { get => this.Get<string>()!; set => this.Set(value); }
-
-    public string? Title { get => this.Get<string?>(); set => this.Set(value); }
-
-    public ICommand OverwriteCommand { get => this.Get<ICommand>()!; set => this.Set(value); }
-
-    public ICommand SaveCommand { get => this.Get<ICommand>()!; set => this.Set(value); }
-
-    public ICommand CancelCommand { get => this.Get<ICommand>()!; set => this.Set(value); }
-
-    public bool FormIsValid { get => this.Get<bool>(); set => this.Set(value); }
-
-    #endregion Bound Properties 
 }

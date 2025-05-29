@@ -173,7 +173,7 @@ public sealed partial class ComputerViewModel : ViewModel<ComputerView>
             // Run modal dialog to save computer model - no parameters, no closing action  
             if (this.dialogService is DialogService modalService)
             {
-                modalService.RunModal(
+                modalService.RunViewModelModal(
                     this.View.ToasterHost, new SaveDialogModel(), this.OnSaveClosing);
             }
         }
@@ -238,7 +238,7 @@ public sealed partial class ComputerViewModel : ViewModel<ComputerView>
             {
                 // Need to dismiss in some cases
                 modalService.Dismiss();
-                modalService.RunModal(this.View.ToasterHost, new SaveDialogModel());
+                modalService.RunViewModelModal(this.View.ToasterHost, new SaveDialogModel());
             }
 
             return;

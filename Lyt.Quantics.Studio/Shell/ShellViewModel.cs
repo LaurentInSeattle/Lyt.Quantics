@@ -108,9 +108,7 @@ public sealed partial class ShellViewModel : ViewModel<ShellView>
             if (this.dialogService is DialogService modalService)
             {
                 modalService.Dismiss();
-
-                // TODO
-                // modalService.RunModal(this.View.ToasterHost, new SaveDialogModel());
+                modalService.RunViewModelModal(this.View.ToasterHost, new SaveDialogModel());
             }
 
             return;

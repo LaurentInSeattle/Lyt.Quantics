@@ -1,6 +1,6 @@
 namespace Lyt.Quantics.Studio.Workflow.Run.Dialogs;
 
-public partial class SaveDialog : UserControl
+public partial class SaveDialog : UserControl, IView
 {
     public SaveDialog()
     {
