@@ -116,9 +116,8 @@ public sealed partial class GateEditAngleDialogModel
         this.isInitializing = false;
     }
 
-#pragma warning disable IDE0051 // Remove unused private members
-
-    private void OnMakeControlled(object? _)
+    [RelayCommand]
+    public void OnMakeControlled()
     {
         this.IsMakeControlled = true;
         this.onClose?.Invoke(this, true);
@@ -129,11 +128,11 @@ public sealed partial class GateEditAngleDialogModel
         // We will run another modal dialog, so do NOT dismis the dialog service
     }
 
-    public void OnSave(object? _) => base.TrySaveAndClose();
+    [RelayCommand]
+    public void OnSave() => base.TrySaveAndClose();
 
-    public void OnCancel(object? _) => base.Cancel();
-
-#pragma warning restore IDE0051 // Remove unused private members
+    [RelayCommand]
+    public void OnCancel() => base.Cancel();
 
     public override bool Validate()
     {
