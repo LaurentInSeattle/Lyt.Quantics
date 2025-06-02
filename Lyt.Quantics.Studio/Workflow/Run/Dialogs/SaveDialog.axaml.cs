@@ -7,6 +7,13 @@ public partial class SaveDialog : UserControl, IView
         this.InitializeComponent();
         this.NameTextBox.TextChanged += this.OnAnyTextBoxTextChanged;
         this.DescriptionTextBox.TextChanged += this.OnAnyTextBoxTextChanged;
+        this.Loaded += (s, e) =>
+        {
+            if (this.DataContext is ViewModel viewModel)
+            {
+                viewModel.OnViewLoaded();
+            }
+        };
     }
 
     ~SaveDialog()

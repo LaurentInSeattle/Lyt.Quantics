@@ -32,14 +32,13 @@ public sealed partial class SaveDialogModel : DialogViewModel<SaveDialog, object
                     FocusFieldName: "NameTextBox",
                     FieldValidators: [NameValidator, DescriptionValidator]));
         this.CanEnter = false;
-        this.ClearForm();
     }
 
-    //public override void OnViewLoaded()
-    //{
-    //    base.OnViewLoaded();
-    //    this.ClearForm();
-    //}
+    public override void OnViewLoaded()
+    {
+        base.OnViewLoaded();
+        this.ClearForm();
+    }
 
     private void ClearForm()
     {
@@ -48,6 +47,7 @@ public sealed partial class SaveDialogModel : DialogViewModel<SaveDialog, object
         this.Name = computer.Name;
         this.Description = computer.Description;
         this.fileValidator.Validate(this);
+        _ = this.fileValidator.TryFocus(this);
     }
 
     [RelayCommand]
