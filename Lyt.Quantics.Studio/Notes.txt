@@ -1,0 +1,19 @@
+﻿
+double 		8
+complex		16
+N qubit		2 ^ N x complex 
+Matrix 		2 ^ N x 2 ^ N x complex
+
+N	Register	Reg Bytes	Matrix	Matrix bytes 
+4	16			256			256		4 K 
+8	256			4 K			64 K	1 M
+10	1024		16 K		1 M		16 M
+11	2048		32 K		4 M		32 M 
+12	4 K			64 K		16 M	256 M   <= Matrix Max 
+14	16 K		256 K		256 M	4 G     
+16	64 K		1 M			  4 G	64 G
+18  256 K		4 M			!!!		!!!		<= Current Max
+20  1 M         16 M        !!!     !!!
+24  16 M		256 M 
+28  256 M		4 G
+32  2 G			32 G 
