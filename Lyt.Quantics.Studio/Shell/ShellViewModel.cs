@@ -1,14 +1,15 @@
 ﻿namespace Lyt.Quantics.Studio.Shell;
 
-using Lyt.Mvvm;
 using static MessagingExtensions;
-using static ViewActivationMessage;
 
 public sealed partial class ShellViewModel : ViewModel<ShellView>
 {
     private readonly IToaster toaster;
     private readonly IDialogService dialogService;
     private readonly QsModel quanticsStudioModel;
+
+    private ViewSelector<ActivatedView>? viewSelector;
+    public bool isFirstActivation;
 
     [ObservableProperty]
     private GridLength titleBarHeight;
@@ -22,7 +23,6 @@ public sealed partial class ShellViewModel : ViewModel<ShellView>
         this.toaster = toaster;
         this.dialogService = dialogService;
         this.quanticsStudioModel = quanticsStudioModel;
-        this.Messenger.Subscribe<ViewActivationMessage>(this.OnViewActivation);
         this.Messenger.Subscribe<ShowTitleBarMessage>(this.OnShowTitleBar);
     }
 
@@ -39,10 +39,12 @@ public sealed partial class ShellViewModel : ViewModel<ShellView>
         this.Logger.Debug("OnViewLoaded language loaded");
 
         // Create all statics views and bind them 
-        ShellViewModel.SetupWorkflow();
+        this.SetupWorkflow();
         this.Logger.Debug("OnViewLoaded SetupWorkflow complete");
 
-        this.OnViewActivation(ActivatedView.Intro, parameter: null, isFirstActivation: true);
+        this.isFirstActivation = true;
+        Select(ActivatedView.Intro);
+
         this.Logger.Debug("OnViewLoaded OnViewActivation complete");
 
         // Ready 
@@ -60,6 +62,12 @@ public sealed partial class ShellViewModel : ViewModel<ShellView>
             "An interactive playground for Quantum Computing...",
             4_000, InformationLevel.Info);
         this.Logger.Debug("OnViewLoaded complete");
+    }
+
+    public async static void OnExit()
+    {
+        var application = App.GetRequiredService<IApplicationBase>();
+        await application.Shutdown();
     }
 
     /// <summary> Invoked when closing from the application Close X button </summary>
@@ -115,7 +123,7 @@ public sealed partial class ShellViewModel : ViewModel<ShellView>
         }
 
         // changes will be lost
-        ActivateView(ActivatedView.Exit);
+        OnExit();
     }
 
     private void OnShowTitleBar(ShowTitleBarMessage message)
@@ -124,79 +132,51 @@ public sealed partial class ShellViewModel : ViewModel<ShellView>
         this.IsTitleBarVisible = message.Show;
     }
 
-    private void OnViewActivation(ViewActivationMessage message)
-        => this.OnViewActivation(message.View, message.ActivationParameter, false);
-
-    private void OnViewActivation(ActivatedView activatedView, object? parameter = null, bool isFirstActivation = false)
+    private void SetupWorkflow()
     {
-        if (activatedView == ActivatedView.Exit)
-        {
-            ShellViewModel.OnExit();
-        }
-
-        if (activatedView == ActivatedView.GoBack)
-        {
-            // We always go back to the Intro View 
-            activatedView = ActivatedView.Intro;
-        }
-
-        switch (activatedView)
-        {
-            default:
-            case ActivatedView.Intro:
-                this.Activate<IntroViewModel, IntroView>(isFirstActivation, null);
-                break;
-
-            case ActivatedView.Load:
-                this.Activate<LoadViewModel, LoadView>(isFirstActivation, null);
-                break;
-
-            case ActivatedView.Run:
-                this.Activate<RunViewModel, RunView>(isFirstActivation, parameter);
-                break;
-        }
-    }
-
-    private async static void OnExit()
-    {
-        var application = App.GetRequiredService<IApplicationBase>();
-        await application.Shutdown();
-    }
-
-    private void Activate<TViewModel, TControl>(bool isFirstActivation, object? activationParameters)
-        where TViewModel : ViewModel<TControl>
-        where TControl : Control, IView , new()
-    {
-        if (this.View is null)
+        if (this.View is not ShellView view)
         {
             throw new Exception("No view: Failed to startup...");
         }
 
-        object? currentView = this.View.ShellViewContent.Content;
-        if (currentView is Control control && 
-            control.DataContext is ViewModel currentViewModel)
+        var selectableViews = new List<SelectableView<ActivatedView>>();
+
+        void SetupNoToolbar<TViewModel, TControl>(
+                ActivatedView activatedView, Control? control=null)
+            where TViewModel : ViewModel<TControl>
+            where TControl : Control, IView, new()
         {
-            currentViewModel.Deactivate();
+            var vm = App.GetRequiredService<TViewModel>();
+            vm.CreateViewAndBind();
+            selectableViews.Add(
+                new SelectableView<ActivatedView>(activatedView, vm, control, null));
         }
 
-        var newViewModel = App.GetRequiredService<TViewModel>();
-        newViewModel.Activate(activationParameters);
-        this.View.ShellViewContent.Content = newViewModel.View;
-        if (!isFirstActivation)
+        SetupNoToolbar<IntroViewModel, IntroView>(ActivatedView.Intro);
+        SetupNoToolbar<LoadViewModel, LoadView>(ActivatedView.Load);
+        SetupNoToolbar<RunViewModel, RunView>(ActivatedView.Run);
+        
+        // Needs to be kept alive as a class member, or else callbacks will die (and wont work) 
+        this.viewSelector =
+            new ViewSelector<ActivatedView>(
+                this.Messenger,
+                this.View.ShellViewContent,
+                null, null,
+                selectableViews, this.OnViewSelected);
+    }
+
+    private void OnViewSelected(ActivatedView view)
+    {
+        if (this.isFirstActivation)
         {
-            this.Profiler.MemorySnapshot(newViewModel.View.GetType().Name + ":  Activated");
+            this.LoadSwapData();
         }
         else
         {
-            this.LoadSwapData(); 
+            this.Profiler.MemorySnapshot(this.ViewBase!.GetType().Name + ":  Activated");
         }
-    }
 
-    private static void SetupWorkflow()
-    {
-        App.GetRequiredService<IntroViewModel>().CreateViewAndBind();
-        App.GetRequiredService<LoadViewModel>().CreateViewAndBind();
-        App.GetRequiredService<RunViewModel>().CreateViewAndBind();
+        this.isFirstActivation = false;
     }
 
     private void LoadSwapData()

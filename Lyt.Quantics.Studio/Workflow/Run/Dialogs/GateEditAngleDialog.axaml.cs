@@ -1,26 +1,16 @@
 namespace Lyt.Quantics.Studio.Workflow.Run.Dialogs;
 
-public partial class GateEditAngleDialog : UserControl, IView
+public partial class GateEditAngleDialog : View
 {
-    public GateEditAngleDialog()
-    {
-        this.InitializeComponent();
-        this.ValueTextBox.TextChanged += this.OnAnyTextBoxTextChanged;
-        this.Loaded += (s, e) =>
-        {
-            if (this.DataContext is not null && this.DataContext is ViewModel viewModel)
-            {
-                viewModel.OnViewLoaded();
-            }
-        };
-    }
+    public GateEditAngleDialog() : base ()
+        => this.ValueTextBox.TextChanged += this.OnAnyTextBoxTextChanged;
 
     ~GateEditAngleDialog()
     {
         this.ValueTextBox.TextChanged -= this.OnAnyTextBoxTextChanged;
     }
 
-    private void OnAnyTextBoxTextChanged(object? sender, TextChangedEventArgs e)
+    private void OnAnyTextBoxTextChanged(object? _, TextChangedEventArgs e)
     {
         if (this.DataContext is GateEditAngleDialogModel gateEditDialogModel)
         {

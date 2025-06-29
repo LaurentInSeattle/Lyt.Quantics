@@ -65,7 +65,7 @@ public sealed partial class StageViewModel : ViewModel<StageView>, IDropTarget
 
     public void UpdateGatesAndMinibars()
     {
-        if (this.View is null)
+        if (!this.IsBound)
         {
             // Too early: The View might still be null 
             return;
@@ -150,7 +150,7 @@ public sealed partial class StageViewModel : ViewModel<StageView>, IDropTarget
         }
     }
 
-    public void HideDropTarget(DropTargetView dropTargetView)
+    public void HideDropTarget(DropTargetControl dropTargetView)
     {
         if (!this.IsBound)
         {
@@ -164,7 +164,7 @@ public sealed partial class StageViewModel : ViewModel<StageView>, IDropTarget
         }
     }
 
-    public void ShowDropTarget(DropTargetView dropTargetView, Point point)
+    public void ShowDropTarget(DropTargetControl dropTargetView, Point point)
     {
         // Debug.WriteLine("ShowDropTarget");
         if (!this.IsBound)
@@ -310,6 +310,12 @@ public sealed partial class StageViewModel : ViewModel<StageView>, IDropTarget
     {
         try
         {
+            if (!this.IsBound)
+            {
+                // Too early: The View might still be null 
+                return;
+            }
+
             this.View.MinibarsGrid.Children.Clear();
             if (this.quanticsStudioModel.HideMinibarsUserOption ||
                 this.quanticsStudioModel.HideMinibarsComputerState)

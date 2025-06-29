@@ -1,7 +1,6 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Load.Toolbars;
 
-using static Lyt.Quantics.Studio.Messaging.ViewActivationMessage;
-using static Lyt.Quantics.Studio.Messaging.MessagingExtensions;
+using static MessagingExtensions;
 
 public sealed partial class LoadBlankToolbarViewModel : ViewModel<LoadBlankToolbarView>
 {
@@ -9,7 +8,7 @@ public sealed partial class LoadBlankToolbarViewModel : ViewModel<LoadBlankToolb
 
     [RelayCommand]
     public void OnCreateBlank()
-        => ActivateView(
+        => Select(
             ActivatedView.Run,
             new ComputerActivationParameter(ComputerActivationParameter.Kind.New));
 

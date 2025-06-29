@@ -1,10 +1,9 @@
 namespace Lyt.Quantics.Studio.Workflow.Load.Tiles;
 
-public partial class BuiltInView : UserControl, IView
+public partial class BuiltInView : View
 {
-    public BuiltInView() 
+    public BuiltInView() : base() 
     {
-        this.InitializeComponent();
         this.PointerEntered += this.OnPointerEnter;
         this.PointerExited += this.OnPointerLeave;
         this.SetVisible(visible: false);

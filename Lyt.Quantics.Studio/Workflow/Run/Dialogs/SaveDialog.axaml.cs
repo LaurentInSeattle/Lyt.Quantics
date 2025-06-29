@@ -1,19 +1,11 @@
 namespace Lyt.Quantics.Studio.Workflow.Run.Dialogs;
 
-public partial class SaveDialog : UserControl, IView
+public partial class SaveDialog : View
 {
-    public SaveDialog()
+    public SaveDialog() : base () 
     {
-        this.InitializeComponent();
         this.NameTextBox.TextChanged += this.OnAnyTextBoxTextChanged;
         this.DescriptionTextBox.TextChanged += this.OnAnyTextBoxTextChanged;
-        this.Loaded += (s, e) =>
-        {
-            if (this.DataContext is ViewModel viewModel)
-            {
-                viewModel.OnViewLoaded();
-            }
-        };
     }
 
     ~SaveDialog()

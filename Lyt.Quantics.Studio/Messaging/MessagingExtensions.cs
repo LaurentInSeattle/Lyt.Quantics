@@ -13,10 +13,11 @@ public static class MessagingExtensions
         MessagingExtensions.dialogService = App.GetRequiredService<IDialogService>();
     }
 
-    public static void ActivateView(
-        ViewActivationMessage.ActivatedView view, object? activationParameter = null)
-        => MessagingExtensions.messenger.Publish(
-            new ViewActivationMessage(view, activationParameter));
+    public static void Select(ActivatedView activatedView, object? parameter = null)
+        => ViewSelector<ActivatedView>.Select(
+            MessagingExtensions.messenger, activatedView, parameter);
+
+    public static void Exit() => ShellViewModel.OnExit();
 
     public static void Command(ToolbarCommand command, object? parameter = null)
     {

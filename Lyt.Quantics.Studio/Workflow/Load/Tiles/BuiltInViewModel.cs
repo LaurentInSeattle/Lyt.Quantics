@@ -1,6 +1,5 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Load.Tiles;
 
-using static ViewActivationMessage;
 using static MessagingExtensions;
 
 public sealed partial class BuiltInViewModel : ViewModel<BuiltInView>
@@ -22,7 +21,7 @@ public sealed partial class BuiltInViewModel : ViewModel<BuiltInView>
 
     [RelayCommand]
     public void OnOpen(object? _)
-        => ActivateView(
+        => Select(
             ActivatedView.Run, 
             new ComputerActivationParameter(
                 ComputerActivationParameter.Kind.Resource, this.Name));

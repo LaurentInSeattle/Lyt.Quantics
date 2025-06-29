@@ -1,6 +1,5 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
 
-using static ViewActivationMessage;
 using static MessagingExtensions;
 using static ToolbarCommandMessage;
 
@@ -218,7 +217,7 @@ public sealed partial class ComputerViewModel : ViewModel<ComputerView>
             else
             {
                 // No UI confirmation needed if shifted - OR - if no changes made
-                ActivateView(ActivatedView.Load);
+                Select(ActivatedView.Load);
             }
         }
         catch (Exception ex)
@@ -246,7 +245,7 @@ public sealed partial class ComputerViewModel : ViewModel<ComputerView>
 
         // Clear dirty flag, changes will be lost on exit 
         this.quanticsStudioModel.Clean();
-        ActivateView(ActivatedView.Load);
+        Select(ActivatedView.Load);
     }
 
     public bool OnClicked(bool isLeft)

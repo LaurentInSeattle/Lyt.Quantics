@@ -1,6 +1,5 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Load.Tiles;
 
-using static ViewActivationMessage;
 using static ToolbarCommandMessage; 
 using static MessagingExtensions;
 
@@ -38,7 +37,7 @@ public sealed partial class DocumentViewModel : ViewModel<DocumentView>
 
     [RelayCommand]
     public void OnOpen(object? _)
-        => ActivateView(
+        => Select(
             ActivatedView.Run,
             new ComputerActivationParameter(
                 ComputerActivationParameter.Kind.Document, string.Empty, this.QuComputer));

@@ -1,6 +1,7 @@
 namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
 
-public partial class DropTargetView : UserControl
+// NOT a View: Making this a View will pollute the StageView 
+public partial class DropTargetControl : UserControl
 {
-    public DropTargetView() => this.InitializeComponent();
+    public DropTargetControl() => this.InitializeComponent(); 
 }

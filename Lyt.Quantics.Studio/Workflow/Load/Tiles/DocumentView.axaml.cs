@@ -1,10 +1,9 @@
 namespace Lyt.Quantics.Studio.Workflow.Load.Tiles;
 
-public partial class DocumentView : UserControl, IView
+public partial class DocumentView : View
 {
-    public DocumentView()
+    public DocumentView() : base()  
     {
-        this.InitializeComponent();
         this.Height = 92.0; 
         this.PointerEntered += this.OnPointerEnter;
         this.PointerExited += this.OnPointerLeave;
