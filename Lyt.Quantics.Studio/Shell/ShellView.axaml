@@ -78,7 +78,7 @@
 			Grid.Row="1"
 			VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
 			> 			
-			<ContentControl
+			<Grid
 				x:Name="ShellViewContent"
 				VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
 				/>

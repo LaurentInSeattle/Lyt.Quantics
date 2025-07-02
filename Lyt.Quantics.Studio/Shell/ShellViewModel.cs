@@ -165,7 +165,7 @@ public sealed partial class ShellViewModel : ViewModel<ShellView>
                 selectableViews, this.OnViewSelected);
     }
 
-    private void OnViewSelected(ActivatedView view)
+    private void OnViewSelected(ActivatedView _)
     {
         if (this.isFirstActivation)
         {
