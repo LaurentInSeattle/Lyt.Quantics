@@ -1,7 +1,8 @@
-﻿namespace Lyt.Quantics.Studio.Workflow.Run.Gates;
+﻿
+namespace Lyt.Quantics.Studio.Workflow.Run.Gates;
 
 public abstract class GateViewModelBase<TView> 
-    : ViewModel<TView>, IDragAbleBindable, IGateInfoProvider
+    : ViewModel<TView>, IDragAbleViewModel, IGateInfoProvider
     where TView : Control, IView, new()
 {
     public const string CustomDragAndDropFormat = "GateViewModel";
@@ -9,6 +10,7 @@ public abstract class GateViewModelBase<TView>
     protected readonly QsModel quanticsStudioModel;
     protected readonly IToaster toaster;
 
+#pragma warning disable IDE0290 // Use primary constructor
     public GateViewModelBase(
         Gate gate, QubitsIndices qubitsIndices, 
         bool isGhost , bool isToolBox, int stageIndex)
@@ -23,6 +25,7 @@ public abstract class GateViewModelBase<TView>
         this.IsToolbox = isToolBox;
         this.StageIndex = stageIndex;
     }
+#pragma warning restore IDE0290 
 
     #region IGateInfoProvider Implementation 
 
@@ -80,7 +83,7 @@ public abstract class GateViewModelBase<TView>
 
     public bool OnBeginDrag() => true;
 
-    public abstract UserControl CreateGhostView();
+    public abstract View CreateGhostView();
 
     #endregion IDraggableBindable Implementation 
 

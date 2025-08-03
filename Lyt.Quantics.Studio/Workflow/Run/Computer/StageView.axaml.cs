@@ -1,6 +1,7 @@
+
 namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
 
-public partial class StageView : BehaviorEnabledUserControl, IView
+public partial class StageView : View
 {
     public static readonly DropTargetControl DropTargetView;
 
@@ -8,7 +9,7 @@ public partial class StageView : BehaviorEnabledUserControl, IView
 
     static StageView() => DropTargetView = new DropTargetControl();
 
-    public static void HideDropTarget()
+    public static void HideDropTarget(IDropTarget? dropTarget)
     {
         if (dropTargetViewOwner is not null)
         {
@@ -21,7 +22,7 @@ public partial class StageView : BehaviorEnabledUserControl, IView
         dropTargetViewOwner = null;
     }
 
-    public static bool ShowDropTarget(IDropTarget dropTarget, Point position)
+    public static bool ShowDropTarget(IDropTarget? dropTarget, Point position)
     {
         if ((dropTarget is not StageViewModel stageViewModel) || !stageViewModel.IsBound)
         {
@@ -31,7 +32,7 @@ public partial class StageView : BehaviorEnabledUserControl, IView
         var stageView = stageViewModel.View;
         if (dropTargetViewOwner is not null && dropTargetViewOwner != stageView)
         {
-            HideDropTarget();
+            HideDropTarget(dropTarget);
         }
 
         stageViewModel.ShowDropTarget(DropTargetView, position);
@@ -40,29 +41,14 @@ public partial class StageView : BehaviorEnabledUserControl, IView
         return true;
     }
 
-    public StageView()
+    protected override void OnDataContextChanged(object? sender, EventArgs e)
     {
-        this.InitializeComponent();
-
-        this.Loaded += (s, e) =>
+        if (this.DataContext is StageViewModel stageViewModel)
         {
-            if (this.DataContext is not null && 
-            this.DataContext is StageViewModel viewModel)
-            {
-                viewModel.OnViewLoaded();
-            }
-        };
+            base.OnDataContextChanged(sender, e);
+        }
 
-        this.DataContextChanged +=
-            (s, e) =>
-            {
-                if (this.DataContext is StageViewModel stageViewModel)
-                {
-                    stageViewModel.BindOnDataContextChanged(this);
-                }
-
-                new DragOverAble(StageView.HideDropTarget, StageView.ShowDropTarget).Attach(this);
-                new DropAble(StageView.HideDropTarget).Attach(this);
-            };
+        new DragOverAble(StageView.HideDropTarget, StageView.ShowDropTarget).Attach(this);
+        new DropAble(StageView.HideDropTarget).Attach(this);
     }
 }

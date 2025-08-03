@@ -14,7 +14,7 @@ public sealed partial class GateViewModel : GateViewModelBase<GateView>
     {
         if (!this.IsGhost)
         {
-            this.DragAble = new DragAble();
+            this.DragAble = new DragAble(((MainWindow)App.MainWindow).MainWindowCanvas);
         }
 
         this.Name = gate.CaptionKey.Replace("dg", "\u2020");
@@ -104,7 +104,7 @@ public sealed partial class GateViewModel : GateViewModelBase<GateView>
     }
 
     // IDraggableBindable Implementation 
-    public override UserControl CreateGhostView()
+    public override View CreateGhostView()
     {
         var ghostViewModel = new GateViewModel(this.Gate, isGhost:true,  isToolbox: true);
         ghostViewModel.CreateViewAndBind();

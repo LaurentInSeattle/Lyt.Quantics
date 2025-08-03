@@ -38,8 +38,8 @@ public sealed partial class ConstructedGateViewModel : CompositeGateViewModel<Co
         base.OnViewLoaded();
 
         if (!this.IsGhost)
-        {
-            this.DragAble = new DragAble();
+        {            
+            this.DragAble = new DragAble(((MainWindow)App.MainWindow).MainWindowCanvas);
             this.DragAble.Attach(this.View);
             this.View.Content = this.contentGrid;
             this.View.InvalidateVisual();
@@ -50,7 +50,7 @@ public sealed partial class ConstructedGateViewModel : CompositeGateViewModel<Co
         => ConstructedGateViewModel.supportedGates.ContainsKey(gateKey);
 
     // Draggable Bindable Implementation 
-    public override UserControl CreateGhostView()
+    public override View CreateGhostView()
     {
         var ghostViewModel = new ConstructedGateViewModel(
             this.gateKey, this.StageIndex, this.QubitsIndices, isGhost: true);

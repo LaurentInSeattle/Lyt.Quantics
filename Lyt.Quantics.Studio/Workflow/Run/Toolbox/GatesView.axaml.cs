@@ -1,18 +1,10 @@
 namespace Lyt.Quantics.Studio.Workflow.Run.Toolbox;
 
-public partial class GatesView : BehaviorEnabledUserControl, IView
+public partial class GatesView : View
 {
-    public GatesView()
+    protected override void OnDataContextChanged(object? sender, EventArgs e)
     {
-        this.InitializeComponent();
-        this.DataContextChanged +=
-            (s, e) => new DragOverAble(StageView.HideDropTarget).Attach(this);
-        this.Loaded += (s, e) =>
-        {
-            if (this.DataContext is not null && this.DataContext is ViewModel viewModel)
-            {
-                viewModel.OnViewLoaded();
-            }
-        };
+        base.OnDataContextChanged(sender, e);
+        new DragOverAble(StageView.HideDropTarget).Attach(this);
     }
 }

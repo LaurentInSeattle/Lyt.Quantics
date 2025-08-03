@@ -29,14 +29,14 @@ public sealed partial class ControlledGateViewModel : CompositeGateViewModel<Con
 
         if (!this.IsGhost)
         {
-            this.DragAble = new DragAble();
+            this.DragAble = new DragAble(((MainWindow)App.MainWindow).MainWindowCanvas);
             this.DragAble.Attach(this.View);
             this.View.Content = this.contentGrid;
             this.View.InvalidateVisual();
         }
     }
 
-    public override UserControl CreateGhostView()
+    public override View CreateGhostView()
     {
         var ghostViewModel = new ControlledGateViewModel(
             this.gateParameters, this.StageIndex, this.QubitsIndices, isGhost: true);

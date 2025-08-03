@@ -1,18 +1,10 @@
 namespace Lyt.Quantics.Studio.Workflow.Run.Amplitudes;
 
-public partial class AmplitudesView : BehaviorEnabledUserControl, IView
+public partial class AmplitudesView : View
 {
-    public AmplitudesView()
+    protected override void OnDataContextChanged(object? sender, EventArgs e)
     {
-        this.InitializeComponent();
-        this.Loaded += (s, e) =>
-        {
-            if (this.DataContext is not null && this.DataContext is ViewModel viewModel)
-            {
-                viewModel.OnViewLoaded();
-            }
-        };
-        this.DataContextChanged +=
-            (s, e) => new DragOverAble(StageView.HideDropTarget).Attach(this);
+        base.OnDataContextChanged(sender, e);
+        new DragOverAble(StageView.HideDropTarget).Attach(this);
     }
 }

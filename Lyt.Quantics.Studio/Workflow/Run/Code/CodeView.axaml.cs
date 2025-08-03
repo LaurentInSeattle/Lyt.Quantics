@@ -1,11 +1,10 @@
 namespace Lyt.Quantics.Studio.Workflow.Run.Code;
 
-public partial class CodeView : BehaviorEnabledUserControl, IView
+public partial class CodeView : View
 {
-    public CodeView()
+    protected override void OnDataContextChanged(object? sender, EventArgs e)
     {
-        this.InitializeComponent();
-        this.DataContextChanged +=
-            (s, e) => new DragOverAble(StageView.HideDropTarget).Attach(this);
+        base.OnDataContextChanged(sender, e);
+        new DragOverAble(StageView.HideDropTarget).Attach(this);
     }
 }
