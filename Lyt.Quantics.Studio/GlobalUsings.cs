@@ -65,6 +65,7 @@ global using Lyt.Avalonia.Mvvm;
 global using Lyt.Avalonia.Mvvm.Animations;
 global using Lyt.Avalonia.Mvvm.Behaviors;
 global using Lyt.Avalonia.Mvvm.Behaviors.DragDrop;
+global using Lyt.Avalonia.Mvvm.Behaviors.Modal;
 global using Lyt.Avalonia.Mvvm.Dialogs;
 global using Lyt.Avalonia.Mvvm.Input;
 global using Lyt.Avalonia.Mvvm.Logging;
@@ -111,7 +112,6 @@ global using FluentValidation;
 
 #region Studio
 
-global using Lyt.Quantics.Studio.Behaviors;
 global using Lyt.Quantics.Studio.Controls;
 global using Lyt.Quantics.Studio.Controls.Histogram;
 global using Lyt.Quantics.Studio.Messaging;

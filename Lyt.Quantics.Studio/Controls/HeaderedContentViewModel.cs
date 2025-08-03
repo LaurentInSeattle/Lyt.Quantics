@@ -77,8 +77,7 @@ public sealed partial class HeaderedContentViewModel : ViewModel<HeaderedContent
         }
 
         // Attach the behavior on the toolbar view model
-        var behavior = new DisabledOnModal();
-        behavior.Attach(toolbarVm);
+        new DisabledOnModal().Attach(toolbarVm);
 
         return headerVm.View;
     }

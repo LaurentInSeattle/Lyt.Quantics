@@ -68,8 +68,7 @@ public sealed partial class GateViewModel : GateViewModelBase<GateView>
             this.IsSpecialVisible = false;
         }
 
-        var disableOnModal = new DisabledOnModal();
-        disableOnModal.Attach(this);
+        new DisabledOnModal().Attach(this);
     }
 
     // The special gates are here only for display in the toolbox
