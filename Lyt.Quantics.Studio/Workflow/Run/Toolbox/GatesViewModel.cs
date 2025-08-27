@@ -1,6 +1,6 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Toolbox;
 
-public sealed partial class GatesViewModel : ViewModel<GatesView>
+public sealed partial class GatesViewModel : ViewModel<GatesView>, IRecipient<GateHoverMessage>
 {
     private readonly QsModel quanticsStudioModel;
     private readonly IToaster toaster;
@@ -19,7 +19,7 @@ public sealed partial class GatesViewModel : ViewModel<GatesView>
         // Do not use Injection directly as this is loaded programmatically by the RunView 
         this.quanticsStudioModel = ApplicationBase.GetRequiredService<QsModel>();
         this.toaster = ApplicationBase.GetRequiredService<IToaster>();
-        this.Messenger.Subscribe<GateHoverMessage>(this.OnGateHover);
+        this.Subscribe<GateHoverMessage>();
     }
 
     public override void OnViewLoaded()
@@ -59,7 +59,7 @@ public sealed partial class GatesViewModel : ViewModel<GatesView>
         this.Remove(gateInfoProvider);
     }
 
-    private void OnGateHover(GateHoverMessage message)
+    public void Receive(GateHoverMessage message)
     {
         if (message.IsEnter)
         {

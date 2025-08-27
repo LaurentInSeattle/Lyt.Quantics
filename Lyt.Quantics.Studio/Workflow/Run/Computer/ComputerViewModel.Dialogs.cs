@@ -1,10 +1,18 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
 
-public sealed partial class ComputerViewModel : ViewModel<ComputerView>
+public sealed partial class ComputerViewModel :
+    ViewModel<ComputerView>,
+    IDropTarget,
+    IRecipient<ToolbarCommandMessage>,
+    IRecipient<QubitChangedMessage>,
+    IRecipient<ModelStructureUpdateMessage>,
+    IRecipient<ModelResultsUpdateMessage>,
+    IRecipient<ModelUpdateErrorMessage>,
+    IRecipient<GateEditMessage>
 {
     private readonly IDialogService dialogService;
 
-    private void OnGateEditMessage(GateEditMessage message)
+    public void Receive(GateEditMessage message)
     {
         if (message.GateInfoProvider is null)
         {

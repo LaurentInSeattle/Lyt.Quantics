@@ -2,20 +2,17 @@
 
 using static ToolbarCommandMessage;
 
-public static class MessagingExtensions
+public static class ApplicationMessagingExtensions
 {
-    private static readonly IMessenger messenger;
     private static readonly IDialogService dialogService;
 
-    static MessagingExtensions()
+    static ApplicationMessagingExtensions()
     {
-        MessagingExtensions.messenger = App.GetRequiredService<IMessenger>();
-        MessagingExtensions.dialogService = App.GetRequiredService<IDialogService>();
+        ApplicationMessagingExtensions.dialogService = App.GetRequiredService<IDialogService>();
     }
 
     public static void Select(ActivatedView activatedView, object? parameter = null)
-        => ViewSelector<ActivatedView>.Select(
-            MessagingExtensions.messenger, activatedView, parameter);
+        => ViewSelector<ActivatedView>.Select(activatedView, parameter);
 
     public static void Exit() => ShellViewModel.OnExit();
 
@@ -23,11 +20,11 @@ public static class MessagingExtensions
     {
         // All toolbar messaging is disabled, visual state of the toolbar is handled with
         // another type of message, provided by the Modal Dialog management in the framework
-        if (MessagingExtensions.dialogService.IsModal)
+        if (ApplicationMessagingExtensions.dialogService.IsModal)
         {
             return;
         }
 
-        MessagingExtensions.messenger.Publish(new ToolbarCommandMessage(command, parameter));
+        new ToolbarCommandMessage(command, parameter).Publish();
     }
 }

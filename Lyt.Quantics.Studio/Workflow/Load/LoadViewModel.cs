@@ -38,6 +38,6 @@ public sealed partial class LoadViewModel : ViewModel<LoadView>
         base.Activate(activationParameters);
         this.loadBuiltInViewModel.Activate(activationParameters);
         this.loadDocumentsViewModel.Activate(activationParameters);
-        this.Messenger.Publish(new ShowTitleBarMessage(Show: true));
+        new ShowTitleBarMessage(Show: true).Publish();
     }
 }

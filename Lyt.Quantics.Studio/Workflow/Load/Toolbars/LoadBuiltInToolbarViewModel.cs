@@ -1,7 +1,7 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Load.Toolbars;
 
 using static ToolbarCommandMessage;
-using static MessagingExtensions;
+using static ApplicationMessagingExtensions;
 
 public sealed partial class LoadBuiltInToolbarViewModel : ViewModel<LoadBuiltInToolbarView>
 {

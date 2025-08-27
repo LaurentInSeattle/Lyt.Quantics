@@ -2,7 +2,10 @@
 
 using static ToolbarCommandMessage;
 
-public sealed partial class LoadBuiltInViewModel : ViewModel<LoadBuiltInView>
+public sealed partial class LoadBuiltInViewModel : 
+    ViewModel<LoadBuiltInView>,
+    IRecipient<ToolbarCommandMessage>,
+    IRecipient<ModelUpdateMessage>
 {
     private const string IsUnitTestProperty = "IsUnitTest";
     private const string NameProperty = "Name";
@@ -31,8 +34,8 @@ public sealed partial class LoadBuiltInViewModel : ViewModel<LoadBuiltInView>
         this.filterPredicate = new(PropertyName: IsUnitTestProperty, PropertyValue: false);
 
         // Subscriptions processed locally 
-        this.Messenger.Subscribe<ToolbarCommandMessage>(this.OnToolbarCommandMessage);
-        this.Messenger.Subscribe<ModelUpdateMessage>(this.OnModelUpdateMessage);
+        this.Subscribe<ToolbarCommandMessage>();
+        this.Subscribe<ModelUpdateMessage>();
     }
 
     public override void OnViewLoaded()
@@ -73,7 +76,7 @@ public sealed partial class LoadBuiltInViewModel : ViewModel<LoadBuiltInView>
         this.OnShowRegular(this.quanticsStudioModel.ShowBuiltInComputers);
     }
 
-    private void OnModelUpdateMessage(ModelUpdateMessage message)
+    public void Receive(ModelUpdateMessage message)
     {
         if (message.PropertyName == nameof(QsModel.ShowBuiltInComputers))
         {
@@ -81,7 +84,7 @@ public sealed partial class LoadBuiltInViewModel : ViewModel<LoadBuiltInView>
         }
     }
 
-    private void OnToolbarCommandMessage(ToolbarCommandMessage message)
+    public void Receive(ToolbarCommandMessage message)
     {
         switch (message.Command)
         {

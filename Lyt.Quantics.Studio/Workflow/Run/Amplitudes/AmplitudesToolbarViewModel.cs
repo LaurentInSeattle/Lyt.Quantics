@@ -1,9 +1,10 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Amplitudes;
 
 using static ToolbarCommandMessage;
-using static MessagingExtensions;
+using static ApplicationMessagingExtensions;
 
-public sealed partial class AmplitudesToolbarViewModel : ViewModel<AmplitudesToolbarView>
+public sealed partial class AmplitudesToolbarViewModel :
+    ViewModel<AmplitudesToolbarView>, IRecipient<ModelStructureUpdateMessage>
 {
     private readonly QsModel quanticsStudioModel;
 
@@ -28,10 +29,10 @@ public sealed partial class AmplitudesToolbarViewModel : ViewModel<AmplitudesToo
     {
         this.stageRankText = string.Empty;
         this.quanticsStudioModel = App.GetRequiredService<QsModel>();
-        this.Messenger.Subscribe<ModelStructureUpdateMessage>(this.OnModelStructureUpdateMessage);
+        this.Subscribe<ModelStructureUpdateMessage>();
     }
 
-    private void OnModelStructureUpdateMessage(ModelStructureUpdateMessage message)
+    public void Receive(ModelStructureUpdateMessage message)
     {
         this.isInitializing = true;
         var computer = this.quanticsStudioModel.QuComputer;

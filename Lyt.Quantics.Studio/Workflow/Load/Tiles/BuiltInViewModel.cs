@@ -1,6 +1,6 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Load.Tiles;
 
-using static MessagingExtensions;
+using static ApplicationMessagingExtensions;
 
 public sealed partial class BuiltInViewModel : ViewModel<BuiltInView>
 {

@@ -33,7 +33,7 @@ public sealed partial class RunViewModel : ViewModel<RunView>
     {
         base.Activate(activationParameters);
         this.computerViewModel.Activate(activationParameters);
-        this.Messenger.Publish(new ShowTitleBarMessage(Show: false));
+        new ShowTitleBarMessage(Show: false).Publish();
     }
 
     #region Code View: Commented out for now 

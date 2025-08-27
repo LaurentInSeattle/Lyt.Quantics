@@ -1,8 +1,8 @@
 ﻿namespace Lyt.Quantics.Studio.Shell;
 
-using static MessagingExtensions;
+using static ApplicationMessagingExtensions;
 
-public sealed partial class ShellViewModel : ViewModel<ShellView>
+public sealed partial class ShellViewModel : ViewModel<ShellView>, IRecipient<ShowTitleBarMessage>
 {
     private readonly IToaster toaster;
     private readonly IDialogService dialogService;
@@ -23,7 +23,7 @@ public sealed partial class ShellViewModel : ViewModel<ShellView>
         this.toaster = toaster;
         this.dialogService = dialogService;
         this.quanticsStudioModel = quanticsStudioModel;
-        this.Messenger.Subscribe<ShowTitleBarMessage>(this.OnShowTitleBar);
+        this.Subscribe<ShowTitleBarMessage>();
     }
 
     public override void OnViewLoaded()
@@ -48,7 +48,7 @@ public sealed partial class ShellViewModel : ViewModel<ShellView>
         this.Logger.Debug("OnViewLoaded OnViewActivation complete");
 
         // Ready 
-        this.OnShowTitleBar(new ShowTitleBarMessage());
+        this.Receive(new ShowTitleBarMessage());
         this.toaster.Host = this.View.ToasterHost;
         if (this.toaster.View is Control control)
         {
@@ -126,7 +126,7 @@ public sealed partial class ShellViewModel : ViewModel<ShellView>
         OnExit();
     }
 
-    private void OnShowTitleBar(ShowTitleBarMessage message)
+    public void Receive(ShowTitleBarMessage message)
     {
         this.TitleBarHeight = new GridLength(message.Show ? 42.0 : 0.0);
         this.IsTitleBarVisible = message.Show;
@@ -159,7 +159,6 @@ public sealed partial class ShellViewModel : ViewModel<ShellView>
         // Needs to be kept alive as a class member, or else callbacks will die (and wont work) 
         this.viewSelector =
             new ViewSelector<ActivatedView>(
-                this.Messenger,
                 this.View.ShellViewContent,
                 null, null,
                 selectableViews, this.OnViewSelected);

@@ -1,7 +1,7 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Load.Tiles;
 
-using static ToolbarCommandMessage; 
-using static MessagingExtensions;
+using static ToolbarCommandMessage;
+using static ApplicationMessagingExtensions;
 
 public sealed partial class DocumentViewModel : ViewModel<DocumentView>
 {

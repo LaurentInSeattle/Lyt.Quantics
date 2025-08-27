@@ -3,7 +3,12 @@
 using static Lyt.Avalonia.Controls.Utilities;
 using static ToolbarCommandMessage;
 
-public sealed partial class AmplitudesViewModel : ViewModel<AmplitudesView>
+public sealed partial class AmplitudesViewModel : 
+    ViewModel<AmplitudesView>,
+    IRecipient<ToolbarCommandMessage>,
+    IRecipient<ModelResultsUpdateMessage>,
+    IRecipient<ModelStructureUpdateMessage>,
+    IRecipient<ModelMeasureStatesUpdateMessage>
 {
     private static readonly SolidColorBrush pastelOrchidBrush;
     private static readonly TextBlock noDataTextBlock;
@@ -42,10 +47,10 @@ public sealed partial class AmplitudesViewModel : ViewModel<AmplitudesView>
         // Do not use Injection directly as this is loaded programmatically by the RunView 
         this.quanticsStudioModel = App.GetRequiredService<QsModel>();
         this.histogramEntries = [];
-        this.Messenger.Subscribe<ToolbarCommandMessage>(this.OnToolbarCommandMessage);
-        this.Messenger.Subscribe<ModelResultsUpdateMessage>(this.OnModelResultsUpdateMessage, withUiDispatch: true);
-        this.Messenger.Subscribe<ModelStructureUpdateMessage>(this.OnModelStructureUpdateMessage);
-        this.Messenger.Subscribe<ModelMeasureStatesUpdateMessage>(this.ModelMeasureStatesUpdateMessage);
+        this.Subscribe<ToolbarCommandMessage>();
+        this.Subscribe<ModelResultsUpdateMessage>();
+        this.Subscribe<ModelStructureUpdateMessage>();
+        this.Subscribe<ModelMeasureStatesUpdateMessage>();
     }
 
     public override void OnViewLoaded()
@@ -55,15 +60,15 @@ public sealed partial class AmplitudesViewModel : ViewModel<AmplitudesView>
         // we display them, Otherwise just display the "no data" view.
         if (this.quanticsStudioModel.QuComputer.IsComplete)
         {
-            this.OnModelResultsUpdateMessage(new ModelResultsUpdateMessage());
+            this.Receive(new ModelResultsUpdateMessage());
         }
         else
         {
-            this.OnModelStructureUpdateMessage(new ModelStructureUpdateMessage(false));
+            this.Receive(new ModelStructureUpdateMessage(false));
         }
     }
 
-    private void OnToolbarCommandMessage(ToolbarCommandMessage message)
+    public void Receive(ToolbarCommandMessage message)
     {
         if (message.CommandParameter is bool value)
         {
@@ -120,7 +125,7 @@ public sealed partial class AmplitudesViewModel : ViewModel<AmplitudesView>
 
         if (filtered.Count == 0)
         {
-            MessagingExtensions.Command(ToolbarCommand.ShowAll);
+            ApplicationMessagingExtensions.Command(ToolbarCommand.ShowAll);
             return;
         }
 
@@ -137,19 +142,22 @@ public sealed partial class AmplitudesViewModel : ViewModel<AmplitudesView>
         this.histogramViewModel.Update(sorted);
     }
 
-    private void OnModelResultsUpdateMessage(ModelResultsUpdateMessage _)
+    public void Receive(ModelResultsUpdateMessage _)
     {
-        Debug.WriteLine("Amplitudes: OnModelResultsUpdateMessage");
-        this.UpdateProbabilities(this.quanticsStudioModel.QuComputer.Stages.Count);
+        Dispatch.OnUiThread(() =>
+        {
+            Debug.WriteLine("Amplitudes: OnModelResultsUpdateMessage");
+            this.UpdateProbabilities(this.quanticsStudioModel.QuComputer.Stages.Count);
+        }); 
     }
 
-    private void OnModelStructureUpdateMessage(ModelStructureUpdateMessage _)
+    public void Receive(ModelStructureUpdateMessage _)
     {
         Debug.WriteLine("Amplitudes: OnModelStructureUpdateMessage");
         this.ClearView();
     }
 
-    private void ModelMeasureStatesUpdateMessage(ModelMeasureStatesUpdateMessage message)
+    public void Receive(ModelMeasureStatesUpdateMessage message)
     {
         Debug.WriteLine("Amplitudes: ModelMeasureStatesUpdateMessage");
         this.UpdateOrClearProbabilities(this.quanticsStudioModel.QuComputer.Stages.Count);

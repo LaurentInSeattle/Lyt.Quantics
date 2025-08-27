@@ -1,6 +1,14 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
 
-public sealed partial class ComputerViewModel : ViewModel<ComputerView>, IDropTarget
+public sealed partial class ComputerViewModel : 
+    ViewModel<ComputerView>, 
+    IDropTarget,
+    IRecipient<ToolbarCommandMessage>,
+    IRecipient<QubitChangedMessage>,
+    IRecipient<ModelStructureUpdateMessage>,
+    IRecipient<ModelResultsUpdateMessage>,
+    IRecipient<ModelUpdateErrorMessage>,
+    IRecipient<GateEditMessage>
 {
     private readonly QsModel quanticsStudioModel;
     private readonly IToaster toaster;
@@ -37,12 +45,12 @@ public sealed partial class ComputerViewModel : ViewModel<ComputerView>, IDropTa
         this.Description = string.Empty;
 
         // Subscribtion processed locally 
-        this.Messenger.Subscribe<ToolbarCommandMessage>(this.OnToolbarCommandMessage);
-        this.Messenger.Subscribe<QubitChangedMessage>(this.OnQubitChangedMessage);
-        this.Messenger.Subscribe<ModelStructureUpdateMessage>(this.OnModelStructureUpdateMessage, withUiDispatch: true);
-        this.Messenger.Subscribe<ModelResultsUpdateMessage>(this.OnModelResultsUpdateMessage, withUiDispatch: true);
-        this.Messenger.Subscribe<ModelUpdateErrorMessage>(this.OnModelUpdateErrorMessage);
-        this.Messenger.Subscribe<GateEditMessage>(this.OnGateEditMessage);
+        this.Subscribe<ToolbarCommandMessage>();
+        this.Subscribe<QubitChangedMessage>();
+        this.Subscribe<ModelStructureUpdateMessage>();
+        this.Subscribe<ModelResultsUpdateMessage>();
+        this.Subscribe<ModelUpdateErrorMessage>();
+        this.Subscribe<GateEditMessage>();
     }
 
     public override void OnViewLoaded()
@@ -156,29 +164,32 @@ public sealed partial class ComputerViewModel : ViewModel<ComputerView>, IDropTa
         }
     }
 
-    private void OnModelUpdateErrorMessage(ModelUpdateErrorMessage message)
+    public void Receive(ModelUpdateErrorMessage message)
         => this.toaster.Show("Error", message.Message, 4_000, InformationLevel.Error);
 
-    private void OnModelResultsUpdateMessage(ModelResultsUpdateMessage message)
+    public void Receive(ModelResultsUpdateMessage message)
     {
-        try
+        Dispatch.OnUiThread(() => 
         {
-            this.quanticsStudioModel.HideMinibarsComputerState = false;
-            var computer = this.quanticsStudioModel.QuComputer;
-            int qubitCount = computer.QuBitsCount;
-
-            // All Stages need to update the qubits probabilities 
-            foreach (var stage in this.Stages)
+            try
             {
-                stage.UpdateGatesAndMinibars();
+                this.quanticsStudioModel.HideMinibarsComputerState = false;
+                var computer = this.quanticsStudioModel.QuComputer;
+                int qubitCount = computer.QuBitsCount;
+
+                // All Stages need to update the qubits probabilities 
+                foreach (var stage in this.Stages)
+                {
+                    stage.UpdateGatesAndMinibars();
+                }
             }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(ex);
-            string uiMessage = "Model Structure Update: Exception thrown: " + ex.Message;
-            this.toaster.Show("Unexpected Error", uiMessage, 4_000, InformationLevel.Error);
-        }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                string uiMessage = "Model Structure Update: Exception thrown: " + ex.Message;
+                this.toaster.Show("Unexpected Error", uiMessage, 4_000, InformationLevel.Error);
+            }
+        });
     }
 
     private void AddEmptyStageOnUi()
@@ -227,109 +238,112 @@ public sealed partial class ComputerViewModel : ViewModel<ComputerView>, IDropTa
         AddEmptyStageOnUi();
     }
 
-    private void OnModelStructureUpdateMessage(ModelStructureUpdateMessage message)
+    public void Receive(ModelStructureUpdateMessage message)
     {
-        try
+        Dispatch.OnUiThread(() => 
         {
-            if (message.ModelLoaded)
+            try
             {
-                Dispatch.OnUiThread(
-                    () => this.InitializeModelOnUi(forceReload:true), 
-                    DispatcherPriority.ApplicationIdle);
-                return;
-            }
-
-            this.quanticsStudioModel.HideMinibarsComputerState = true;
-            var computer = this.quanticsStudioModel.QuComputer;
-            int qubitCount = computer.QuBitsCount;
-
-            void AddEmptyStageIfNeeded()
-            {
-                int currentStageCount = this.Stages.Count;
-                if (currentStageCount == 0)
+                if (message.ModelLoaded)
                 {
-                    AddEmptyStageOnUi();
+                    Dispatch.OnUiThread(
+                        () => this.InitializeModelOnUi(forceReload: true),
+                        DispatcherPriority.ApplicationIdle);
+                    return;
                 }
-                else if (currentStageCount == computer.Stages.Count)
+
+                this.quanticsStudioModel.HideMinibarsComputerState = true;
+                var computer = this.quanticsStudioModel.QuComputer;
+                int qubitCount = computer.QuBitsCount;
+
+                void AddEmptyStageIfNeeded()
                 {
-                    var lastStage = this.Stages[^1];
-                    if (!lastStage.IsEmpty)
+                    int currentStageCount = this.Stages.Count;
+                    if (currentStageCount == 0)
                     {
                         AddEmptyStageOnUi();
                     }
-                }
-            }
-
-            if (message.StagePacked)
-            {
-                this.PackStagesOnUi();
-            }
-            else if (message.QubitsChanged)
-            {
-                // All stages need to resize 
-                foreach (var stage in this.Stages)
-                {
-                    stage.UpdateQubitCount();
-                }
-
-                if (this.Qubits.Count < qubitCount)
-                {
-                    // Create the very first empty stage when the first qubit is created
-                    // The first qubit cannot be deleted so we will do that only once
-                    if (this.Qubits.Count == 0)
+                    else if (currentStageCount == computer.Stages.Count)
                     {
-                        AddEmptyStageOnUi();
+                        var lastStage = this.Stages[^1];
+                        if (!lastStage.IsEmpty)
+                        {
+                            AddEmptyStageOnUi();
+                        }
                     }
-
-                    // Create one new Qubit View, stages are unchanged 
-                    int addedQubitIndex = qubitCount - 1;
-                    this.Qubits.Add(new QubitViewModel(addedQubitIndex));
-
                 }
-                else if (this.Qubits.Count > qubitCount)
+
+                if (message.StagePacked)
                 {
-                    // Remove last Qubit View 
-                    int removedQubitIndex = qubitCount;
-                    this.Qubits.RemoveAt(removedQubitIndex);
                     this.PackStagesOnUi();
+                }
+                else if (message.QubitsChanged)
+                {
+                    // All stages need to resize 
+                    foreach (var stage in this.Stages)
+                    {
+                        stage.UpdateQubitCount();
+                    }
+
+                    if (this.Qubits.Count < qubitCount)
+                    {
+                        // Create the very first empty stage when the first qubit is created
+                        // The first qubit cannot be deleted so we will do that only once
+                        if (this.Qubits.Count == 0)
+                        {
+                            AddEmptyStageOnUi();
+                        }
+
+                        // Create one new Qubit View, stages are unchanged 
+                        int addedQubitIndex = qubitCount - 1;
+                        this.Qubits.Add(new QubitViewModel(addedQubitIndex));
+
+                    }
+                    else if (this.Qubits.Count > qubitCount)
+                    {
+                        // Remove last Qubit View 
+                        int removedQubitIndex = qubitCount;
+                        this.Qubits.RemoveAt(removedQubitIndex);
+                        this.PackStagesOnUi();
+                    }
+                    else
+                    {
+                        // No change ? 
+                        this.toaster.Show("Unexpected Error", "Conflicting QuBits count", 4_000, InformationLevel.Error);
+                    }
+                }
+                else if (message.StageChanged)
+                {
+                    // Make sure to update only the stages that are still there,
+                    // that have not been removed in the loop above 
+                    if (message.IndexStageChanged < this.Stages.Count)
+                    {
+                        var stage = this.Stages[message.IndexStageChanged];
+                        stage.UpdateGatesAndMinibars();
+                    }
+
+                    // All qubit states need to clear 
+                    foreach (var stage in this.Stages)
+                    {
+                        stage.UpdateUiMinibars();
+                    }
+
+                    // Check if we need to create a new UI stage so that we can drop new gates 
+                    AddEmptyStageIfNeeded();
                 }
                 else
                 {
-                    // No change ? 
-                    this.toaster.Show("Unexpected Error", "Conflicting QuBits count", 4_000, InformationLevel.Error);
+                    string uiMessage = "Model Structure Update: Logic error ";
+                    this.toaster.Show("Unexpected Error", uiMessage, 4_000, InformationLevel.Error);
                 }
             }
-            else if (message.StageChanged)
+            catch (Exception ex)
             {
-                // Make sure to update only the stages that are still there,
-                // that have not been removed in the loop above 
-                if (message.IndexStageChanged < this.Stages.Count)
-                {
-                    var stage = this.Stages[message.IndexStageChanged];
-                    stage.UpdateGatesAndMinibars();
-                }
-
-                // All qubit states need to clear 
-                foreach (var stage in this.Stages)
-                {
-                    stage.UpdateUiMinibars();
-                }
-
-                // Check if we need to create a new UI stage so that we can drop new gates 
-                AddEmptyStageIfNeeded();
-            }
-            else
-            {
-                string uiMessage = "Model Structure Update: Logic error ";
+                Debug.WriteLine(ex);
+                string uiMessage = "Model Structure Update: Exception thrown: " + ex.Message;
                 this.toaster.Show("Unexpected Error", uiMessage, 4_000, InformationLevel.Error);
             }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(ex);
-            string uiMessage = "Model Structure Update: Exception thrown: " + ex.Message;
-            this.toaster.Show("Unexpected Error", uiMessage, 4_000, InformationLevel.Error);
-        }
+        });
     }
 
     private void InitializeModelOnUi(bool forceReload = false)
@@ -381,7 +395,7 @@ public sealed partial class ComputerViewModel : ViewModel<ComputerView>, IDropTa
             }, DispatcherPriority.ApplicationIdle);
     }
 
-    private void OnQubitChangedMessage(QubitChangedMessage message)
+    public void Receive(QubitChangedMessage message)
         => this.UpdateQubit(message.Index, message.InitialState);
 
     private void UpdateQubit(int index, QuState newState)

@@ -76,11 +76,11 @@ public sealed partial class QsModel : ModelBase
             SwapData.OnQuBitCountChanged(this.QuComputer.QuBitsCount);
             this.QuBitMeasureStates.Add(true);
             this.IsDirty = true;
-            this.Messenger.Publish(MakeQubitsChanged());
+            MakeQubitsChanged().Publish();
         }
         else
         {
-            this.PublishError(message);
+            PublishError(message);
         }
 
         return status;
@@ -94,11 +94,11 @@ public sealed partial class QsModel : ModelBase
             SwapData.OnQuBitCountChanged(this.QuComputer.QuBitsCount);
             this.QuBitMeasureStates.RemoveAt(this.QuBitMeasureStates.Count - 1);
             this.IsDirty = true;
-            this.Messenger.Publish(MakeQubitsChanged());
+            MakeQubitsChanged().Publish();
         }
         else
         {
-            this.PublishError(message);
+            PublishError(message);
         }
 
         return status;
@@ -114,7 +114,7 @@ public sealed partial class QsModel : ModelBase
         }
 
         this.QuBitMeasureStates[index] = value;
-        this.Messenger.Publish(new ModelMeasureStatesUpdateMessage());
+        new ModelMeasureStatesUpdateMessage().Publish();
         return true;
     }
 
@@ -124,11 +124,11 @@ public sealed partial class QsModel : ModelBase
         if (status)
         {
             this.IsDirty = true;
-            this.Messenger.Publish(MakeStagePacked());
+            MakeStagePacked().Publish();
         }
         else
         {
-            this.PublishError(message);
+            PublishError(message);
         }
 
         return status;
@@ -139,11 +139,11 @@ public sealed partial class QsModel : ModelBase
         bool status = this.QuComputer.UpdateQubit(index, newState, out message);
         if (status)
         {
-            this.Messenger.Publish(new ModelResultsUpdateMessage());
+            new ModelResultsUpdateMessage().Publish();
         }
         else
         {
-            this.PublishError(message);
+            PublishError(message);
         }
 
         return status;
@@ -160,11 +160,11 @@ public sealed partial class QsModel : ModelBase
         if (status)
         {
             this.IsDirty = true;
-            this.Messenger.Publish(MakeStageChanged(stageIndex));
+            MakeStageChanged(stageIndex).Publish();
         }
         else
         {
-            this.PublishError(message);
+            PublishError(message);
         }
 
         return status;
@@ -176,7 +176,7 @@ public sealed partial class QsModel : ModelBase
         bool status1 = this.QuComputer.AddGate(stageIndex, qubitsIndices, xGate1, isDrop, out message);
         if ( ! status1)
         {
-            this.PublishError(message);
+            PublishError(message);
             return false ;
         }
 
@@ -184,7 +184,7 @@ public sealed partial class QsModel : ModelBase
         bool status2 = this.QuComputer.AddGate(1 + stageIndex, qubitsIndices, gate, isDrop, out message);
         if (!status2)
         {
-            this.PublishError(message);
+            PublishError(message);
             return false;
         }
 
@@ -192,7 +192,7 @@ public sealed partial class QsModel : ModelBase
         bool status3 = this.QuComputer.AddGate(2 + stageIndex, qubitsIndices, xGate2, isDrop, out message);
         if (!status3)
         {
-            this.PublishError(message);
+            PublishError(message);
             return false;
         }
 
@@ -200,11 +200,11 @@ public sealed partial class QsModel : ModelBase
         if (status)
         {
             this.IsDirty = true;
-            this.Messenger.Publish(MakeModelLoaded());
+            MakeModelLoaded().Publish();
         }
         else
         {
-            this.PublishError(message);
+            PublishError(message);
         }
 
         return status;
@@ -216,11 +216,11 @@ public sealed partial class QsModel : ModelBase
         if (status)
         {
             this.IsDirty = true;
-            this.Messenger.Publish(MakeStageChanged(stageIndex));
+            MakeStageChanged(stageIndex).Publish();
         }
         else
         {
-            this.PublishError(message);
+            PublishError(message);
         }
 
         return status;
@@ -240,15 +240,15 @@ public sealed partial class QsModel : ModelBase
                     status = this.QuComputer.Prepare(out message);
                     if (status)
                     {
-                        this.Messenger.Publish(new ModelResetMessage());
-                        this.Messenger.Publish(new ModelResultsUpdateMessage());
+                        new ModelResetMessage().Publish();
+                        new ModelResultsUpdateMessage().Publish();
                         return true;
                     }
                 }
             }
         }
 
-        this.PublishError(message);
+        PublishError(message);
         return false;
     }
 
@@ -264,8 +264,8 @@ public sealed partial class QsModel : ModelBase
                 status = this.QuComputer.Prepare(out message);
                 if (status)
                 {
-                    void PublishUpdate(bool isComplete, int step)
-                        => this.Messenger.Publish(new ModelProgressMessage(IsComplete: isComplete, Step: step));
+                    static void PublishUpdate(bool isComplete, int step)
+                        => new ModelProgressMessage(IsComplete: isComplete, Step: step).Publish();
 
                     if (runAsync)
                     {
@@ -278,7 +278,7 @@ public sealed partial class QsModel : ModelBase
                         status = this.QuComputer.Run(checkExpected: false, PublishUpdate, out message);
                         if (status)
                         {
-                            this.Messenger.Publish(new ModelResultsUpdateMessage());
+                            new ModelResultsUpdateMessage().Publish();
                             return true;
                         }
                     }
@@ -286,14 +286,14 @@ public sealed partial class QsModel : ModelBase
             }
         }
 
-        this.PublishError(message);
+        PublishError(message);
         return false;
     }
 
     public async Task<Tuple<bool, string>> Break() => await this.QuComputer.Break();
 
-    private void PublishError(string message)
-        => this.Messenger.Publish(new ModelUpdateErrorMessage(message));
+    private static void PublishError(string message)
+        => new ModelUpdateErrorMessage(message).Publish();
 
     private void InitializeMeasureStates()
     {

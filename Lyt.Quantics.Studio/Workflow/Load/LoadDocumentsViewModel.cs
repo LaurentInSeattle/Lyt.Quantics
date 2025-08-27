@@ -2,7 +2,10 @@
 
 using static ToolbarCommandMessage;
 
-public sealed partial class LoadDocumentsViewModel : ViewModel<LoadDocumentsView>
+public sealed partial class LoadDocumentsViewModel : 
+    ViewModel<LoadDocumentsView>,
+    IRecipient<ToolbarCommandMessage>,
+    IRecipient<ModelUpdateMessage>
 {
     private readonly QsModel quanticsStudioModel;
     private readonly List<DocumentViewModel> loadedDocumentViews;
@@ -22,8 +25,8 @@ public sealed partial class LoadDocumentsViewModel : ViewModel<LoadDocumentsView
         this.quanticsStudioModel = App.GetRequiredService<QsModel>();
         this.loadedDocumentViews = [];
         this.DocumentViews = [];
-        this.Messenger.Subscribe<ToolbarCommandMessage>(this.OnToolbarCommandMessage);
-        this.Messenger.Subscribe<ModelUpdateMessage>(this.OnModelUpdateMessage);
+        this.Subscribe<ToolbarCommandMessage>();
+        this.Subscribe<ModelUpdateMessage>();
     }
 
     public override void OnViewLoaded()
@@ -75,7 +78,7 @@ public sealed partial class LoadDocumentsViewModel : ViewModel<LoadDocumentsView
         }
     }
 
-    private void OnModelUpdateMessage(ModelUpdateMessage message)
+    public void Receive(ModelUpdateMessage message)
     {
         if (message.PropertyName == nameof(QsModel.ShowRecentDocuments))
         {
@@ -83,7 +86,7 @@ public sealed partial class LoadDocumentsViewModel : ViewModel<LoadDocumentsView
         }
     }
 
-    private void OnToolbarCommandMessage(ToolbarCommandMessage message)
+    public void Receive(ToolbarCommandMessage message)
     {
         switch (message.Command)
         {

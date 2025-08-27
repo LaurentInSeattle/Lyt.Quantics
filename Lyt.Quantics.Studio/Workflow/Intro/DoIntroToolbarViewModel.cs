@@ -1,6 +1,6 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Intro;
 
-using static MessagingExtensions;
+using static ApplicationMessagingExtensions;
 
 public sealed partial class DoIntroToolbarViewModel : ViewModel<DoIntroToolbarView>
 {

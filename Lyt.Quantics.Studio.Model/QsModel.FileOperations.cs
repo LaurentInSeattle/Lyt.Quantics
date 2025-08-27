@@ -102,7 +102,7 @@ public sealed partial class QsModel : ModelBase
         _ = this.QuComputer.Reset(out string _);
         this.InitializeMeasureStates();
         this.IsDirty = false;
-        this.Messenger.Publish(MakeModelLoaded());
+        MakeModelLoaded().Publish();
     }
 
     public bool ValidateComputerMetadata(

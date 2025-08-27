@@ -52,10 +52,9 @@ public abstract class GateViewModelBase<TView>
     public string DragDropFormat => GateViewModelBase<TView>.CustomDragAndDropFormat;
 
     public void OnEntered()
-        => this.Messenger.Publish(
-            new GateHoverMessage(IsEnter: true, this.Gate.CaptionKey, this.Gate.Description));
+        => new GateHoverMessage(IsEnter: true, this.Gate.CaptionKey, this.Gate.Description).Publish();
 
-    public void OnExited() => this.Messenger.Publish(new GateHoverMessage());
+    public void OnExited() => new GateHoverMessage().Publish();
 
     public void OnLongPress()
     {
@@ -77,7 +76,7 @@ public abstract class GateViewModelBase<TView>
         if (this.Gate.IsEditable)
         {
             // Launch edit gate dialog 
-            this.Messenger.Publish(new GateEditMessage(this, isRightClick));
+            new GateEditMessage(this, isRightClick).Publish();
         }
     }
 

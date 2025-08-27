@@ -1,6 +1,6 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Dialogs;
 
-public sealed partial class RunDialogModel : DialogViewModel<RunDialog, object>
+public sealed partial class RunDialogModel : DialogViewModel<RunDialog, object>, IRecipient<ModelProgressMessage>
 {
     private readonly QsModel quanticsStudioModel;
 
@@ -30,7 +30,7 @@ public sealed partial class RunDialogModel : DialogViewModel<RunDialog, object>
         this.ProgressTotal = this.quanticsStudioModel.QuComputer.Stages.Count;
         this.Message = "Calculation started...";
 
-        this.Messenger.Subscribe<ModelProgressMessage>(this.OnModelProgress, withUiDispatch: true);
+        this.Subscribe<ModelProgressMessage>();
     }
 
     public override void OnViewLoaded()
@@ -39,26 +39,28 @@ public sealed partial class RunDialogModel : DialogViewModel<RunDialog, object>
         _ = this.quanticsStudioModel.Run(runUsingKroneckerProduct: false, runAsync: true);
     }
 
-    private void OnModelProgress(ModelProgressMessage message)
+    public void Receive(ModelProgressMessage message)
     {
-        if (message.IsComplete)
+        Dispatch.OnUiThread(() =>
         {
-            this.Messenger.Publish(new ModelResultsUpdateMessage());
-            var toaster = App.GetRequiredService<IToaster>();
-            toaster.Show("Complete!", "Successful single Run! ", 4_000, InformationLevel.Success);
-            this.RingIsActive = false;
-            this.Cancel();
-
-        }
-        else
-        {
-            this.Message =
-                string.Format(
-                    " {0} / {1} calculation steps complete.",
-                    message.Step,
-                    this.quanticsStudioModel.QuComputer.Stages.Count);
-            this.ProgressValue = message.Step;
-        } 
+            if (message.IsComplete)
+            {
+                new ModelResultsUpdateMessage().Publish();
+                var toaster = App.GetRequiredService<IToaster>();
+                toaster.Show("Complete!", "Successful single Run! ", 4_000, InformationLevel.Success);
+                this.RingIsActive = false;
+                this.Cancel();
+            }
+            else
+            {
+                this.Message =
+                    string.Format(
+                        " {0} / {1} calculation steps complete.",
+                        message.Step,
+                        this.quanticsStudioModel.QuComputer.Stages.Count);
+                this.ProgressValue = message.Step;
+            }
+        });
     }
 
     [RelayCommand]

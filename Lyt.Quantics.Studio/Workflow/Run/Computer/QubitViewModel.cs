@@ -2,7 +2,7 @@
 
 using static Lyt.Avalonia.Controls.Utilities;
 
-public sealed partial class QubitViewModel : ViewModel<QubitView>
+public sealed partial class QubitViewModel : ViewModel<QubitView>, IRecipient<ModelResetMessage>
 {
     // See: https://en.wikipedia.org/wiki/Unicode_subscripts_and_superscripts
     // And: https://www.unicode.org/Public/UNIDATA/ 
@@ -60,14 +60,14 @@ public sealed partial class QubitViewModel : ViewModel<QubitView>
         this.name = string.Empty;
         this.ket = string.Empty;
         this.quState = QuState.Zero;
-        this.Messenger.Subscribe<ModelResetMessage>(this.OnModelResetMessage);
+        this.Subscribe<ModelResetMessage>();
         this.IsSelected = true;
         this.VisualState = OnVisualState;
     }
 
     public bool IsSelected { get; private set; }
 
-    private void OnModelResetMessage(ModelResetMessage _)
+    public void Receive(ModelResetMessage _)
     {
         this.quState = QuState.Zero;
         this.RefreshKet();
@@ -119,7 +119,7 @@ public sealed partial class QubitViewModel : ViewModel<QubitView>
 
         this.quState = (QuState)index;
         this.RefreshKet();
-        this.Messenger.Publish(new QubitChangedMessage(this.qubitIndex, this.quState));
+        new QubitChangedMessage(this.qubitIndex, this.quState).Publish();
     }
 
     [RelayCommand]

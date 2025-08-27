@@ -1,7 +1,7 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
 
 using static ToolbarCommandMessage;
-using static MessagingExtensions; 
+using static ApplicationMessagingExtensions;
 
 public sealed partial class ComputerToolbarViewModel : ViewModel<ComputerToolbarView>
 {

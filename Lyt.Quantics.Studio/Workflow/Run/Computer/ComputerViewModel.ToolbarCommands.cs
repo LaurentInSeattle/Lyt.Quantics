@@ -1,11 +1,19 @@
 ﻿namespace Lyt.Quantics.Studio.Workflow.Run.Computer;
 
-using static MessagingExtensions;
+using static ApplicationMessagingExtensions;
 using static ToolbarCommandMessage;
 
-public sealed partial class ComputerViewModel : ViewModel<ComputerView>
+public sealed partial class ComputerViewModel :
+    ViewModel<ComputerView>,
+    IDropTarget,
+    IRecipient<ToolbarCommandMessage>,
+    IRecipient<QubitChangedMessage>,
+    IRecipient<ModelStructureUpdateMessage>,
+    IRecipient<ModelResultsUpdateMessage>,
+    IRecipient<ModelUpdateErrorMessage>,
+    IRecipient<GateEditMessage>
 {
-    private void OnToolbarCommandMessage(ToolbarCommandMessage message)
+    public void Receive(ToolbarCommandMessage message)
     {
         int count = this.Qubits.Count;
         switch (message.Command)
