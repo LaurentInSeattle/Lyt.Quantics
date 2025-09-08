@@ -13,6 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Lyt.Framework\Lyt.Collections\Lyt.Collections.csproj" />
     <ProjectReference Include="..\Lyt.Quantics.Engine\Lyt.Quantics.Engine.csproj" />
     <ProjectReference Include="..\Lyt.Quantics.Swaps\Lyt.Quantics.Swaps.csproj" />
   </ItemGroup>

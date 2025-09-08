@@ -31,6 +31,8 @@ global using MathNet.Numerics.Statistics;
 global using MathNet.Numerics.LinearAlgebra;
 global using MathNet.Numerics.LinearAlgebra.Complex;
 
+global using Lyt.Collections;
+
 global using Lyt.Quantics.Engine.Core;
 global using Lyt.Quantics.Engine.Gates.Base;
 global using Lyt.Quantics.Engine.Gates.Unary;

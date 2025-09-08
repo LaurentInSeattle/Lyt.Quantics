@@ -1,6 +1,8 @@
 ﻿using Lyt.Quantics.Engine.Core;
 using Lyt.Quantics.Engine.Utilities;
 using Lyt.Quantics.Swaps;
+using Lyt.Collections;
+
 using System.Diagnostics;
 
 namespace Lyt.Quantics.SwapsConsole;

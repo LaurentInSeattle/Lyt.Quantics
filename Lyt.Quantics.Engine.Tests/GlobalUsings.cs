@@ -27,6 +27,8 @@ global using System.Windows.Input;
 global using MathNet.Numerics;
 global using MathNet.Numerics.LinearAlgebra;
 
+global using Lyt.Collections;
+
 global using Lyt.Quantics.Engine.Core;
 global using Lyt.Quantics.Engine.Gates;
 global using Lyt.Quantics.Engine.Gates.Base;
