@@ -172,7 +172,7 @@
                         x:Name="ValueTextBox"
                         Grid.Row="4"
                         VerticalAlignment="Center" HorizontalAlignment="Stretch"
-                        Watermark="Enter value in radians"
+                        PlaceholderText="Enter value in radians..."
                         MaxLength="24"
                         Text="{Binding CustomValue}"
                         Margin="40 0 40 0"

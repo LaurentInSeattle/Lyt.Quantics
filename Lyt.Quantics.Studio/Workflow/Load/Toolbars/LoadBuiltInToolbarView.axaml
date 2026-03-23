@@ -28,7 +28,7 @@
 			x:Name="FilterTextBox"
 			Grid.Row="0"
 			VerticalAlignment="Center" HorizontalAlignment="Right"
-			Watermark="Filter list..."
+			PlaceholderText="Filter list..."
 			Width="210"
 			MaxLength="24"
 			Margin="0"

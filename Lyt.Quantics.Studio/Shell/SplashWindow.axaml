@@ -1,23 +1,23 @@
 <Window
-    x:Class="Lyt.Quantics.Studio.Shell.SplashWindow"
-    xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+	x:Class="Lyt.Quantics.Studio.Shell.SplashWindow"
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
 	WindowStartupLocation="CenterScreen"
-	SystemDecorations="None"
+	WindowDecorations="None"
 	ShowInTaskbar="False"
 	WindowState="Normal"
 	Width="800" Height="450"
 	Background="Transparent"
-    >
+	>
 	<!-- Palette is not loaded yet: We can only use hard coded colours-->
 	<Grid>
 		<Image
 			x:Name="Image"
 			Stretch="UniformToFill"
-            Source="\Assets\Images\dark.jpg"
+			Source="\Assets\Images\dark.jpg"
 			Opacity="1"
 			/>
 		<Rectangle
