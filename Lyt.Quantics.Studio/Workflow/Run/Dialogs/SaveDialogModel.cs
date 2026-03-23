@@ -8,19 +8,19 @@ public sealed partial class SaveDialogModel : DialogViewModel<SaveDialog, object
     private readonly FormValidator<FileInformation> fileValidator;
 
     [ObservableProperty]
-    private string? title;
+    public partial string? Title { get; set; }
 
     [ObservableProperty]
-    private string? name;
+    public partial string? Name { get; set; }
 
     [ObservableProperty]
-    private string? description;
+    public partial string? Description { get; set; }
 
     [ObservableProperty]
-    private bool formIsValid;
+    public partial bool FormIsValid { get; set; }
 
     [ObservableProperty]
-    private string? validationMessage;
+    public partial string? ValidationMessage { get; set; }
 
     public SaveDialogModel()
     {

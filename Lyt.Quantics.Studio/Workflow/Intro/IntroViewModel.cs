@@ -7,7 +7,7 @@ public sealed partial class IntroViewModel : ViewModel<IntroView>
     private readonly DoIntroViewModel doIntroViewModel;
 
     [ObservableProperty]
-    private HeaderedContentView doIntro;
+    public partial HeaderedContentView DoIntro { get; set; }
 
     public IntroViewModel()
     {

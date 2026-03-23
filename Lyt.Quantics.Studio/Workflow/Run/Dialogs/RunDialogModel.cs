@@ -5,19 +5,19 @@ public sealed partial class RunDialogModel : DialogViewModel<RunDialog, object>,
     private readonly QsModel quanticsStudioModel;
 
     [ObservableProperty]
-    private float progressTotal;
+    public partial float ProgressTotal { get; set; }
 
     [ObservableProperty]
-    private float progressValue;
+    public partial float ProgressValue { get; set; }
 
     [ObservableProperty]
-    private string? message;
+    public partial string? Message { get; set; }
 
     [ObservableProperty]
-    private string? title;
+    public partial string? Title { get; set; }
 
     [ObservableProperty]
-    private bool ringIsActive;
+    public partial bool RingIsActive { get; set; }
 
     public RunDialogModel()
     {

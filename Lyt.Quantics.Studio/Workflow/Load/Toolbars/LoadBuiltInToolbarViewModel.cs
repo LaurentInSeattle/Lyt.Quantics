@@ -8,7 +8,7 @@ public sealed partial class LoadBuiltInToolbarViewModel : ViewModel<LoadBuiltInT
     private readonly QsModel quanticsStudioModel;
 
     [ObservableProperty]
-    public bool showRegular;
+    public partial bool ShowRegular { get; set; }
 
     public LoadBuiltInToolbarViewModel()
         => this.quanticsStudioModel = App.GetRequiredService<QsModel>();

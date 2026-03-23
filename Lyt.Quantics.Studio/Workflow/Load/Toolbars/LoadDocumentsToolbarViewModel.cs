@@ -5,7 +5,7 @@ public sealed partial class LoadDocumentsToolbarViewModel : ViewModel<LoadDocume
     private readonly QsModel quanticsStudioModel;
 
     [ObservableProperty]
-    private bool showMru;
+    public partial bool ShowMru { get; set; }
 
     public LoadDocumentsToolbarViewModel()
         => this.quanticsStudioModel = App.GetRequiredService<QsModel>();            

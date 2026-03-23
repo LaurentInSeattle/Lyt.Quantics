@@ -3,16 +3,16 @@
 public sealed partial class HistogramBarViewModel : ViewModel<HistogramBarView>
 {
     [ObservableProperty]
-    private string? value;
+    public partial string? Value { get; set; }
 
     [ObservableProperty]
-    private string? label;
+    public partial string? Label { get; set; }
 
     [ObservableProperty]
-    private double height;
+    public partial double Height { get; set; }
 
     [ObservableProperty]
-    private double fontSize;
+    public partial double FontSize { get; set; }
 
     public HistogramBarViewModel(double value, string label, double multiplier)
     {

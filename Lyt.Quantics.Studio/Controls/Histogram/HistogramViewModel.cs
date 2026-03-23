@@ -3,22 +3,22 @@
 public sealed partial class HistogramViewModel : ViewModel<HistogramView>
 {
     [ObservableProperty]
-    private string? value0;
+    public partial string? Value0 { get; set; }
 
     [ObservableProperty]
-    private string? value25;
+    public partial string? Value25 { get; set; }
 
     [ObservableProperty]
-    private string? value50;
+    public partial string? Value50 { get; set; }
 
     [ObservableProperty]
-    private string? value75;
+    public partial string? Value75 { get; set; }
 
     [ObservableProperty]
-    private string? value100;
+    public partial string? Value100 { get; set; }
 
     [ObservableProperty]
-    private List<HistogramBarViewModel>? histogramBars;
+    public partial List<HistogramBarViewModel>? HistogramBars { get; set; }
 
     public HistogramViewModel() { }
 

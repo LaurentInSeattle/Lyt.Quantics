@@ -22,28 +22,28 @@ public sealed partial class GateEditAngleDialogModel
         };
 
     [ObservableProperty]
-    private string customValue;
+    public partial string CustomValue { get; set; }
 
     [ObservableProperty]
-    private string validationMessage;
+    public partial string ValidationMessage { get; set; }
 
     [ObservableProperty]
-    private string? title;
+    public partial string? Title { get; set; }
 
     [ObservableProperty]
-    private string angleValueText;
+    public partial string AngleValueText { get; set; }
 
     [ObservableProperty]
-    private bool saveButtonIsEnabled;
+    public partial bool SaveButtonIsEnabled { get; set; }
 
     [ObservableProperty]
-    private bool makeControlledButtonIsEnabled;
+    public partial bool MakeControlledButtonIsEnabled { get; set; }
 
     [ObservableProperty]
-    private double valuesCount;
+    public partial double ValuesCount { get; set; }
 
     [ObservableProperty]
-    private double sliderValue;
+    public partial double SliderValue { get; set; }
 
     private bool isChangedFromSlider;
     private bool isInitializing;

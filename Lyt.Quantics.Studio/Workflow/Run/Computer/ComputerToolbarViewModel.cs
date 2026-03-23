@@ -6,7 +6,7 @@ using static ApplicationMessagingExtensions;
 public sealed partial class ComputerToolbarViewModel : ViewModel<ComputerToolbarView>
 {
     [ObservableProperty]
-    private bool hideProbabilities;
+    public partial bool HideProbabilities { get; set; }
 
 #pragma warning disable CA1822 // Mark members as static
 

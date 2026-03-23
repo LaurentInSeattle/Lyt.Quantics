@@ -11,11 +11,11 @@ public sealed partial class LoadDocumentsViewModel :
     private readonly List<DocumentViewModel> loadedDocumentViews;
 
     [ObservableProperty]
-    private string? noData;
+    public partial string? NoData { get; set; }
 
     [ObservableProperty]
-    private ObservableCollection<DocumentViewModel> documentViews;
-    
+    public partial ObservableCollection<DocumentViewModel> DocumentViews { get; set; }
+
     private SearchEngine<DocumentViewModel>? searchEngine;
     private DocumentViewModel? documentToDelete;
 

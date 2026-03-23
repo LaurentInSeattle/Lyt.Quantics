@@ -9,25 +9,25 @@ public sealed partial class AmplitudesToolbarViewModel :
     private readonly QsModel quanticsStudioModel;
 
     [ObservableProperty]
-    private bool showAll;
+    public partial bool ShowAll { get; set; }
 
     [ObservableProperty]
-    private bool showByBitOrder;
+    public partial bool ShowByBitOrder { get; set; }
 
     [ObservableProperty]
-    private double stageCount;
+    public partial double StageCount { get; set; }
 
     [ObservableProperty]
-    private double stageRank;
+    public partial double StageRank { get; set; }
 
     [ObservableProperty]
-    private string stageRankText;
+    public partial string StageRankText { get; set; }
 
     private bool isInitializing;
 
     public AmplitudesToolbarViewModel()
     {
-        this.stageRankText = string.Empty;
+        StageRankText = string.Empty;
         this.quanticsStudioModel = App.GetRequiredService<QsModel>();
         this.Subscribe<ModelStructureUpdateMessage>();
     }

@@ -5,10 +5,10 @@ using static ApplicationMessagingExtensions;
 public sealed partial class BuiltInViewModel : ViewModel<BuiltInView>
 {
     [ObservableProperty]
-    private string name;
+    public partial string Name { get; set; }
 
     [ObservableProperty]
-    private string description;
+    public partial string Description { get; set; }
 
     public BuiltInViewModel(QuComputer quComputer)
     {

@@ -42,13 +42,13 @@ public sealed partial class QubitViewModel : ViewModel<QubitView>, IRecipient<Mo
     private readonly int qubitIndex;
 
     [ObservableProperty]
-    private string name;
+    public partial string Name { get; set; }
 
     [ObservableProperty]
-    private string ket;
+    public partial string Ket { get; set; }
 
     [ObservableProperty]
-    private VisualState visualState;
+    public partial VisualState VisualState { get; set; }
 
     private QuState quState;
 
@@ -56,9 +56,8 @@ public sealed partial class QubitViewModel : ViewModel<QubitView>, IRecipient<Mo
     {
         this.qubitIndex = qubitIndex;
         this.quanticsStudioModel = App.GetRequiredService<QsModel>();
-
-        this.name = string.Empty;
-        this.ket = string.Empty;
+        Name = string.Empty;
+        Ket = string.Empty;
         this.quState = QuState.Zero;
         this.Subscribe<ModelResetMessage>();
         this.IsSelected = true;

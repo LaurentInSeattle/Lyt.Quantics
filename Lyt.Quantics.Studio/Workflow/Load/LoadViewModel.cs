@@ -8,13 +8,13 @@ public sealed partial class LoadViewModel : ViewModel<LoadView>
     private readonly LoadDocumentsViewModel loadDocumentsViewModel;
 
     [ObservableProperty]
-    private HeaderedContentView blank;
+    public partial HeaderedContentView Blank { get; set; }
 
     [ObservableProperty]
-    private HeaderedContentView builtIn;
+    public partial HeaderedContentView BuiltIn { get; set; }
 
     [ObservableProperty]
-    private HeaderedContentView documents;
+    public partial HeaderedContentView Documents { get; set; }
 
     public LoadViewModel() 
     {

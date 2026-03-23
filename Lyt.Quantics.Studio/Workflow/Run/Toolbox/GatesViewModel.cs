@@ -6,13 +6,13 @@ public sealed partial class GatesViewModel : ViewModel<GatesView>, IRecipient<Ga
     private readonly IToaster toaster;
 
     [ObservableProperty]
-    private List<GateViewModel>? gates;
+    public partial List<GateViewModel>? Gates { get; set; }
 
     [ObservableProperty]
-    private string? gateTitle;
+    public partial string? GateTitle { get; set; }
 
     [ObservableProperty]
-    private string? gateDescription;
+    public partial string? GateDescription { get; set; }
 
     public GatesViewModel()
     {

@@ -7,13 +7,13 @@ public sealed partial class RunViewModel : ViewModel<RunView>
     private readonly ComputerViewModel computerViewModel;
 
     [ObservableProperty]
-    private HeaderedContentView gates;
+    public partial HeaderedContentView Gates { get; set; }
 
     [ObservableProperty]
-    private HeaderedContentView computer;
+    public partial HeaderedContentView Computer { get; set; }
 
     [ObservableProperty]
-    private HeaderedContentView amplitudes;
+    public partial HeaderedContentView Amplitudes { get; set; }
 
     public RunViewModel()
     {

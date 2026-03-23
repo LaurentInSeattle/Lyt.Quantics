@@ -8,13 +8,13 @@ public sealed partial class DocumentViewModel : ViewModel<DocumentView>
     private readonly QuComputer quComputer;
 
     [ObservableProperty]
-    private string name;
+    public partial string Name { get; set; }
 
     [ObservableProperty]
-    private string opened;
+    public partial string Opened { get; set; }
 
     [ObservableProperty]
-    private string description;
+    public partial string Description { get; set; }
 
     public DocumentViewModel(QuComputer quComputer)
     {

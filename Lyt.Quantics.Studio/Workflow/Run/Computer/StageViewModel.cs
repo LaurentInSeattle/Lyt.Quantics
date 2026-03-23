@@ -11,13 +11,13 @@ public sealed partial class StageViewModel : ViewModel<StageView>, IDropTarget
     public readonly IToaster toaster;
 
     [ObservableProperty]
-    private string name;
+    public partial string Name { get; set; }
 
     [ObservableProperty]
-    private bool isMarkerVisible;
+    public partial bool IsMarkerVisible { get; set; }
 
     [ObservableProperty]
-    private double gridHeight;
+    public partial double GridHeight { get; set; }
 
     private int activeGates;
 

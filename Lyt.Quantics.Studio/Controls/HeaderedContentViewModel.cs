@@ -13,31 +13,31 @@ public sealed partial class HeaderedContentViewModel : ViewModel<HeaderedContent
     private readonly CollapseStyle collapseStyle;
 
     [ObservableProperty]
-    private string? title;
+    public partial string? Title { get; set; }
 
     [ObservableProperty]
-    private string? collapseIconSource;
+    public partial string? CollapseIconSource { get; set; }
 
     [ObservableProperty]
-    private string? expandIconSource;
+    public partial string? ExpandIconSource { get; set; }
 
     [ObservableProperty]
-    private bool isCollapseVisible;
+    public partial bool IsCollapseVisible { get; set; }
 
     [ObservableProperty]
-    private bool isSideCollapsed;
+    public partial bool IsSideCollapsed { get; set; }
 
     [ObservableProperty]
-    private bool isUpdownCollapsed;
+    public partial bool IsUpdownCollapsed { get; set; }
 
     [ObservableProperty]
-    private bool isExpanded;
+    public partial bool IsExpanded { get; set; }
 
     [ObservableProperty]
-    private Control? toolbar;
+    public partial Control? Toolbar { get; set; }
 
     [ObservableProperty]
-    private Control contentView;
+    public partial Control ContentView { get; set; }
 
     public HeaderedContentViewModel(
         string title, bool canCollapse,

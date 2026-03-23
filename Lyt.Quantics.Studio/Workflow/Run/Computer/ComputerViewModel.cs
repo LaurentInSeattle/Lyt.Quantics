@@ -17,19 +17,19 @@ public sealed partial class ComputerViewModel :
 
     // Collections of Qubits view models 
     [ObservableProperty]
-    private ObservableCollection<QubitViewModel> qubits;
+    public partial ObservableCollection<QubitViewModel> Qubits { get; set; }
 
     // Collections of Stages view models 
     [ObservableProperty]
-    private ObservableCollection<StageViewModel> stages;
+    public partial ObservableCollection<StageViewModel> Stages { get; set; }
 
     /// <summary> The name of the computer currently edited.</summary>
     [ObservableProperty]
-    private string name;
+    public partial string Name { get; set; }
 
     /// <summary> The description of the computer currently edited.</summary>
     [ObservableProperty]
-    private string description;
+    public partial string Description { get; set; }
 
     public ComputerViewModel()
     {

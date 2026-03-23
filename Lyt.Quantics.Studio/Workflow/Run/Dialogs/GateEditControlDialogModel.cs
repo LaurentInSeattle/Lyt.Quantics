@@ -7,28 +7,28 @@ public sealed partial class GateEditControlDialogModel
     private int targetIndex;
 
     [ObservableProperty]
-    private string? validationMessage;
+    public partial string? ValidationMessage { get; set; }
 
     [ObservableProperty]
-    private string? title;
+    public partial string? Title { get; set; }
 
     [ObservableProperty]
-    private double valuesCount;
+    public partial double ValuesCount { get; set; }
 
     [ObservableProperty]
-    private string? controlValueText;
+    public partial string? ControlValueText { get; set; }
 
     [ObservableProperty]
-    private string? targetValueText;
+    public partial string? TargetValueText { get; set; }
 
     [ObservableProperty]
-    private bool saveButtonIsEnabled;
+    public partial bool SaveButtonIsEnabled { get; set; }
 
     [ObservableProperty]
-    private double controlSliderValue;
+    public partial double ControlSliderValue { get; set; }
 
     [ObservableProperty]
-    private double targetSliderValue;
+    public partial double TargetSliderValue { get; set; }
 
     public GateEditControlDialogModel() { }
 

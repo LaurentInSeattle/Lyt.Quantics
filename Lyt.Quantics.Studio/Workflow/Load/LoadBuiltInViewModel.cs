@@ -17,7 +17,7 @@ public sealed partial class LoadBuiltInViewModel :
     private List<BuiltInViewModel> loadedBuiltInViews;
 
     [ObservableProperty]
-    private List<BuiltInViewModel> builtInViews;
+    public partial List<BuiltInViewModel> BuiltInViews { get; set; }
 
     private SearchEngine<BuiltInViewModel>? searchEngine;
     private FilterPredicate? filterPredicate;

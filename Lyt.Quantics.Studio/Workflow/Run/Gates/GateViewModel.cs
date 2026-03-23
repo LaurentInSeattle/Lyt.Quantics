@@ -124,43 +124,43 @@ public sealed partial class GateViewModel : GateViewModelBase<GateView>
     #region Observable properties 
 
     [ObservableProperty]
-    private double gateHeight;
+    public partial double GateHeight { get; set; }
 
     [ObservableProperty]
-    private Thickness gateMargin;
+    public partial Thickness GateMargin { get; set; }
 
     [ObservableProperty]
-    private string? name;
+    public partial string? Name { get; set; }
 
     [ObservableProperty]
-    private double fontSize;
+    public partial double FontSize { get; set; }
 
     [ObservableProperty]
-    private string? parameter;
+    public partial string? Parameter { get; set; }
 
     [ObservableProperty]
-    private double parameterFontSize;
+    public partial double ParameterFontSize { get; set; }
 
     [ObservableProperty]
-    private IBrush? gateCategoryBrush;
+    public partial IBrush? GateCategoryBrush { get; set; }
 
-    [ObservableProperty] 
-    private IBrush? gateBackground;
+    [ObservableProperty]
+    public partial IBrush? GateBackground { get; set; }
 
-    [ObservableProperty] 
-    private bool isTextVisible;
+    [ObservableProperty]
+    public partial bool IsTextVisible { get; set; }
 
-    [ObservableProperty] 
-    private bool isBorderVisible;
+    [ObservableProperty]
+    public partial bool IsBorderVisible { get; set; }
 
-    [ObservableProperty] 
-    private Thickness gateBorderThickness;
+    [ObservableProperty]
+    public partial Thickness GateBorderThickness { get; set; }
 
-    [ObservableProperty] 
-    private bool isSpecialVisible;
+    [ObservableProperty]
+    public partial bool IsSpecialVisible { get; set; }
 
-    [ObservableProperty] 
-    private Control? specialGate;
+    [ObservableProperty]
+    public partial Control? SpecialGate { get; set; }
 
     #endregion Observable  properties 
 

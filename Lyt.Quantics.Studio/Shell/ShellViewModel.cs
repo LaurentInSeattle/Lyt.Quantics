@@ -12,10 +12,10 @@ public sealed partial class ShellViewModel : ViewModel<ShellView>, IRecipient<Sh
     public bool isFirstActivation;
 
     [ObservableProperty]
-    private GridLength titleBarHeight;
+    public partial GridLength TitleBarHeight { get; set; }
 
     [ObservableProperty]
-    private bool isTitleBarVisible;
+    public partial bool IsTitleBarVisible { get; set; }
 
     public ShellViewModel(
         IDialogService dialogService, IToaster toaster, QsModel quanticsStudioModel)

@@ -5,20 +5,47 @@ public sealed partial class GateEditQubitsDialogModel
 {
     public sealed record class QubitSetup(int Index, bool IsControl);
 
-    [ObservableProperty] private bool hasThreeQubits;
-    [ObservableProperty] private string? validationMessage;
-    [ObservableProperty] private string? title;
-    [ObservableProperty] private double valuesCount;
-    [ObservableProperty] private double firstSliderValue;
-    [ObservableProperty] private string? firstValueTextLabel;
-    [ObservableProperty] private string? firstValueText;
-    [ObservableProperty] private double secondSliderValue;
-    [ObservableProperty] private string? secondValueTextLabel;
-    [ObservableProperty] private string? secondValueText;
-    [ObservableProperty] private double thirdSliderValue;
-    [ObservableProperty] private string? thirdValueTextLabel;
-    [ObservableProperty] private string? thirdValueText;
-    [ObservableProperty] private bool saveButtonIsEnabled;
+    [ObservableProperty]
+    public partial bool HasThreeQubits { get; set; }
+
+    [ObservableProperty]
+    public partial string? ValidationMessage { get; set; }
+
+    [ObservableProperty]
+    public partial string? Title { get; set; }
+
+    [ObservableProperty]
+    public partial double ValuesCount { get; set; }
+
+    [ObservableProperty]
+    public partial double FirstSliderValue { get; set; }
+
+    [ObservableProperty]
+    public partial string? FirstValueTextLabel { get; set; }
+
+    [ObservableProperty]
+    public partial string? FirstValueText { get; set; }
+
+    [ObservableProperty]
+    public partial double SecondSliderValue { get; set; }
+
+    [ObservableProperty]
+    public partial string? SecondValueTextLabel { get; set; }
+
+    [ObservableProperty]
+    public partial string? SecondValueText { get; set; }
+
+    [ObservableProperty]
+    public partial double ThirdSliderValue { get; set; }
+
+    [ObservableProperty]
+    public partial string? ThirdValueTextLabel { get; set; }
+
+    [ObservableProperty]
+    public partial string? ThirdValueText { get; set; }
+
+    [ObservableProperty]
+    public partial bool SaveButtonIsEnabled { get; set; }
 
     private int firstIndex;
     private int secondIndex;

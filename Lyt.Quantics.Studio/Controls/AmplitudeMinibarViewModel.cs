@@ -3,10 +3,10 @@
 public sealed partial class AmplitudeMinibarViewModel : ViewModel<AmplitudeMinibarView>
 {
     [ObservableProperty]
-    private double height;
+    public partial double Height { get; set; }
 
     [ObservableProperty]
-    private bool visible;
+    public partial bool Visible { get; set; }
 
     public AmplitudeMinibarViewModel(double value, bool visible = true)
     {

@@ -12,7 +12,7 @@ public abstract partial class CompositeGateViewModel<TView> : GateViewModelBase<
     protected readonly List<int> allQuBitIndicesSorted;
 
     [ObservableProperty]
-    private double gateHeight;
+    public partial double GateHeight { get; set; }
 
     public CompositeGateViewModel(
         Gate gate, int stageIndex, QubitsIndices qubitsIndices, bool isGhost = false)
