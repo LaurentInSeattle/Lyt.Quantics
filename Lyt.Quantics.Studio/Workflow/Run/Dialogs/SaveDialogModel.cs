@@ -28,9 +28,8 @@ public sealed partial class SaveDialogModel : DialogViewModel<SaveDialog, object
         this.Title = "Save your Project";
         this.fileValidator =
             new FormValidator<FileInformation>(
-                new(FormValidPropertyName: "FormIsValid",
-                    FocusFieldName: "NameTextBox",
-                    FieldValidators: [NameValidator, DescriptionValidator]));
+                focusFieldName: "NameTextBox",
+                fieldValidators: [NameValidator, DescriptionValidator]);
         this.CanEnter = false;
     }
 

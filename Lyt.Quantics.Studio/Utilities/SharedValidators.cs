@@ -2,22 +2,9 @@
 
 public static class SharedValidators
 {
-    public static readonly FieldValidatorParameters<string> NameValidatorParameters =
-        new(
-            Validator: new Validators.Name(),
-            SourcePropertyName: "Name",
-            MessagePropertyName: "ValidationMessage");
-
-    public static readonly FieldValidatorParameters<string> DescriptionValidatorParameters =
-        new(
-            Validator: new Validators.Description(),
-            SourcePropertyName: "Description",
-            MessagePropertyName: "ValidationMessage");
-
     public static readonly FieldValidator<string> NameValidator =
-        new(NameValidatorParameters);
+        new(validator: new Validators.Name(), sourcePropertyName: "Name");
 
     public static readonly FieldValidator<string> DescriptionValidator =
-        new(DescriptionValidatorParameters);
-
+        new(validator: new Validators.Description(), sourcePropertyName: "Description");
 }
